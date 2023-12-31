@@ -22,68 +22,68 @@
 
 input[type="text"] {
   width: 100%;
-  min-height: 6.8rem;
+  min-height: 5.4rem;
   border: 0.1rem solid #ebebeb;
-  border-radius: 1.5rem;
+  border-radius: 1.2rem;
   background-color: $color-white;
-  padding: 0 3rem;
+  padding: 0 2.4rem;
   box-sizing: border-box;
   color: $color-black;
   font-family: NotoSansCJKkr;
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: 400;
-  line-height: 3.8rem;
+  line-height: 2.6rem;
   letter-spacing: -0.044rem;
   &::placeholder {
     color: #ccc;
     font-family: NotoSansCJKkr;
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-weight: 400;
-    line-height: 3.8rem;
+    line-height: 2.6rem;
     letter-spacing: -0.044rem;
   }
 }
 
 select {
   width: 100%;
-  min-height: 6.8rem;
+  min-height: 5.4rem;
   border: 0.1rem solid #ebebeb;
-  border-radius: 1.5rem;
+  border-radius: 1.2rem;
   background-color: $color-white;
-  padding: 0 3rem;
+  padding: 0 2.4rem;
   box-sizing: border-box;
   color: $color-black;
   font-family: NotoSansCJKkr;
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: 400;
-  line-height: 3.8rem;
+  line-height: 2.6rem;
   letter-spacing: -0.044rem;
   appearance: none;
   background: url("/assets/images/select_arrow.png") $color-white no-repeat 98% 50% / contain;
-  background-size: 2.8rem 2.8rem;
+  background-size: 2.2rem 2.2rem;
 }
 
 textarea {
   width: 100%;
-  min-height: 6.8rem;
+  min-height: 5.4rem;
   border: 0.1rem solid #ebebeb;
-  border-radius: 1.5rem;
+  border-radius: 1.2rem;
   background-color: $color-white;
-  padding: 2rem 3rem;
+  padding: 1.6rem 2.4rem;
   box-sizing: border-box;
   color: $color-black;
   font-family: NotoSansCJKkr;
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: 400;
-  line-height: 3.8rem;
+  line-height: 2.6rem;
   letter-spacing: -0.044rem;
   resize: none;
   &::placeholder {
     color: #ccc;
     font-family: NotoSansCJKkr;
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     font-weight: 400;
-    line-height: 3.8rem;
+    line-height: 2.6rem;
     letter-spacing: -0.044rem;
   }
 }
@@ -131,7 +131,7 @@ input[type="checkbox"]:checked + label:after {
 
 input[type="checkbox"] + label span {
   font-weight: 400;
-  font-size: 1.8rem;
+  font-size: 1.6rem;
   line-height: 2.4rem;
   letter-spacing: -0.036rem;
   color: $color-black;
@@ -139,71 +139,71 @@ input[type="checkbox"] + label span {
 
 @media (max-width: 1440px) {
   input[type="text"] {
-    min-height: 5.2rem;
+    min-height: 4.2rem;
     border-radius: 1rem;
-    padding: 0 2rem;
-    font-size: 1.8rem;
-    line-height: 2.6rem;
+    padding: 0 1.6rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
     letter-spacing: -0.044rem;
     &::placeholder {
-      font-size: 1.8rem;
-      line-height: 2.6rem;
+      font-size: 1.5rem;
+      line-height: 2rem;
       letter-spacing: -0.044rem;
     }
   }
 
   select {
-    min-height: 5.2rem;
+    min-height: 4.2rem;
     border-radius: 1rem;
-    padding: 0 2rem;
-    font-size: 1.8rem;
-    line-height: 2.6rem;
+    padding: 0 1.6rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
     letter-spacing: -0.044rem;
-    background-size: 2rem 2rem;
+    background-size: 1.8rem 1.8rem;
   }
 
   textarea {
-    height: 15rem;
+    height: 12rem;
     border: 0.1rem solid #ebebeb;
     border-radius: 1rem;
-    padding: 1rem 2rem;
-    font-size: 1.8rem;
-    line-height: 2.6rem;
+    padding: 1rem 1.6rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
     letter-spacing: -0.044rem;
     &::placeholder {
-      font-size: 1.8rem;
-      line-height: 2.6rem;
+      font-size: 1.5rem;
+      line-height: 2rem;
       letter-spacing: -0.044rem;
     }
   }
 
   input[type="checkbox"] + label {
-    padding-left: 3.2rem;
+    padding-left: 3rem;
   }
   input[type="checkbox"] + label:before {
     left: 0;
-    top: -0.2rem;
-    width: 2.2rem;
-    height: 2.2rem;
+    top: 0.1rem;
+    width: 2rem;
+    height: 2rem;
     border-radius: 5px;
   }
 
   input[type="checkbox"]:checked + label:after {
     left: 0;
-    top: -0.2rem;
-    width: 2.2rem;
-    height: 2.2rem;
+    top: 0.1rem;
+    width: 2rem;
+    height: 2rem;
     border-radius: 5px;
   }
 
   input[type="checkbox"] + label span {
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     line-height: 2.4rem;
     letter-spacing: -0.036rem;
   }
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 768px) {
   input[type="text"] {
     min-height: 3rem;
     border-radius: 0.5rem;
@@ -243,13 +243,13 @@ input[type="checkbox"] + label span {
   }
 
   input[type="checkbox"] + label {
-    padding-left: 2.4rem;
+    padding-left: 2.1rem;
   }
   input[type="checkbox"] + label:before {
     left: 0;
     top: 0;
-    width: 1.8rem;
-    height: 1.8rem;
+    width: 1.6rem;
+    height: 1.6rem;
     border-radius: 5px;
   }
 

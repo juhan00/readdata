@@ -1,11 +1,11 @@
 .platform {
-  padding: 10rem 10rem;
+  padding: 8rem 4rem 4rem;
   .platform-wrap {
     .tab-wrap {
       display: flex;
       margin: 0 auto;
-      width: 49rem;
-      height: 7.2rem;
+      width: 40rem;
+      height: 6rem;
       border: 0.1rem solid $color-black;
       border-radius: 7.2rem;
       .tab {
@@ -21,9 +21,9 @@
           color: $color-black;
           text-align: center;
           font-family: gmarket;
-          font-size: 2.4rem;
+          font-size: 2rem;
           font-weight: 500;
-          line-height: 3.8rem;
+          line-height: 2.8rem;
           letter-spacing: -0.048rem;
         }
         &.active {
@@ -60,9 +60,9 @@
     }
 
     .content-wrap {
-      width: 76rem;
+      width: 60rem;
       .image {
-        margin-top: 8rem;
+        margin-top: 4rem;
         display: flex;
         flex-wrap: wrap;
         & > img {
@@ -76,41 +76,43 @@
 
 @media (max-width: 1440px) {
   .platform {
-    padding: 6rem 5rem 5rem;
+    padding: 6rem 3rem 3rem;
     .platform-wrap {
       .tab-wrap {
-        width: 39rem;
-        height: 6.2rem;
+        width: 32rem;
+        height: 5rem;
         .tab {
           cursor: pointer;
           & > span {
-            font-size: 2rem;
-            line-height: 2.8rem;
+            font-size: 1.6rem;
+            line-height: 2.4rem;
             letter-spacing: -0.048rem;
           }
         }
       }
       .content-wrap {
-        max-width: 56rem;
+        max-width: 44.8rem;
+        width: 60rem;
         .image {
-          margin-top: 4rem;
+          margin-top: 3.2rem;
           display: flex;
           flex-wrap: wrap;
           & > img {
-            width: calc(33.333% - 2rem);
-            margin: 1rem;
+            width: calc(33.333% - 1.6rem);
+            margin: 0.8rem;
           }
         }
       }
     }
   }
 }
-@media (max-width: 1080px) {
+
+@media (max-width: 768px) {
   .platform {
     padding: 5rem 2rem 2rem;
     .platform-wrap {
       .tab-wrap {
-        width: 19rem;
+        width: 65%;
         height: 3.2rem;
         .tab {
           cursor: pointer;
@@ -122,7 +124,7 @@
         }
       }
       .content-wrap {
-        width: 28rem;
+        width: 100%;
         .image {
           margin-top: 1.5rem;
           display: flex;
@@ -137,16 +139,16 @@
   }
 }
 
-@media (max-width: 1080px) {
-  .platform {
-    padding: 5rem 2rem 2rem;
-    .platform-wrap {
-      .tab-wrap {
-        width: 80%;
-      }
-      .content-wrap {
-        width: 100%;
-      }
-    }
-  }
-}
+// @media (max-width: 768px) {
+//   .platform {
+//     padding: 5rem 2rem 2rem;
+//     .platform-wrap {
+//       .tab-wrap {
+//         // width: 80%;
+//       }
+//       .content-wrap {
+//         // width: 100%;
+//       }
+//     }
+//   }
+// }
