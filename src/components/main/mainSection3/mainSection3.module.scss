@@ -1,0 +1,25 @@
+.section3 {
+  padding: 15rem 0 25rem;
+  background: url("/assets/images/section3_bg.png") no-repeat 50% 50% / cover;
+  overflow: hidden;
+  .section-wrap {
+    position: relative;
+    @include max-width;
+  }
+}
+
+@media (max-width: 1440px) {
+  .section3 {
+    padding: 12rem 0 20rem;
+  }
+}
+@media (max-width: 1080px) {
+  .section3 {
+    padding: 8rem 0 13rem;
+  }
+}
+@media (max-width: 768px) {
+  .section3 {
+    padding: 4rem 0 6rem;
+  }
+}

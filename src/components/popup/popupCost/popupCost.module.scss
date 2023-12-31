@@ -1,0 +1,160 @@
+.cost {
+  padding: 0 10rem 10rem;
+  .cost-wrap {
+    table {
+      margin-top: 2rem;
+      width: 78rem;
+      border-collapse: separate;
+      border-spacing: 0;
+      border-radius: 2rem;
+      th {
+        width: 50%;
+        background-color: $color-yellow;
+        height: 9rem;
+        color: $color-black;
+        text-align: center;
+        font-family: gmarket;
+        font-size: 2.4rem;
+        font-weight: 500;
+        line-height: 5.8rem;
+        letter-spacing: -0.048rem;
+        &:first-of-type {
+          border-top-left-radius: 2rem;
+        }
+        &:last-of-type {
+          border-top-right-radius: 2rem;
+        }
+      }
+      td {
+        text-align: center;
+        vertical-align: center;
+        border: 0.1rem solid #ebebeb;
+        box-sizing: border-box;
+        border-top: 0;
+        height: 22rem;
+        background-color: $color-white;
+        color: $color-black;
+        font-family: gmarket;
+        font-size: 3.4rem;
+        font-weight: 700;
+        line-height: 4.6rem;
+        letter-spacing: -0.068rem;
+        & > strong {
+          color: $color-orange;
+          font-size: 5.2rem;
+          font-weight: 700;
+          line-height: 4.6rem;
+          letter-spacing: -0.104rem;
+        }
+        & > p {
+          color: #888;
+          font-size: 1.6rem;
+          font-weight: 300;
+          line-height: 2.6rem;
+          letter-spacing: -0.032rem;
+        }
+        &:first-of-type {
+          border-bottom-left-radius: 2rem;
+        }
+        &:last-of-type {
+          border-bottom-right-radius: 2rem;
+          border-left: 0;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1440px) {
+  .cost {
+    padding: 0 6rem 6rem;
+    .cost-wrap {
+      table {
+        margin-top: 1rem;
+        width: 58rem;
+        border-radius: 2rem;
+        th {
+          height: 9rem;
+          font-size: 2rem;
+          line-height: 2.8rem;
+          letter-spacing: -0.048rem;
+        }
+        td {
+          height: 17.3rem;
+          font-size: 2.4rem;
+          line-height: 3.2rem;
+          letter-spacing: -0.068rem;
+          & > strong {
+            font-size: 4.2rem;
+            line-height: 5rem;
+            letter-spacing: -0.04rem;
+          }
+          & > p {
+            font-size: 1.6rem;
+            line-height: 2.4rem;
+            letter-spacing: -0.032rem;
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 1080px) {
+  .cost {
+    padding: 0 2rem 2rem;
+    .cost-wrap {
+      table {
+        margin-top: 0.2rem;
+        width: 28rem;
+        border-radius: 2rem;
+        th {
+          height: 4rem;
+          font-size: 1.1rem;
+          line-height: 1.8rem;
+          letter-spacing: -0.048rem;
+          &:first-of-type {
+            border-top-left-radius: 0.8rem;
+          }
+          &:last-of-type {
+            border-top-right-radius: 0.8rem;
+          }
+        }
+        td {
+          height: 9rem;
+          font-size: 1.4rem;
+          line-height: 2.2rem;
+          letter-spacing: -0.068rem;
+          & > strong {
+            font-size: 2.2rem;
+            line-height: 3rem;
+            letter-spacing: -0.04rem;
+          }
+          & > p {
+            font-size: 1rem;
+            line-height: 1.6rem;
+            letter-spacing: -0.032rem;
+          }
+          &:first-of-type {
+            border-bottom-left-radius: 0.8rem;
+          }
+          &:last-of-type {
+            border-bottom-right-radius: 0.8rem;
+            border-left: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1080px) {
+  .cost {
+    padding: 0 2rem 2rem;
+    .cost-wrap {
+      table {
+        margin-top: 0.2rem;
+        width: 100%;
+      }
+    }
+  }
+}

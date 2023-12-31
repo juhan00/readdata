@@ -1,0 +1,24 @@
+.main-marquee {
+  width: 100%;
+  img {
+    margin: 0 1.5rem;
+  }
+}
+
+.main-marquee + .main-marquee {
+  margin-top: 3rem;
+}
+
+@media (max-width: 768px) {
+  .main-marquee {
+    width: 100%;
+    img {
+      width: 15.8rem;
+      margin: 0 0.8rem;
+    }
+  }
+
+  .main-marquee + .main-marquee {
+    margin-top: 1.5rem;
+  }
+}

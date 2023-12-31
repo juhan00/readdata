@@ -1,0 +1,197 @@
+.contact-us {
+  padding: 0 10rem 8rem;
+  box-sizing: border-box;
+  .contact-us-wrap {
+    .btn-kakao {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 23.4rem;
+      height: 6.2rem;
+      background-color: #f8df25;
+      color: $color-black;
+      font-family: gmarket;
+      font-size: 2rem;
+      font-weight: 500;
+      line-height: 3.5rem;
+      letter-spacing: -0.04rem;
+      border-radius: 10rem;
+      &::before {
+        display: inline-block;
+        content: "";
+        width: 4rem;
+        height: 4.2rem;
+        background: url("/assets/images/kakao_ch_logo.png") no-repeat 50% 50% / contain;
+        margin-right: 1rem;
+      }
+      .click {
+        position: absolute;
+        bottom: -2.6rem;
+        right: -10.3rem;
+        & > img {
+          width: 100%;
+        }
+      }
+    }
+    form {
+      margin-top: 4rem;
+      input {
+        display: block;
+        width: 78rem;
+      }
+      input + input {
+        margin-top: 2rem;
+      }
+      select {
+        margin-top: 2rem;
+      }
+      textarea {
+        margin-top: 2rem;
+      }
+      .checkbox-wrap {
+        margin-top: 2rem;
+        .checkbox {
+          margin-top: 1.4rem;
+        }
+      }
+      .button-wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 3rem;
+        & > button {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 31.3rem;
+          height: 7.2rem;
+          border-radius: 7.2rem;
+          background-color: $color-orange;
+          color: $color-white;
+          font-family: NotoSansCJKkr;
+          font-size: 2.4rem;
+          font-weight: 500;
+          line-height: 4rem;
+          letter-spacing: -0.048rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1440px) {
+  .contact-us {
+    padding: 0 5rem 4rem;
+    .contact-us-wrap {
+      .btn-kakao {
+        width: 18.4rem;
+        height: 5rem;
+        font-size: 1.6rem;
+        line-height: 3.5rem;
+        letter-spacing: -0.04rem;
+        border-radius: 10rem;
+        &::before {
+          width: 2.8rem;
+          height: 4.2rem;
+          margin-right: 0.8rem;
+        }
+        .click {
+          bottom: -2.6rem;
+          right: -7.3rem;
+          width: 10rem;
+        }
+      }
+      form {
+        margin-top: 4rem;
+        input {
+          width: 60rem;
+        }
+        input + input {
+          margin-top: 1rem;
+        }
+        select {
+          margin-top: 1rem;
+        }
+        textarea {
+          margin-top: 1rem;
+        }
+        .checkbox-wrap {
+          margin-top: 1rem;
+          .checkbox {
+            margin-top: 1rem;
+          }
+        }
+        .button-wrap {
+          margin-top: 3rem;
+          & > button {
+            width: 25rem;
+            height: 6rem;
+            border-radius: 7.2rem;
+            font-size: 2.2rem;
+            line-height: 3rem;
+            letter-spacing: -0.048rem;
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 1080px) {
+  .contact-us {
+    padding: 0 2.5rem 3rem;
+    .contact-us-wrap {
+      .btn-kakao {
+        width: 12rem;
+        height: 3.2rem;
+        font-size: 1rem;
+        line-height: 1.8rem;
+        letter-spacing: -0.04rem;
+        border-radius: 3.2rem;
+        &::before {
+          width: 2rem;
+          height: 2rem;
+          margin-right: 0.4rem;
+        }
+        .click {
+          bottom: -1.2rem;
+          right: -5rem;
+          width: 6.5rem;
+        }
+      }
+      form {
+        margin-top: 4rem;
+        input {
+          width: 100%;
+          min-width: 20rem;
+        }
+        input + input {
+          margin-top: 0.5rem;
+        }
+        select {
+          margin-top: 0.5rem;
+        }
+        textarea {
+          margin-top: 0.5rem;
+        }
+        .checkbox-wrap {
+          margin-top: 1rem;
+          .checkbox {
+            margin-top: 1rem;
+          }
+        }
+        .button-wrap {
+          margin-top: 2rem;
+          & > button {
+            width: 15.6rem;
+            height: 4rem;
+            border-radius: 4rem;
+            font-size: 1.4rem;
+            line-height: 2.2rem;
+            letter-spacing: -0.048rem;
+          }
+        }
+      }
+    }
+  }
+}

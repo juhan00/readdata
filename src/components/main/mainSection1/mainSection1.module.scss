@@ -1,0 +1,331 @@
+.section1 {
+  padding: var(--header-height) 0 15.8rem;
+  background: url("/assets/images/section1_bg.png") no-repeat 50% 100% / contain;
+  background-size: 100% 58.5rem;
+  .section-wrap {
+    position: relative;
+    @include max-width;
+
+    .object {
+      position: absolute;
+      top: 70rem;
+      right: -2.5rem;
+      .object-wrap {
+        position: relative;
+        width: 32rem;
+        height: 36rem;
+        .object1 {
+          position: absolute;
+          width: 27rem;
+          left: 0;
+          bottom: 0;
+          animation: object1-motion 1s linear 0s infinite alternate;
+          & > img {
+            width: 100%;
+          }
+        }
+        .object2 {
+          position: absolute;
+          width: 12rem;
+          top: 0;
+          right: 0;
+          animation: object2-motion 1s linear 0s infinite alternate;
+          & > img {
+            width: 100%;
+          }
+        }
+
+        @keyframes object1-motion {
+          0% {
+            transform: translateY(0rem);
+          }
+          100% {
+            transform: translateY(2rem);
+          }
+        }
+
+        @keyframes object2-motion {
+          0% {
+            transform: translateY(0rem);
+          }
+          100% {
+            transform: translateY(1rem);
+          }
+        }
+      }
+    }
+
+    .text-wrap {
+      margin-top: 8rem;
+      .sub-title {
+        color: $color-black;
+        font-family: gmarket;
+        font-size: 3.8rem;
+        font-weight: 500;
+        line-height: 5.4rem;
+        letter-spacing: -0.077rem;
+      }
+      & > h2 {
+        width: 85%;
+        color: $color-black;
+        font-family: gmarket;
+        font-size: 9.8rem;
+        font-weight: 700;
+        line-height: 12rem;
+        letter-spacing: -0.195rem;
+        margin-top: 1.2rem;
+        word-break: keep-all;
+
+        & > strong {
+          color: $color-orange;
+          font-weight: 700;
+        }
+      }
+      & > p {
+        color: $color-black;
+        font-family: gmarket;
+        font-size: 2.6rem;
+        font-weight: 300;
+        line-height: 4rem;
+        letter-spacing: -0.052rem;
+        margin-top: 3.4rem;
+      }
+      & > button {
+        width: 31.4rem;
+        height: 7.2rem;
+        border-radius: 7.2rem;
+        color: $color-black;
+        font-family: NotoSansCJKkr;
+        font-size: 2.6rem;
+        font-weight: 500;
+        line-height: 4rem;
+        letter-spacing: -0.052rem;
+        background-color: $color-yellow;
+        margin-top: 7rem;
+      }
+    }
+
+    .screen {
+      width: 94.4rem;
+      margin-top: 12rem;
+      & > img {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media (max-width: 1440px) {
+  .section1 {
+    padding: var(--header-height) 0 12rem;
+    background-size: 100% 43.8rem;
+    .section-wrap {
+      .object {
+        top: 60rem;
+        right: -5rem;
+        .object-wrap {
+          position: relative;
+          width: 23.5rem;
+          height: 22.5rem;
+          .object1 {
+            position: absolute;
+            width: 18rem;
+            left: 0;
+            bottom: 0;
+            animation: object1-motion 1s linear 0s infinite alternate;
+          }
+          .object2 {
+            position: absolute;
+            width: 7rem;
+            top: 0;
+            right: 0;
+            animation: object2-motion 1s linear 0s infinite alternate;
+          }
+        }
+      }
+
+      .text-wrap {
+        margin-top: 6rem;
+        .sub-title {
+          font-size: 2.8rem;
+          line-height: 4rem;
+          letter-spacing: -0.057rem;
+        }
+        & > h2 {
+          width: 100%;
+          font-size: 7.3rem;
+          line-height: 9rem;
+          letter-spacing: -0.146rem;
+          margin-top: 1rem;
+        }
+        & > p {
+          font-size: 1.9rem;
+          line-height: 3rem;
+          letter-spacing: -0.039rem;
+          margin-top: 2.4rem;
+        }
+        & > button {
+          width: 23.5rem;
+          height: 5.4rem;
+          border-radius: 5.4rem;
+          font-size: 1.9rem;
+          line-height: 3rem;
+          letter-spacing: -0.038rem;
+          margin-top: 6.4rem;
+        }
+      }
+
+      .screen {
+        width: 70.8rem;
+        margin-top: 9rem;
+        & > img {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1080px) {
+  .section1 {
+    padding: var(--header-height) 0 8rem;
+    background-size: 100% 43.8rem;
+    .section-wrap {
+      .object {
+        top: 38rem;
+        right: 5rem;
+        .object-wrap {
+          position: relative;
+          width: 17.5rem;
+          height: 17rem;
+          .object1 {
+            position: absolute;
+            width: 14rem;
+            left: 0;
+            bottom: 0;
+            animation: object1-motion 1s linear 0s infinite alternate;
+          }
+          .object2 {
+            position: absolute;
+            width: 5rem;
+            top: 0;
+            right: 0;
+            animation: object2-motion 1s linear 0s infinite alternate;
+          }
+        }
+      }
+
+      .text-wrap {
+        margin-top: 4.5rem;
+        .sub-title {
+          font-size: 2.2rem;
+          line-height: 3rem;
+          letter-spacing: -0.043rem;
+        }
+        & > h2 {
+          width: 75%;
+          font-size: 5.5rem;
+          line-height: 6.7rem;
+          letter-spacing: -0.11rem;
+          margin-top: 0.6rem;
+        }
+        & > p {
+          font-size: 1.5rem;
+          line-height: 2.2rem;
+          letter-spacing: -0.029rem;
+          margin-top: 1.8rem;
+        }
+        & > button {
+          width: 17.6rem;
+          height: 4rem;
+          border-radius: 4rem;
+          font-size: 1.5rem;
+          line-height: 2.3rem;
+          letter-spacing: -0.029rem;
+          margin-top: 4rem;
+        }
+      }
+
+      .screen {
+        width: 53.1rem;
+        margin-top: 6.7rem;
+        & > img {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .section1 {
+    padding: var(--header-height) 0 4rem;
+    background: url("/assets/images/section1_bg_mo.png") no-repeat 50% 100% / contain;
+    background-size: 100% 18.4rem;
+    .section-wrap {
+      .object {
+        top: 25rem;
+        right: 2rem;
+        .object-wrap {
+          position: relative;
+          width: 13rem;
+          height: 14rem;
+          .object1 {
+            position: absolute;
+            width: 11rem;
+            left: 0;
+            bottom: 0;
+            animation: object1-motion 1s linear 0s infinite alternate;
+          }
+          .object2 {
+            position: absolute;
+            width: 4rem;
+            top: 0;
+            right: 0;
+            animation: object2-motion 1s linear 0s infinite alternate;
+          }
+        }
+      }
+
+      .text-wrap {
+        margin-top: 4rem;
+        .sub-title {
+          font-size: 1.6rem;
+          line-height: 2.6rem;
+          letter-spacing: -0.032rem;
+        }
+        & > h2 {
+          width: 95%;
+          font-size: 3.4rem;
+          line-height: 4.2rem;
+          letter-spacing: -0.068rem;
+          margin-top: 0.8rem;
+        }
+        & > p {
+          font-size: 1.4rem;
+          line-height: 2.2rem;
+          letter-spacing: -0.028rem;
+          margin-top: 2rem;
+        }
+        & > button {
+          width: 15.6rem;
+          height: 4.2rem;
+          border-radius: 4.2rem;
+          font-size: 1.4rem;
+          line-height: 2.2rem;
+          letter-spacing: -0.028rem;
+          margin-top: 3rem;
+        }
+      }
+
+      .screen {
+        width: 100%;
+        max-width: 50rem;
+        margin-top: 6.7rem;
+        & > img {
+          width: 100%;
+        }
+      }
+    }
+  }
+}

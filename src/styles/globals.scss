@@ -1,0 +1,269 @@
+// set
+@import "./_fonts";
+@import "./_mixin";
+@import "./_reset";
+@import "./_variables";
+
+.pc {
+  display: block;
+}
+.mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .pc {
+    display: none;
+  }
+  .mobile {
+    display: block;
+  }
+}
+
+input[type="text"] {
+  width: 100%;
+  min-height: 6.8rem;
+  border: 0.1rem solid #ebebeb;
+  border-radius: 1.5rem;
+  background-color: $color-white;
+  padding: 0 3rem;
+  box-sizing: border-box;
+  color: $color-black;
+  font-family: NotoSansCJKkr;
+  font-size: 2.2rem;
+  font-weight: 400;
+  line-height: 3.8rem;
+  letter-spacing: -0.044rem;
+  &::placeholder {
+    color: #ccc;
+    font-family: NotoSansCJKkr;
+    font-size: 2.2rem;
+    font-weight: 400;
+    line-height: 3.8rem;
+    letter-spacing: -0.044rem;
+  }
+}
+
+select {
+  width: 100%;
+  min-height: 6.8rem;
+  border: 0.1rem solid #ebebeb;
+  border-radius: 1.5rem;
+  background-color: $color-white;
+  padding: 0 3rem;
+  box-sizing: border-box;
+  color: $color-black;
+  font-family: NotoSansCJKkr;
+  font-size: 2.2rem;
+  font-weight: 400;
+  line-height: 3.8rem;
+  letter-spacing: -0.044rem;
+  appearance: none;
+  background: url("/assets/images/select_arrow.png") $color-white no-repeat 98% 50% / contain;
+  background-size: 2.8rem 2.8rem;
+}
+
+textarea {
+  width: 100%;
+  min-height: 6.8rem;
+  border: 0.1rem solid #ebebeb;
+  border-radius: 1.5rem;
+  background-color: $color-white;
+  padding: 2rem 3rem;
+  box-sizing: border-box;
+  color: $color-black;
+  font-family: NotoSansCJKkr;
+  font-size: 2.2rem;
+  font-weight: 400;
+  line-height: 3.8rem;
+  letter-spacing: -0.044rem;
+  resize: none;
+  &::placeholder {
+    color: #ccc;
+    font-family: NotoSansCJKkr;
+    font-size: 2.2rem;
+    font-weight: 400;
+    line-height: 3.8rem;
+    letter-spacing: -0.044rem;
+  }
+}
+
+input[type="checkbox"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+input[type="checkbox"] + label {
+  display: inline-block;
+  position: relative;
+  padding-left: 3.2rem;
+  cursor: pointer;
+}
+input[type="checkbox"] + label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -0.2rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  text-align: center;
+  background: url("/assets/images/checkbox_off.png") no-repeat 50% 50% / contain;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+input[type="checkbox"]:checked + label:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -0.2rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  background: url("/assets/images/checkbox_on.png") no-repeat 50% 50% / contain;
+  background-position: center center;
+  border-radius: 5px;
+}
+
+input[type="checkbox"] + label span {
+  font-weight: 400;
+  font-size: 1.8rem;
+  line-height: 2.4rem;
+  letter-spacing: -0.036rem;
+  color: $color-black;
+}
+
+@media (max-width: 1440px) {
+  input[type="text"] {
+    min-height: 5.2rem;
+    border-radius: 1rem;
+    padding: 0 2rem;
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+    letter-spacing: -0.044rem;
+    &::placeholder {
+      font-size: 1.8rem;
+      line-height: 2.6rem;
+      letter-spacing: -0.044rem;
+    }
+  }
+
+  select {
+    min-height: 5.2rem;
+    border-radius: 1rem;
+    padding: 0 2rem;
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+    letter-spacing: -0.044rem;
+    background-size: 2rem 2rem;
+  }
+
+  textarea {
+    height: 15rem;
+    border: 0.1rem solid #ebebeb;
+    border-radius: 1rem;
+    padding: 1rem 2rem;
+    font-size: 1.8rem;
+    line-height: 2.6rem;
+    letter-spacing: -0.044rem;
+    &::placeholder {
+      font-size: 1.8rem;
+      line-height: 2.6rem;
+      letter-spacing: -0.044rem;
+    }
+  }
+
+  input[type="checkbox"] + label {
+    padding-left: 3.2rem;
+  }
+  input[type="checkbox"] + label:before {
+    left: 0;
+    top: -0.2rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 5px;
+  }
+
+  input[type="checkbox"]:checked + label:after {
+    left: 0;
+    top: -0.2rem;
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 5px;
+  }
+
+  input[type="checkbox"] + label span {
+    font-size: 1.6rem;
+    line-height: 2.4rem;
+    letter-spacing: -0.036rem;
+  }
+}
+
+@media (max-width: 1080px) {
+  input[type="text"] {
+    min-height: 3rem;
+    border-radius: 0.5rem;
+    padding: 0 1rem;
+    font-size: 1.2rem;
+    line-height: 2rem;
+    letter-spacing: -0.044rem;
+    &::placeholder {
+      font-size: 1.2rem;
+      line-height: 2rem;
+      letter-spacing: -0.044rem;
+    }
+  }
+
+  select {
+    min-height: 3rem;
+    border-radius: 0.5rem;
+    padding: 0 1rem;
+    font-size: 1.2rem;
+    line-height: 2rem;
+    letter-spacing: -0.044rem;
+    background-size: 1rem 1rem;
+  }
+
+  textarea {
+    height: 6rem;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.2rem;
+    line-height: 2rem;
+    letter-spacing: -0.044rem;
+    &::placeholder {
+      font-size: 1.2rem;
+      line-height: 2rem;
+      letter-spacing: -0.044rem;
+    }
+  }
+
+  input[type="checkbox"] + label {
+    padding-left: 2.4rem;
+  }
+  input[type="checkbox"] + label:before {
+    left: 0;
+    top: 0;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 5px;
+  }
+
+  input[type="checkbox"]:checked + label:after {
+    left: 0;
+    top: 0;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 5px;
+  }
+
+  input[type="checkbox"] + label span {
+    font-size: 1.1rem;
+    line-height: 1.8rem;
+    letter-spacing: -0.036rem;
+  }
+}
