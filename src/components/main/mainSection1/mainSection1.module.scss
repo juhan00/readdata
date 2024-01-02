@@ -1,22 +1,24 @@
 .section1 {
-  padding: var(--header-height) 0 15.8rem;
+  padding: var(--header-height) 0 12rem;
   background: url("/assets/images/section1_bg.png") no-repeat 50% 100% / contain;
-  background-size: 100% 58.5rem;
+  background-size: 100% 43.8rem;
+
   .section-wrap {
     position: relative;
     @include max-width;
 
     .object {
       position: absolute;
-      top: 70rem;
-      right: -2.5rem;
+      top: 60rem;
+      right: 0rem;
+
       .object-wrap {
         position: relative;
-        width: 32rem;
-        height: 36rem;
+        width: 23.5rem;
+        height: 22.5rem;
         .object1 {
           position: absolute;
-          width: 27rem;
+          width: 18rem;
           left: 0;
           bottom: 0;
           animation: object1-motion 1s linear 0s infinite alternate;
@@ -26,10 +28,11 @@
         }
         .object2 {
           position: absolute;
-          width: 12rem;
+          width: 7rem;
           top: 0;
           right: 0;
           animation: object2-motion 1s linear 0s infinite alternate;
+
           & > img {
             width: 100%;
           }
@@ -56,24 +59,24 @@
     }
 
     .text-wrap {
-      margin-top: 8rem;
+      margin-top: 6rem;
       .sub-title {
         color: $color-black;
         font-family: gmarket;
-        font-size: 3.8rem;
+        font-size: 2.8rem;
         font-weight: 500;
-        line-height: 5.4rem;
-        letter-spacing: -0.077rem;
+        line-height: 4rem;
+        letter-spacing: -0.057rem;
       }
       & > h2 {
-        width: 85%;
+        width: 100%;
         color: $color-black;
         font-family: gmarket;
-        font-size: 9.8rem;
+        font-size: 7.3rem;
         font-weight: 700;
-        line-height: 12rem;
-        letter-spacing: -0.195rem;
-        margin-top: 1.2rem;
+        line-height: 9rem;
+        letter-spacing: -0.146rem;
+        margin-top: 1rem;
         word-break: keep-all;
 
         & > strong {
@@ -84,103 +87,33 @@
       & > p {
         color: $color-black;
         font-family: gmarket;
-        font-size: 2.6rem;
+        font-size: 1.9rem;
         font-weight: 300;
-        line-height: 4rem;
-        letter-spacing: -0.052rem;
-        margin-top: 3.4rem;
+        line-height: 3rem;
+        letter-spacing: -0.039rem;
+        margin-top: 2.4rem;
       }
       & > button {
-        width: 31.4rem;
-        height: 7.2rem;
-        border-radius: 7.2rem;
+        width: 23.5rem;
+        height: 5.4rem;
+        border-radius: 5.4rem;
         color: $color-black;
         font-family: NotoSansCJKkr;
-        font-size: 2.6rem;
+        font-size: 1.9rem;
         font-weight: 500;
-        line-height: 4rem;
-        letter-spacing: -0.052rem;
+        line-height: 3rem;
+        letter-spacing: -0.038rem;
         background-color: $color-yellow;
-        margin-top: 7rem;
+        margin-top: 6.4rem;
       }
     }
 
     .screen {
-      width: 94.4rem;
-      margin-top: 12rem;
+      width: 70.8rem;
+      margin-top: 9rem;
+
       & > img {
         width: 100%;
-      }
-    }
-  }
-}
-
-@media (max-width: 1440px) {
-  .section1 {
-    padding: var(--header-height) 0 12rem;
-    background-size: 100% 43.8rem;
-    .section-wrap {
-      .object {
-        top: 60rem;
-        right: -5rem;
-        .object-wrap {
-          position: relative;
-          width: 23.5rem;
-          height: 22.5rem;
-          .object1 {
-            position: absolute;
-            width: 18rem;
-            left: 0;
-            bottom: 0;
-            animation: object1-motion 1s linear 0s infinite alternate;
-          }
-          .object2 {
-            position: absolute;
-            width: 7rem;
-            top: 0;
-            right: 0;
-            animation: object2-motion 1s linear 0s infinite alternate;
-          }
-        }
-      }
-
-      .text-wrap {
-        margin-top: 6rem;
-        .sub-title {
-          font-size: 2.8rem;
-          line-height: 4rem;
-          letter-spacing: -0.057rem;
-        }
-        & > h2 {
-          width: 100%;
-          font-size: 7.3rem;
-          line-height: 9rem;
-          letter-spacing: -0.146rem;
-          margin-top: 1rem;
-        }
-        & > p {
-          font-size: 1.9rem;
-          line-height: 3rem;
-          letter-spacing: -0.039rem;
-          margin-top: 2.4rem;
-        }
-        & > button {
-          width: 23.5rem;
-          height: 5.4rem;
-          border-radius: 5.4rem;
-          font-size: 1.9rem;
-          line-height: 3rem;
-          letter-spacing: -0.038rem;
-          margin-top: 6.4rem;
-        }
-      }
-
-      .screen {
-        width: 70.8rem;
-        margin-top: 9rem;
-        & > img {
-          width: 100%;
-        }
       }
     }
   }

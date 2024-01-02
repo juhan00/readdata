@@ -33,17 +33,12 @@ export default function Section3Slide({ props: section3slideData }) {
         breakpoints={{
           768: {
             coverflowEffect: {
-              modifier: 4.2,
+              modifier: 5,
             },
           },
           1080: {
             coverflowEffect: {
-              modifier: 4.5,
-            },
-          },
-          1440: {
-            coverflowEffect: {
-              modifier: 6,
+              modifier: 5.6,
             },
           },
         }}

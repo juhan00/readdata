@@ -1,5 +1,5 @@
 .section4 {
-  padding: 15rem 0 25rem;
+  padding: 12rem 0 20rem;
   background-color: #fffae9;
   overflow: hidden;
   .section-wrap {
@@ -10,11 +10,12 @@
       color: $color-black;
       text-align: center;
       font-family: gmarket;
-      font-size: 5.4rem;
+      font-size: 4rem;
       font-weight: 500;
-      line-height: 6.6rem;
-      letter-spacing: -0.107rem;
-      margin-bottom: 12rem;
+      line-height: 5rem;
+      letter-spacing: -0.08rem;
+      margin-bottom: 6rem;
+
       & > strong {
         color: $color-orange;
         font-weight: 500;
@@ -23,19 +24,6 @@
   }
 }
 
-@media (max-width: 1440px) {
-  .section4 {
-    padding: 12rem 0 20rem;
-    .section-wrap {
-      & > h3 {
-        font-size: 4rem;
-        line-height: 5rem;
-        letter-spacing: -0.08rem;
-        margin-bottom: 6rem;
-      }
-    }
-  }
-}
 @media (max-width: 1080px) {
   .section4 {
     padding: 8rem 0 13rem;

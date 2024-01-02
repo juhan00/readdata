@@ -1,5 +1,5 @@
 .section2 {
-  padding: 15rem 0;
+  padding: 12rem 0;
   .section-wrap {
     position: relative;
     @include max-width;
@@ -8,11 +8,11 @@
       color: $color-black;
       text-align: center;
       font-family: gmarket;
-      font-size: 5.4rem;
+      font-size: 4rem;
       font-weight: 500;
-      line-height: 6.6rem;
-      letter-spacing: -0.107rem;
-      margin-bottom: 8rem;
+      line-height: 5rem;
+      letter-spacing: -0.08rem;
+      margin-bottom: 6rem;
 
       & > strong {
         color: $color-orange;
@@ -29,16 +29,18 @@
     article {
       display: flex;
       align-items: center;
-      padding: 5rem;
+      padding: 3.8rem;
       width: 100%;
-      max-width: 120rem;
+      max-width: 86rem;
       border: 0.2rem solid $color-black;
-      border-radius: 5rem;
+      border-radius: 3.8rem;
       margin: 0 auto;
+
       .thumb {
         margin-right: 5rem;
-        width: 13.1rem;
-        min-width: 13.1rem;
+        width: 9.8rem;
+        min-width: 9.8rem;
+
         & > img {
           width: 100%;
         }
@@ -50,10 +52,11 @@
         & > p {
           color: $color-black;
           font-family: gmarket;
-          font-size: 3.2rem;
+          font-size: 2.3rem;
           font-weight: 300;
-          line-height: 4.8rem;
-          letter-spacing: -0.064rem;
+          line-height: 3.6rem;
+          letter-spacing: -0.048rem;
+
           & > strong {
             font-weight: 500;
           }
@@ -62,49 +65,7 @@
     }
 
     article + article {
-      margin-top: 3rem;
-    }
-  }
-}
-
-@media (max-width: 1440px) {
-  .section2 {
-    padding: 12rem 0;
-    .section-wrap {
-      & > h3 {
-        font-size: 4rem;
-        line-height: 5rem;
-        letter-spacing: -0.08rem;
-        margin-bottom: 6rem;
-
-        & > strong.box {
-          padding: 0.5rem;
-          margin-left: 1.2rem;
-        }
-      }
-
-      article {
-        padding: 3.8rem;
-        border-radius: 3.8rem;
-        max-width: 86rem;
-        .thumb {
-          width: 9.8rem;
-          min-width: 9.8rem;
-          margin-right: 5rem;
-        }
-
-        .text-wrap {
-          & > p {
-            font-size: 2.3rem;
-            font-weight: 300;
-            line-height: 3.6rem;
-            letter-spacing: -0.048rem;
-          }
-        }
-      }
-      article + article {
-        margin-top: 2.3rem;
-      }
+      margin-top: 2.3rem;
     }
   }
 }

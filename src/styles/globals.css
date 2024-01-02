@@ -1,15 +1,7 @@
 :root {
   --max-width: 144rem;
-  --max-width-padding: 5rem;
-  --header-height: 12rem;
-}
-
-@media (max-width: 1440px) {
-  :root {
-    --max-width: 102rem;
-    --max-width-padding: 8rem;
-    --header-height: 9rem;
-  }
+  --max-width-padding: 8rem;
+  --header-height: 9rem;
 }
 
 @media (max-width: 768px) {
@@ -46,39 +38,21 @@
 .section3-slide .swiper-pagination-custom,
 .section3-slide .swiper-horizontal > .swiper-pagination-bullets,
 .section3-slide .swiper-pagination-bullets.swiper-pagination-horizontal {
-  bottom: -8rem;
+  bottom: -6rem;
 }
 .section3-slide .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
 .section3-slide .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
-  margin: 0 1.2rem;
+  margin: 0 1rem;
 }
 
 .section3-slide .swiper-pagination-bullet {
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 2rem;
+  height: 2rem;
   background-color: #fff;
   opacity: 0.3;
 }
 .section3-slide .swiper-pagination-bullet.swiper-pagination-bullet-active {
   opacity: 1;
-}
-
-@media (max-width: 1440px) {
-  .section3-slide .swiper-pagination-fraction,
-  .section3-slide .swiper-pagination-custom,
-  .section3-slide .swiper-horizontal > .swiper-pagination-bullets,
-  .section3-slide .swiper-pagination-bullets.swiper-pagination-horizontal {
-    bottom: -6rem;
-  }
-  .section3-slide .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
-  .section3-slide .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
-    margin: 0 1rem;
-  }
-
-  .section3-slide .swiper-pagination-bullet {
-    width: 2rem;
-    height: 2rem;
-  }
 }
 
 @media (max-width: 768px) {
@@ -120,40 +94,22 @@
 .section4-slide .swiper-pagination-custom,
 .section4-slide .swiper-horizontal > .swiper-pagination-bullets,
 .section4-slide .swiper-pagination-bullets.swiper-pagination-horizontal {
-  bottom: -8rem;
+  bottom: -6rem;
 }
 .section4-slide .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
 .section4-slide .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
-  margin: 0 1.2rem;
+  margin: 0 1rem;
 }
 
 .section4-slide .swiper-pagination-bullet {
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 2rem;
+  height: 2rem;
   background-color: #e5ddda;
   opacity: 1;
 }
 .section4-slide .swiper-pagination-bullet.swiper-pagination-bullet-active {
   opacity: 1;
   background-color: #f66223;
-}
-
-@media (max-width: 1440px) {
-  .section4-slide .swiper-pagination-fraction,
-  .section4-slide .swiper-pagination-custom,
-  .section4-slide .swiper-horizontal > .swiper-pagination-bullets,
-  .section4-slide .swiper-pagination-bullets.swiper-pagination-horizontal {
-    bottom: -6rem;
-  }
-  .section4-slide .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
-  .section4-slide .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
-    margin: 0 1rem;
-  }
-
-  .section4-slide .swiper-pagination-bullet {
-    width: 2rem;
-    height: 2rem;
-  }
 }
 
 @media (max-width: 768px) {

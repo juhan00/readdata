@@ -1,13 +1,14 @@
 .platform {
-  padding: 8rem 4rem 4rem;
+  padding: 6rem 3rem 3rem;
   .platform-wrap {
     .tab-wrap {
       display: flex;
       margin: 0 auto;
-      width: 40rem;
-      height: 6rem;
+      width: 32rem;
+      height: 5rem;
       border: 0.1rem solid $color-black;
       border-radius: 7.2rem;
+
       .tab {
         position: relative;
         width: 50%;
@@ -21,9 +22,9 @@
           color: $color-black;
           text-align: center;
           font-family: gmarket;
-          font-size: 2rem;
+          font-size: 1.6rem;
           font-weight: 500;
-          line-height: 2.8rem;
+          line-height: 2.4rem;
           letter-spacing: -0.048rem;
         }
         &.active {
@@ -60,47 +61,16 @@
     }
 
     .content-wrap {
+      max-width: 44.8rem;
       width: 60rem;
       .image {
-        margin-top: 4rem;
+        margin-top: 3.2rem;
         display: flex;
         flex-wrap: wrap;
-        & > img {
-          width: calc(33.333% - 2rem);
-          margin: 1rem;
-        }
-      }
-    }
-  }
-}
 
-@media (max-width: 1440px) {
-  .platform {
-    padding: 6rem 3rem 3rem;
-    .platform-wrap {
-      .tab-wrap {
-        width: 32rem;
-        height: 5rem;
-        .tab {
-          cursor: pointer;
-          & > span {
-            font-size: 1.6rem;
-            line-height: 2.4rem;
-            letter-spacing: -0.048rem;
-          }
-        }
-      }
-      .content-wrap {
-        max-width: 44.8rem;
-        width: 60rem;
-        .image {
-          margin-top: 3.2rem;
-          display: flex;
-          flex-wrap: wrap;
-          & > img {
-            width: calc(33.333% - 1.6rem);
-            margin: 0.8rem;
-          }
+        & > img {
+          width: calc(33.333% - 1.6rem);
+          margin: 0.8rem;
         }
       }
     }

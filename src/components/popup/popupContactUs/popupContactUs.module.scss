@@ -1,5 +1,5 @@
 .contact-us {
-  padding: 0 6rem 6rem;
+  padding: 0 4rem 4rem;
   box-sizing: border-box;
   .contact-us-wrap {
     .btn-kakao {
@@ -7,52 +7,54 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: 20rem;
-      height: 5.6rem;
+      width: 14.7rem;
+      height: 3.8rem;
       background-color: #f8df25;
       color: $color-black;
       font-family: gmarket;
-      font-size: 1.6rem;
+      font-size: 1.3rem;
       font-weight: 500;
-      line-height: 3.5rem;
+      line-height: 2.4rem;
       letter-spacing: -0.04rem;
       border-radius: 10rem;
+
       &::before {
         display: inline-block;
         content: "";
-        width: 3.2rem;
-        height: 3.36rem;
+        width: 2.24rem;
+        height: 2.6rem;
         background: url("/assets/images/kakao_ch_logo.png") no-repeat 50% 50% / contain;
-        margin-right: 1rem;
+        margin-right: 0.8rem;
       }
       .click {
         position: absolute;
-        bottom: -2.6rem;
-        right: -10.3rem;
+        bottom: -2rem;
+        right: -7.3rem;
+        width: 9.2rem;
         & > img {
           width: 90%;
         }
       }
     }
     form {
-      margin-top: 4rem;
+      margin-top: 3.2rem;
       input {
         display: block;
-        width: 62rem;
+        width: 44rem;
       }
       input + input {
-        margin-top: 1.4rem;
+        margin-top: 0.8rem;
       }
       select {
-        margin-top: 1.4rem;
+        margin-top: 0.8rem;
       }
       textarea {
-        margin-top: 1.4rem;
+        margin-top: 0.8rem;
       }
       .checkbox-wrap {
-        margin-top: 1.4rem;
+        margin-top: 0.8rem;
         .checkbox {
-          margin-top: 1rem;
+          margin-top: 0.8rem;
         }
       }
       .button-wrap {
@@ -64,15 +66,15 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 25rem;
-          height: 5.7rem;
+          width: 20rem;
+          height: 4.8rem;
           border-radius: 5.7rem;
           background-color: $color-orange;
           color: $color-white;
           font-family: NotoSansCJKkr;
-          font-size: 2rem;
+          font-size: 1.8rem;
           font-weight: 500;
-          line-height: 2.8rem;
+          line-height: 2.4rem;
           letter-spacing: -0.048rem;
         }
       }
@@ -80,63 +82,6 @@
   }
 }
 
-@media (max-width: 1440px) {
-  .contact-us {
-    padding: 0 4rem 4rem;
-    .contact-us-wrap {
-      .btn-kakao {
-        width: 14.7rem;
-        height: 4rem;
-        font-size: 1.3rem;
-        line-height: 2.8rem;
-        letter-spacing: -0.04rem;
-        border-radius: 10rem;
-        &::before {
-          width: 2.24rem;
-          height: 2.6rem;
-          margin-right: 0.8rem;
-        }
-        .click {
-          bottom: -2rem;
-          right: -7.3rem;
-          width: 9.2rem;
-        }
-      }
-      form {
-        margin-top: 3.2rem;
-        input {
-          width: 48rem;
-        }
-        input + input {
-          margin-top: 1rem;
-        }
-        select {
-          margin-top: 1rem;
-        }
-        textarea {
-          margin-top: 1rem;
-        }
-        .checkbox-wrap {
-          margin-top: 1rem;
-          .checkbox {
-            margin-top: 0.8rem;
-          }
-        }
-        .button-wrap {
-          margin-top: 3rem;
-          & > button {
-            width: 20rem;
-            height: 4.8rem;
-            border-radius: 7.2rem;
-            font-size: 1.8rem;
-            line-height: 2.4rem;
-            letter-spacing: -0.048rem;
-          }
-        }
-      }
-    }
-  }
-}
 @media (max-width: 768px) {
   .contact-us {
     padding: 0 2.5rem 2.5rem;

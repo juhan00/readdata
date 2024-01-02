@@ -31,13 +31,18 @@ export default function Section4Slide({ props: section4slideData }) {
         loop={true} // 슬라이드 루프
         loopedSlides={2}
         spaceBetween={0} // 슬라이스 사이 간격
-        slidesPerView={1} // 보여질 슬라이스 수
+        slidesPerView={1.1} // 보여질 슬라이스 수
         navigation={false} // prev, next button
         pagination={{ clickable: true }}
         centeredSlides={true}
         autoplay={{
           delay: 3000,
           disableOnInteraction: false, // 사용자 상호작용시 슬라이더 일시 정지 비활성
+        }}
+        breakpoints={{
+          768: {
+            slidesPerView: 1.2,
+          },
         }}
         modules={[EffectCoverflow, Pagination, Autoplay]}
       >

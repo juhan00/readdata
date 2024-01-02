@@ -5,8 +5,9 @@
   .banner-wrap {
     display: flex;
     align-items: center;
+    justify-content: center;
     width: 100%;
-    height: 58.5rem;
+    height: 43.8rem;
     max-width: var(--max-width);
     padding: 0 var(--$max-width-padding);
     margin: 0 auto;
@@ -15,66 +16,74 @@
       & > h3 {
         color: $color-black;
         font-family: gmarket;
-        font-size: 5.3rem;
+        font-size: 4rem;
         font-weight: 700;
-        line-height: 6.5rem;
-        letter-spacing: -0.107rem;
+        line-height: 4.9rem;
+        letter-spacing: -0.08rem;
         & > strong {
           color: $color-orange;
           white-space: nowrap;
         }
       }
+
       & > p {
         color: #72621d;
         font-family: gmarket;
-        font-size: 2.4rem;
+        font-size: 1.8rem;
         font-weight: 500;
-        line-height: 4rem;
-        letter-spacing: -0.048rem;
+        line-height: 3rem;
+        letter-spacing: -0.036rem;
         white-space: nowrap;
-        margin-top: 1rem;
+        margin-top: 0.7rem;
       }
       & > .button {
         display: inline-block;
         display: flex;
         justify-content: center;
         align-items: center;
-        width: 31.4rem;
-        height: 7.2rem;
-        border-radius: 7.2rem;
+        width: 23.5rem;
+        height: 5.4rem;
+        border-radius: 5.4rem;
         border: 0.2rem solid $color-black;
         color: $color-black;
         font-family: NotoSansCJKkr;
-        font-size: 2.6rem;
+        font-size: 1.9rem;
         font-weight: 500;
-        line-height: 4rem;
-        letter-spacing: -0.052rem;
+        line-height: 3rem;
+        letter-spacing: -0.038rem;
         background-color: transparent;
-        margin-top: 3.7rem;
+        margin-top: 2.7rem;
       }
     }
     .image-wrap {
       position: relative;
-      margin-left: 9.5rem;
+      margin-left: 5.7rem;
+      width: 55.8rem;
       .icon1 {
         position: absolute;
-        top: 18.7rem;
-        left: -1.9rem;
+        top: 14rem;
+        left: -1.4rem;
+        width: 8.4rem;
         animation: icon-motion 1.3s linear 0s infinite alternate;
       }
       .icon2 {
         position: absolute;
-        top: 5.1rem;
-        right: 3.5rem;
+        top: 2.8rem;
+        right: 2.6rem;
+        width: 8.4rem;
         animation: icon-motion2 1.3s linear 0s infinite alternate;
       }
       .icon3 {
         position: absolute;
-        top: 23.8rem;
-        right: -1.5rem;
+        top: 17.8rem;
+        right: -1.1rem;
+        width: 8.4rem;
         animation: icon-motion 1.3s linear 0s infinite alternate;
       }
 
+      img {
+        width: 100%;
+      }
       @keyframes icon-motion {
         0% {
           transform: translateY(0rem);
@@ -96,60 +105,6 @@
   }
 }
 
-@media (max-width: 1440px) {
-  .banner {
-    .banner-wrap {
-      height: 43.8rem;
-      display: flex;
-      justify-content: center;
-      .text-wrap {
-        & > h3 {
-          font-size: 4rem;
-          line-height: 4.9rem;
-          letter-spacing: -0.08rem;
-        }
-        & > p {
-          font-size: 1.8rem;
-          line-height: 3rem;
-          letter-spacing: -0.036rem;
-          margin-top: 0.7rem;
-        }
-        & > button {
-          width: 23.5rem;
-          height: 5.4rem;
-          border-radius: 5.4rem;
-          border: 0.2rem solid $color-black;
-          font-size: 1.9rem;
-          line-height: 3rem;
-          letter-spacing: -0.038rem;
-          margin-top: 2.7rem;
-        }
-      }
-      .image-wrap {
-        margin-left: 5.7rem;
-        width: 55.8rem;
-        .icon1 {
-          top: 14rem;
-          left: -1.4rem;
-          width: 8.4rem;
-        }
-        .icon2 {
-          top: 2.8rem;
-          right: 2.6rem;
-          width: 8.4rem;
-        }
-        .icon3 {
-          top: 17.8rem;
-          right: -1.1rem;
-          width: 8.4rem;
-        }
-        img {
-          width: 100%;
-        }
-      }
-    }
-  }
-}
 @media (max-width: 1080px) {
   .banner {
     .banner-wrap {

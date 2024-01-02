@@ -37,7 +37,11 @@ export default function MainSection1() {
         </div>
         <div className={cx("text-wrap")}>
           <div className={cx("sub-title")}>{t("main_section1.sub_title")}</div>
-          <h2>
+          <h2 className={cx("mobile")}>
+            <strong>{t("main_section1.mobile.title_strong")}</strong>
+            {t("main_section1.mobile.title")}
+          </h2>
+          <h2 className={cx("pc")}>
             <strong>{t("main_section1.title_strong")}</strong>
             {t("main_section1.title")}
           </h2>

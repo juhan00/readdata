@@ -15,7 +15,7 @@
     padding: 0 var(--max-width-padding);
     margin: 0 auto;
     .logo {
-      width: 25rem;
+      width: 18.7rem;
       cursor: pointer;
       & > img {
         width: 100%;
@@ -29,36 +29,14 @@
       }
       nav {
         & > a {
-          font-size: 2rem;
+          font-size: 1.5rem;
           font-weight: 500;
-          line-height: 4.7rem;
-          letter-spacing: -0.04rem;
+          line-height: 3.5rem;
+          letter-spacing: -0.03rem;
           color: $color-black;
         }
         & > a + a {
-          margin-left: 6rem;
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: 1440px) {
-  .header {
-    .header-wrap {
-      .logo {
-        width: 18.7rem;
-      }
-      .nav-wrap {
-        nav {
-          & > a {
-            font-size: 1.5rem;
-            line-height: 3.5rem;
-            letter-spacing: -0.03rem;
-          }
-          & > a + a {
-            margin-left: 4.5rem;
-          }
+          margin-left: 4.5rem;
         }
       }
     }

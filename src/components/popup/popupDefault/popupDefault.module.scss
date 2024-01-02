@@ -31,14 +31,14 @@
     .box {
       position: relative;
       background-color: $color-bg-popup;
-      border-radius: 5rem;
+      border-radius: 3.5rem;
       box-shadow: 0px 4px 30px 0px rgba(0, 0, 0, 0.05);
       .close {
         position: absolute;
-        top: 3rem;
-        right: 3rem;
-        width: 4.8rem;
-        height: 4.8rem;
+        top: 2.5rem;
+        right: 2.5rem;
+        width: 3rem;
+        height: 3rem;
         background: url("/assets/images/popup_close.png") no-repeat 50% 50% / cover;
       }
       .title {
@@ -48,35 +48,11 @@
         color: $color-black;
         text-align: center;
         font-family: gmarket;
-        font-size: 3.04rem;
+        font-size: 2.1rem;
         font-weight: 700;
-        line-height: 3.04rem;
+        line-height: 2.4rem;
         letter-spacing: -0.076rem;
-        height: 11rem;
-      }
-    }
-  }
-}
-
-@media (max-width: 1440px) {
-  .popup-default {
-    .popup-wrap {
-      .box {
-        border-radius: 3.5rem;
-        .close {
-          position: absolute;
-          top: 2.5rem;
-          right: 2.5rem;
-          width: 4rem;
-          height: 4rem;
-        }
-        .title {
-          font-size: 2.4rem;
-          font-weight: 700;
-          line-height: 2.4rem;
-          letter-spacing: -0.076rem;
-          height: 9.4rem;
-        }
+        height: 8.4rem;
       }
     }
   }
