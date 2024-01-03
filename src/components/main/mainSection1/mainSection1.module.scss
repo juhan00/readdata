@@ -9,7 +9,7 @@
 
     .object {
       position: absolute;
-      top: 60rem;
+      top: 49rem;
       right: 0rem;
 
       .object-wrap {
@@ -122,10 +122,10 @@
 @media (max-width: 1080px) {
   .section1 {
     padding: var(--header-height) 0 8rem;
-    background-size: 100% 43.8rem;
+    background-size: 100% 31rem;
     .section-wrap {
       .object {
-        top: 38rem;
+        top: 24rem;
         right: 5rem;
         .object-wrap {
           position: relative;

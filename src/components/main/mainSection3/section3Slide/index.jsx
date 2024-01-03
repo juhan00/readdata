@@ -22,7 +22,7 @@ export default function Section3Slide({ props: section3slideData }) {
           rotate: 0,
           stretch: 100,
           depth: 150,
-          modifier: 2.4,
+          modifier: 3.8,
           slideShadows: false,
         }}
         centeredSlides={true}
@@ -33,12 +33,12 @@ export default function Section3Slide({ props: section3slideData }) {
         breakpoints={{
           768: {
             coverflowEffect: {
-              modifier: 5,
+              modifier: 3.8,
             },
           },
           1080: {
             coverflowEffect: {
-              modifier: 5.6,
+              modifier: 4.6,
             },
           },
         }}

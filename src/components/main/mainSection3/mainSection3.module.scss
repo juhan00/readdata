@@ -4,17 +4,24 @@
   overflow: hidden;
   .section-wrap {
     position: relative;
-    @include max-width;
+    margin: 0 auto;
+    max-width: 80rem;
   }
 }
 
 @media (max-width: 1080px) {
   .section3 {
     padding: 8rem 0 13rem;
+    .section-wrap {
+      max-width: 62rem;
+    }
   }
 }
 @media (max-width: 768px) {
   .section3 {
     padding: 4rem 0 6rem;
+    .section-wrap {
+      max-width: 28rem;
+    }
   }
 }
