@@ -1,111 +1,80 @@
-.section4-slide-wrap {
+.section4-slide {
   display: flex;
-  flex-direction: column;
-  background-color: $color-white;
-  height: 45rem;
-  border-radius: 6rem;
-  box-shadow: 0 0.4rem 3rem 0 rgba(0, 0, 0, 0.05);
+  justify-content: center;
 
-  .image-wrap {
-    width: 34.2rem;
-    margin: 0 auto;
-    & > img {
-      width: 100%;
-    }
-  }
-  .text-wrap {
+  .section4-slide-wrap {
     display: flex;
-    flex-grow: 1;
     flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    padding-bottom: 5.8rem;
-    & > h4 {
-      color: $color-black;
-      font-family: gmarket;
-      font-size: 2.8rem;
-      font-weight: 700;
-      line-height: 3.6rem;
-      letter-spacing: -0.057rem;
-    }
-    & > p.descript {
-      color: $color-black;
-      font-family: gmarket;
-      font-size: 2.1rem;
-      font-weight: 300;
-      line-height: 3.1rem;
-      letter-spacing: -0.042rem;
-      margin-top: 1rem;
-    }
-    & > p.descript2 {
-      color: $color-black;
-      font-family: gmarket;
-      font-size: 1.9rem;
-      font-weight: 300;
-      line-height: 3.1rem;
-      letter-spacing: -0.039rem;
-    }
-    .button-wrap {
-      display: flex;
-      justify-content: center;
-      & > button {
-        display: flex;
-        align-items: center;
-        background-color: transparent;
-        color: $color-orange;
-        font-family: gmarket;
-        font-size: 1.9rem;
-        font-weight: 500;
-        line-height: 2.1rem;
-        letter-spacing: -0.039rem;
-        margin-top: 2.2rem;
+    background-color: $color-white;
+    max-width: 60rem;
+    width: 33.333%;
+    height: 38rem;
+    border-radius: 5rem;
+    box-shadow: 0 0.4rem 3rem 0 rgba(0, 0, 0, 0.05);
 
-        cursor: pointer;
-        &::after {
-          display: inline-block;
-          content: "";
-          background: url("/assets/images/section4_button_arrow.png") no-repeat 50% 50% / contain;
-          width: 1.8rem;
-          height: 1.8rem;
-          margin-left: 1.1rem;
-        }
+    & + .section4-slide-wrap {
+      margin: 0 0 0 4rem;
+    }
+
+    .image-wrap {
+      width: 26rem;
+      margin: 0 auto;
+      & > img {
+        width: 100%;
       }
     }
-  }
-}
-
-@media (max-width: 1080px) {
-  .section4-slide-wrap {
-    height: 45rem;
-    border-radius: 6rem;
-    .image-wrap {
-      width: 34.2rem;
-    }
     .text-wrap {
-      padding-bottom: 5.8rem;
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      justify-content: flex-start;
+      text-align: center;
+
       & > h4 {
-        font-size: 2.8rem;
-        line-height: 3.6rem;
+        color: $color-black;
+        font-family: gmarket;
+        font-size: 2.3rem;
+        font-weight: 700;
+        line-height: 2.8rem;
         letter-spacing: -0.057rem;
       }
       & > p.descript {
-        font-size: 2.1rem;
-        line-height: 3.1rem;
-        letter-spacing: -0.042rem;
+        color: $color-black;
+        font-family: gmarket;
+        font-size: 1.8rem;
+        font-weight: 300;
+        line-height: 2.7rem;
+        letter-spacing: -0.036rem;
         margin-top: 1rem;
       }
       & > p.descript2 {
+        color: $color-black;
+        font-family: gmarket;
         font-size: 1.9rem;
+        font-weight: 300;
         line-height: 3.1rem;
         letter-spacing: -0.039rem;
       }
       .button-wrap {
+        display: flex;
+        justify-content: center;
         & > button {
+          display: flex;
+          align-items: center;
+          background-color: transparent;
+          color: $color-orange;
+          font-family: gmarket;
           font-size: 1.9rem;
+          font-weight: 500;
           line-height: 2.1rem;
           letter-spacing: -0.039rem;
           margin-top: 2.2rem;
+
+          cursor: pointer;
           &::after {
+            display: inline-block;
+            content: "";
+            background: url("/assets/images/section4_button_arrow.png") no-repeat 50% 50% / contain;
             width: 1.8rem;
             height: 1.8rem;
             margin-left: 1.1rem;
@@ -114,47 +83,90 @@
       }
     }
   }
+  .section4-slide-wrap:nth-of-type(2) {
+    .text-wrap {
+      padding-top: 4rem;
+    }
+  }
+  .section4-slide-wrap:nth-of-type(3) {
+    .text-wrap {
+      padding-top: 2.5rem;
+    }
+  }
+}
+
+@media (max-width: 1280px) {
+  .section4-slide {
+    flex-direction: column;
+    padding: 0;
+
+    .section4-slide-wrap {
+      max-width: none;
+      width: 100%;
+      border-radius: 3rem;
+      margin: 0 auto;
+      & + .section4-slide-wrap {
+        margin-left: 0;
+        margin: 3.2rem auto 0;
+      }
+    }
+  }
 }
 
 @media (max-width: 768px) {
-  .section4-slide-wrap {
-    height: 25rem;
-    border-radius: 2.8rem;
-    .image-wrap {
-      width: 100%;
-      max-width: 16.4rem;
-    }
-    .text-wrap {
-      padding-bottom: 3rem;
-      & > h4 {
-        font-size: 1.6rem;
-        line-height: 2rem;
-        letter-spacing: -0.032rem;
+  .section4-slide {
+    .section4-slide-wrap {
+      height: 24rem;
+      border-radius: 2.8rem;
+      & + .section4-slide-wrap {
+        margin-left: 0;
+        margin: 2rem auto 0;
       }
-      & > p.descript {
-        font-size: 1.2rem;
-        line-height: 1.8rem;
-        letter-spacing: -0.024rem;
-        margin-top: 0.6rem;
+      .image-wrap {
+        width: 100%;
+        max-width: 16.4rem;
       }
-      & > p.descript2 {
-        font-size: 1rem;
-        line-height: 1rem;
-        letter-spacing: -0.02rem;
-        margin-top: 0.4rem;
-      }
-      .button-wrap {
-        & > button {
-          font-size: 1.4rem;
-          line-height: 1.4rem;
-          letter-spacing: -0.039rem;
-          margin-top: 1.1rem;
-          &::after {
-            width: 1.4rem;
-            height: 1.4rem;
-            margin-left: 0.4rem;
+      .text-wrap {
+        & > h4 {
+          font-size: 1.6rem;
+          line-height: 2rem;
+          letter-spacing: -0.032rem;
+        }
+        & > p.descript {
+          font-size: 1.2rem;
+          line-height: 1.8rem;
+          letter-spacing: -0.024rem;
+          margin-top: 0.6rem;
+        }
+        & > p.descript2 {
+          font-size: 1rem;
+          line-height: 1rem;
+          letter-spacing: -0.02rem;
+          margin-top: 0.4rem;
+        }
+        .button-wrap {
+          & > button {
+            font-size: 1.4rem;
+            line-height: 1.4rem;
+            letter-spacing: -0.039rem;
+            margin-top: 1.1rem;
+            &::after {
+              width: 1.4rem;
+              height: 1.4rem;
+              margin-left: 0.4rem;
+            }
           }
         }
+      }
+    }
+    .section4-slide-wrap:nth-of-type(2) {
+      .text-wrap {
+        padding-top: 2.8rem;
+      }
+    }
+    .section4-slide-wrap:nth-of-type(3) {
+      .text-wrap {
+        padding-top: 1.5rem;
       }
     }
   }

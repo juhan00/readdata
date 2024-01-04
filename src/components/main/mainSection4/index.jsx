@@ -50,9 +50,7 @@ export default function MainSection4() {
           <br />
           <strong>{t("main_section4.title_strong")}</strong>
         </h3>
-        <div className="section4-slide">
-          <Section4Slide props={section4slideData} />
-        </div>
+        <Section4Slide props={section4slideData} />
       </div>
     </section>
   );

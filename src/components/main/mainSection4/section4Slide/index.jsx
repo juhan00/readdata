@@ -27,11 +27,12 @@ export default function Section4Slide({ props: section4slideData }) {
 
   return (
     <div className={cx("section4-slide")}>
-      <Swiper
+      {/* <Swiper
         loop={true} // 슬라이드 루프
         loopedSlides={2}
         spaceBetween={0} // 슬라이스 사이 간격
-        slidesPerView={1.1} // 보여질 슬라이스 수
+        slidesPerView={1} // 보여질 슬라이스 수
+        slidesPerGroup={3}
         navigation={false} // prev, next button
         pagination={{ clickable: true }}
         centeredSlides={true}
@@ -45,29 +46,27 @@ export default function Section4Slide({ props: section4slideData }) {
           },
         }}
         modules={[EffectCoverflow, Pagination, Autoplay]}
-      >
-        {section4slideData.map((slide, index) => (
-          <SwiperSlide key={index}>
-            <div className={cx("section4-slide-wrap")}>
-              <div className={cx("image-wrap")}>
-                <img src={slide.src} alt={slide.alt} />
+      > */}
+      {section4slideData.map((slide, index) => (
+        <div className={cx("section4-slide-wrap")} key={index}>
+          <div className={cx("image-wrap")}>
+            <img src={slide.src} alt={slide.alt} />
+          </div>
+          <div className={cx("text-wrap")}>
+            <h4>{slide.title}</h4>
+            <p className={cx("descript")}>{slide.descript}</p>
+            <p className={cx("descript2")}>{slide.descript2}</p>
+            {slide?.button ? (
+              <div className={cx("button-wrap")}>
+                <button onClick={() => handlePopupOpenClick(slide.popup)}>{slide.button}</button>
               </div>
-              <div className={cx("text-wrap")}>
-                <h4>{slide.title}</h4>
-                <p className={cx("descript")}>{slide.descript}</p>
-                <p className={cx("descript2")}>{slide.descript2}</p>
-                {slide?.button ? (
-                  <div className={cx("button-wrap")}>
-                    <button onClick={() => handlePopupOpenClick(slide.popup)}>{slide.button}</button>
-                  </div>
-                ) : (
-                  ""
-                )}
-              </div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+            ) : (
+              ""
+            )}
+          </div>
+        </div>
+      ))}
+      {/* </Swiper> */}
     </div>
   );
 }

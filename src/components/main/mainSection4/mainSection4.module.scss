@@ -4,8 +4,7 @@
   overflow: hidden;
   .section-wrap {
     position: relative;
-    @include max-width;
-
+    padding: 0 var(--max-width-padding);
     & > h3 {
       color: $color-black;
       text-align: center;
@@ -24,7 +23,7 @@
   }
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1280px) {
   .section4 {
     padding: 8rem 0 13rem;
     .section-wrap {
