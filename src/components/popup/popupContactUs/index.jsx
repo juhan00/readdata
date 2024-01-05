@@ -65,17 +65,18 @@ export default function PopupContactUs() {
       setFieldCheck({ ...fieldCheck, name: true });
       return;
     }
-    if (!formData.email) {
-      setFieldCheck({ ...fieldCheck, email: true });
-      return;
-    }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (formData.email && !emailRegex.test(formData.email)) {
-      setFieldCheck({ ...fieldCheck, emailRegex: true });
-      setFormData({ ...formData, email: "" });
-      return;
-    }
+    // if (!formData.email) {
+    //   setFieldCheck({ ...fieldCheck, email: true });
+    //   return;
+    // }
+
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    // if (formData.email && !emailRegex.test(formData.email)) {
+    //   setFieldCheck({ ...fieldCheck, emailRegex: true });
+    //   setFormData({ ...formData, email: "" });
+    //   return;
+    // }
 
     if (!formData.phone_number) {
       setFieldCheck({ ...fieldCheck, phone_number: true });
@@ -87,10 +88,10 @@ export default function PopupContactUs() {
       return;
     }
 
-    if (!formData.message) {
-      setFieldCheck({ ...fieldCheck, message: true });
-      return;
-    }
+    // if (!formData.message) {
+    //   setFieldCheck({ ...fieldCheck, message: true });
+    //   return;
+    // }
 
     if (!formData.agree1) {
       setFieldCheck({ ...fieldCheck, agree1: true });
