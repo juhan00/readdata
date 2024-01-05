@@ -1,5 +1,5 @@
 import { createContext, useState, useContext } from "react";
-import { POPUP_CONTACTUS } from "/consts/popup";
+import { POPUP_DEFAULT } from "@/consts/popup";
 
 export const GlobalStateContext = createContext();
 
@@ -7,7 +7,9 @@ export const GlobalStateProvider = ({ children }) => {
   const [globalState, setGlobalState] = useState({
     popupState: {
       isOn: false,
-      popup: POPUP_CONTACTUS,
+      popup: POPUP_DEFAULT,
+      title: "",
+      content: "",
     },
   });
 

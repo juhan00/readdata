@@ -33,6 +33,7 @@
       background-color: $color-bg-popup;
       border-radius: 3.5rem;
       box-shadow: 0px 4px 30px 0px rgba(0, 0, 0, 0.05);
+
       .close {
         position: absolute;
         top: 2.5rem;
@@ -53,6 +54,22 @@
         line-height: 2.4rem;
         letter-spacing: -0.076rem;
         height: 8.4rem;
+      }
+      .content-wrap.default {
+        display: flex;
+        min-width: 40rem;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        font-family: NotoSansCJKkr;
+        font-size: 1.7rem;
+        font-weight: 300;
+        line-height: 2.3rem;
+        padding: 1rem 1rem 5rem;
+
+        &.no-title {
+          padding: 6rem 1rem 5rem;
+        }
       }
     }
   }
@@ -77,6 +94,22 @@
           line-height: 2.6rem;
           letter-spacing: -0.076rem;
           height: 6rem;
+        }
+        .content-wrap.default {
+          display: flex;
+          min-width: 30rem;
+          width: 100%;
+          align-items: center;
+          justify-content: center;
+          font-family: NotoSansCJKkr;
+          font-size: 1.4rem;
+          font-weight: 300;
+          line-height: 2.4rem;
+          padding: 2rem 1rem 5rem;
+
+          &.no-title {
+            padding: 6rem 1rem 5rem;
+          }
         }
       }
     }

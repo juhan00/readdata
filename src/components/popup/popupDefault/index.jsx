@@ -4,7 +4,7 @@ import PopupContactUs from "../popupContactUs";
 import PopupCost from "../popupCost";
 import PopupPlatform from "../popupPlatform";
 
-import { POPUP_CONTACTUS, POPUP_COST, POPUP_PLATFORM } from "/consts/popup";
+import { POPUP_DEFAULT, POPUP_CONTACTUS, POPUP_COST, POPUP_PLATFORM } from "@/consts/popup";
 //i18n
 import { useTranslation } from "next-i18next";
 
@@ -32,6 +32,20 @@ export default function PopupDefault() {
           <div className={cx("popup-wrap")}>
             <div className={cx("box")}>
               <button className={cx("close")} onClick={() => handleCloseClick()}></button>
+
+              {popupState.popup === POPUP_DEFAULT && (
+                <>
+                  {popupState.title ? (
+                    <>
+                      {" "}
+                      <div className={cx("title")}>{popupState.title}</div>
+                      <div className={cx("content-wrap", "default")}>{popupState.content}</div>
+                    </>
+                  ) : (
+                    <div className={cx("content-wrap", "default", "no-title")}>{popupState.content}</div>
+                  )}
+                </>
+              )}
 
               {popupState.popup === POPUP_CONTACTUS && (
                 <>

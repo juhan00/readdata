@@ -1,8 +1,9 @@
 import { useGlobalState } from "@/context/globalStateContext";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { submitContactForm } from "@/utils/api/contact_us";
+import { POPUP_DEFAULT } from "@/consts/popup";
 
 //i18n
 import { useTranslation } from "next-i18next";
@@ -29,6 +30,17 @@ export default function PopupContactUs() {
     agree2: false,
   });
 
+  const [fieldCheck, setFieldCheck] = useState({
+    company_name: false,
+    name: false,
+    email: false,
+    emailRegex: false,
+    phone_number: false,
+    inquiry: false,
+    message: false,
+    agree1: false,
+  });
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
@@ -46,40 +58,42 @@ export default function PopupContactUs() {
     e.preventDefault();
 
     if (!formData.company_name) {
-      alert(t("contact_us.alert.company_name"));
+      setFieldCheck({ ...fieldCheck, company_name: true });
       return;
     }
     if (!formData.name) {
-      alert(t("contact_us.alert.name"));
+      setFieldCheck({ ...fieldCheck, name: true });
       return;
     }
     if (!formData.email) {
-      alert(t("contact_us.alert.email"));
+      setFieldCheck({ ...fieldCheck, email: true });
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (formData.email && !emailRegex.test(formData.email)) {
-      alert(t("contact_us.alert.email2"));
+      setFieldCheck({ ...fieldCheck, emailRegex: true });
+      setFormData({ ...formData, email: "" });
       return;
     }
 
     if (!formData.phone_number) {
-      alert(t("contact_us.alert.phone_number"));
+      setFieldCheck({ ...fieldCheck, phone_number: true });
       return;
     }
+
     if (!formData.inquiry) {
-      alert(t("contact_us.alert.inquiry"));
+      setFieldCheck({ ...fieldCheck, inquiry: true });
       return;
     }
 
     if (!formData.message) {
-      alert(t("contact_us.alert.message"));
+      setFieldCheck({ ...fieldCheck, message: true });
       return;
     }
 
     if (!formData.agree1) {
-      alert(t("contact_us.alert.agree1"));
+      setFieldCheck({ ...fieldCheck, agree1: true });
       return;
     }
 
@@ -88,17 +102,18 @@ export default function PopupContactUs() {
 
       console.log("Email sent successfully:", data);
 
-      handlePopupClose();
-      alert(t("contact_us.alert.success"));
+      handlePopupOpenSuccess();
     } catch (error) {
       console.error("Failed to send email:", error);
     }
   };
 
-  const handlePopupClose = () => {
+  const handlePopupOpenSuccess = () => {
     setGlobalState({
       popupState: {
-        isOn: !popupState.isOn,
+        isOn: true,
+        popup: POPUP_DEFAULT,
+        content: t("contact_us.alert.success"),
       },
     });
   };
@@ -106,7 +121,7 @@ export default function PopupContactUs() {
   return (
     <div className={cx("contact-us")}>
       <div className={cx("contact-us-wrap")}>
-        <Link href="" className={cx("btn-kakao")}>
+        <Link href="http://pf.kakao.com/_DqyxfG" target="_blank" className={cx("btn-kakao")}>
           {t("contact_us.kakao")}
           <div className={cx("click")}>
             <img src="/assets/images/hand_click.png" alt="hand click" />
@@ -118,24 +133,53 @@ export default function PopupContactUs() {
             name="company_name"
             value={formData.company_name}
             onChange={(e) => handleChange(e)}
-            placeholder={t("contact_us.company_name")}
+            placeholder={fieldCheck.company_name && !formData.company_name ? t("contact_us.alert.company_name") : t("contact_us.company_name")}
+            className={fieldCheck.company_name ? cx("alert") : undefined}
           />
-          <input type="text" name="name" value={formData.name} onChange={(e) => handleChange(e)} placeholder={t("contact_us.name")} />
-          <input type="text" name="email" value={formData.email} onChange={(e) => handleChange(e)} placeholder={t("contact_us.email")} />
+          <input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={(e) => handleChange(e)}
+            placeholder={fieldCheck.name && !formData.name ? t("contact_us.alert.name") : t("contact_us.name")}
+            className={fieldCheck.name ? cx("alert") : undefined}
+          />
+          <input
+            type="text"
+            name="email"
+            value={formData.email}
+            onChange={(e) => handleChange(e)}
+            placeholder={
+              fieldCheck.email && !formData.email
+                ? fieldCheck.emailRegex
+                  ? t("contact_us.alert.email2")
+                  : t("contact_us.alert.email")
+                : fieldCheck.emailRegex
+                ? t("contact_us.alert.email2")
+                : t("contact_us.email")
+            }
+            className={fieldCheck.email || fieldCheck.emailRegex ? cx("alert") : undefined}
+          />
           <input
             type="text"
             name="phone_number"
             value={formData.phone_number}
             onChange={(e) => handleChange(e)}
-            placeholder={t("contact_us.phone_number")}
+            placeholder={fieldCheck.phone_number && !formData.phone_number ? t("contact_us.alert.phone_number") : t("contact_us.phone_number")}
+            className={fieldCheck.phone_number ? cx("alert") : undefined}
           />
-          <select name="inquiry" value={formData.inquiry} onChange={(e) => handleChange(e)}>
+          <select
+            name="inquiry"
+            value={formData.inquiry}
+            className={!formData.inquiry && fieldCheck.inquiry ? cx("alert") : undefined}
+            onChange={(e) => handleChange(e)}
+          >
+            <option hidden>{fieldCheck.inquiry && !formData.inquiry ? t("contact_us.alert.inquiry") : t("contact_us.inquiry_title")}</option>
             <option value={1}>{t("contact_us.inquiry1")}</option>
             <option value={2}>{t("contact_us.inquiry2")}</option>
             <option value={3}>{t("contact_us.inquiry3")}</option>
             <option value={4}>{t("contact_us.inquiry4")}</option>
             <option value={5}>{t("contact_us.inquiry5")}</option>
-            <option value={6}>{t("contact_us.inquiry6")}</option>
           </select>
           <textarea
             name="message"
@@ -143,7 +187,8 @@ export default function PopupContactUs() {
             onChange={(e) => handleChange(e)}
             cols="30"
             rows="5"
-            placeholder={t("contact_us.message")}
+            placeholder={fieldCheck.message && !formData.message ? t("contact_us.alert.message") : t("contact_us.message")}
+            className={fieldCheck.message ? cx("alert") : undefined}
           ></textarea>
 
           <div className={cx("checkbox-wrap")}>
@@ -151,8 +196,10 @@ export default function PopupContactUs() {
               <input type="checkbox" name="agree1" id="agree1" value={formData.agree1} onChange={(e) => handleChange(e)} />
               <label htmlFor="agree1">
                 <span>{t("contact_us.agree1")}</span>
+                {fieldCheck.agree1 && <span className={cx("alert")}>{t("contact_us.alert.agree1")}</span>}
               </label>
             </div>
+
             <div className={cx("checkbox")}>
               <input type="checkbox" name="agree2" id="agree2" value={formData.agree2} onChange={(e) => handleChange(e)} />
               <label htmlFor="agree2">
