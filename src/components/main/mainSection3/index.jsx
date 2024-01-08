@@ -14,11 +14,11 @@ const section3slideData = [
     alt: "section3 slide1",
   },
   {
-    src: "assets/images/section3_slide1.png",
+    src: "assets/images/section3_slide2.png",
     alt: "section3 slide2",
   },
   {
-    src: "assets/images/section3_slide1.png",
+    src: "assets/images/section3_slide3.png",
     alt: "section3 slide3",
   },
 ];
