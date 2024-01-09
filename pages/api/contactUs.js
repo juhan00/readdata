@@ -20,16 +20,16 @@ export default async function handler(req, res) {
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: process.env.RECIPIENT_EMAIL,
-      subject: "New Inquiry",
+      subject: "문의하기",
       text: `
-        Company Name: ${formData.company_name}
-        Name: ${formData.name}
-        Email: ${formData.email}
-        Phone Number: ${formData.phone_number}
-        Inquiry Type: ${formData.inquiry}
-        Message: ${formData.message}
-        Privacy Agreement: ${formData.agree1 ? "Agreed" : "Not Agreed"}
-        Marketing Agreement: ${formData.agree2 ? "Agreed" : "Not Agreed"}
+        회사명: ${formData.company_name}
+        이름: ${formData.name}
+        이메일: ${formData.email}
+        연락처: ${formData.phone_number}
+        문의사항: ${formData.inquiry}
+        내용: ${formData.message}
+        개인정보 수집 동의: ${formData.agree1 ? "동의" : "동의안함"}
+        마케팅 정보 수신 동의: ${formData.agree2 ? "동의" : "동의안함"}
       `,
     };
 
