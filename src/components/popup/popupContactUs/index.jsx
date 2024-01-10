@@ -166,7 +166,9 @@ export default function PopupContactUs() {
                 value={formData.company_name}
                 onChange={(e) => handleChange(e)}
                 placeholder={
-                  fieldCheck.company_name && !formData.company_name ? t("popup:contact_us.alert.company_name") : t("popup:contact_us.company_name")
+                  fieldCheck.company_name && !formData.company_name
+                    ? t("popup:contact_us.alert.company_name")
+                    : "* " + t("popup:contact_us.company_name")
                 }
                 className={fieldCheck.company_name ? cx("alert") : undefined}
               />
@@ -175,7 +177,7 @@ export default function PopupContactUs() {
                 name="name"
                 value={formData.name}
                 onChange={(e) => handleChange(e)}
-                placeholder={fieldCheck.name && !formData.name ? t("popup:contact_us.alert.name") : t("popup:contact_us.name")}
+                placeholder={fieldCheck.name && !formData.name ? t("popup:contact_us.alert.name") : "* " + t("popup:contact_us.name")}
                 className={fieldCheck.name ? cx("alert") : undefined}
               />
               <input
@@ -200,7 +202,9 @@ export default function PopupContactUs() {
                 value={formData.phone_number}
                 onChange={(e) => handleChange(e)}
                 placeholder={
-                  fieldCheck.phone_number && !formData.phone_number ? t("popup:contact_us.alert.phone_number") : t("popup:contact_us.phone_number")
+                  fieldCheck.phone_number && !formData.phone_number
+                    ? t("popup:contact_us.alert.phone_number")
+                    : "* " + t("popup:contact_us.phone_number")
                 }
                 className={fieldCheck.phone_number ? cx("alert") : undefined}
               />
@@ -211,7 +215,7 @@ export default function PopupContactUs() {
                 onChange={(e) => handleChange(e)}
               >
                 <option hidden>
-                  {fieldCheck.inquiry && !formData.inquiry ? t("popup:contact_us.alert.inquiry") : t("popup:contact_us.inquiry_title")}
+                  {fieldCheck.inquiry && !formData.inquiry ? t("popup:contact_us.alert.inquiry") : "* " + t("popup:contact_us.inquiry_title")}
                 </option>
                 <option value={1}>{t("popup:contact_us.inquiry1")}</option>
                 <option value={2}>{t("popup:contact_us.inquiry2")}</option>
