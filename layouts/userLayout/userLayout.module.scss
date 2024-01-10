@@ -1,0 +1,13 @@
+.container {
+  background-color: $background-data-color;
+  width: 100%;
+  min-height: 100vh;
+
+  .content-container {
+    position: fixed;
+    width: calc(100% - 24rem);
+    min-height: 100vh;
+    left: 24rem;
+    background-color: $background-data-color;
+  }
+}
