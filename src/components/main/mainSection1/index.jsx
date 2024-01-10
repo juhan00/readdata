@@ -18,6 +18,7 @@ export default function MainSection1() {
       popupState: {
         isOn: !popupState.isOn,
         popup: POPUP_CONTACTUS,
+        title: t("popup:default.contact_us_title"),
       },
     });
   };

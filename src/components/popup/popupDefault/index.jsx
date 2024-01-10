@@ -49,7 +49,7 @@ export default function PopupDefault() {
 
               {popupState.popup === POPUP_CONTACTUS && (
                 <>
-                  <div className={cx("title")}>{t("default.contact_us_title")}</div>
+                  <div className={cx("title")}>{popupState.title}</div>
                   <div className={cx("content-wrap")}>{<PopupContactUs />}</div>
                 </>
               )}

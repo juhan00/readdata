@@ -1,3 +1,12 @@
+.btn-back {
+  position: absolute;
+  top: 2.9rem;
+  left: 2.5rem;
+  background: url("/assets/images/ico_arrow_back.png") no-repeat 50% 50% / contain;
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+}
 .contact-us {
   padding: 0 4rem 4rem;
   box-sizing: border-box;
@@ -55,6 +64,16 @@
         margin-top: 0.8rem;
         .checkbox {
           margin-top: 0.8rem;
+        }
+        .alert {
+          color: $color-orange;
+          margin-left: 0.6rem;
+        }
+        .detail_view {
+          font-size: 1.2rem;
+          margin-left: 1rem;
+          color: $color-orange;
+          cursor: pointer;
         }
       }
       .button-wrap {
@@ -137,6 +156,28 @@
           }
         }
       }
+    }
+  }
+}
+
+.agree1 {
+  padding: 0 4rem 4rem;
+  box-sizing: border-box;
+  .agree1-wrap {
+    width: 44rem;
+    height: 54.7rem;
+    padding-right: 1rem;
+    overflow-y: auto;
+    font-size: 1.3rem;
+    font-weight: 300;
+    color: $color-black;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+    &::-webkit-scrollbar-thumb {
+      border-radius: 2px;
+      background: #bebebe;
     }
   }
 }

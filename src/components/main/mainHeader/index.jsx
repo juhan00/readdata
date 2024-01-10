@@ -44,6 +44,7 @@ export default function Header() {
       popupState: {
         isOn: !popupState.isOn,
         popup: POPUP_CONTACTUS,
+        title: t("popup:default.contact_us_title"),
       },
     });
   };
