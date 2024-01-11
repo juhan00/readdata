@@ -2,7 +2,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 24rem;
+  width: var(--data-left-header-width);
   height: 100vh;
   background-color: $color-white;
   padding: 0 2rem;

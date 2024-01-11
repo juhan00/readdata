@@ -5,9 +5,13 @@
 
   .content-container {
     position: fixed;
-    width: calc(100% - 24rem);
+    width: 100%;
     min-height: 100vh;
-    left: 24rem;
+    padding-left: 24rem;
     background-color: $background-data-color;
+    .content-wrap {
+      margin-top: 8rem;
+      padding: 2rem;
+    }
   }
 }

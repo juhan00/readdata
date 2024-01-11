@@ -1,12 +1,14 @@
 .top-header {
-  position: absolute;
+  position: fixed;
   z-index: 9999;
-  width: 100%;
+  width: calc(100% - var(--data-left-header-width));
+  min-width: var(--data-content-min-width);
   height: 8rem;
   background-color: $color-white;
   border-left: 0.1rem solid #eeeeee;
   display: flex;
   align-items: center;
+  padding: 0 3rem;
 
   .use-type {
     display: flex;
@@ -18,7 +20,6 @@
     padding: 0 2rem;
     color: $color-white;
     border-radius: 10rem;
-    margin-left: 3rem;
     &::before {
       content: "";
       display: inline-block;
@@ -44,19 +45,39 @@
         font-weight: 500;
       }
     }
-    .help {
+    button {
       border: 0;
+      padding: 0;
       background-color: transparent;
-      &::before {
-        content: "";
-        width: 2.4rem;
-        height: 2.4rem;
-        background: url("/assets/images/ico_top_header_help.png") no-repeat 50% 50% / contain;
+      display: flex;
+      align-items: center;
+      font-size: 1.4rem;
+      font-weight: 400;
+      letter-spacing: -0.014rem;
+      white-space: nowrap;
+      &.help {
+        &::before {
+          content: "";
+          display: inline-block;
+          width: 2.4rem;
+          height: 2.4rem;
+          background: url("/assets/images/ico_top_header_help.png") no-repeat 50% 50% / contain;
+          margin-right: 0.8rem;
+        }
+      }
+      &.logout {
+        &::before {
+          content: "";
+          display: inline-block;
+          width: 2.4rem;
+          height: 2.4rem;
+          background: url("/assets/images/ico_top_header_logout.png") no-repeat 50% 50% / contain;
+          margin-right: 0.8rem;
+        }
       }
     }
-    .logout {
-      border: 0;
-      background-color: transparent;
-    }
+  }
+  button + button {
+    margin-left: 2rem;
   }
 }
