@@ -159,7 +159,7 @@ export default function PopupContactUs() {
                 <img src="/assets/images/hand_click.png" alt="hand click" />
               </div>
             </Link>
-            <div className={cx("essential")}>* 는 필수 입력 항목 입니다.</div>
+            <div className={cx("essential")}>{t("popup:contact_us.essential")}</div>
             <form onSubmit={(e) => handleSubmit(e)}>
               <input
                 type="text"

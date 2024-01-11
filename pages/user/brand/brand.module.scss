@@ -1,0 +1,15 @@
+.brand {
+  .row {
+    @include data-content-row;
+    .col {
+      @include data-content-col;
+      .item + .item {
+        margin-left: 2rem;
+      }
+      button.submit {
+        @include data-btn-submit;
+        margin-left: 2rem;
+      }
+    }
+  }
+}

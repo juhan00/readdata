@@ -1,0 +1,140 @@
+.left-navigation {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--data-left-header-width);
+  height: 100vh;
+  background-color: $color-white;
+  padding: 0 2rem;
+  z-index: 9999;
+  .left-nav-wrap {
+    display: block;
+    .logo-wrap {
+      display: inline-block;
+      margin: 3rem 0;
+      & > img {
+        width: 18rem;
+        margin-left: 0.4rem;
+      }
+    }
+    nav {
+      text-align: left;
+      border-top: 0.1rem solid #eee;
+      ul {
+        padding: 0;
+        li {
+          display: flex;
+          align-items: center;
+          height: 6.4rem;
+          button {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 400;
+            line-height: 1.333;
+            letter-spacing: -0.18px;
+            background-color: transparent;
+            &::before {
+              content: "";
+              display: inline-block;
+              width: 4.5rem;
+              height: 4.5rem;
+              border-radius: 4.5rem;
+              background-color: #ccc;
+              margin-right: 1.4rem;
+            }
+            &.menu1::before {
+              background: url("/assets/images/data/user/ico_user_nav_brand_off.png") no-repeat 50% 50% / contain;
+            }
+            &.menu2::before {
+              background: url("/assets/images/data/user/ico_user_nav_franchisee_off.png") no-repeat 50% 50% / contain;
+            }
+            &.menu3::before {
+              background: url("/assets/images/data/user/ico_user_nav_sales_off.png") no-repeat 50% 50% / contain;
+            }
+          }
+          button.active {
+            &::before {
+              content: "";
+              background-color: #fddc37;
+            }
+            &.menu1::before {
+              background: url("/assets/images/data/user/ico_user_nav_brand_on.png") no-repeat 50% 50% / contain;
+            }
+            &.menu2::before {
+              background: url("/assets/images/data/user/ico_user_nav_franchisee_on.png") no-repeat 50% 50% / contain;
+            }
+            &.menu3::before {
+              background: url("/assets/images/data/user/ico_user_nav_sales_on.png") no-repeat 50% 50% / contain;
+            }
+          }
+        }
+      }
+      ul.user {
+        li {
+          button {
+            &.menu1::before {
+              background: url("/assets/images/data/user/ico_user_nav_brand_off.png") no-repeat 50% 50% / contain;
+            }
+            &.menu2::before {
+              background: url("/assets/images/data/user/ico_user_nav_franchisee_off.png") no-repeat 50% 50% / contain;
+            }
+            &.menu3::before {
+              background: url("/assets/images/data/user/ico_user_nav_sales_off.png") no-repeat 50% 50% / contain;
+            }
+          }
+          button.active {
+            &.menu1::before {
+              background: url("/assets/images/data/user/ico_user_nav_brand_on.png") no-repeat 50% 50% / contain;
+            }
+            &.menu2::before {
+              background: url("/assets/images/data/user/ico_user_nav_franchisee_on.png") no-repeat 50% 50% / contain;
+            }
+            &.menu3::before {
+              background: url("/assets/images/data/user/ico_user_nav_sales_on.png") no-repeat 50% 50% / contain;
+            }
+          }
+        }
+      }
+
+      ul.admin {
+        li {
+          button {
+            &.menu1::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_company_off.png") no-repeat 50% 50% / contain;
+            }
+            &.menu2::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_user_off.png") no-repeat 50% 50% / contain;
+            }
+            &.menu3::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_franchisee_off.png") no-repeat 50% 50% / contain;
+            }
+            &.menu4::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_sales_off.png") no-repeat 50% 50% / contain;
+            }
+            &.menu5::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_customer_off.png") no-repeat 50% 50% / contain;
+            }
+          }
+          button.active {
+            &.menu1::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_company_on.png") no-repeat 50% 50% / contain;
+            }
+            &.menu2::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_user_on.png") no-repeat 50% 50% / contain;
+            }
+            &.menu3::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_franchisee_on.png") no-repeat 50% 50% / contain;
+            }
+            &.menu4::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_sales_on.png") no-repeat 50% 50% / contain;
+            }
+            &.menu5::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_customer_on.png") no-repeat 50% 50% / contain;
+            }
+          }
+        }
+      }
+    }
+  }
+}

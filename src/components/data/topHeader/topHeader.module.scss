@@ -2,7 +2,7 @@
   position: fixed;
   z-index: 9999;
   width: calc(100% - var(--data-left-header-width));
-  min-width: var(--data-content-min-width);
+  min-width: calc(var(--data-content-min-width) - var(--data-left-header-width));
   height: 8rem;
   background-color: $color-white;
   border-left: 0.1rem solid #eeeeee;
@@ -25,11 +25,14 @@
       display: inline-block;
       width: 2rem;
       height: 2rem;
-      background: url("/assets/images/ico_use_type.png") no-repeat 50% 50% / contain;
+      background: url("/assets/images/data/ico_use_type.png") no-repeat 50% 50% / contain;
       margin-right: 0.6rem;
     }
     &.user {
       background-color: $color-blue;
+    }
+    &.admin {
+      background-color: $color-orange;
     }
   }
   .right {
@@ -61,7 +64,7 @@
           display: inline-block;
           width: 2.4rem;
           height: 2.4rem;
-          background: url("/assets/images/ico_top_header_help.png") no-repeat 50% 50% / contain;
+          background: url("/assets/images/data/ico_top_header_help.png") no-repeat 50% 50% / contain;
           margin-right: 0.8rem;
         }
       }
@@ -71,7 +74,7 @@
           display: inline-block;
           width: 2.4rem;
           height: 2.4rem;
-          background: url("/assets/images/ico_top_header_logout.png") no-repeat 50% 50% / contain;
+          background: url("/assets/images/data/ico_top_header_logout.png") no-repeat 50% 50% / contain;
           margin-right: 0.8rem;
         }
       }

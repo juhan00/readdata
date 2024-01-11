@@ -75,5 +75,26 @@
     "business_number": "사업자번호 : 209-88-02511",
     "copyright": "Copyright ⓒ 2017. LeadPlanet. Ltd. All Rights Reserved"
   },
-  "detail_view": "자세히"
+  "detail_view": "자세히",
+
+  "data": {
+    "use_user": "사용자",
+    "use_admin": "관리자",
+    "name_text": "님 로그인 중입니다.",
+    "help": "도움말",
+    "logout": "로그아웃",
+    "user_menu": {
+      "menu1": "브랜드관리",
+      "menu2": "가맹점관리",
+      "menu3": "매출관리"
+    },
+    "admin_menu": {
+      "menu1": "회사관리",
+      "menu2": "사용자관리",
+      "menu3": "가맹점맵핑",
+      "menu4": "매출관리",
+      "menu5": "고객센터"
+    }
+  },
+  "search": "검색"
 }
