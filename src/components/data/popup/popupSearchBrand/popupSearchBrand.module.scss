@@ -1,0 +1,15 @@
+.search-brand {
+  padding: 0 4rem 4rem;
+  .search-wrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    button.submit {
+      @include data-popup-btn-submit;
+      margin-left: 1rem;
+    }
+  }
+  .content-wrap {
+    margin-top: 2rem;
+  }
+}

@@ -1,11 +1,11 @@
 import { SEARCH_TYPE_SELECT, SEARCH_TYPE_INPUT } from "@/consts/common";
 
 //styles
-import styles from "./searchItem.module.scss";
+import styles from "./popupSearchItem.module.scss";
 import className from "classnames/bind";
 const cx = className.bind(styles);
 
-const SearchItem = () => {
+const PopupSearchItem = ({ searchType }) => {
   return (
     <div className={cx("search-item")}>
       <label>브랜드 명</label>
@@ -22,4 +22,4 @@ const SearchItem = () => {
   );
 };
 
-export default SearchItem;
+export default PopupSearchItem;
