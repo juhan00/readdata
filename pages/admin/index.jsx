@@ -1,4 +1,4 @@
-import DataLayout from "@/layouts/DataLayout";
+import DataLayout from "@/layouts/dataLayout";
 
 const Admin = () => {
   return (
