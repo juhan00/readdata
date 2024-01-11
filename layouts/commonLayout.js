@@ -32,6 +32,7 @@ export default function CommonLayout({ children }) {
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" sizes="76x76" href="/favicon.ico" />
+        <meta name="naver-site-verification" content="256a2869f2df64367fcbe0dc3d42b85e2269015a" />
       </Head>
 
       {children}

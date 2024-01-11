@@ -1,7 +1,6 @@
 //styles
 import styles from "./topHeader.module.scss";
 import className from "classnames/bind";
-
 const cx = className.bind(styles);
 
 const TopHeader = ({ useType }) => {
