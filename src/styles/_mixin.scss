@@ -10,34 +10,21 @@
   &:nth-of-type(n + 2) {
     margin-top: 2rem;
   }
-}
-
-@mixin data-content-col {
-  display: flex;
-  background-color: $color-white;
-  border-radius: 2rem;
-  padding: 2rem 3rem;
-}
-
-@mixin data-btn-submit {
-  font-size: 1.6rem;
-  font-weight: 500;
-  line-height: 1.75;
-  letter-spacing: -0.016rem;
-  width: 12rem;
-  height: 3.8rem;
-  border-radius: 3.8rem;
-  background-color: $color-yellow;
-}
-
-@mixin data-popup-btn-submit {
-  font-size: 1.6rem;
-  font-weight: 500;
-  line-height: 1.75;
-  letter-spacing: -0.016rem;
-  width: 7.5rem;
-  height: 3.8rem;
-  border-radius: 0.8rem;
-  background-color: $color-white;
-  border: 0.1rem solid $color-black;
+  &.flex {
+    display: flex;
+    .box {
+      flex-grow: 1;
+    }
+    .box + .box {
+      margin-left: 2rem;
+    }
+  }
+  .box {
+    background-color: $color-white;
+    border-radius: 2rem;
+    padding: 2rem 3rem;
+    &.flex {
+      display: flex;
+    }
+  }
 }

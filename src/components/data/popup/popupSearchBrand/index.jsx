@@ -1,6 +1,7 @@
 import DataPopupLayout from "@/layouts/dataPopupLayout";
 import PopupSearchItem from "../popupSearchItem";
 import { SEARCH_TYPE_INPUT } from "@/consts/common";
+import BtnPopupSearch from "../../button/btnPopupSearch";
 
 //styles
 import styles from "./popupSearchBrand.module.scss";
@@ -18,7 +19,7 @@ const PopupSearchBrand = ({ setReturnState, setIsPopup }) => {
       <div className={cx("search-brand")}>
         <div className={cx("search-wrap")}>
           <PopupSearchItem searchType={SEARCH_TYPE_INPUT} />
-          <button className={cx("submit")}>검색</button>
+          <BtnPopupSearch />
         </div>
         <div className={cx("content-wrap")}>
           skdlfjlsdkjflkdsjflkdsajflsdaj

@@ -4,8 +4,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    button.submit {
-      @include data-popup-btn-submit;
+    button {
       margin-left: 1rem;
     }
   }

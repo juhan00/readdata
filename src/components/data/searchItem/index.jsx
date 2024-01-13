@@ -3,12 +3,16 @@ import { SEARCH_TYPE_SELECT, SEARCH_TYPE_INPUT } from "@/consts/common";
 //styles
 import styles from "./searchItem.module.scss";
 import className from "classnames/bind";
+import { useEffect } from "react";
 const cx = className.bind(styles);
 
-const SearchItem = ({ searchType }) => {
+const SearchItem = ({ searchType, title, name, onChange }) => {
+  useEffect(() => {
+    console.log("onChange", onChange);
+  }, []);
   return (
     <div className={cx("search-item")}>
-      <label>브랜드 명</label>
+      <label>{title}</label>
       {searchType === SEARCH_TYPE_SELECT && (
         <select>
           <option value="all">All</option>
@@ -17,7 +21,7 @@ const SearchItem = ({ searchType }) => {
           <option value="brand3">브랜드3</option>
         </select>
       )}
-      {searchType === SEARCH_TYPE_INPUT && <input type="text" />}
+      {searchType === SEARCH_TYPE_INPUT && <input type="text" name={name} onChange={(e) => onChange(name, e)} />}
     </div>
   );
 };
