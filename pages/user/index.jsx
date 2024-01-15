@@ -1,6 +1,6 @@
 import DataLayout from "@/layouts/dataLayout";
 import { USE_TYPE_USER } from "@/consts/common";
-import Brand from "./brand";
+import Brand from "./Brand";
 import Franchisee from "./franchisee";
 import { useState } from "react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";

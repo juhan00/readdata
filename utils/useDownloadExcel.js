@@ -2,7 +2,6 @@ import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
 
 const useDownloadExcel = (columns, tableData) => {
-  console.log("Excel 다운로드 중...");
   const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
   const fileExtension = ".xlsx";
 

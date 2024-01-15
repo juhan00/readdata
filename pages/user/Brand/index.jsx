@@ -60,7 +60,7 @@ const Brand = () => {
       try {
         const data = await mutation.mutateAsync();
         setTableState(data);
-        console.log("Data successfully:", data);
+        // console.log("Data successfully:", data);
       } catch (error) {
         console.error("Failed to fetch data:", error);
       }
@@ -87,9 +87,9 @@ const Brand = () => {
     {
       columns: brandColumns,
       data: useMemo(() => memoizedData, [memoizedData]),
-      defaultColumn: { Cell: EditableCell },
-      updateMyData,
-      agreeOptions,
+      // defaultColumn: { Cell: EditableCell },
+      // updateMyData,
+      // agreeOptions,
       autoResetPage: false,
     },
     useSortBy,
@@ -115,12 +115,6 @@ const Brand = () => {
       ...searchField,
     }));
   };
-
-  useEffect(() => {
-    console.log("searchField", searchField);
-    console.log("searchData", searchData);
-    console.log("memoizedData", memoizedData);
-  }, [searchField, searchData, memoizedData]);
 
   return (
     <>
@@ -173,6 +167,8 @@ const Brand = () => {
                     canNextPage,
                     pageCount,
                     pageOptions,
+                    updateMyData,
+                    agreeOptions,
                   }}
                 />
               )}

@@ -1,3 +1,6 @@
+import { useState } from "react";
+import PopupSearchAddress from "@/src/components/data/popup/popupSearchAddress";
+
 //styles
 import { useEffect } from "react";
 import styles from "./renderTable.module.scss";
@@ -6,6 +9,10 @@ import className from "classnames/bind";
 const cx = className.bind(styles);
 
 const RenderTable = ({ tableProps }) => {
+  const [editingRow, setEditingRow] = useState(null);
+  const [isAddressPopupOpen, setIsAddressPopupOpen] = useState(false);
+  const [columnValues, setColumnValues] = useState({});
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -23,7 +30,45 @@ const RenderTable = ({ tableProps }) => {
     pageOptions,
     handleClickReturn,
     returnColumnName,
+    updateMyData,
+    agreeOptions,
   } = tableProps;
+
+  const handleChange = (columnId, value) => {
+    // 입력 필드의 상태를 업데이트
+    setColumnValues((prevColumnValues) => ({
+      ...prevColumnValues,
+      [columnId]: value,
+    }));
+  };
+
+  const handleEditClick = (rowIndex) => {
+    setEditingRow(rowIndex);
+  };
+
+  const handleSaveClick = () => {
+    // 여기에서 수정 내용을 저장하는 로직을 구현하세요.
+    setEditingRow(null);
+  };
+
+  const handleCancelClick = () => {
+    // 여기에서 수정 취소 로직을 구현하세요.
+    setColumnValues({});
+    setEditingRow(null);
+  };
+
+  const handleClickAddress = (index, columnId) => {
+    setIsAddressPopupOpen(true);
+  };
+
+  const handleSelectAddress = (selectedAddress) => {
+    // 주소 검색 팝업에서 선택한 주소를 업데이트
+    setColumnValues((prevColumnValues) => ({
+      ...prevColumnValues,
+      ["address"]: selectedAddress,
+    }));
+    setIsAddressPopupOpen(false);
+  };
 
   return (
     <div className={cx("table-wrap")}>
@@ -32,35 +77,81 @@ const RenderTable = ({ tableProps }) => {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column, index) => (
-                <>
-                  <th {...column.getHeaderProps(column.getSortByToggleProps())} style={column.headerStyle}>
-                    {column.render("Header")}
-                    <span>{column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}</span>
-                  </th>
-                  {index === headerGroup.headers.length - 1 && <td></td>}
-                </>
+                <th {...column.getHeaderProps(column.getSortByToggleProps())} style={column.headerStyle}>
+                  {column.render("Header")}
+                  <span>{column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}</span>
+                </th>
               ))}
+              <th></th>
             </tr>
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map((row) => {
+          {page.map((row, rowIndex) => {
             prepareRow(row);
+
+            const isEditing = editingRow === rowIndex;
+
             return (
               <tr {...row.getRowProps()} onDoubleClick={() => handleClickReturn && handleClickReturn(row.original[returnColumnName])}>
-                {row.cells.map((cell, index) => (
-                  <>
+                {row.cells.map((cell) => {
+                  const isAgreeColumn = cell.column.Header === "agree";
+                  const isAddressColumn = cell.column.Header === "address";
+
+                  return (
                     <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
-                      {cell.render("Cell")}
+                      {isEditing ? (
+                        isAgreeColumn ? (
+                          <select value={columnValues[cell.column.id] || cell.value} onChange={(e) => handleChange(cell.column.id, e.target.value)}>
+                            {agreeOptions.map((option) => (
+                              <option key={option} value={option}>
+                                {option}
+                              </option>
+                            ))}
+                          </select>
+                        ) : // 주소 컬럼에 대해서만 주소 검색 팝업 렌더링
+                        isAddressColumn ? (
+                          <>
+                            {isAddressPopupOpen && (
+                              <PopupSearchAddress
+                                onSelectAddress={handleSelectAddress}
+                                orgAddress={columnValues[cell.column.id] || cell.value}
+                                // isAddressPopupOpen={isAddressPopupOpen}
+                                onClose={() => setIsAddressPopupOpen(false)}
+                              />
+                            )}
+                            <input
+                              value={columnValues[cell.column.id] || cell.value}
+                              onClick={(e) => handleClickAddress(cell.column.id, e.target.value)}
+                              onChange={(e) => handleChange(cell.column.index, cell.column.id, e.target.value)}
+                            />
+                          </>
+                        ) : (
+                          // 나머지 컬럼에 대해서는 input 엘리먼트 렌더링
+                          <input value={columnValues[cell.column.id] || cell.value} onChange={(e) => handleChange(cell.column.id, e.target.value)} />
+                        )
+                      ) : (
+                        cell.render("Cell")
+                      )}
+
+                      {/* {isEditing ? (
+                      <input type="text" value={cell.value} onChange={(e) => cell.column.onEditChange(row.index, e.target.value)} />
+                    ) : (
+                      cell.render("Cell")
+                    )} */}
                     </td>
-                    {index === row.cells.length - 1 && (
-                      <td>
-                        <button>취소</button>
-                        <button>취소</button>
-                      </td>
-                    )}
-                  </>
-                ))}
+                  );
+                })}
+                <td>
+                  {isEditing ? (
+                    <>
+                      <button onClick={handleSaveClick}>저장</button>
+                      <button onClick={handleCancelClick}>취소</button>
+                    </>
+                  ) : (
+                    <button onClick={() => handleEditClick(row.index)}>수정</button>
+                  )}
+                </td>
               </tr>
             );
           })}

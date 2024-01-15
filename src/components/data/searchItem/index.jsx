@@ -7,9 +7,6 @@ import { useEffect } from "react";
 const cx = className.bind(styles);
 
 const SearchItem = ({ searchType, title, name, onChange }) => {
-  useEffect(() => {
-    console.log("onChange", onChange);
-  }, []);
   return (
     <div className={cx("search-item")}>
       <label>{title}</label>
