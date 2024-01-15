@@ -1,7 +1,13 @@
+import { useState, useEffect, useMemo, useCallback } from "react";
 import DataPopupLayout from "@/layouts/dataPopupLayout";
 import PopupSearchItem from "../popupSearchItem";
 import { SEARCH_TYPE_INPUT } from "@/consts/common";
 import BtnPopupSearch from "../../button/btnPopupSearch";
+import { getSampleTable } from "@/utils/api/sampleTable";
+import { useMutation } from "react-query";
+import RenderTable from "@/src/components/data/renderTable";
+import { useTable, useSortBy, usePagination } from "react-table";
+import { brandColumns } from "@/consts/dataColumns";
 
 //styles
 import styles from "./popupSearchBrand.module.scss";
@@ -9,8 +15,55 @@ import className from "classnames/bind";
 const cx = className.bind(styles);
 
 const PopupSearchBrand = ({ setReturnState, setIsPopup }) => {
-  const handleClickReturn = () => {
-    setReturnState("팝업 리턴데이터");
+  const [tableState, setTableState] = useState([]);
+  const mutation = useMutation(getSampleTable);
+
+  // const updateMyData = useCallback((rowIndex, columnId, value) => {
+  //   setTableState((prevData) => prevData.map((row, index) => (index === rowIndex ? { ...row, [columnId]: value } : row)));
+  //   setIsModified(true);
+
+  // }, []);
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    state: { pageIndex, pageSize },
+    gotoPage,
+    previousPage,
+    nextPage,
+    canPreviousPage,
+    canNextPage,
+    pageCount,
+    pageOptions,
+  } = useTable(
+    {
+      columns: brandColumns,
+      data: useMemo(() => tableState, [tableState]),
+      autoResetPage: false,
+    },
+    useSortBy,
+    usePagination
+  );
+
+  useEffect(() => {
+    const getTableData = async () => {
+      try {
+        const data = await mutation.mutateAsync();
+        setTableState(data);
+        console.log("Data successfully:", data);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+
+    getTableData();
+  }, [getSampleTable]);
+
+  const handleClickReturn = (state) => {
+    setReturnState(state);
     setIsPopup(false);
   };
 
@@ -22,16 +75,26 @@ const PopupSearchBrand = ({ setReturnState, setIsPopup }) => {
           <BtnPopupSearch />
         </div>
         <div className={cx("content-wrap")}>
-          skdlfjlsdkjflkdsjflkdsajflsdaj
-          <br />
-          dfjdsklfjskdlfjsd;lafsa;ddfs
-          <br />
-          fjsdlfjsldfjldsajfladsjfladsj
-          <br />
-          kldjflsdjflksdajflsadjfl;sdajfasd
-          <br />
-          fsdjflksdjfklsdjfklsdajflksdajfl
-          <br />
+          <RenderTable
+            tableProps={{
+              getTableProps,
+              getTableBodyProps,
+              headerGroups,
+              prepareRow,
+              page,
+              pageIndex,
+              pageSize,
+              gotoPage,
+              previousPage,
+              nextPage,
+              canPreviousPage,
+              canNextPage,
+              pageCount,
+              pageOptions,
+              handleClickReturn,
+              returnColumnName: "name",
+            }}
+          />
           <button onClick={() => handleClickReturn()}>데이터 반환</button>
         </div>
       </div>

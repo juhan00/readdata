@@ -21,6 +21,8 @@ const RenderTable = ({ tableProps }) => {
     canNextPage,
     pageCount,
     pageOptions,
+    handleClickReturn,
+    returnColumnName,
   } = tableProps;
 
   return (
@@ -29,11 +31,14 @@ const RenderTable = ({ tableProps }) => {
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())} style={column.headerStyle}>
-                  {column.render("Header")}
-                  <span>{column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}</span>
-                </th>
+              {headerGroup.headers.map((column, index) => (
+                <>
+                  <th {...column.getHeaderProps(column.getSortByToggleProps())} style={column.headerStyle}>
+                    {column.render("Header")}
+                    <span>{column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}</span>
+                  </th>
+                  {index === headerGroup.headers.length - 1 && <td></td>}
+                </>
               ))}
             </tr>
           ))}
@@ -42,11 +47,19 @@ const RenderTable = ({ tableProps }) => {
           {page.map((row) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
-                {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()} style={cell.column.cellStyle}>
-                    {cell.render("Cell")}
-                  </td>
+              <tr {...row.getRowProps()} onDoubleClick={() => handleClickReturn && handleClickReturn(row.original[returnColumnName])}>
+                {row.cells.map((cell, index) => (
+                  <>
+                    <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
+                      {cell.render("Cell")}
+                    </td>
+                    {index === row.cells.length - 1 && (
+                      <td>
+                        <button>취소</button>
+                        <button>취소</button>
+                      </td>
+                    )}
+                  </>
                 ))}
               </tr>
             );
