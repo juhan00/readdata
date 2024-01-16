@@ -1,14 +1,13 @@
-import { useState, useMemo, use } from "react";
+import { useState, useMemo } from "react";
 import PopupSearchAddress from "@/src/components/data/popup/popupSearchAddress";
 
 //styles
-import { useEffect } from "react";
 import styles from "./renderTable.module.scss";
 import className from "classnames/bind";
 
 const cx = className.bind(styles);
 
-const RenderTable = ({ tableProps }) => {
+const RenderTable = ({ tableProps, handleClickReturn, returnColumnName, editMode }) => {
   const [editingRow, setEditingRow] = useState(null);
   const [isAddressPopupOpen, setIsAddressPopupOpen] = useState(false);
   const [columnValues, setColumnValues] = useState({});
@@ -37,15 +36,6 @@ const RenderTable = ({ tableProps }) => {
     const end = Math.min(start + 5, pageOptions.length);
     return Array.from({ length: end - start }, (_, i) => start + i);
   }, [pageIndex, pageOptions.length]);
-
-  // useEffect(() => {
-  //   const currentGroup = Math.floor(pageIndex / 5);
-  //   const start = currentGroup * 5 + 1;
-  //   const end = Math.min((currentGroup + 1) * 5, pageOptions.length + 1);
-  //   const updatedPages = Array.from({ length: end - start }, (_, i) => start + i);
-  //   setPages(updatedPages);
-  //   console.log("pages", updatedPages);
-  // }, [pageIndex, pageOptions.length]);
 
   const handleChange = (columnId, value) => {
     // 입력 필드의 상태를 업데이트
@@ -91,11 +81,11 @@ const RenderTable = ({ tableProps }) => {
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column, index) => (
                 <th {...column.getHeaderProps(column.getSortByToggleProps())} style={column.headerStyle}>
-                  {column.render("Header")}
+                  {column.render("header")}
                   <span>{column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}</span>
                 </th>
               ))}
-              <th></th>
+              {editMode && <th></th>}
             </tr>
           ))}
         </thead>
@@ -108,8 +98,8 @@ const RenderTable = ({ tableProps }) => {
             return (
               <tr {...row.getRowProps()} onDoubleClick={() => handleClickReturn && handleClickReturn(row.original[returnColumnName])}>
                 {row.cells.map((cell) => {
-                  const isAgreeColumn = cell.column.Header === "agree";
-                  const isAddressColumn = cell.column.Header === "address";
+                  const isAgreeColumn = cell.column.id === "agree";
+                  const isAddressColumn = cell.column.id === "address";
 
                   return (
                     <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
@@ -136,7 +126,7 @@ const RenderTable = ({ tableProps }) => {
                             <input
                               value={columnValues[cell.column.id] || cell.value}
                               onClick={(e) => handleClickAddress(cell.column.id, e.target.value)}
-                              onChange={(e) => handleChange(cell.column.index, cell.column.id, e.target.value)}
+                              readOnly
                             />
                           </>
                         ) : (
@@ -146,25 +136,21 @@ const RenderTable = ({ tableProps }) => {
                       ) : (
                         cell.render("Cell")
                       )}
-
-                      {/* {isEditing ? (
-                      <input type="text" value={cell.value} onChange={(e) => cell.column.onEditChange(row.index, e.target.value)} />
-                    ) : (
-                      cell.render("Cell")
-                    )} */}
                     </td>
                   );
                 })}
-                <td>
-                  {isEditing ? (
-                    <>
-                      <button onClick={handleSaveClick}>저장</button>
-                      <button onClick={handleCancelClick}>취소</button>
-                    </>
-                  ) : (
-                    <button onClick={() => handleEditClick(row.index)}>수정</button>
-                  )}
-                </td>
+                {editMode && (
+                  <td>
+                    {isEditing ? (
+                      <>
+                        <button onClick={handleSaveClick}>저장</button>
+                        <button onClick={handleCancelClick}>취소</button>
+                      </>
+                    ) : (
+                      <button onClick={() => handleEditClick(row.index)}>수정</button>
+                    )}
+                  </td>
+                )}
               </tr>
             );
           })}

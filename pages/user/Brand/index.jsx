@@ -170,6 +170,7 @@ const Brand = () => {
                     updateMyData,
                     agreeOptions,
                   }}
+                  editMode={true}
                 />
               )}
             </div>

@@ -12,7 +12,7 @@ const useDownloadExcel = (columns, tableData) => {
     })
   );
 
-  const ws = XLSX.utils.aoa_to_sheet([columns.map((column) => column.Header), ...formattedData]);
+  const ws = XLSX.utils.aoa_to_sheet([columns.map((column) => column.header), ...formattedData]);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, "Sheet 1");
 

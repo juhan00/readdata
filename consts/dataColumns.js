@@ -1,6 +1,6 @@
 export const brandColumns = [
   {
-    Header: "name",
+    header: "name",
     accessor: "name",
     headerStyle: {
       width: "10%",
@@ -11,7 +11,7 @@ export const brandColumns = [
     },
   },
   {
-    Header: "age",
+    header: "age",
     accessor: "age",
     headerStyle: {
       width: "30%",
@@ -22,7 +22,7 @@ export const brandColumns = [
     },
   },
   {
-    Header: "agree",
+    header: "agree",
     accessor: "agree",
     headerStyle: {
       width: "30%",
@@ -33,7 +33,7 @@ export const brandColumns = [
     },
   },
   {
-    Header: "address",
+    header: "address",
     accessor: "address",
     headerStyle: {
       width: "30%",

@@ -29,47 +29,41 @@ const Brand = () => {
   };
 
   const { t } = useTranslation(["common", "dataUser"]);
-  const [storeState, setStoreState] = useState("초기 데이터");
+  const [brandState, setBrandState] = useState("");
+  const [isBrandPopup, setIsBrandPopup] = useState(false);
   const [tableState, setTableState] = useState([]);
-  const [isPopup, setIsPopup] = useState(false);
   const [agreeOptions] = useState(["Y", "N"]);
   const [isModified, setIsModified] = useState(false);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
-  const mutation = useMutation(async () => await getStoreList("B0001"));
+  const mutation = useMutation(getStoreList);
 
-  // const memoizedData = useMemo(
-  //   () => tableState.filter((row) => Object.values(row).some((value) => value.toString().toLowerCase().includes(searchData.toLowerCase()))),
-  //   [tableState, searchData]
-  // );
-
-  const memoizedData = useMemo(() => {
-    return tableState.filter(
-      (row) =>
-        (!searchData.name || row.name.toLowerCase().includes(searchData.name.toLowerCase())) &&
-        (!searchData.age || row.age?.toString().toLowerCase().includes(searchData.age.toLowerCase()))
-    );
-  }, [tableState, searchData]);
+  // const memoizedData = useMemo(() => {
+  //   return tableState.filter(
+  //     (row) =>
+  //       (!searchData.name || row.name.toLowerCase().includes(searchData.name.toLowerCase())) &&
+  //       (!searchData.age || row.age?.toString().toLowerCase().includes(searchData.age.toLowerCase()))
+  //   );
+  // }, [tableState, searchData]);
 
   const updateMyData = useCallback((rowIndex, columnId, value) => {
     setTableState((prevData) => prevData.map((row, index) => (index === rowIndex ? { ...row, [columnId]: value } : row)));
     setIsModified(true);
   }, []);
 
-  useEffect(() => {
-    const getTableData = async () => {
-      try {
-        const data = await mutation.mutateAsync();
-        console.log(data);
-        setTableState(data);
-        // console.log("Data successfully:", data);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
-    };
+  const getTableData = async (brandState) => {
+    try {
+      const data = await mutation.mutateAsync(brandState);
 
+      setTableState(data);
+    } catch (error) {
+      console.error("Failed to fetch data:", error);
+    }
+  };
+
+  useEffect(() => {
     getTableData();
-  }, [getStoreList]);
+  }, []);
 
   const {
     getTableProps,
@@ -88,7 +82,7 @@ const Brand = () => {
   } = useTable(
     {
       columns: storeColumns,
-      data: useMemo(() => memoizedData, [memoizedData]),
+      data: useMemo(() => tableState, [tableState]),
       initialState: { pageIndex: 0, pageSize: 10 },
       // defaultColumn: { Cell: EditableCell },
       // updateMyData,
@@ -99,8 +93,9 @@ const Brand = () => {
     usePagination
   );
 
-  const handleClickPopup = () => {
-    setIsPopup(true);
+  const handleClickBrandPopup = () => {
+    console.log("handleClickBrandPopup");
+    setIsBrandPopup(true);
   };
 
   const handleFieldChange = (field, e) => {
@@ -112,28 +107,43 @@ const Brand = () => {
   };
 
   const handleSearchSubmit = (e) => {
-    e.preventDefault();
-    setSearchData((prevData) => ({
-      ...prevData,
-      ...searchField,
-    }));
+    console.log("검색");
+    getTableData(brandState);
+    // e.preventDefault();
+    // console.log(searchField);
+    // setSearchData((prevData) => ({
+    //   ...prevData,
+    //   ...searchField,
+    // }));
   };
+
+  useEffect(() => {
+    console.log(searchField);
+  }, [searchField]);
 
   return (
     <>
-      {isPopup && <PopupSearchBrand setReturnState={setStoreState} setIsPopup={setIsPopup} />}
+      {isBrandPopup && <PopupSearchBrand setReturnState={setBrandState} setIsPopup={setIsBrandPopup} />}
 
       <div className={cx("brand")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_SELECT} title={"name"} name={"test"} />
+              <SearchItem
+                searchType={SEARCH_TYPE_INPUT}
+                title={"브랜드명"}
+                id={"brand"}
+                name={"brand"}
+                value={brandState}
+                onClick={() => handleClickBrandPopup()}
+                readOnly={true}
+              />
             </div>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} title={"name"} name={"name"} onChange={handleFieldChange} />
+              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.name} title={"name"} id={"name"} onChange={handleFieldChange} />
             </div>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} title={"age"} name={"age"} onChange={handleFieldChange} />
+              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.age} title={"age"} id={"age"} onChange={handleFieldChange} />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
@@ -151,7 +161,7 @@ const Brand = () => {
               </div>
             </div>
             <div className={cx("item")}>
-              {!memoizedData.length ? (
+              {!tableState.length ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <RenderTable
@@ -173,14 +183,10 @@ const Brand = () => {
                     updateMyData,
                     agreeOptions,
                   }}
+                  editMode={true}
                 />
               )}
             </div>
-            <div className={cx("item")}>
-              {storeState}
-              <button onClick={() => handleClickPopup()}>팝업열기</button>
-            </div>
-            <div className={cx("item")}>{storeState}</div>
           </div>
         </div>
       </div>
