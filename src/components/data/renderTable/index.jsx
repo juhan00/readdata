@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo, use } from "react";
 import PopupSearchAddress from "@/src/components/data/popup/popupSearchAddress";
 
 //styles
@@ -12,7 +12,7 @@ const RenderTable = ({ tableProps }) => {
   const [editingRow, setEditingRow] = useState(null);
   const [isAddressPopupOpen, setIsAddressPopupOpen] = useState(false);
   const [columnValues, setColumnValues] = useState({});
-
+  // const [pages, setPages] = useState();
   const {
     getTableProps,
     getTableBodyProps,
@@ -28,11 +28,24 @@ const RenderTable = ({ tableProps }) => {
     canNextPage,
     pageCount,
     pageOptions,
-    handleClickReturn,
-    returnColumnName,
     updateMyData,
     agreeOptions,
   } = tableProps;
+
+  const pages = useMemo(() => {
+    const start = Math.floor(pageIndex / 5) * 5;
+    const end = Math.min(start + 5, pageOptions.length);
+    return Array.from({ length: end - start }, (_, i) => start + i);
+  }, [pageIndex, pageOptions.length]);
+
+  // useEffect(() => {
+  //   const currentGroup = Math.floor(pageIndex / 5);
+  //   const start = currentGroup * 5 + 1;
+  //   const end = Math.min((currentGroup + 1) * 5, pageOptions.length + 1);
+  //   const updatedPages = Array.from({ length: end - start }, (_, i) => start + i);
+  //   setPages(updatedPages);
+  //   console.log("pages", updatedPages);
+  // }, [pageIndex, pageOptions.length]);
 
   const handleChange = (columnId, value) => {
     // 입력 필드의 상태를 업데이트
@@ -157,7 +170,9 @@ const RenderTable = ({ tableProps }) => {
           })}
         </tbody>
       </table>
-
+      <span>
+        페이지 {pageIndex + 1} / {pageOptions.length}
+      </span>
       <div className="pagination">
         <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
           {"<<"}
@@ -165,9 +180,9 @@ const RenderTable = ({ tableProps }) => {
         <button onClick={() => previousPage()} disabled={!canPreviousPage}>
           {"<"}
         </button>
-        {pageOptions.map((page, index) => (
-          <button key={index} onClick={() => gotoPage(index)} disabled={pageIndex === index}>
-            {index + 1}
+        {pages.map((page, index) => (
+          <button key={index} onClick={() => gotoPage(page)} disabled={pageIndex === page}>
+            {page + 1}
           </button>
         ))}
         <button onClick={() => nextPage()} disabled={!canNextPage}>
