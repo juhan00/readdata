@@ -1,0 +1,36 @@
+.search-date-items {
+  display: flex;
+  align-items: center;
+  .date-picker + .date-picker {
+    margin-left: 2rem;
+  }
+  .tilde {
+    font-size: 1.4rem;
+    padding: 0.8rem;
+  }
+  label {
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+    letter-spacing: -0.016rem;
+    margin-right: 1.5rem;
+  }
+
+  select {
+    display: inline-block;
+    width: auto;
+    width: 11rem;
+    border: 0.1rem solid #c2c2c2;
+    background-color: #fbfbfb;
+    background-position: calc(100% - 0.5rem) 50%;
+  }
+  input {
+    display: inline-block;
+    width: auto;
+    width: 11rem;
+    border: 0.1rem solid #c2c2c2;
+    background: url("/assets/images/data/ico_calender.png") no-repeat calc(100% - 0.3rem) 50% / contain;
+    background-color: #fbfbfb;
+    background-size: 2.4rem 2.4rem;
+  }
+}

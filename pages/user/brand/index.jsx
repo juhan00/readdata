@@ -16,6 +16,10 @@ import { useMutation } from "react-query";
 import useDownloadExcel from "@/utils/useDownloadExcel";
 import useUploadExcel from "@/utils/useUploadExcel";
 
+//datepicker
+import SearchDateItems from "@/src/components/data/searchDateItems";
+import "react-datepicker/dist/react-datepicker.css";
+
 //styles
 import className from "classnames/bind";
 import styles from "./brand.module.scss";
@@ -36,6 +40,17 @@ const Brand = () => {
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
   const mutation = useMutation(getSampleTable);
+
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+  };
+
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
+  };
 
   // const memoizedData = useMemo(
   //   () => tableState.filter((row) => Object.values(row).some((value) => value.toString().toLowerCase().includes(searchData.toLowerCase()))),
@@ -131,6 +146,14 @@ const Brand = () => {
             </div>
             <div className={cx("item")}>
               <SearchItem searchType={SEARCH_TYPE_INPUT} title={"age"} name={"age"} onChange={handleFieldChange} />
+            </div>
+            <div className={cx("item")}>
+              <SearchDateItems
+                startDate={startDate}
+                endDate={endDate}
+                handleStartDateChange={handleStartDateChange}
+                handleEndDateChange={handleEndDateChange}
+              />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
