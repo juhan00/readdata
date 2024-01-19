@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import PopupSearchAddress from "@/src/components/data/popup/popupSearchAddress";
 
 //styles
@@ -7,10 +7,24 @@ import className from "classnames/bind";
 
 const cx = className.bind(styles);
 
-const RenderTable = ({ tableProps, handleClickReturn, returnColumnName, editMode }) => {
+const RenderTable = ({
+  tableProps,
+  handleClickReturn,
+  returnColumnName,
+  editMode,
+  handleUpdateData,
+  handleAddData,
+  isAdded,
+  setIsAdded,
+  isEditing,
+  setIsEditing,
+  setTableState,
+}) => {
   const [editingRow, setEditingRow] = useState(null);
   const [isAddressPopupOpen, setIsAddressPopupOpen] = useState(false);
   const [columnValues, setColumnValues] = useState({});
+  const [booleanOption, setBooleanOption] = useState([0, 1]);
+
   // const [pages, setPages] = useState();
   const {
     getTableProps,
@@ -27,8 +41,7 @@ const RenderTable = ({ tableProps, handleClickReturn, returnColumnName, editMode
     canNextPage,
     pageCount,
     pageOptions,
-    updateMyData,
-    agreeOptions,
+    // updateMyData,
   } = tableProps;
 
   const pages = useMemo(() => {
@@ -38,7 +51,6 @@ const RenderTable = ({ tableProps, handleClickReturn, returnColumnName, editMode
   }, [pageIndex, pageOptions.length]);
 
   const handleChange = (columnId, value) => {
-    // 입력 필드의 상태를 업데이트
     setColumnValues((prevColumnValues) => ({
       ...prevColumnValues,
       [columnId]: value,
@@ -46,18 +58,31 @@ const RenderTable = ({ tableProps, handleClickReturn, returnColumnName, editMode
   };
 
   const handleEditClick = (rowIndex) => {
-    setEditingRow(rowIndex);
+    setIsEditing(true);
+
+    if (!isAdded) {
+      // setIsAdded(false);
+      // refetchUserData();
+      setEditingRow(rowIndex);
+      setColumnValues(page[rowIndex]?.values);
+    }
   };
 
   const handleSaveClick = () => {
-    // 여기에서 수정 내용을 저장하는 로직을 구현하세요.
     setEditingRow(null);
+    handleUpdateData({ ...columnValues });
+    setIsEditing(false);
   };
 
   const handleCancelClick = () => {
-    // 여기에서 수정 취소 로직을 구현하세요.
     setColumnValues({});
     setEditingRow(null);
+    setIsEditing(false);
+  };
+
+  const handleAddCancelClick = () => {
+    setTableState((prevTableState) => prevTableState.slice(1));
+    setIsAdded(false);
   };
 
   const handleClickAddress = (index, columnId) => {
@@ -65,13 +90,16 @@ const RenderTable = ({ tableProps, handleClickReturn, returnColumnName, editMode
   };
 
   const handleSelectAddress = (selectedAddress) => {
-    // 주소 검색 팝업에서 선택한 주소를 업데이트
     setColumnValues((prevColumnValues) => ({
       ...prevColumnValues,
       ["address"]: selectedAddress,
     }));
     setIsAddressPopupOpen(false);
   };
+
+  useEffect(() => {
+    console.log("columnValues", columnValues);
+  }, [columnValues]);
 
   return (
     <div className={cx("table-wrap")}>
@@ -80,9 +108,9 @@ const RenderTable = ({ tableProps, handleClickReturn, returnColumnName, editMode
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column, index) => (
-                <th {...column.getHeaderProps(column.getSortByToggleProps())} style={column.headerStyle}>
+                <th {...column.getHeaderProps(isAdded ? {} : column.getSortByToggleProps())} style={column.headerStyle}>
                   {column.render("header")}
-                  <span>{column.isSorted ? (column.isSortedDesc ? " 🔽" : " 🔼") : ""}</span>
+                  <span>{column.isSorted ? (column.isSortedDesc ? "v" : "^") : ""}</span>
                 </th>
               ))}
               {editMode && <th></th>}
@@ -93,45 +121,54 @@ const RenderTable = ({ tableProps, handleClickReturn, returnColumnName, editMode
           {page.map((row, rowIndex) => {
             prepareRow(row);
 
-            const isEditing = editingRow === rowIndex;
-
+            const isEditingRow = editingRow === rowIndex || (isAdded && rowIndex === 0);
             return (
               <tr {...row.getRowProps()} onDoubleClick={() => handleClickReturn && handleClickReturn(row.original[returnColumnName])}>
                 {row.cells.map((cell) => {
-                  const isAgreeColumn = cell.column.id === "agree";
-                  const isAddressColumn = cell.column.id === "address";
+                  const isAuthorityColumn = cell.column.type === "authority";
+                  const isUseflagColumn = cell.column.type === "useflag";
+                  const isAddressColumn = cell.column.type === "address";
 
                   return (
                     <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
-                      {isEditing ? (
-                        isAgreeColumn ? (
-                          <select value={columnValues[cell.column.id] || cell.value} onChange={(e) => handleChange(cell.column.id, e.target.value)}>
-                            {agreeOptions.map((option) => (
+                      {isEditingRow ? (
+                        isAuthorityColumn ? (
+                          <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
+                            {booleanOption.map((option) => (
                               <option key={option} value={option}>
-                                {option}
+                                {option === 0 ? "사용자" : "관리자"}
                               </option>
                             ))}
                           </select>
-                        ) : // 주소 컬럼에 대해서만 주소 검색 팝업 렌더링
-                        isAddressColumn ? (
+                        ) : isUseflagColumn ? (
+                          <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
+                            {booleanOption.map((option) => (
+                              <option key={option} value={option}>
+                                {option === 0 ? "사용안함" : "사용"}
+                              </option>
+                            ))}
+                          </select>
+                        ) : isAddressColumn ? (
                           <>
                             {isAddressPopupOpen && (
                               <PopupSearchAddress
                                 onSelectAddress={handleSelectAddress}
-                                orgAddress={columnValues[cell.column.id] || cell.value}
+                                orgAddress={columnValues[cell.column.id] || cell.value || ""}
                                 // isAddressPopupOpen={isAddressPopupOpen}
                                 onClose={() => setIsAddressPopupOpen(false)}
                               />
                             )}
                             <input
-                              value={columnValues[cell.column.id] || cell.value}
+                              value={columnValues[cell.column.id] || cell.value || ""}
                               onClick={(e) => handleClickAddress(cell.column.id, e.target.value)}
                               readOnly
                             />
                           </>
                         ) : (
-                          // 나머지 컬럼에 대해서는 input 엘리먼트 렌더링
-                          <input value={columnValues[cell.column.id] || cell.value} onChange={(e) => handleChange(cell.column.id, e.target.value)} />
+                          <input
+                            value={columnValues[cell.column.id] || cell.value || ""}
+                            onChange={(e) => handleChange(cell.column.id, e.target.value)}
+                          />
                         )
                       ) : (
                         cell.render("Cell")
@@ -141,11 +178,18 @@ const RenderTable = ({ tableProps, handleClickReturn, returnColumnName, editMode
                 })}
                 {editMode && (
                   <td>
-                    {isEditing ? (
-                      <>
-                        <button onClick={handleSaveClick}>저장</button>
-                        <button onClick={handleCancelClick}>취소</button>
-                      </>
+                    {isEditingRow ? (
+                      isAdded && rowIndex === 0 ? (
+                        <>
+                          <button>저장</button>
+                          <button onClick={handleAddCancelClick}>취소</button>
+                        </>
+                      ) : (
+                        <>
+                          <button onClick={handleSaveClick}>저장</button>
+                          <button onClick={handleCancelClick}>취소</button>
+                        </>
+                      )
                     ) : (
                       <button onClick={() => handleEditClick(row.index)}>수정</button>
                     )}

@@ -11,8 +11,8 @@ export const brandColumns = [
     },
   },
   {
-    header: "브랜드 코드",
-    accessor: "brand_code",
+    header: "브랜드",
+    accessor: "brand_name",
     headerStyle: {
       // width: "10%",
       textAlign: "center",
@@ -22,8 +22,8 @@ export const brandColumns = [
     },
   },
   {
-    header: "브랜드명",
-    accessor: "brand_name",
+    header: "가맹점",
+    accessor: "store",
     headerStyle: {
       // width: "30%",
       textAlign: "center",
@@ -33,7 +33,7 @@ export const brandColumns = [
     },
   },
   {
-    header: "사용구분",
+    header: "매출일자",
     accessor: "brand_flag",
     headerStyle: {
       // width: "10%",

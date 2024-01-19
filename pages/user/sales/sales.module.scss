@@ -1,0 +1,39 @@
+.brand {
+  .row {
+    @include data-content-row;
+  }
+
+  .search-wrap {
+    display: flex;
+    .item {
+      margin-left: 2rem;
+    }
+    .btn-submit {
+      margin-left: 2rem;
+    }
+  }
+  .content-btn-wrap {
+    display: flex;
+    width: 100%;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+    button + button {
+      margin-left: 1.8rem;
+    }
+    label[for="file"] {
+      margin-left: 1.8rem;
+    }
+  }
+  .content-wrap {
+    min-height: 50rem;
+    .no-data {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    &.full-height {
+      min-height: calc(100vh - 21.8rem);
+    }
+  }
+}

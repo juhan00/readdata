@@ -16,9 +16,11 @@ export const brandColumns = [
     headerStyle: {
       width: "30%",
       textAlign: "center",
+      display: "none",
     },
     cellStyle: {
       textAlign: "center",
+      display: "none",
     },
   },
   {

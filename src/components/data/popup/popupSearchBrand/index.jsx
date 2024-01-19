@@ -3,7 +3,7 @@ import DataPopupLayout from "@/layouts/dataPopupLayout";
 import PopupSearchItem from "../popupSearchItem";
 import { SEARCH_TYPE_INPUT } from "@/consts/common";
 import BtnPopupSearch from "../../button/btnPopupSearch";
-import { getBrandList } from "@/utils/api/brandList";
+import { getBrandList } from "@/utils/api/getBrandList";
 import { useMutation } from "react-query";
 import RenderTable from "@/src/components/data/renderTable";
 import { useTable, useSortBy, usePagination } from "react-table";

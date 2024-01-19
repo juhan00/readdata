@@ -1,5 +1,5 @@
 import { SEARCH_TYPE_INPUT, SEARCH_TYPE_SELECT } from "@/consts/common";
-import { brandColumns } from "@/consts/brandColumns";
+import { brandColumns } from "@/consts/dataColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import BtnSearch from "@/src/components/data/button/btnSearch";
@@ -7,7 +7,7 @@ import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
 import PopupSearchBrand from "@/src/components/data/popup/popupSearchBrand";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { getBrandList } from "@/utils/api/getBrandList";
+import { getSampleTable } from "@/utils/api/sampleTable";
 import { useTranslation } from "next-i18next";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePagination, useSortBy, useTable } from "react-table";
@@ -32,7 +32,6 @@ const Brand = () => {
   };
 
   const { t } = useTranslation(["common", "dataUser"]);
-  const [companyCode, setCompanyCode] = useState("C0002");
   const [brandState, setBrandState] = useState("초기 데이터");
   const [tableState, setTableState] = useState([]);
   const [isPopup, setIsPopup] = useState(false);
@@ -40,7 +39,7 @@ const Brand = () => {
   const [isModified, setIsModified] = useState(false);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
-  const mutation = useMutation(getBrandList);
+  const mutation = useMutation(getSampleTable);
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -71,19 +70,19 @@ const Brand = () => {
     setIsModified(true);
   }, []);
 
-  const getTableData = async (parm) => {
-    try {
-      const data = await mutation.mutateAsync(parm);
-      setTableState(data);
-      // console.log("Data successfully:", data);
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
-    }
-  };
-
   useEffect(() => {
-    getTableData(companyCode);
-  }, [companyCode]);
+    const getTableData = async () => {
+      try {
+        const data = await mutation.mutateAsync();
+        setTableState(data);
+        // console.log("Data successfully:", data);
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+
+    getTableData();
+  }, [getSampleTable]);
 
   const {
     getTableProps,
@@ -140,10 +139,21 @@ const Brand = () => {
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_SELECT} title={"브랜드명"} id={"brand"} readOnly={true} />
+              <SearchItem searchType={SEARCH_TYPE_SELECT} title={"name"} name={"test"} />
             </div>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} title={"사용구분"} id={"brand_flag"} onChange={handleFieldChange} />
+              <SearchItem searchType={SEARCH_TYPE_INPUT} title={"name"} name={"name"} onChange={handleFieldChange} />
+            </div>
+            <div className={cx("item")}>
+              <SearchItem searchType={SEARCH_TYPE_INPUT} title={"age"} name={"age"} onChange={handleFieldChange} />
+            </div>
+            <div className={cx("item")}>
+              <SearchDateItems
+                startDate={startDate}
+                endDate={endDate}
+                handleStartDateChange={handleStartDateChange}
+                handleEndDateChange={handleEndDateChange}
+              />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
