@@ -16,7 +16,6 @@ const RenderTable = ({
   handleAddData,
   isAdded,
   setIsAdded,
-  isEditing,
   setIsEditing,
   setTableState,
 }) => {
@@ -68,16 +67,22 @@ const RenderTable = ({
     }
   };
 
-  const handleSaveClick = () => {
+  const handleEditSaveClick = () => {
     setEditingRow(null);
     handleUpdateData({ ...columnValues });
     setIsEditing(false);
   };
 
-  const handleCancelClick = () => {
+  const handleEditCancelClick = () => {
     setColumnValues({});
     setEditingRow(null);
     setIsEditing(false);
+  };
+
+  const handleAddSaveClick = () => {
+    handleAddData({ ...columnValues });
+    setTableState((prevTableState) => prevTableState.slice(1));
+    setIsAdded(false);
   };
 
   const handleAddCancelClick = () => {
@@ -108,7 +113,7 @@ const RenderTable = ({
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column, index) => (
-                <th {...column.getHeaderProps(isAdded ? {} : column.getSortByToggleProps())} style={column.headerStyle}>
+                <th {...column.getHeaderProps(isAdded || editingRow != null ? {} : column.getSortByToggleProps())} style={column.headerStyle}>
                   {column.render("header")}
                   <span>{column.isSorted ? (column.isSortedDesc ? "v" : "^") : ""}</span>
                 </th>
@@ -181,13 +186,13 @@ const RenderTable = ({
                     {isEditingRow ? (
                       isAdded && rowIndex === 0 ? (
                         <>
-                          <button>저장</button>
-                          <button onClick={handleAddCancelClick}>취소</button>
+                          <button onClick={() => handleAddSaveClick()}>저장</button>
+                          <button onClick={() => handleAddCancelClick()}>취소</button>
                         </>
                       ) : (
                         <>
-                          <button onClick={handleSaveClick}>저장</button>
-                          <button onClick={handleCancelClick}>취소</button>
+                          <button onClick={() => handleEditSaveClick()}>저장</button>
+                          <button onClick={() => handleEditCancelClick()}>취소</button>
                         </>
                       )
                     ) : (

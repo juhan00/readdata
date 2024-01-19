@@ -15,22 +15,22 @@ export const getUserList = async () => {
   return data.data;
 };
 
-export const updateUserList = async ({ user_id, user_pw, user_name, email, phone_num, authority, useflag, company_code, company_name }) => {
+export const updateUserList = async (data) => {
   const response = await fetch(`/user/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      user_id: user_id,
-      user_pw: user_pw,
-      user_name: user_name,
-      email: email,
-      phone_num: phone_num,
-      authority: authority,
-      useflag: useflag,
-      company_code: company_code,
-      company_name: company_name,
+      user_id: data.uid,
+      user_pw: data.upw,
+      user_name: data.uname,
+      email: data.email,
+      phone_num: data.phone,
+      authority: data.authority,
+      useflag: data.use_flag,
+      companyCode: data.company_code,
+      company_name: data.company_name,
       joinFlag: "unjoin",
     }),
   });
@@ -40,4 +40,31 @@ export const updateUserList = async ({ user_id, user_pw, user_name, email, phone
   }
 
   console.log("업데이트 완료");
+};
+
+export const addUserList = async (data) => {
+  const response = await fetch(`/user/post`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      user_id: data.uid,
+      user_pw: data.upw,
+      user_name: data.uname,
+      email: data.email,
+      phone_num: data.phone,
+      authority: data.authority,
+      useflag: data.use_flag,
+      companyCode: data.company_code,
+      company_name: data.company_name,
+      joinFlag: "join",
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch data.");
+  }
+
+  console.log("추가 완료");
 };

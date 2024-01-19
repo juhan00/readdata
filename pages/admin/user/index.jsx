@@ -1,21 +1,15 @@
-import { SEARCH_TYPE_INPUT, SEARCH_TYPE_SELECT } from "@/consts/common";
+import { SEARCH_TYPE_INPUT } from "@/consts/common";
 import { userColumns } from "@/consts/userColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
-import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
-import PopupSearchBrand from "@/src/components/data/popup/popupSearchBrand";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { getSampleTable } from "@/utils/api/sampleTable";
+import { addUserList, getUserList, updateUserList } from "@/utils/api/user";
 import { useTranslation } from "next-i18next";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { QueryClient, useMutation, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
-import EditableCell from "@/src/components/data/editableCell";
-import { useQuery, useMutation, QueryClient, QueryClientProvider } from "react-query";
-import useDownloadExcel from "@/utils/useDownloadExcel";
-import useUploadExcel from "@/utils/useUploadExcel";
-import { getUserList, updateUserList } from "@/utils/api/user";
 
 //styles
 import className from "classnames/bind";
@@ -47,51 +41,23 @@ const User = () => {
     }
   }, [userData, isLoadingUserData]);
 
-  const updateMutation = useMutation(
-    async (data) =>
-      await updateUserList({
-        user_id: data.uid,
-        user_pw: data.upw,
-        user_name: data.uname,
-        email: data.email,
-        phone_num: data.phone,
-        authority: data.authority,
-        useflag: data.use_flag,
-        company_code: data.company_code,
-        company_name: data.company_name,
-      }),
-    {
-      onSuccess: () => {
-        refetchUserData();
-      },
-      onError: (error) => {
-        console.error("Update error:", error);
-      },
-    }
-  );
+  const updateMutation = useMutation(async (data) => await updateUserList(data), {
+    onSuccess: () => {
+      refetchUserData();
+    },
+    onError: (error) => {
+      console.error("Update error:", error);
+    },
+  });
 
-  const addMutation = useMutation(
-    async (data) =>
-      await addUserList({
-        user_id: data.uid,
-        user_pw: data.upw,
-        user_name: data.uname,
-        email: data.email,
-        phone_num: data.phone,
-        authority: data.authority,
-        useflag: data.use_flag,
-        company_code: data.company_code,
-        company_name: data.company_name,
-      }),
-    {
-      onSuccess: () => {
-        refetchUserData();
-      },
-      onError: (error) => {
-        console.error("Update error:", error);
-      },
-    }
-  );
+  const addMutation = useMutation(async (data) => await addUserList(data), {
+    onSuccess: () => {
+      refetchUserData();
+    },
+    onError: (error) => {
+      console.error("Update error:", error);
+    },
+  });
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
