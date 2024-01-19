@@ -3,6 +3,7 @@ import { userColumns } from "@/consts/userColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
+import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
 import { addUserList, getUserList, updateUserList } from "@/utils/api/user";
@@ -31,6 +32,7 @@ const User = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  // const [excelData, setExcelData] = useState([]);
 
   const { data: userData, isLoading: isLoadingUserData, refetch: refetchUserData } = useQuery("getTableData", getUserList);
 
@@ -58,6 +60,21 @@ const User = () => {
       console.error("Update error:", error);
     },
   });
+
+  const excelMutation = useMutation(
+    async (excelData) => {
+      const promises = excelData.map((data) => addUserList(data));
+      await Promise.all(promises);
+    },
+    {
+      onSuccess: () => {
+        refetchUserData();
+      },
+      onError: (error) => {
+        console.error("Update error:", error);
+      },
+    }
+  );
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
@@ -140,9 +157,24 @@ const User = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("isEditing", isEditing);
-  }, [isEditing]);
+  const transformExcelCell = (excelData) =>
+    excelData.map((item) => ({
+      uid: item["사용자 ID"],
+      upw: item["사용자 PW"],
+      uname: item["사용자명"],
+      email: item["이메일"],
+      phone: item["전화번호"],
+      company_code: item["회사코드"],
+      company_name: item["회사명"],
+      authority: item["사용권한"],
+      use_flag: item["사용여부"],
+    }));
+
+  // useEffect(() => {
+  //   if (transformExcelData.length > 0) {
+  //     excelMutation.mutate(transformExcelData);
+  //   }
+  // }, [excelMutation, transformExcelData]);
 
   return (
     <>
@@ -166,7 +198,8 @@ const User = () => {
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
                 <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={userColumns} tableData={tableState} />
+                <BtnExcelDown columns={userColumns} tableData={memoizedData} />
+                <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
               </div>
             </div>
             <div className={cx("item")}>
@@ -198,6 +231,7 @@ const User = () => {
                   handleUpdateData={handleUpdateData}
                   handleAddData={handleAddData}
                   setTableState={setTableState}
+                  transformExcelCell={transformExcelCell}
                 />
               )}
             </div>
