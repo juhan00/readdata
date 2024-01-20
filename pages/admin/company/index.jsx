@@ -26,7 +26,7 @@ const Compnay = () => {
     flag: "",
   };
 
-  const { t } = useTranslation(["common", "dataUser"]);
+  const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
   const [isModified, setIsModified] = useState(false);
   const [searchData, setSearchData] = useState(searchFieldData);
@@ -205,7 +205,9 @@ const Compnay = () => {
               </div>
             </div>
             <div className={cx("item")}>
-              {!tableState.length ? (
+              {isLoadingCompanyData ? (
+                <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+              ) : !memoizedData.length ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <RenderTable

@@ -1,4 +1,14 @@
 .table-wrap {
+  overflow-x: auto;
+  padding-bottom: 2rem;
+  &::-webkit-scrollbar {
+    height: 0.4rem;
+  }
+  &::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background: #bebebe;
+  }
+
   table {
     width: 100%;
     border-spacing: 0;
@@ -11,6 +21,7 @@
       letter-spacing: -0.014rem;
       th {
         padding: 0 1rem;
+        white-space: nowrap;
       }
       th + th {
         border-left: 0.1rem solid $color-white;

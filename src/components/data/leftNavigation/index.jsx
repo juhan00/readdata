@@ -72,6 +72,11 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
                   {t("data.admin_menu.menu5")}
                 </button>
               </li>
+              <li>
+                <button className={cx("menu6", adminMenu.menu === 6 && "active")} onClick={() => handleClickAdminMenu(6)}>
+                  {t("data.admin_menu.menu6")}
+                </button>
+              </li>
             </ul>
           )}
         </nav>

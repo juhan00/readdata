@@ -1,29 +1,35 @@
 import { SEARCH_TYPE_INPUT } from "@/consts/common";
-import { userColumns } from "@/consts/userColumns";
+import { salesDayColumns } from "@/consts/salesDayColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
 import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { addUserList, getUserList, updateUserList } from "@/utils/api/user";
+import SearchDateItems from "@/src/components/data/searchDateItems";
+import { getSalesDayList } from "@/utils/api/sales";
 import { useTranslation } from "next-i18next";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
+import useChangeFormatDate from "@/utils/useChangeFormatDate";
 
 //styles
 import className from "classnames/bind";
-import styles from "./user.module.scss";
+import styles from "./salesDay.module.scss";
 const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const User = () => {
+const SalesDay = () => {
   const searchFieldData = {
     uid: "",
     uname: "",
   };
+
+  const today = new Date();
+  const oneMonthAgo = new Date(today);
+  oneMonthAgo.setMonth(today.getMonth() - 1);
 
   const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
@@ -32,49 +38,39 @@ const User = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  // const [excelData, setExcelData] = useState([]);
+  const [startDate, setStartDate] = useState(oneMonthAgo);
+  const [endDate, setEndDate] = useState(today);
 
-  const { data: userData, isLoading: isLoadingUserData, refetch: refetchUserData } = useQuery("getTableData", getUserList);
+  const formatStartDate = useMemo(() => {
+    return useChangeFormatDate(startDate);
+  }, [startDate]);
+
+  const formatEndDate = useMemo(() => {
+    return useChangeFormatDate(endDate);
+  }, [endDate]);
+
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+  };
+
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
+  };
+
+  const {
+    data: salesDayData,
+    isLoading: isLoadingSalesDayData,
+    refetch: refetchSalesDayData,
+  } = useQuery(["getTableData", formatEndDate], () => getSalesDayList(formatStartDate, formatEndDate), {
+    enabled: formatStartDate !== undefined && formatEndDate !== undefined,
+  });
 
   useEffect(() => {
-    if (!isLoadingUserData && userData) {
+    if (!isLoadingSalesDayData && salesDayData) {
       console.log("setTableState");
-      setTableState(userData);
+      setTableState(salesDayData);
     }
-  }, [userData, isLoadingUserData]);
-
-  const updateMutation = useMutation(async (data) => await updateUserList(data), {
-    onSuccess: () => {
-      refetchUserData();
-    },
-    onError: (error) => {
-      console.error("Update error:", error);
-    },
-  });
-
-  const addMutation = useMutation(async (data) => await addUserList(data), {
-    onSuccess: () => {
-      refetchUserData();
-    },
-    onError: (error) => {
-      console.error("Update error:", error);
-    },
-  });
-
-  const excelMutation = useMutation(
-    async (excelData) => {
-      const promises = excelData.map((data) => addUserList(data));
-      await Promise.all(promises);
-    },
-    {
-      onSuccess: () => {
-        refetchUserData();
-      },
-      onError: (error) => {
-        console.error("Update error:", error);
-      },
-    }
-  );
+  }, [salesDayData, isLoadingSalesDayData]);
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
@@ -100,7 +96,7 @@ const User = () => {
     pageOptions,
   } = useTable(
     {
-      columns: userColumns,
+      columns: salesDayColumns,
       data: useMemo(() => memoizedData, [memoizedData]),
       initialState: { pageIndex: 0, pageSize: 10 },
       autoResetPage: false,
@@ -170,17 +166,23 @@ const User = () => {
       use_flag: item["사용여부"],
     }));
 
-  // useEffect(() => {
-  //   if (transformExcelData.length > 0) {
-  //     excelMutation.mutate(transformExcelData);
-  //   }
-  // }, [excelMutation, transformExcelData]);
+  useEffect(() => {
+    console.log("tableState", tableState);
+  }, [tableState]);
 
   return (
     <>
       <div className={cx("brand")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
+            <div className={cx("item")}>
+              <SearchDateItems
+                startDate={startDate}
+                endDate={endDate}
+                handleStartDateChange={handleStartDateChange}
+                handleEndDateChange={handleEndDateChange}
+              />
+            </div>
             <div className={cx("item")}>
               <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.uid} title={"사용자 ID"} id={"uid"} onChange={handleFieldChange} />
             </div>
@@ -198,12 +200,11 @@ const User = () => {
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
                 <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={userColumns} tableData={memoizedData} />
-                <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
+                <BtnExcelDown columns={salesDayColumns} tableData={memoizedData} />
               </div>
             </div>
             <div className={cx("item")}>
-              {isLoadingUserData ? (
+              {isLoadingSalesDayData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
               ) : !memoizedData.length ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
@@ -225,7 +226,7 @@ const User = () => {
                     pageCount,
                     pageOptions,
                   }}
-                  editMode={true}
+                  editMode={false}
                   isAdded={isAdded}
                   setIsAdded={setIsAdded}
                   isEditing={isEditing}
@@ -244,4 +245,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default SalesDay;

@@ -5,6 +5,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
 import Compnay from "./company";
 import User from "./user";
+import SalesDay from "./salesDay";
 import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";
 
 //styles
@@ -21,6 +22,7 @@ const Admin = () => {
       <DataLayout useType={USE_TYPE_ADMIN} adminMenu={{ menu: adminMenu, setMenu: setAdminMenu }}>
         {adminMenu === 1 && <Compnay />}
         {adminMenu === 2 && <User />}
+        {adminMenu === 4 && <SalesDay />}
         admin
       </DataLayout>
     </div>
