@@ -1,12 +1,12 @@
-import { SEARCH_TYPE_INPUT } from "@/consts/common";
-import { userColumns } from "@/consts/userColumns";
+import { SEARCH_TYPE_INPUT, SEARCH_TYPE_SELECT_FLAG } from "@/consts/common";
+import { companyColumns } from "@/consts/companyColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
+import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
-import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { addUserList, getUserList, updateUserList } from "@/utils/api/user";
+import { addUserList, getCompanyList, updateUserList } from "@/utils/api/company";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
@@ -14,15 +14,16 @@ import { usePagination, useSortBy, useTable } from "react-table";
 
 //styles
 import className from "classnames/bind";
-import styles from "./user.module.scss";
+import styles from "./company.module.scss";
 const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const User = () => {
+const Compnay = () => {
   const searchFieldData = {
-    uid: "",
-    uname: "",
+    company_name: "",
+    boss: "",
+    flag: "",
   };
 
   const { t } = useTranslation(["common", "dataUser"]);
@@ -32,29 +33,28 @@ const User = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  // const [excelData, setExcelData] = useState([]);
 
-  const { data: userData, isLoading: isLoadingUserData, refetch: refetchUserData } = useQuery("getTableData", getUserList);
+  const { data: companyData, isLoading: isLoadingCompanyData, refetch: refetchCompanyData } = useQuery("getTableData", getCompanyList);
 
   useEffect(() => {
-    if (!isLoadingUserData && userData) {
+    if (!isLoadingCompanyData && companyData) {
       console.log("setTableState");
-      setTableState(userData);
+      setTableState(companyData);
     }
-  }, [userData, isLoadingUserData]);
+  }, [companyData, isLoadingCompanyData]);
 
-  const updateMutation = useMutation(async (data) => await updateUserList(data), {
+  const updateMutation = useMutation(async (data) => await updateCompanyList(data), {
     onSuccess: () => {
-      refetchUserData();
+      refetchCompanyData();
     },
     onError: (error) => {
       console.error("Update error:", error);
     },
   });
 
-  const addMutation = useMutation(async (data) => await addUserList(data), {
+  const addMutation = useMutation(async (data) => await addCompanyList(data), {
     onSuccess: () => {
-      refetchUserData();
+      refetchCompanyData();
     },
     onError: (error) => {
       console.error("Update error:", error);
@@ -63,12 +63,12 @@ const User = () => {
 
   const excelMutation = useMutation(
     async (excelData) => {
-      const promises = excelData.map((data) => addUserList(data));
+      const promises = excelData.map((data) => addCompanyList(data));
       await Promise.all(promises);
     },
     {
       onSuccess: () => {
-        refetchUserData();
+        refetchCompanyData();
       },
       onError: (error) => {
         console.error("Update error:", error);
@@ -79,8 +79,9 @@ const User = () => {
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.uid || row.uid?.toString().toLowerCase().includes(searchData.uid.toLowerCase())) &&
-        (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
+        (!searchData.company_name || row.company_name?.toString().toLowerCase().includes(searchData.company_name.toLowerCase())) &&
+        (!searchData.boss || row.boss?.toString().toLowerCase().includes(searchData.boss.toLowerCase())) &&
+        (!searchData.flag || row.flag?.toString().toLowerCase().includes(searchData.flag.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -100,7 +101,7 @@ const User = () => {
     pageOptions,
   } = useTable(
     {
-      columns: userColumns,
+      columns: companyColumns,
       data: useMemo(() => memoizedData, [memoizedData]),
       initialState: { pageIndex: 0, pageSize: 10 },
       autoResetPage: false,
@@ -134,15 +135,14 @@ const User = () => {
 
   const handleNewRowClick = () => {
     const newRow = {
-      uid: "",
-      upw: "",
-      uname: "",
-      email: "",
-      phone: "",
-      authority: 0,
-      use_flag: 0,
       company_code: "",
       company_name: "",
+      bizno: "",
+      boss: "",
+      email: "",
+      phone: 0,
+      addr: 0,
+      flag: "",
     };
 
     if (!isAdded && !isEditing) {
@@ -159,22 +159,15 @@ const User = () => {
 
   const transformExcelCell = (excelData) =>
     excelData.map((item) => ({
-      uid: item["사용자 ID"],
-      upw: item["사용자 PW"],
-      uname: item["사용자명"],
-      email: item["이메일"],
-      phone: item["전화번호"],
       company_code: item["회사코드"],
       company_name: item["회사명"],
-      authority: item["사용권한"],
-      use_flag: item["사용여부"],
+      bizno: item["사업자등록번호"],
+      boss: item["대표자명"],
+      email: item["이메일"],
+      phone: item["전화번호"],
+      addr: item["회사주소"],
+      flag: item["사용여부"],
     }));
-
-  // useEffect(() => {
-  //   if (transformExcelData.length > 0) {
-  //     excelMutation.mutate(transformExcelData);
-  //   }
-  // }, [excelMutation, transformExcelData]);
 
   return (
     <>
@@ -182,10 +175,19 @@ const User = () => {
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.uid} title={"사용자 ID"} id={"uid"} onChange={handleFieldChange} />
+              <SearchItem
+                searchType={SEARCH_TYPE_INPUT}
+                value={searchField.company_name}
+                title={"회사명"}
+                id={"company_name"}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.uname} title={"사용자명"} id={"uname"} onChange={handleFieldChange} />
+              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.boss} title={"대표자"} id={"boss"} onChange={handleFieldChange} />
+            </div>
+            <div className={cx("item")}>
+              <SearchItem searchType={SEARCH_TYPE_SELECT_FLAG} value={searchField.flag} title={"사용여부"} id={"flag"} onChange={handleFieldChange} />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
@@ -198,7 +200,7 @@ const User = () => {
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
                 <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={userColumns} tableData={memoizedData} />
+                <BtnExcelDown columns={companyColumns} tableData={memoizedData} />
                 <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
               </div>
             </div>
@@ -242,4 +244,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Compnay;

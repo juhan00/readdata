@@ -1,4 +1,4 @@
-import { SEARCH_TYPE_SELECT, SEARCH_TYPE_INPUT } from "@/consts/common";
+import { SEARCH_TYPE_SELECT_FLAG, SEARCH_TYPE_INPUT } from "@/consts/common";
 
 //styles
 import styles from "./searchItem.module.scss";
@@ -9,12 +9,11 @@ const SearchItem = ({ searchType, title, value, id, onClick, onChange, readOnly 
   return (
     <div className={cx("search-item")}>
       <label>{title}</label>
-      {searchType === SEARCH_TYPE_SELECT && (
+      {searchType === SEARCH_TYPE_SELECT_FLAG && (
         <select id={id} onClick={onClick} onChange={(e) => onChange(id, e)}>
-          <option value="all">All</option>
-          <option value="brand1">브랜드1</option>
-          <option value="brand2">브랜드2</option>
-          <option value="brand3">브랜드3</option>
+          <option value="">All</option>
+          <option value="0">사용안함</option>
+          <option value="1">사용</option>
         </select>
       )}
       {searchType === SEARCH_TYPE_INPUT && (

@@ -3,6 +3,7 @@ import { USE_TYPE_ADMIN } from "@/consts/common";
 import { useState } from "react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { useTranslation } from "next-i18next";
+import Compnay from "./company";
 import User from "./user";
 import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";
 
@@ -12,12 +13,13 @@ import className from "classnames/bind";
 const cx = className.bind(styles);
 
 const Admin = () => {
-  const [adminMenu, setAdminMenu] = useState(2);
+  const [adminMenu, setAdminMenu] = useState(1);
 
   return (
     <div className={cx("admin")}>
       <PopupDataDefault />
       <DataLayout useType={USE_TYPE_ADMIN} adminMenu={{ menu: adminMenu, setMenu: setAdminMenu }}>
+        {adminMenu === 1 && <Compnay />}
         {adminMenu === 2 && <User />}
         admin
       </DataLayout>

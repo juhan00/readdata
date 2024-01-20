@@ -87,6 +87,7 @@ const RenderTable = ({
 
   const handleAddCancelClick = () => {
     setTableState((prevTableState) => prevTableState.slice(1));
+    setColumnValues({});
     setIsAdded(false);
   };
 
@@ -95,9 +96,13 @@ const RenderTable = ({
   };
 
   const handleSelectAddress = (selectedAddress) => {
+    const addressCellName = headerGroups.flatMap((headerGroup) =>
+      headerGroup.headers.filter((column) => column.type === "address").map((addressColumn) => addressColumn.id)
+    );
+
     setColumnValues((prevColumnValues) => ({
       ...prevColumnValues,
-      ["address"]: selectedAddress,
+      [addressCellName]: selectedAddress,
     }));
     setIsAddressPopupOpen(false);
   };
