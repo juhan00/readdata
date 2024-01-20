@@ -5,6 +5,7 @@ import Store from "./store";
 import Sales from "./sales";
 import { useState } from "react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";
 
 //styles
 import styles from "./user.module.scss";
@@ -17,6 +18,7 @@ const User = () => {
 
   return (
     <div className={cx("user")}>
+      <PopupDataDefault />
       <DataLayout useType={USE_TYPE_USER} userMenu={{ menu: userMenu, setMenu: setUserMenu }}>
         {userMenu === 1 && <Brand />}
         {userMenu === 2 && <Store />}
