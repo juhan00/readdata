@@ -6,6 +6,7 @@ import { useTranslation } from "next-i18next";
 import Compnay from "./company";
 import User from "./user";
 import SalesDay from "./salesDay";
+import SalesMonth from "./salesMonth";
 import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";
 
 //styles
@@ -23,6 +24,7 @@ const Admin = () => {
         {adminMenu === 1 && <Compnay />}
         {adminMenu === 2 && <User />}
         {adminMenu === 4 && <SalesDay />}
+        {adminMenu === 5 && <SalesMonth />}
         admin
       </DataLayout>
     </div>

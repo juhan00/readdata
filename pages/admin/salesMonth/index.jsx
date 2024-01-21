@@ -1,5 +1,5 @@
 import { SEARCH_TYPE_INPUT } from "@/consts/common";
-import { salesDayColumns } from "@/consts/salesDayColumns";
+import { salesMonthColumns } from "@/consts/salesMonthColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
@@ -7,28 +7,29 @@ import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
 import SearchDateItems from "@/src/components/data/searchDateItems";
-import { getSalesDayList } from "@/utils/api/sales";
+import { getSalesMonthList } from "@/utils/api/sales";
 import { useTranslation } from "next-i18next";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { use, useCallback, useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
-import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
+import { useChangeFormatMonth } from "@/utils/useChangeFormatDate";
+import { set, startOfMonth } from "date-fns";
 
 //styles
 import className from "classnames/bind";
-import styles from "./salesDay.module.scss";
+import styles from "./salesMonth.module.scss";
 const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const SalesDay = () => {
+const SalesMonth = () => {
   const searchFieldData = {
     store: "",
   };
 
   const today = new Date();
-  const oneMonthAgo = new Date(today);
-  oneMonthAgo.setMonth(today.getMonth() - 1);
+  const thisMonth = startOfMonth(set(today, { month: today.getMonth() }));
+  console.log("thisMonth", thisMonth);
 
   const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
@@ -37,15 +38,15 @@ const SalesDay = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [startDate, setStartDate] = useState(oneMonthAgo);
-  const [endDate, setEndDate] = useState(today);
+  const [startDate, setStartDate] = useState(thisMonth);
+  const [endDate, setEndDate] = useState(thisMonth);
 
   const formatStartDate = useMemo(() => {
-    return useChangeFormatDate(startDate);
+    return useChangeFormatMonth(startDate);
   }, [startDate]);
 
   const formatEndDate = useMemo(() => {
-    return useChangeFormatDate(endDate);
+    return useChangeFormatMonth(endDate);
   }, [endDate]);
 
   const handleStartDateChange = (date) => {
@@ -57,19 +58,19 @@ const SalesDay = () => {
   };
 
   const {
-    data: salesDayData,
-    isLoading: isLoadingSalesDayData,
-    refetch: refetchSalesDayData,
-  } = useQuery(["getTableData", formatEndDate], () => getSalesDayList(formatStartDate, formatEndDate), {
+    data: salesDateData,
+    isLoading: isLoadingSalesDateData,
+    refetch: refetchSalesDateData,
+  } = useQuery(["getTableMonth", formatEndDate], () => getSalesMonthList(formatStartDate, formatEndDate), {
     enabled: formatStartDate !== undefined && formatEndDate !== undefined,
   });
 
   useEffect(() => {
-    if (!isLoadingSalesDayData && salesDayData) {
+    if (!isLoadingSalesDateData && salesDateData) {
       console.log("setTableState");
-      setTableState(salesDayData);
+      setTableState(salesDateData);
     }
-  }, [salesDayData, isLoadingSalesDayData]);
+  }, [salesDateData, isLoadingSalesDateData]);
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
@@ -95,7 +96,7 @@ const SalesDay = () => {
     pageOptions,
   } = useTable(
     {
-      columns: salesDayColumns,
+      columns: salesMonthColumns,
       data: useMemo(() => memoizedData, [memoizedData]),
       initialState: { pageIndex: 0, pageSize: 10 },
       autoResetPage: false,
@@ -155,6 +156,7 @@ const SalesDay = () => {
                 endDate={endDate}
                 handleStartDateChange={handleStartDateChange}
                 handleEndDateChange={handleEndDateChange}
+                isMonth={true}
               />
             </div>
             <div className={cx("item")}>
@@ -175,7 +177,7 @@ const SalesDay = () => {
               </div>
             </div> */}
             <div className={cx("item")}>
-              {isLoadingSalesDayData ? (
+              {isLoadingSalesDateData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
               ) : !memoizedData.length ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
@@ -216,4 +218,4 @@ const SalesDay = () => {
   );
 };
 
-export default SalesDay;
+export default SalesMonth;

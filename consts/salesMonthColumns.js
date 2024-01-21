@@ -1,6 +1,6 @@
 import { useChangeFormatDateUTC } from "@/utils/useChangeFormatDate";
 
-export const salesDayColumns = [
+export const salesMonthColumns = [
   {
     header: "가맹점명",
     accessor: "store",
@@ -40,7 +40,6 @@ export const salesDayColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    Cell: ({ value }) => useChangeFormatDateUTC(value.toLocaleString()),
   },
   {
     header: "물류매출액",
@@ -100,6 +99,17 @@ export const salesDayColumns = [
   {
     header: "포스 매출액",
     accessor: "pos_sales",
+    headerStyle: {
+      textAlign: "center",
+    },
+    cellStyle: {
+      textAlign: "center",
+    },
+    Cell: ({ value }) => value.toLocaleString(),
+  },
+  {
+    header: "영업일 수",
+    accessor: "work_day",
     headerStyle: {
       textAlign: "center",
     },
