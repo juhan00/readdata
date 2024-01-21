@@ -1,5 +1,8 @@
 import { useState, useMemo, useEffect } from "react";
 import PopupSearchAddress from "@/src/components/data/popup/popupSearchAddress";
+import { isEqual } from "lodash";
+import { useGlobalState } from "@/context/globalStateContext";
+import { POPUP_DEFAULT } from "@/consts/popup";
 
 //styles
 import styles from "./renderTable.module.scss";
@@ -17,14 +20,16 @@ const RenderTable = ({
   isAdded,
   setIsAdded,
   setIsEditing,
+  tableState,
   setTableState,
+  newRow,
 }) => {
   const [editingRow, setEditingRow] = useState(null);
   const [isAddressPopupOpen, setIsAddressPopupOpen] = useState(false);
-  const [columnValues, setColumnValues] = useState({});
+  const [columnValues, setColumnValues] = useState(newRow);
   const [booleanOption, setBooleanOption] = useState([0, 1]);
+  const [{ popupState }, setGlobalState] = useGlobalState();
 
-  // const [pages, setPages] = useState();
   const {
     getTableProps,
     getTableBodyProps,
@@ -49,6 +54,10 @@ const RenderTable = ({
     return Array.from({ length: end - start }, (_, i) => start + i);
   }, [pageIndex, pageOptions.length]);
 
+  const isObjectInArray = (array, targetObject, currentRowIndex) => {
+    return array.filter((_, index) => index !== currentRowIndex).some((obj) => isEqual(obj, targetObject));
+  };
+
   const handleChange = (columnId, value) => {
     setColumnValues((prevColumnValues) => ({
       ...prevColumnValues,
@@ -60,14 +69,25 @@ const RenderTable = ({
     setIsEditing(true);
 
     if (!isAdded) {
-      // setIsAdded(false);
-      // refetchUserData();
       setEditingRow(rowIndex);
       setColumnValues(page[rowIndex]?.values);
     }
   };
 
-  const handleEditSaveClick = () => {
+  const handleEditSaveClick = (rowIndex) => {
+    const checkCurrentTableEqual = isObjectInArray(tableState, columnValues, rowIndex);
+
+    if (checkCurrentTableEqual) {
+      setGlobalState({
+        popupState: {
+          isOn: true,
+          popup: POPUP_DEFAULT,
+          content: "중복된 데이터가 있습니다.",
+        },
+      });
+      return;
+    }
+
     setEditingRow(null);
     handleUpdateData({ ...columnValues });
     setIsEditing(false);
@@ -80,6 +100,22 @@ const RenderTable = ({
   };
 
   const handleAddSaveClick = () => {
+    console.log("tableState", tableState);
+    console.log("columnValues", columnValues);
+
+    const checkCurrentTableEqual = isObjectInArray(tableState, columnValues, 0);
+
+    if (checkCurrentTableEqual) {
+      setGlobalState({
+        popupState: {
+          isOn: true,
+          popup: POPUP_DEFAULT,
+          content: "중복된 데이터가 있습니다.",
+        },
+      });
+      return;
+    }
+
     handleAddData({ ...columnValues });
     setTableState((prevTableState) => prevTableState.slice(1));
     setIsAdded(false);
@@ -106,10 +142,6 @@ const RenderTable = ({
     }));
     setIsAddressPopupOpen(false);
   };
-
-  useEffect(() => {
-    console.log("columnValues", columnValues);
-  }, [columnValues]);
 
   return (
     <div className={cx("table-wrap")}>
@@ -196,7 +228,7 @@ const RenderTable = ({
                         </>
                       ) : (
                         <>
-                          <button onClick={() => handleEditSaveClick()}>저장</button>
+                          <button onClick={() => handleEditSaveClick(row.index)}>저장</button>
                           <button onClick={() => handleEditCancelClick()}>취소</button>
                         </>
                       )

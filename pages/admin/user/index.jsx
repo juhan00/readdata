@@ -20,6 +20,18 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const User = () => {
+  const newRow = {
+    uid: "",
+    upw: "",
+    uname: "",
+    email: "",
+    phone: "",
+    authority: 0,
+    use_flag: 0,
+    company_code: "",
+    company_name: null,
+  };
+
   const searchFieldData = {
     uid: "",
     uname: "",
@@ -32,7 +44,6 @@ const User = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  // const [excelData, setExcelData] = useState([]);
 
   const { data: userData, isLoading: isLoadingUserData, refetch: refetchUserData } = useQuery("getTableData", getUserList);
 
@@ -133,18 +144,6 @@ const User = () => {
   };
 
   const handleNewRowClick = () => {
-    const newRow = {
-      uid: "",
-      upw: "",
-      uname: "",
-      email: "",
-      phone: "",
-      authority: 0,
-      use_flag: 0,
-      company_code: "",
-      company_name: "",
-    };
-
     if (!isAdded && !isEditing) {
       setTableState((prevTableState) => [
         {
@@ -232,8 +231,10 @@ const User = () => {
                   setIsEditing={setIsEditing}
                   handleUpdateData={handleUpdateData}
                   handleAddData={handleAddData}
+                  tableState={tableState}
                   setTableState={setTableState}
                   transformExcelCell={transformExcelCell}
+                  newRow={newRow}
                 />
               )}
             </div>

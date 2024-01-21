@@ -20,6 +20,17 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const Compnay = () => {
+  const newRow = {
+    company_code: "",
+    company_name: "",
+    bizno: "",
+    boss: "",
+    email: "",
+    phone: 0,
+    addr: 0,
+    flag: "",
+  };
+
   const searchFieldData = {
     company_name: "",
     boss: "",
@@ -134,17 +145,6 @@ const Compnay = () => {
   };
 
   const handleNewRowClick = () => {
-    const newRow = {
-      company_code: "",
-      company_name: "",
-      bizno: "",
-      boss: "",
-      email: "",
-      phone: 0,
-      addr: 0,
-      flag: "",
-    };
-
     if (!isAdded && !isEditing) {
       setTableState((prevTableState) => [
         {
@@ -236,6 +236,7 @@ const Compnay = () => {
                   handleAddData={handleAddData}
                   setTableState={setTableState}
                   transformExcelCell={transformExcelCell}
+                  newRow={newRow}
                 />
               )}
             </div>
