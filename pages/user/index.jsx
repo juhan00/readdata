@@ -1,6 +1,6 @@
 import DataLayout from "@/layouts/dataLayout";
 import { USE_TYPE_USER } from "@/consts/common";
-import Brand from "./brand";
+// import Brand from "./brand";
 import { useEffect, useState } from "react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";
