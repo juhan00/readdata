@@ -33,7 +33,7 @@ export const salesMonthColumns = [
   },
   {
     header: "매출일자",
-    accessor: "sale_date",
+    accessor: "sale_month",
     headerStyle: {
       textAlign: "center",
     },
