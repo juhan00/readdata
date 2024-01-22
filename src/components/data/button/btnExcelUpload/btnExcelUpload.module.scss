@@ -1,0 +1,21 @@
+.btn-excel-upload-input {
+  display: none;
+}
+.btn-excel-upload {
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: -0.014rem;
+  background-color: transparent;
+  padding: 0;
+  cursor: pointer;
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 2rem;
+    height: 2rem;
+    background: url("/assets/images/data/ico_excel_upload.png") no-repeat 50% 50% / contain;
+    margin-right: 0.5rem;
+  }
+}

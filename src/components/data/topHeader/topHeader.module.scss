@@ -1,0 +1,86 @@
+.top-header {
+  position: fixed;
+  z-index: 9999;
+  width: calc(100% - var(--data-left-header-width));
+  min-width: calc(var(--data-content-min-width) - var(--data-left-header-width));
+  height: 8rem;
+  background-color: $color-white;
+  border-left: 0.1rem solid #eeeeee;
+  display: flex;
+  align-items: center;
+  padding: 0 3rem;
+
+  .use-type {
+    display: flex;
+    align-items: center;
+    height: 3.6rem;
+    font-size: 1.6rem;
+    font-weight: 500;
+    letter-spacing: -0.16px;
+    padding: 0 2rem;
+    color: $color-white;
+    border-radius: 10rem;
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 2rem;
+      height: 2rem;
+      background: url("/assets/images/data/ico_use_type.png") no-repeat 50% 50% / contain;
+      margin-right: 0.6rem;
+    }
+    &.user {
+      background-color: $color-blue;
+    }
+    &.admin {
+      background-color: $color-orange;
+    }
+  }
+  .right {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    .name {
+      font-size: 1.4rem;
+      font-weight: 300;
+      letter-spacing: -0.14px;
+      margin-right: 2.5rem;
+      strong {
+        font-weight: 500;
+      }
+    }
+    button {
+      border: 0;
+      padding: 0;
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      font-size: 1.4rem;
+      font-weight: 400;
+      letter-spacing: -0.014rem;
+      white-space: nowrap;
+      &.help {
+        &::before {
+          content: "";
+          display: inline-block;
+          width: 2.4rem;
+          height: 2.4rem;
+          background: url("/assets/images/data/ico_top_header_help.png") no-repeat 50% 50% / contain;
+          margin-right: 0.8rem;
+        }
+      }
+      &.logout {
+        &::before {
+          content: "";
+          display: inline-block;
+          width: 2.4rem;
+          height: 2.4rem;
+          background: url("/assets/images/data/ico_top_header_logout.png") no-repeat 50% 50% / contain;
+          margin-right: 0.8rem;
+        }
+      }
+    }
+  }
+  button + button {
+    margin-left: 2rem;
+  }
+}

@@ -1,0 +1,179 @@
+:root {
+  --max-width: 144rem;
+  --max-width-padding: 8rem;
+  --header-height: 9rem;
+
+  --data-content-min-width: 128rem;
+  --data-left-header-width: 24rem;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --max-width: 76.8rem;
+    --max-width-padding: 2.6rem;
+    --header-height: 6.4rem;
+  }
+}
+
+.section3-slide .swiper {
+  overflow: visible;
+}
+
+.section3-slide .swiper-slide {
+  opacity: 0;
+  cursor: pointer;
+}
+.section3-slide .swiper-slide img {
+  width: 100%;
+}
+.section3-slide .swiper-slide-prev,
+.section3-slide .swiper-slide-next {
+  opacity: 0.5;
+}
+.section3-slide .swiper-slide-active {
+  opacity: 1;
+}
+.section3-slide .swiper-slide-active img {
+  box-shadow: 0px 4px 80px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 3%;
+}
+.section3-slide .swiper-pagination-fraction,
+.section3-slide .swiper-pagination-custom,
+.section3-slide .swiper-horizontal > .swiper-pagination-bullets,
+.section3-slide .swiper-pagination-bullets.swiper-pagination-horizontal {
+  bottom: -6rem;
+}
+.section3-slide .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
+.section3-slide .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+  margin: 0 1rem;
+}
+
+.section3-slide .swiper-pagination-bullet {
+  width: 2rem;
+  height: 2rem;
+  background-color: #fff;
+  opacity: 0.3;
+}
+.section3-slide .swiper-pagination-bullet.swiper-pagination-bullet-active {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .section3-slide .swiper-pagination-fraction,
+  .section3-slide .swiper-pagination-custom,
+  .section3-slide .swiper-horizontal > .swiper-pagination-bullets,
+  .section3-slide .swiper-pagination-bullets.swiper-pagination-horizontal {
+    bottom: -3rem;
+  }
+  .section3-slide .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
+  .section3-slide .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+    margin: 0 0.5rem;
+  }
+
+  .section3-slide .swiper-pagination-bullet {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.section4-slide .swiper {
+  overflow: visible;
+}
+
+.section4-slide .swiper-slide {
+  opacity: 1;
+  cursor: pointer;
+  padding: 0 5%;
+}
+.section4-slide .swiper-slide-prev,
+.section4-slide .swiper-slide-next {
+  opacity: 1;
+}
+.section4-slide .swiper-slide-active {
+  opacity: 1;
+}
+
+.section4-slide .swiper-pagination-fraction,
+.section4-slide .swiper-pagination-custom,
+.section4-slide .swiper-horizontal > .swiper-pagination-bullets,
+.section4-slide .swiper-pagination-bullets.swiper-pagination-horizontal {
+  bottom: -6rem;
+}
+.section4-slide .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
+.section4-slide .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+  margin: 0 1rem;
+}
+
+.section4-slide .swiper-pagination-bullet {
+  width: 2rem;
+  height: 2rem;
+  background-color: #e5ddda;
+  opacity: 1;
+}
+.section4-slide .swiper-pagination-bullet.swiper-pagination-bullet-active {
+  opacity: 1;
+  background-color: #f66223;
+}
+
+@media (max-width: 768px) {
+  .section4-slide .swiper-pagination-fraction,
+  .section4-slide .swiper-pagination-custom,
+  .section4-slide .swiper-horizontal > .swiper-pagination-bullets,
+  .section4-slide .swiper-pagination-bullets.swiper-pagination-horizontal {
+    bottom: -3rem;
+  }
+  .section4-slide .swiper-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet,
+  .section4-slide .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+    margin: 0 0.5rem;
+  }
+
+  .section4-slide .swiper-pagination-bullet {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+/* date picker */
+.react-datepicker {
+  font-size: 1.2rem !important;
+}
+
+.react-datepicker__header {
+  padding: 1.2rem 1rem !important;
+}
+
+.react-datepicker__current-month {
+  font-size: 1.4em !important;
+  font-weight: 500 !important;
+}
+
+.react-datepicker__day,
+.react-datepicker__day-name {
+  width: 2.4rem !important;
+  line-height: 2.4rem !important;
+  font-size: 1.2em !important;
+  font-weight: 400 !important;
+  margin: 0.5rem 0.4rem !important;
+  border-radius: 2.4rem !important;
+}
+
+.react-datepicker__navigation {
+  top: 0.2rem !important;
+}
+
+.react-datepicker__month-container {
+  max-width: 30rem !important; /* 팝업 최대 너비 설정 */
+}
+
+.react-datepicker__day--selected {
+  background-color: #333 !important; /* 선택된 날짜 배경색 설정 (옵션) */
+  color: #fff !important; /* 선택된 날짜 텍스트색 설정 (옵션) */
+}
+
+.react-datepicker__navigation-icon::before {
+  border-width: 2px 2px 0 0 !important;
+}
+
+.react-datepicker__day--in-selecting-range {
+  background-color: #f66223 !important;
+}

@@ -1,0 +1,26 @@
+.search-item {
+  display: flex;
+  align-items: center;
+  label {
+    font-size: 1.6rem;
+    font-weight: 700;
+    line-height: 1.5rem;
+    letter-spacing: -0.016rem;
+    margin-right: 1.5rem;
+  }
+  select {
+    display: inline-block;
+    width: auto;
+    width: 11rem;
+    border: 0.1rem solid #c2c2c2;
+    background-color: #fbfbfb;
+    background-position: calc(100% - 0.5rem) 50%;
+  }
+  input {
+    display: inline-block;
+    width: auto;
+    width: 11rem;
+    border: 0.1rem solid #c2c2c2;
+    background-color: #fbfbfb;
+  }
+}

@@ -1,0 +1,111 @@
+.header {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: var(--header-height);
+  background-color: $background-color;
+  z-index: 9999;
+
+  .header-wrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: var(--max-width);
+    padding: 0 var(--max-width-padding);
+    margin: 0 auto;
+    .logo {
+      width: 18.7rem;
+      cursor: pointer;
+      & > img {
+        width: 100%;
+      }
+    }
+    .nav-wrap {
+      margin-left: auto;
+
+      .menu {
+        display: none;
+      }
+      nav {
+        & > a {
+          font-size: 1.5rem;
+          font-weight: 500;
+          line-height: 3.5rem;
+          letter-spacing: -0.03rem;
+          color: $color-black;
+        }
+        & > a + a {
+          margin-left: 4.5rem;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1280px) {
+  .header {
+    .header-wrap {
+      .logo {
+        width: 18.7rem;
+      }
+      .nav-wrap {
+        nav {
+          & > a {
+            font-size: 1.5rem;
+            line-height: 3.5rem;
+            letter-spacing: -0.03rem;
+          }
+          & > a + a {
+            margin-left: 4.5rem;
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 768px) {
+  .header {
+    .header-wrap {
+      .logo {
+        width: 13.5rem;
+      }
+      .nav-wrap {
+        .menu {
+          display: inline-block;
+          width: 2.4rem;
+          height: 2.4rem;
+          background: url("/assets/images/ico_menu_mo.png") no-repeat 50% 50% / cover;
+          cursor: pointer;
+        }
+        nav {
+          display: none;
+        }
+
+        &.active {
+          .menu {
+            background: url("/assets/images/ico_close_mo.png") no-repeat 50% 50% / cover;
+          }
+          nav {
+            position: fixed;
+            display: block;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            margin: var(--header-height) 0 0;
+            padding: 3rem var(--max-width-padding) 0;
+            & > a {
+              display: flex;
+              align-items: center;
+              font-size: 1.9rem;
+              margin-left: 0;
+              height: 5.8rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
