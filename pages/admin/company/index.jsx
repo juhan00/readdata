@@ -234,6 +234,7 @@ const Compnay = () => {
                   setIsEditing={setIsEditing}
                   handleUpdateData={handleUpdateData}
                   handleAddData={handleAddData}
+                  tableState={tableState}
                   setTableState={setTableState}
                   transformExcelCell={transformExcelCell}
                   newRow={newRow}

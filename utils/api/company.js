@@ -39,8 +39,8 @@ export const updateCompanyList = async (data) => {
   console.log("업데이트 완료");
 };
 
-export const addUserList = async (data) => {
-  const response = await fetch(`/user/post`, {
+export const addCompanyList = async (data) => {
+  const response = await fetch(`/company/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

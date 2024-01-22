@@ -6,7 +6,7 @@ import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { getBrandList } from "@/utils/api/brand";
+import { getBrandList, updateBrandList, addBrandList } from "@/utils/api/brand";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
@@ -55,7 +55,7 @@ const Brand = () => {
     }
   }, [brandData, isLoadingBrandData]);
 
-  const updateMutation = useMutation(async (data) => await updateCompanyList(data), {
+  const updateMutation = useMutation(async (data) => await updateBrandList(data), {
     onSuccess: () => {
       refetchBrandData();
     },
@@ -64,7 +64,7 @@ const Brand = () => {
     },
   });
 
-  const addMutation = useMutation(async (data) => await addCompanyList(data), {
+  const addMutation = useMutation(async (data) => await addBrandList(data), {
     onSuccess: () => {
       refetchBrandData();
     },
@@ -166,6 +166,8 @@ const Brand = () => {
       use_flag: item["사용구분"],
     }));
 
+  const exportExcelColumns = brandColumns.filter((column) => column.accessor !== "no");
+
   return (
     <>
       <div className={cx("brand")}>
@@ -200,7 +202,7 @@ const Brand = () => {
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
                 <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={brandColumns} tableData={memoizedData} />
+                <BtnExcelDown columns={exportExcelColumns} tableData={memoizedData} />
                 <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
               </div>
             </div>
@@ -234,6 +236,7 @@ const Brand = () => {
                   setIsEditing={setIsEditing}
                   handleUpdateData={handleUpdateData}
                   handleAddData={handleAddData}
+                  tableState={tableState}
                   setTableState={setTableState}
                   transformExcelCell={transformExcelCell}
                   newRow={newRow}
