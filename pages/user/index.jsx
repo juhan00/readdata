@@ -1,6 +1,6 @@
 import DataLayout from "@/layouts/dataLayout";
 import { USE_TYPE_USER } from "@/consts/common";
-import BrandTest from "./brand";
+import Brand from "./brand";
 import { useEffect, useState } from "react";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";
@@ -27,7 +27,7 @@ const User = () => {
     <div className={cx("user")}>
       <PopupDataDefault />
       <DataLayout useType={USE_TYPE_USER} userMenu={{ menu: userMenu, setMenu: setUserMenu }}>
-        {userMenu === "brand" && <BrandTest />}
+        {userMenu === "brand" && <Brand />}
         {userMenu === "sales_day" && <SalesDay />}
         {userMenu === "sales_month" && <SalesMonth />}
       </DataLayout>
