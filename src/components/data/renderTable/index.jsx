@@ -25,12 +25,6 @@ const RenderTable = ({
   setTableState,
   newRow,
 }) => {
-  const [editingRow, setEditingRow] = useState(null);
-  const [isAddressPopupOpen, setIsAddressPopupOpen] = useState(false);
-  const [columnValues, setColumnValues] = useState(newRow);
-  const [booleanOption, setBooleanOption] = useState([0, 1]);
-  const [{ popupState }, setGlobalState] = useGlobalState();
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -49,6 +43,12 @@ const RenderTable = ({
     // updateMyData,
   } = tableProps;
 
+  const [editingRow, setEditingRow] = useState(null);
+  const [isAddressPopupOpen, setIsAddressPopupOpen] = useState(false);
+  const [columnValues, setColumnValues] = useState(newRow);
+  const [booleanOption, setBooleanOption] = useState([0, 1]);
+  const [{ popupState }, setGlobalState] = useGlobalState();
+
   const pages = useMemo(() => {
     const start = Math.floor(pageIndex / 5) * 5;
     const end = Math.min(start + 5, pageOptions.length);
@@ -66,11 +66,11 @@ const RenderTable = ({
     }));
   };
 
-  const handleEditClick = (rowIndex) => {
+  const handleEditClick = (rowIndex, fullRowIndex) => {
     setIsEditing(true);
 
     if (!isAdded) {
-      setEditingRow(rowIndex);
+      setEditingRow(fullRowIndex);
       setColumnValues(page[rowIndex]?.values);
     }
   };
@@ -164,7 +164,8 @@ const RenderTable = ({
           {page.map((row, rowIndex) => {
             prepareRow(row);
 
-            const isEditingRow = editingRow === rowIndex || (isAdded && rowIndex === 0);
+            editingRow;
+            const isEditingRow = editingRow === row.index || (isAdded && row.index === 0);
             return (
               <tr {...row.getRowProps()} onDoubleClick={() => handleClickReturn && handleClickReturn(row.original[returnColumnName])}>
                 {row.cells.map((cell) => {
@@ -217,7 +218,7 @@ const RenderTable = ({
                           />
                         )
                       ) : isNumberColumn ? (
-                        rowIndex + 1
+                        row.index + 1
                       ) : (
                         cell.render("Cell")
                       )}
@@ -228,7 +229,7 @@ const RenderTable = ({
                   <td>
                     <div className={cx("button-wrap")}>
                       {isEditingRow ? (
-                        isAdded && rowIndex === 0 ? (
+                        isAdded && row.index === 0 ? (
                           <>
                             <button onClick={() => handleAddSaveClick()}>저장</button>
                             <button onClick={() => handleAddCancelClick()}>취소</button>
@@ -240,7 +241,7 @@ const RenderTable = ({
                           </>
                         )
                       ) : (
-                        <button onClick={() => handleEditClick(row.index)}>수정</button>
+                        <button onClick={() => handleEditClick(rowIndex, row.index)}>수정</button>
                       )}
                     </div>
                   </td>

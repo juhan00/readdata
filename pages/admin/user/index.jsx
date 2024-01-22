@@ -11,6 +11,8 @@ import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
+import { useGlobalState } from "@/context/globalStateContext";
+import { POPUP_DEFAULT } from "@/consts/popup";
 
 //styles
 import className from "classnames/bind";
@@ -37,6 +39,7 @@ const User = () => {
     uname: "",
   };
 
+  const [{ popupState }, setGlobalState] = useGlobalState();
   const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
   const [isModified, setIsModified] = useState(false);
@@ -60,6 +63,14 @@ const User = () => {
     },
     onError: (error) => {
       console.error("Update error:", error);
+
+      setGlobalState({
+        popupState: {
+          isOn: true,
+          popup: POPUP_DEFAULT,
+          content: "업데이트에 실패했습니다.",
+        },
+      });
     },
   });
 
@@ -69,6 +80,14 @@ const User = () => {
     },
     onError: (error) => {
       console.error("Update error:", error);
+
+      setGlobalState({
+        popupState: {
+          isOn: true,
+          popup: POPUP_DEFAULT,
+          content: "추가에 실패했습니다.",
+        },
+      });
     },
   });
 
