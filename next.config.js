@@ -24,6 +24,7 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     if (!isServer) {
       config.resolve.symlinks = false;
+      config.resolve.modules.push(__dirname + "/node_modules");
     }
     return config;
   },
