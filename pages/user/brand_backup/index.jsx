@@ -7,7 +7,7 @@ import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
 import PopupSearchBrand from "@/src/components/data/popup/popupSearchBrand";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { getBrandList } from "@/utils/api/getBrandList";
+import { getBrandList } from "@/utils/api/brand";
 import { useTranslation } from "next-i18next";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { usePagination, useSortBy, useTable } from "react-table";

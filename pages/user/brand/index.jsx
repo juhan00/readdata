@@ -6,7 +6,7 @@ import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { addUserList, getCompanyList, updateUserList } from "@/utils/api/company";
+import { getBrandList } from "@/utils/api/brand";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
@@ -21,23 +21,20 @@ const queryClient = new QueryClient();
 
 const Brand = () => {
   const newRow = {
+    brand_code: "",
+    brand_name: "",
     company_code: "",
     company_name: "",
-    bizno: "",
-    boss: "",
-    email: "",
-    phone: 0,
-    addr: 0,
-    flag: "",
+    use_flag: 0,
   };
 
   const searchFieldData = {
-    company_name: "",
-    boss: "",
-    flag: "",
+    brand_name: "",
+    brand_flag: "",
   };
 
-  const { t } = useTranslation(["common", "dataAdmin"]);
+  const { t } = useTranslation(["common", "dataUser"]);
+  const [companyCode, setCompanyCode] = useState("");
   const [tableState, setTableState] = useState([]);
   const [isModified, setIsModified] = useState(false);
   const [searchData, setSearchData] = useState(searchFieldData);
@@ -45,18 +42,22 @@ const Brand = () => {
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { data: companyData, isLoading: isLoadingCompanyData, refetch: refetchCompanyData } = useQuery("getTableData", getCompanyList);
+  const {
+    data: brandData,
+    isLoading: isLoadingBrandData,
+    refetch: refetchBrandData,
+  } = useQuery(["getTableData", companyCode], () => getBrandList(companyCode), { enabled: companyCode !== undefined });
 
   useEffect(() => {
-    if (!isLoadingCompanyData && companyData) {
+    if (!isLoadingBrandData && brandData) {
       console.log("setTableState");
-      setTableState(companyData);
+      setTableState(brandData);
     }
-  }, [companyData, isLoadingCompanyData]);
+  }, [brandData, isLoadingBrandData]);
 
   const updateMutation = useMutation(async (data) => await updateCompanyList(data), {
     onSuccess: () => {
-      refetchCompanyData();
+      refetchBrandData();
     },
     onError: (error) => {
       console.error("Update error:", error);
@@ -65,7 +66,7 @@ const Brand = () => {
 
   const addMutation = useMutation(async (data) => await addCompanyList(data), {
     onSuccess: () => {
-      refetchCompanyData();
+      refetchBrandData();
     },
     onError: (error) => {
       console.error("Update error:", error);
@@ -79,7 +80,7 @@ const Brand = () => {
     },
     {
       onSuccess: () => {
-        refetchCompanyData();
+        refetchBrandData();
       },
       onError: (error) => {
         console.error("Update error:", error);
@@ -90,9 +91,8 @@ const Brand = () => {
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.company_name || row.company_name?.toString().toLowerCase().includes(searchData.company_name.toLowerCase())) &&
-        (!searchData.boss || row.boss?.toString().toLowerCase().includes(searchData.boss.toLowerCase())) &&
-        (!searchData.flag || row.flag?.toString().toLowerCase().includes(searchData.flag.toLowerCase()))
+        (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
+        (!searchData.brand_flag || row.brand_flag?.toString().toLowerCase().includes(searchData.brand_flag.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -159,14 +159,11 @@ const Brand = () => {
 
   const transformExcelCell = (excelData) =>
     excelData.map((item) => ({
+      brand_code: item["브랜드코드"],
+      brand_name: item["브랜드명"],
       company_code: item["회사코드"],
       company_name: item["회사명"],
-      bizno: item["사업자등록번호"],
-      boss: item["대표자명"],
-      email: item["이메일"],
-      phone: item["전화번호"],
-      addr: item["회사주소"],
-      flag: item["사용여부"],
+      use_flag: item["사용구분"],
     }));
 
   return (
@@ -177,17 +174,20 @@ const Brand = () => {
             <div className={cx("item")}>
               <SearchItem
                 searchType={SEARCH_TYPE_INPUT}
-                value={searchField.company_name}
-                title={"회사명"}
-                id={"company_name"}
+                value={searchField.brand_name}
+                title={"브랜드명"}
+                id={"brand_name"}
                 onChange={handleFieldChange}
               />
             </div>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.boss} title={"대표자"} id={"boss"} onChange={handleFieldChange} />
-            </div>
-            <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_SELECT_FLAG} value={searchField.flag} title={"사용여부"} id={"flag"} onChange={handleFieldChange} />
+              <SearchItem
+                searchType={SEARCH_TYPE_SELECT_FLAG}
+                value={searchField.brand_flag}
+                title={"사용여부"}
+                id={"brand_flag"}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
@@ -205,7 +205,7 @@ const Brand = () => {
               </div>
             </div>
             <div className={cx("item")}>
-              {isLoadingCompanyData ? (
+              {isLoadingBrandData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
               ) : !memoizedData.length ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>

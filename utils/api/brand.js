@@ -1,6 +1,6 @@
-export async function getBrandList(companyCode) {
+export const getBrandList = async (companyCode) => {
   console.log(`/brand/list?brand_code=${companyCode}`);
-  const response = await fetch(`/brand/list?company_code=${companyCode}`, {
+  const response = await fetch(`/brand/mng/list?company_code=${companyCode}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -14,4 +14,4 @@ export async function getBrandList(companyCode) {
   const data = await response.json();
 
   return data.data;
-}
+};

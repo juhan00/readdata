@@ -176,7 +176,9 @@ const RenderTable = ({
                   return (
                     <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
                       {isEditingRow ? (
-                        isAuthorityColumn ? (
+                        isNumberColumn ? (
+                          ""
+                        ) : isAuthorityColumn ? (
                           <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
                             {booleanOption.map((option) => (
                               <option key={option} value={option}>
@@ -224,21 +226,23 @@ const RenderTable = ({
                 })}
                 {editMode && (
                   <td>
-                    {isEditingRow ? (
-                      isAdded && rowIndex === 0 ? (
-                        <>
-                          <button onClick={() => handleAddSaveClick()}>저장</button>
-                          <button onClick={() => handleAddCancelClick()}>취소</button>
-                        </>
+                    <div className={cx("button-wrap")}>
+                      {isEditingRow ? (
+                        isAdded && rowIndex === 0 ? (
+                          <>
+                            <button onClick={() => handleAddSaveClick()}>저장</button>
+                            <button onClick={() => handleAddCancelClick()}>취소</button>
+                          </>
+                        ) : (
+                          <>
+                            <button onClick={() => handleEditSaveClick(row.index)}>저장</button>
+                            <button onClick={() => handleEditCancelClick()}>취소</button>
+                          </>
+                        )
                       ) : (
-                        <>
-                          <button onClick={() => handleEditSaveClick(row.index)}>저장</button>
-                          <button onClick={() => handleEditCancelClick()}>취소</button>
-                        </>
-                      )
-                    ) : (
-                      <button onClick={() => handleEditClick(row.index)}>수정</button>
-                    )}
+                        <button onClick={() => handleEditClick(row.index)}>수정</button>
+                      )}
+                    </div>
                   </td>
                 )}
               </tr>

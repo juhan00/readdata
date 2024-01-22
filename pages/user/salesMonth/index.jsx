@@ -1,98 +1,82 @@
-import { SEARCH_TYPE_INPUT, SEARCH_TYPE_SELECT_FLAG } from "@/consts/common";
-import { brandColumns } from "@/consts/brandColumns";
+import { SEARCH_TYPE_INPUT } from "@/consts/common";
+import { salesMonthColumns } from "@/consts/salesMonthColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
-import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
+import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { getBrandList } from "@/utils/api/brand";
+import SearchDateItems from "@/src/components/data/searchDateItems";
+import { getSalesMonthList } from "@/utils/api/sales";
 import { useTranslation } from "next-i18next";
-import { useEffect, useMemo, useState } from "react";
+import { use, useCallback, useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
+import { useChangeFormatMonth } from "@/utils/useChangeFormatDate";
+import { set, startOfMonth } from "date-fns";
 
 //styles
 import className from "classnames/bind";
-import styles from "./brand.module.scss";
+import styles from "./salesMonth.module.scss";
 const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const Brand = () => {
-  const newRow = {
-    brand_code: "",
-    brand_name: "",
-    company_code: "",
-    company_name: "",
-    use_flag: 0,
-  };
-
+const SalesMonth = () => {
   const searchFieldData = {
-    brand_name: "",
-    brand_flag: "",
+    store: "",
   };
 
-  const { t } = useTranslation(["common", "dataUser"]);
-  const [companyCode, setCompanyCode] = useState("");
+  const today = new Date();
+  const thisMonth = startOfMonth(set(today, { month: today.getMonth() }));
+  console.log("thisMonth", thisMonth);
+
+  const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
   const [isModified, setIsModified] = useState(false);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [startDate, setStartDate] = useState(thisMonth);
+  const [endDate, setEndDate] = useState(thisMonth);
+
+  const formatStartDate = useMemo(() => {
+    return useChangeFormatMonth(startDate);
+  }, [startDate]);
+
+  const formatEndDate = useMemo(() => {
+    return useChangeFormatMonth(endDate);
+  }, [endDate]);
+
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+  };
+
+  const handleEndDateChange = (date) => {
+    setEndDate(date);
+  };
 
   const {
-    data: brandData,
-    isLoading: isLoadingBrandData,
-    refetch: refetchBrandData,
-  } = useQuery(["getTableData", companyCode], () => getBrandList(companyCode), { enabled: companyCode !== undefined });
+    data: salesDateData,
+    isLoading: isLoadingSalesDateData,
+    refetch: refetchSalesDateData,
+  } = useQuery(["getTableMonth", formatEndDate], () => getSalesMonthList(formatStartDate, formatEndDate), {
+    enabled: formatStartDate !== undefined && formatEndDate !== undefined,
+  });
 
   useEffect(() => {
-    if (!isLoadingBrandData && brandData) {
+    if (!isLoadingSalesDateData && salesDateData) {
       console.log("setTableState");
-      setTableState(brandData);
+      setTableState(salesDateData);
     }
-  }, [brandData, isLoadingBrandData]);
-
-  const updateMutation = useMutation(async (data) => await updateCompanyList(data), {
-    onSuccess: () => {
-      refetchBrandData();
-    },
-    onError: (error) => {
-      console.error("Update error:", error);
-    },
-  });
-
-  const addMutation = useMutation(async (data) => await addCompanyList(data), {
-    onSuccess: () => {
-      refetchBrandData();
-    },
-    onError: (error) => {
-      console.error("Update error:", error);
-    },
-  });
-
-  const excelMutation = useMutation(
-    async (excelData) => {
-      const promises = excelData.map((data) => addCompanyList(data));
-      await Promise.all(promises);
-    },
-    {
-      onSuccess: () => {
-        refetchBrandData();
-      },
-      onError: (error) => {
-        console.error("Update error:", error);
-      },
-    }
-  );
+  }, [salesDateData, isLoadingSalesDateData]);
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
-        (!searchData.brand_flag || row.brand_flag?.toString().toLowerCase().includes(searchData.brand_flag.toLowerCase()))
+        (!searchData.store || row.store?.toString().toLowerCase().includes(searchData.store.toLowerCase())) &&
+        (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -112,7 +96,7 @@ const Brand = () => {
     pageOptions,
   } = useTable(
     {
-      columns: brandColumns,
+      columns: salesMonthColumns,
       data: useMemo(() => memoizedData, [memoizedData]),
       initialState: { pageIndex: 0, pageSize: 10 },
       autoResetPage: false,
@@ -144,27 +128,22 @@ const Brand = () => {
     addMutation.mutate(data);
   };
 
-  const handleNewRowClick = () => {
-    if (!isAdded && !isEditing) {
-      setTableState((prevTableState) => [
-        {
-          ...newRow,
-        },
-        ...prevTableState,
-      ]);
-
-      setIsAdded(true);
-    }
-  };
-
   const transformExcelCell = (excelData) =>
     excelData.map((item) => ({
-      brand_code: item["브랜드코드"],
-      brand_name: item["브랜드명"],
+      uid: item["사용자 ID"],
+      upw: item["사용자 PW"],
+      uname: item["사용자명"],
+      email: item["이메일"],
+      phone: item["전화번호"],
       company_code: item["회사코드"],
       company_name: item["회사명"],
-      use_flag: item["사용구분"],
+      authority: item["사용권한"],
+      use_flag: item["사용여부"],
     }));
+
+  useEffect(() => {
+    console.log("tableState", tableState);
+  }, [tableState]);
 
   return (
     <>
@@ -172,22 +151,16 @@ const Brand = () => {
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE_INPUT}
-                value={searchField.brand_name}
-                title={"브랜드명"}
-                id={"brand_name"}
-                onChange={handleFieldChange}
+              <SearchDateItems
+                startDate={startDate}
+                endDate={endDate}
+                handleStartDateChange={handleStartDateChange}
+                handleEndDateChange={handleEndDateChange}
+                isMonth={true}
               />
             </div>
             <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE_SELECT_FLAG}
-                value={searchField.brand_flag}
-                title={"사용여부"}
-                id={"brand_flag"}
-                onChange={handleFieldChange}
-              />
+              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
@@ -197,15 +170,14 @@ const Brand = () => {
 
         <div className={cx("row")}>
           <div className={cx("box", "full-height", "content-wrap")}>
-            <div className={cx("item")}>
+            {/* <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
                 <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={brandColumns} tableData={memoizedData} />
-                <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
+                <BtnExcelDown columns={salesDayColumns} tableData={memoizedData} />
               </div>
-            </div>
+            </div> */}
             <div className={cx("item")}>
-              {isLoadingBrandData ? (
+              {isLoadingSalesDateData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
               ) : !memoizedData.length ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
@@ -227,7 +199,7 @@ const Brand = () => {
                     pageCount,
                     pageOptions,
                   }}
-                  editMode={true}
+                  editMode={false}
                   isAdded={isAdded}
                   setIsAdded={setIsAdded}
                   isEditing={isEditing}
@@ -236,7 +208,6 @@ const Brand = () => {
                   handleAddData={handleAddData}
                   setTableState={setTableState}
                   transformExcelCell={transformExcelCell}
-                  newRow={newRow}
                 />
               )}
             </div>
@@ -247,4 +218,4 @@ const Brand = () => {
   );
 };
 
-export default Brand;
+export default SalesMonth;
