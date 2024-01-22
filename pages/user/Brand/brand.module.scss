@@ -24,13 +24,8 @@
     }
   }
   .content-wrap {
-    min-height: 50rem;
-    .no-data {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+    @include table-content-wrap;
+
     &.full-height {
       min-height: calc(100vh - 21.8rem);
     }

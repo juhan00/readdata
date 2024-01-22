@@ -167,7 +167,7 @@ const SalesDay = () => {
         </div>
 
         <div className={cx("row")}>
-          <div className={cx("box", "full-height", "content-wrap")}>
+          <div className={cx("box", "content-wrap")}>
             {/* <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
                 <BtnTableAdd onClick={() => handleNewRowClick()} />
