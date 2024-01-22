@@ -21,7 +21,7 @@ const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const Brand = () => {
+const BrandTest = () => {
   const newRow = {
     brand_code: "",
     brand_name: "",
@@ -285,4 +285,4 @@ const Brand = () => {
   );
 };
 
-export default Brand;
+export default BrandTest;
