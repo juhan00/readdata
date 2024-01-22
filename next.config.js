@@ -21,6 +21,12 @@ const nextConfig = {
       },
     ];
   },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      config.resolve.symlinks = false;
+    }
+    return config;
+  },
 };
 
 module.exports = nextConfig;
