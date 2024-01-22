@@ -91,20 +91,35 @@ const Compnay = () => {
     },
   });
 
-  const excelMutation = useMutation(
-    async (excelData) => {
-      const promises = excelData.map((data) => addCompanyList(data));
-      await Promise.all(promises);
-    },
-    {
-      onSuccess: () => {
-        refetchCompanyData();
-      },
-      onError: (error) => {
+  const excelMutation = useMutation(async (excelData) => {
+    for (const data of excelData) {
+      try {
+        await addCompanyList(data);
+      } catch (error) {
         console.error("Update error:", error);
-      },
+
+        setGlobalState({
+          popupState: {
+            isOn: true,
+            popup: POPUP_DEFAULT,
+            content: "엑셀업로드가 실패했습니다.",
+          },
+        });
+
+        return;
+      }
     }
-  );
+
+    refetchCompanyData();
+
+    setGlobalState({
+      popupState: {
+        isOn: true,
+        popup: POPUP_DEFAULT,
+        content: "엑셀업로드가 완료되었습니다.",
+      },
+    });
+  });
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(

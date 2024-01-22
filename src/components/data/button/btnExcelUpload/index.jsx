@@ -34,9 +34,11 @@ const BtnExcelUpload = ({ transformExcelCell, excelMutation }) => {
       }
 
       const reader = new FileReader();
+
       reader.onload = (e) => {
-        const binaryString = e.target.result;
-        const workbook = XLSX.read(binaryString, { type: "binary" });
+        const arrayBuffer = e.target.result;
+        const data = new Uint8Array(arrayBuffer);
+        const workbook = XLSX.read(data, { type: "array" });
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
         const uploadedData = XLSX.utils.sheet_to_json(sheet, { header: 1 });
         const headers = uploadedData[0];
@@ -49,11 +51,12 @@ const BtnExcelUpload = ({ transformExcelCell, excelMutation }) => {
         });
 
         const excelData = transformExcelCell([...formattedData]);
+        // console.log("excelData", excelData);
         excelMutation.mutate(excelData);
       };
+      reader.readAsArrayBuffer(file);
     }
-
-    reader.readAsBinaryString(file);
+    fileInput.value = "";
   };
 
   return (

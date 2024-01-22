@@ -92,20 +92,35 @@ const Brand = () => {
     },
   });
 
-  const excelMutation = useMutation(
-    async (excelData) => {
-      const promises = excelData.map((data) => addCompanyList(data));
-      await Promise.all(promises);
-    },
-    {
-      onSuccess: () => {
-        refetchBrandData();
-      },
-      onError: (error) => {
+  const excelMutation = useMutation(async (excelData) => {
+    for (const data of excelData) {
+      try {
+        await addBrandList(data);
+      } catch (error) {
         console.error("Update error:", error);
-      },
+
+        setGlobalState({
+          popupState: {
+            isOn: true,
+            popup: POPUP_DEFAULT,
+            content: "엑셀업로드가 실패했습니다.",
+          },
+        });
+
+        return;
+      }
     }
-  );
+
+    refetchBrandData();
+
+    setGlobalState({
+      popupState: {
+        isOn: true,
+        popup: POPUP_DEFAULT,
+        content: "엑셀업로드가 완료되었습니다.",
+      },
+    });
+  });
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
@@ -179,7 +194,7 @@ const Brand = () => {
 
   const transformExcelCell = (excelData) =>
     excelData.map((item) => ({
-      brand_code: item["브랜드코드"],
+      brand_code: item["브랜드 코드"],
       brand_name: item["브랜드명"],
       company_code: item["회사코드"],
       company_name: item["회사명"],
