@@ -3,6 +3,7 @@ import PopupSearchAddress from "@/src/components/data/popup/popupSearchAddress";
 import { isEqual } from "lodash";
 import { useGlobalState } from "@/context/globalStateContext";
 import { POPUP_DEFAULT } from "@/consts/popup";
+import { TABLE_COLUMN_TYPE_NUMBER, TABLE_COLUMN_TYPE_AUTHORITY, TABLE_COLUMN_TYPE_USEFLAG, TABLE_COLUMN_TYPE_ADDRESS } from "@/consts/common";
 
 //styles
 import styles from "./renderTable.module.scss";
@@ -167,9 +168,10 @@ const RenderTable = ({
             return (
               <tr {...row.getRowProps()} onDoubleClick={() => handleClickReturn && handleClickReturn(row.original[returnColumnName])}>
                 {row.cells.map((cell) => {
-                  const isAuthorityColumn = cell.column.type === "authority";
-                  const isUseflagColumn = cell.column.type === "useflag";
-                  const isAddressColumn = cell.column.type === "address";
+                  const isNumberColumn = cell.column.type === TABLE_COLUMN_TYPE_NUMBER;
+                  const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE_AUTHORITY;
+                  const isUseflagColumn = cell.column.type === TABLE_COLUMN_TYPE_USEFLAG;
+                  const isAddressColumn = cell.column.type === TABLE_COLUMN_TYPE_ADDRESS;
 
                   return (
                     <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
@@ -212,6 +214,8 @@ const RenderTable = ({
                             onChange={(e) => handleChange(cell.column.id, e.target.value)}
                           />
                         )
+                      ) : isNumberColumn ? (
+                        rowIndex + 1
                       ) : (
                         cell.render("Cell")
                       )}

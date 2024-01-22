@@ -1,3 +1,5 @@
+import { TABLE_COLUMN_TYPE_NUMBER } from "./common";
+
 export const brandColumns = [
   {
     header: "No",
@@ -9,6 +11,7 @@ export const brandColumns = [
     cellStyle: {
       textAlign: "center",
     },
+    type: TABLE_COLUMN_TYPE_NUMBER,
   },
   {
     header: "브랜드 코드",

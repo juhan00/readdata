@@ -1,3 +1,5 @@
+import { TABLE_COLUMN_TYPE_USEFLAG, TABLE_COLUMN_TYPE_AUTHORITY } from "./common";
+
 export const userColumns = [
   {
     header: "사용자 ID",
@@ -78,7 +80,7 @@ export const userColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    type: "authority",
+    type: TABLE_COLUMN_TYPE_AUTHORITY,
     Cell: ({ value }) => (Number(value) === 0 ? "사용자" : "관리자"),
   },
   {
@@ -90,7 +92,7 @@ export const userColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    type: "useflag",
+    type: TABLE_COLUMN_TYPE_USEFLAG,
     Cell: ({ value }) => (Number(value) === 0 ? "사용안함" : "사용"),
   },
 ];

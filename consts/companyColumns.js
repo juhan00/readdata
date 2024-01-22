@@ -1,3 +1,5 @@
+import { TABLE_COLUMN_TYPE_USEFLAG, TABLE_COLUMN_TYPE_ADDRESS } from "./common";
+
 export const companyColumns = [
   {
     header: "회사코드",
@@ -68,7 +70,7 @@ export const companyColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    type: "address",
+    type: TABLE_COLUMN_TYPE_ADDRESS,
   },
   {
     header: "사용여부",
@@ -79,7 +81,7 @@ export const companyColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    type: "useflag",
+    type: TABLE_COLUMN_TYPE_USEFLAG,
     Cell: ({ value }) => (Number(value) === 0 ? "사용안함" : "사용"),
   },
 ];

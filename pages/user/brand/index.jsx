@@ -1,89 +1,100 @@
-import { SEARCH_TYPE_INPUT, SEARCH_TYPE_SELECT } from "@/consts/common";
+import { SEARCH_TYPE_INPUT, SEARCH_TYPE_SELECT_FLAG } from "@/consts/common";
 import { brandColumns } from "@/consts/brandColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
-import PopupSearchBrand from "@/src/components/data/popup/popupSearchBrand";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { getBrandList } from "@/utils/api/getBrandList";
+import { addUserList, getCompanyList, updateUserList } from "@/utils/api/company";
 import { useTranslation } from "next-i18next";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { QueryClient, useMutation, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
-import EditableCell from "@/src/components/data/editableCell";
-import { useMutation } from "react-query";
-import useDownloadExcel from "@/utils/useDownloadExcel";
-import useUploadExcel from "@/utils/useUploadExcel";
-
-//datepicker
-import SearchDateItems from "@/src/components/data/searchDateItems";
-import "react-datepicker/dist/react-datepicker.css";
 
 //styles
 import className from "classnames/bind";
 import styles from "./brand.module.scss";
 const cx = className.bind(styles);
 
+const queryClient = new QueryClient();
+
 const Brand = () => {
-  const searchFieldData = {
-    name: "",
-    age: "",
+  const newRow = {
+    company_code: "",
+    company_name: "",
+    bizno: "",
+    boss: "",
+    email: "",
+    phone: 0,
+    addr: 0,
+    flag: "",
   };
 
-  const { t } = useTranslation(["common", "dataUser"]);
-  const [companyCode, setCompanyCode] = useState("C0002");
-  const [brandState, setBrandState] = useState("초기 데이터");
+  const searchFieldData = {
+    company_name: "",
+    boss: "",
+    flag: "",
+  };
+
+  const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
-  const [isPopup, setIsPopup] = useState(false);
-  const [agreeOptions] = useState(["Y", "N"]);
   const [isModified, setIsModified] = useState(false);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
-  const mutation = useMutation(getBrandList);
+  const [isAdded, setIsAdded] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
-
-  const handleStartDateChange = (date) => {
-    setStartDate(date);
-  };
-
-  const handleEndDateChange = (date) => {
-    setEndDate(date);
-  };
-
-  // const memoizedData = useMemo(
-  //   () => tableState.filter((row) => Object.values(row).some((value) => value.toString().toLowerCase().includes(searchData.toLowerCase()))),
-  //   [tableState, searchData]
-  // );
-
-  const memoizedData = useMemo(() => {
-    return tableState.filter(
-      (row) =>
-        (!searchData.name || row.name.toLowerCase().includes(searchData.name.toLowerCase())) &&
-        (!searchData.age || row.age?.toString().toLowerCase().includes(searchData.age.toLowerCase()))
-    );
-  }, [tableState, searchData]);
-
-  const updateMyData = useCallback((rowIndex, columnId, value) => {
-    setTableState((prevData) => prevData.map((row, index) => (index === rowIndex ? { ...row, [columnId]: value } : row)));
-    setIsModified(true);
-  }, []);
-
-  const getTableData = async (parm) => {
-    try {
-      const data = await mutation.mutateAsync(parm);
-      setTableState(data);
-      // console.log("Data successfully:", data);
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
-    }
-  };
+  const { data: companyData, isLoading: isLoadingCompanyData, refetch: refetchCompanyData } = useQuery("getTableData", getCompanyList);
 
   useEffect(() => {
-    getTableData(companyCode);
-  }, [companyCode]);
+    if (!isLoadingCompanyData && companyData) {
+      console.log("setTableState");
+      setTableState(companyData);
+    }
+  }, [companyData, isLoadingCompanyData]);
+
+  const updateMutation = useMutation(async (data) => await updateCompanyList(data), {
+    onSuccess: () => {
+      refetchCompanyData();
+    },
+    onError: (error) => {
+      console.error("Update error:", error);
+    },
+  });
+
+  const addMutation = useMutation(async (data) => await addCompanyList(data), {
+    onSuccess: () => {
+      refetchCompanyData();
+    },
+    onError: (error) => {
+      console.error("Update error:", error);
+    },
+  });
+
+  const excelMutation = useMutation(
+    async (excelData) => {
+      const promises = excelData.map((data) => addCompanyList(data));
+      await Promise.all(promises);
+    },
+    {
+      onSuccess: () => {
+        refetchCompanyData();
+      },
+      onError: (error) => {
+        console.error("Update error:", error);
+      },
+    }
+  );
+
+  const memoizedData = useMemo(() => {
+    return tableState?.filter(
+      (row) =>
+        (!searchData.company_name || row.company_name?.toString().toLowerCase().includes(searchData.company_name.toLowerCase())) &&
+        (!searchData.boss || row.boss?.toString().toLowerCase().includes(searchData.boss.toLowerCase())) &&
+        (!searchData.flag || row.flag?.toString().toLowerCase().includes(searchData.flag.toLowerCase()))
+    );
+  }, [tableState, searchData]);
 
   const {
     getTableProps,
@@ -103,18 +114,12 @@ const Brand = () => {
     {
       columns: brandColumns,
       data: useMemo(() => memoizedData, [memoizedData]),
-      // defaultColumn: { Cell: EditableCell },
-      // updateMyData,
-      // agreeOptions,
+      initialState: { pageIndex: 0, pageSize: 10 },
       autoResetPage: false,
     },
     useSortBy,
     usePagination
   );
-
-  const handleClickPopup = () => {
-    setIsPopup(true);
-  };
 
   const handleFieldChange = (field, e) => {
     e.preventDefault();
@@ -125,25 +130,64 @@ const Brand = () => {
   };
 
   const handleSearchSubmit = (e) => {
-    e.preventDefault();
     setSearchData((prevData) => ({
       ...prevData,
       ...searchField,
     }));
   };
 
+  const handleUpdateData = (data) => {
+    updateMutation.mutate(data);
+  };
+
+  const handleAddData = (data) => {
+    addMutation.mutate(data);
+  };
+
+  const handleNewRowClick = () => {
+    if (!isAdded && !isEditing) {
+      setTableState((prevTableState) => [
+        {
+          ...newRow,
+        },
+        ...prevTableState,
+      ]);
+
+      setIsAdded(true);
+    }
+  };
+
+  const transformExcelCell = (excelData) =>
+    excelData.map((item) => ({
+      company_code: item["회사코드"],
+      company_name: item["회사명"],
+      bizno: item["사업자등록번호"],
+      boss: item["대표자명"],
+      email: item["이메일"],
+      phone: item["전화번호"],
+      addr: item["회사주소"],
+      flag: item["사용여부"],
+    }));
+
   return (
     <>
-      {isPopup && <PopupSearchBrand setReturnState={setBrandState} setIsPopup={setIsPopup} />}
-
       <div className={cx("brand")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_SELECT} title={"브랜드명"} id={"brand"} readOnly={true} />
+              <SearchItem
+                searchType={SEARCH_TYPE_INPUT}
+                value={searchField.company_name}
+                title={"회사명"}
+                id={"company_name"}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} title={"사용구분"} id={"brand_flag"} onChange={handleFieldChange} />
+              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.boss} title={"대표자"} id={"boss"} onChange={handleFieldChange} />
+            </div>
+            <div className={cx("item")}>
+              <SearchItem searchType={SEARCH_TYPE_SELECT_FLAG} value={searchField.flag} title={"사용여부"} id={"flag"} onChange={handleFieldChange} />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
@@ -155,13 +199,15 @@ const Brand = () => {
           <div className={cx("box", "full-height", "content-wrap")}>
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
-                <BtnTableAdd />
-                <BtnExcelDown columns={brandColumns} tableData={tableState} />
-                <BtnExcelUpload setTableData={setTableState} setIsModified={setIsModified} />
+                <BtnTableAdd onClick={() => handleNewRowClick()} />
+                <BtnExcelDown columns={brandColumns} tableData={memoizedData} />
+                <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
               </div>
             </div>
             <div className={cx("item")}>
-              {!memoizedData.length ? (
+              {isLoadingCompanyData ? (
+                <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+              ) : !memoizedData.length ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <RenderTable
@@ -180,18 +226,20 @@ const Brand = () => {
                     canNextPage,
                     pageCount,
                     pageOptions,
-                    updateMyData,
-                    agreeOptions,
                   }}
                   editMode={true}
+                  isAdded={isAdded}
+                  setIsAdded={setIsAdded}
+                  isEditing={isEditing}
+                  setIsEditing={setIsEditing}
+                  handleUpdateData={handleUpdateData}
+                  handleAddData={handleAddData}
+                  setTableState={setTableState}
+                  transformExcelCell={transformExcelCell}
+                  newRow={newRow}
                 />
               )}
             </div>
-            <div className={cx("item")}>
-              {brandState}
-              <button onClick={() => handleClickPopup()}>팝업열기</button>
-            </div>
-            <div className={cx("item")}>{brandState}</div>
           </div>
         </div>
       </div>
