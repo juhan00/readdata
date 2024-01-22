@@ -27,7 +27,7 @@ const User = () => {
     <div className={cx("user")}>
       <PopupDataDefault />
       <DataLayout useType={USE_TYPE_USER} userMenu={{ menu: userMenu, setMenu: setUserMenu }}>
-        {userMenu === "brand" && <Brand />}
+        {/* {userMenu === "brand" && <Brand />} */}
         {userMenu === "sales_day" && <SalesDay />}
         {userMenu === "sales_month" && <SalesMonth />}
       </DataLayout>

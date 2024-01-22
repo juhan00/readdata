@@ -13,13 +13,6 @@ const nextConfig = {
     includePaths: [path.join(__dirname, "styles")],
     prependData: `@import "src/styles/_mixin"; @import "src/styles/_variables";`,
   },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      config.resolve.symlinks = false;
-      config.resolve.modules.push(__dirname + "/node_modules");
-    }
-    return config;
-  },
   async rewrites() {
     return [
       {
