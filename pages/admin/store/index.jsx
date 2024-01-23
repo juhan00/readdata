@@ -6,7 +6,7 @@ import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
 import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { addUserList, getUserList, updateUserList } from "@/utils/api/user";
+import { addStoreList, getStoreList, updateStoreList } from "@/utils/api/store";
 import { useTranslation } from "next-i18next";
 import { use, useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
@@ -22,49 +22,7 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const Store = () => {
-  const newRow = {
-    fran_code: "",
-    fran_name: "",
-    bizno: "",
-    pos_name: "",
-    pos_id: "",
-    pos_pw: "",
-    pos_sid: "",
-    bae_id: "",
-    bae_pw: "",
-    bae_sid: "",
-    bae1_sid: "",
-    yogi_id: "",
-    yogi_pw: "",
-    yogi_sid: "",
-    cupang_id: "",
-    cupang_pw: "",
-    cupang_sid: "",
-    etc1_id: "",
-    etc1_pw: "",
-    etc1_sid: "",
-    etc1_name: "",
-    etc2_id: "",
-    etc2_pw: "",
-    etc2_sid: "",
-    etc2_name: "",
-    etc3_id: "",
-    etc3_pw: "",
-    etc3_sid: "",
-    etc3_name: "",
-    etc4_id: "",
-    etc4_pw: "",
-    etc4_sid: "",
-    etc4_name: "",
-    etc5_id: "",
-    etc5_pw: "",
-    etc5_sid: "",
-    etc5_name: "",
-    brand_name: "",
-    use_flag: 0,
-  };
-
-  const setNewRow = storeColumns.reduce((obj, item) => {
+  const newRow = storeColumns.reduce((obj, item) => {
     if (item.accessor === "use_flag") {
       obj[item.accessor] = 0;
     } else {
@@ -72,8 +30,6 @@ const Store = () => {
     }
     return obj;
   }, {});
-
-  console.log("setNewRow", setNewRow);
 
   const searchFieldData = {
     uid: "",
@@ -89,17 +45,17 @@ const Store = () => {
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { data: userData, isLoading: isLoadingUserData, refetch: refetchUserData } = useQuery("getTableData", getUserList);
+  const { data: storeData, isLoading: isLoadingStoreData, refetch: refetchStoreData } = useQuery("getTableData", getStoreList);
 
   useEffect(() => {
-    if (!isLoadingUserData && userData) {
-      setTableState(userData);
+    if (!isLoadingStoreData && storeData) {
+      setTableState(storeData);
     }
-  }, [userData, isLoadingUserData]);
+  }, [storeData, isLoadingStoreData]);
 
   const updateMutation = useMutation(async (data) => await updateUserList(data), {
     onSuccess: () => {
-      refetchUserData();
+      refetchStoreData();
     },
     onError: (error) => {
       console.error("Update error:", error);
@@ -116,7 +72,7 @@ const Store = () => {
 
   const addMutation = useMutation(async (data) => await addUserList(data), {
     onSuccess: () => {
-      refetchUserData();
+      refetchStoreData();
     },
     onError: (error) => {
       console.error("Update error:", error);
@@ -150,7 +106,7 @@ const Store = () => {
       }
     }
 
-    refetchUserData();
+    refetchStoreData();
 
     setGlobalState({
       popupState: {
@@ -277,7 +233,7 @@ const Store = () => {
               </div>
             </div>
             <div className={cx("item")}>
-              {isLoadingUserData ? (
+              {isLoadingStoreData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
               ) : !memoizedData.length ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>

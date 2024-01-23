@@ -1,3 +1,5 @@
+import { TABLE_COLUMN_TYPE_USEFLAG, TABLE_COLUMN_TYPE_NO_EDIT } from "./common";
+
 export const storeColumns = [
   {
     header: "가맹점 코드",
@@ -388,5 +390,7 @@ export const storeColumns = [
     cellStyle: {
       textAlign: "center",
     },
+    type: TABLE_COLUMN_TYPE_NO_EDIT,
+    Cell: ({ value }) => (Number(value) === 0 ? "사용안함" : "사용"),
   },
 ];

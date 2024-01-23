@@ -3,7 +3,13 @@ import PopupSearchAddress from "@/src/components/data/popup/popupSearchAddress";
 import { isEqual } from "lodash";
 import { useGlobalState } from "@/context/globalStateContext";
 import { POPUP_DEFAULT } from "@/consts/popup";
-import { TABLE_COLUMN_TYPE_NUMBER, TABLE_COLUMN_TYPE_AUTHORITY, TABLE_COLUMN_TYPE_USEFLAG, TABLE_COLUMN_TYPE_ADDRESS } from "@/consts/common";
+import {
+  TABLE_COLUMN_TYPE_NUMBER,
+  TABLE_COLUMN_TYPE_AUTHORITY,
+  TABLE_COLUMN_TYPE_USEFLAG,
+  TABLE_COLUMN_TYPE_ADDRESS,
+  TABLE_COLUMN_TYPE_NO_EDIT,
+} from "@/consts/common";
 
 //styles
 import styles from "./renderTable.module.scss";
@@ -174,11 +180,12 @@ const RenderTable = ({
                   const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE_AUTHORITY;
                   const isUseflagColumn = cell.column.type === TABLE_COLUMN_TYPE_USEFLAG;
                   const isAddressColumn = cell.column.type === TABLE_COLUMN_TYPE_ADDRESS;
+                  const isNoEditColumn = cell.column.type === TABLE_COLUMN_TYPE_NO_EDIT;
 
                   return (
                     <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
                       {isEditingRow ? (
-                        isNumberColumn ? (
+                        isNumberColumn || isNoEditColumn ? (
                           ""
                         ) : isAuthorityColumn ? (
                           <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
