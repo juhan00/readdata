@@ -8,7 +8,7 @@ import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
 import { addUserList, getUserList, updateUserList } from "@/utils/api/user";
 import { useTranslation } from "next-i18next";
-import { useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
 import { useGlobalState } from "@/context/globalStateContext";
@@ -52,7 +52,6 @@ const User = () => {
 
   useEffect(() => {
     if (!isLoadingUserData && userData) {
-      console.log("setTableState");
       setTableState(userData);
     }
   }, [userData, isLoadingUserData]);

@@ -15,23 +15,15 @@ import styles from "./admin.module.scss";
 import className from "classnames/bind";
 const cx = className.bind(styles);
 
-const Admin = () => {
-  const router = useRouter();
-  const { category } = router.query;
-  const [adminMenu, setAdminMenu] = useState("company");
-
-  useEffect(() => {
-    setAdminMenu(category || adminMenu);
-  }, [category]);
-
+const Admin = ({ category }) => {
   return (
     <div className={cx("admin")}>
       <PopupDataDefault />
-      <DataLayout useType={USE_TYPE_ADMIN} adminMenu={{ menu: adminMenu, setMenu: setAdminMenu }}>
-        {adminMenu === "company" && <Compnay />}
-        {adminMenu === "user" && <User />}
-        {adminMenu === "sales_day" && <SalesDay />}
-        {adminMenu === "sales_month" && <SalesMonth />}
+      <DataLayout useType={USE_TYPE_ADMIN} adminMenu={{ menu: category }}>
+        {category === "company" && <Compnay />}
+        {category === "user" && <User />}
+        {category === "sales_day" && <SalesDay />}
+        {category === "sales_month" && <SalesMonth />}
       </DataLayout>
     </div>
   );
@@ -39,8 +31,13 @@ const Admin = () => {
 
 export default Admin;
 
-export const getStaticProps = async ({ locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale, ["common", "dataAdmin", "popup"])),
-  },
-});
+export const getServerSideProps = async ({ locale, query }) => {
+  const { category = "company" } = query;
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "dataAdmin", "popup"])),
+      category,
+    },
+  };
+};

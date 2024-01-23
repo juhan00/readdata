@@ -17,10 +17,16 @@ const cx = className.bind(styles);
 const User = () => {
   const router = useRouter();
   const { category } = router.query;
-  const [userMenu, setUserMenu] = useState("brand");
+  const [userMenu, setUserMenu] = useState();
 
   useEffect(() => {
-    setUserMenu(category || userMenu);
+    if (!userMenu) {
+      router.push(`/user?category=brand`);
+    }
+  }, []);
+
+  useEffect(() => {
+    setUserMenu(category);
   }, [category]);
 
   return (
@@ -37,8 +43,13 @@ const User = () => {
 
 export default User;
 
-export const getStaticProps = async ({ locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale, ["common", "dataUser", "popup"])),
-  },
-});
+export const getServerSideProps = async ({ locale, query }) => {
+  const { category = "brand" } = query;
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "dataUser", "popup"])),
+      category,
+    },
+  };
+};

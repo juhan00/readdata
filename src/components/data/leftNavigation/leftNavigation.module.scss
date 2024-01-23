@@ -27,6 +27,7 @@
           align-items: center;
           height: 6.4rem;
           button {
+            width: 100%;
             display: flex;
             align-items: center;
             font-size: 1.8rem;
@@ -73,6 +74,7 @@
       ul.user {
         li {
           button {
+            width: 100%;
             &.menu1::before {
               background: url("/assets/images/data/user/ico_user_nav_brand_off.png") no-repeat 50% 50% / contain;
             }

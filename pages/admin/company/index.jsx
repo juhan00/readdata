@@ -52,7 +52,6 @@ const Compnay = () => {
 
   useEffect(() => {
     if (!isLoadingCompanyData && companyData) {
-      console.log("setTableState");
       setTableState(companyData);
     }
   }, [companyData, isLoadingCompanyData]);
