@@ -45,7 +45,7 @@ const User = () => {
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { data: userData, isLoading: isLoadingUserData, refetch: refetchUserData } = useQuery("getTableData", getUserList);
+  const { data: userData, isLoading: isLoadingUserData, refetch: refetchUserData } = useQuery("getUserData", getUserList);
 
   useEffect(() => {
     if (!isLoadingUserData && userData) {
@@ -188,17 +188,7 @@ const User = () => {
   };
 
   const transformExcelCell = (excelData) =>
-    excelData.map((item) => ({
-      uid: item[userColumns[0].header],
-      upw: item[userColumns[1].header],
-      uname: item[userColumns[2].header],
-      email: item[userColumns[3].header],
-      phone: item[userColumns[4].header],
-      company_code: item[userColumns[5].header],
-      company_name: item[userColumns[6].header],
-      authority: item[userColumns[7].header],
-      use_flag: item[userColumns[8].header],
-    }));
+    excelData.map((item) => Object.fromEntries(storeAccountColumns.map((column, index) => [column.header, item[index]])));
 
   // useEffect(() => {
   //   if (transformExcelData.length > 0) {

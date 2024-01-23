@@ -1,75 +1,57 @@
-import { SEARCH_TYPE_INPUT, SEARCH_TYPE_SELECT_FLAG } from "@/consts/common";
-import { brandColumns } from "@/consts/brandColumns";
+import { SEARCH_TYPE_INPUT } from "@/consts/common";
+import { storeMappingColumns } from "@/consts/storeMappingColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
-import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
+import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { getBrandList, updateBrandList, addBrandList } from "@/utils/api/brand";
+import { getStoreMapingList, updateStoreMapingList } from "@/utils/api/store";
 import { useTranslation } from "next-i18next";
-import { useEffect, useMemo, useState } from "react";
+import { use, useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
 import { useGlobalState } from "@/context/globalStateContext";
 import { POPUP_DEFAULT } from "@/consts/popup";
+import ScrapingSearch from "@/src/components/data/scrapingSearch";
 
 //styles
 import className from "classnames/bind";
-import styles from "./brand.module.scss";
+import styles from "./storeMapping.module.scss";
 const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const Brand = () => {
-  // const newRow = {
-  //   brand_code: "",
-  //   brand_name: "",
-  //   company_code: "",
-  //   company_name: "",
-  //   use_flag: 0,
-  // };
-
-  const newRow = brandColumns.reduce((obj, item) => {
-    if (item.accessor === "use_flag") {
-      obj[item.accessor] = 0;
-    } else {
-      obj[item.accessor] = "";
-    }
-    return obj;
-  }, {});
-
+const StoreMapping = () => {
   const searchFieldData = {
-    brand_name: "",
-    brand_flag: "",
+    uid: "",
+    uname: "",
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
-  const { t } = useTranslation(["common", "dataUser"]);
-  const [companyCode, setCompanyCode] = useState("");
+  const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
-  const [isModified, setIsModified] = useState(false);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
-  const [isAdded, setIsAdded] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
 
   const {
-    data: brandData,
-    isLoading: isLoadingBrandData,
-    refetch: refetchBrandData,
-  } = useQuery(["getBrandData", companyCode], () => getBrandList(companyCode), { enabled: companyCode !== undefined });
+    data: storeMapingData,
+    isLoading: isLoadingStoreMapingData,
+    refetch: refetchStoreMapingData,
+  } = useQuery("getStoreMapingData", getStoreMapingList);
 
   useEffect(() => {
-    if (!isLoadingBrandData && brandData) {
-      console.log("setTableState");
-      setTableState(brandData);
+    console.log("storeMapingData", storeMapingData);
+  });
+  useEffect(() => {
+    if (!isLoadingStoreMapingData && storeMapingData) {
+      setTableState(storeMapingData);
     }
-  }, [brandData, isLoadingBrandData]);
+  }, [storeMapingData, isLoadingStoreMapingData]);
 
-  const updateMutation = useMutation(async (data) => await updateBrandList(data), {
+  const updateMutation = useMutation(async (data) => await updateStoreList(data), {
     onSuccess: () => {
-      refetchBrandData();
+      refetchStoreMapingData();
     },
     onError: (error) => {
       console.error("Update error:", error);
@@ -84,12 +66,12 @@ const Brand = () => {
     },
   });
 
-  const addMutation = useMutation(async (data) => await addBrandList(data), {
+  const addMutation = useMutation(async (data) => await addStoreList(data), {
     onSuccess: () => {
-      refetchBrandData();
+      refetchStoreMapingData();
     },
     onError: (error) => {
-      console.error("Added error:", error);
+      console.error("Update error:", error);
 
       setGlobalState({
         popupState: {
@@ -104,7 +86,7 @@ const Brand = () => {
   const excelMutation = useMutation(async (excelData) => {
     for (const data of excelData) {
       try {
-        await addBrandList(data);
+        await addStoreList(data);
       } catch (error) {
         console.error("Update error:", error);
 
@@ -120,7 +102,7 @@ const Brand = () => {
       }
     }
 
-    refetchBrandData();
+    refetchStoreMapingData();
 
     setGlobalState({
       popupState: {
@@ -134,8 +116,8 @@ const Brand = () => {
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
-        (!searchData.brand_flag || row.brand_flag?.toString().toLowerCase().includes(searchData.brand_flag.toLowerCase()))
+        (!searchData.uid || row.uid?.toString().toLowerCase().includes(searchData.uid.toLowerCase())) &&
+        (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -155,7 +137,7 @@ const Brand = () => {
     pageOptions,
   } = useTable(
     {
-      columns: brandColumns,
+      columns: storeMappingColumns,
       data: useMemo(() => memoizedData, [memoizedData]),
       initialState: { pageIndex: 0, pageSize: 10 },
       autoResetPage: false,
@@ -183,28 +165,14 @@ const Brand = () => {
     updateMutation.mutate(data);
   };
 
-  const handleAddData = (data) => {
-    addMutation.mutate(data);
-  };
+  // const transformExcelCell = (excelData) =>
+  //   excelData.map((item) => Object.fromEntries(storeAccountColumns.map((column, index) => [column.header, item[index]])));
 
-  const handleNewRowClick = () => {
-    if (!isAdded && !isEditing) {
-      setTableState((prevTableState) => [
-        {
-          ...newRow,
-        },
-        ...prevTableState,
-      ]);
-
-      setIsAdded(true);
-      gotoPage(0);
-    }
-  };
-
-  const transformExcelCell = (excelData) =>
-    excelData.map((item) => Object.fromEntries(storeAccountColumns.map((column, index) => [column.header, item[index]])));
-
-  const exportExcelColumns = brandColumns.filter((column) => column.accessor !== "no");
+  // useEffect(() => {
+  //   if (transformExcelData.length > 0) {
+  //     excelMutation.mutate(transformExcelData);
+  //   }
+  // }, [excelMutation, transformExcelData]);
 
   return (
     <>
@@ -212,22 +180,10 @@ const Brand = () => {
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE_INPUT}
-                value={searchField.brand_name}
-                title={"브랜드명"}
-                id={"brand_name"}
-                onChange={handleFieldChange}
-              />
+              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.uid} title={"사용자 ID"} id={"uid"} onChange={handleFieldChange} />
             </div>
             <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE_SELECT_FLAG}
-                value={searchField.brand_flag}
-                title={"사용여부"}
-                id={"brand_flag"}
-                onChange={handleFieldChange}
-              />
+              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.uname} title={"사용자명"} id={"uname"} onChange={handleFieldChange} />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
@@ -235,17 +191,10 @@ const Brand = () => {
           </div>
         </div>
 
-        <div className={cx("row")}>
+        <div className={cx("row", "flex")}>
           <div className={cx("box", "content-wrap")}>
             <div className={cx("item")}>
-              <div className={cx("content-btn-wrap")}>
-                <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={exportExcelColumns} tableData={memoizedData} />
-                <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
-              </div>
-            </div>
-            <div className={cx("item")}>
-              {isLoadingBrandData ? (
+              {isLoadingStoreMapingData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
               ) : !memoizedData.length ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
@@ -267,20 +216,16 @@ const Brand = () => {
                     pageCount,
                     pageOptions,
                   }}
-                  editMode={true}
-                  isAdded={isAdded}
-                  setIsAdded={setIsAdded}
-                  isEditing={isEditing}
-                  setIsEditing={setIsEditing}
+                  editMode={false}
                   handleUpdateData={handleUpdateData}
-                  handleAddData={handleAddData}
                   tableState={tableState}
                   setTableState={setTableState}
-                  transformExcelCell={transformExcelCell}
-                  newRow={newRow}
                 />
               )}
             </div>
+          </div>
+          <div className={cx("box", "content-wrap")}>
+            <ScrapingSearch />
           </div>
         </div>
       </div>
@@ -288,4 +233,4 @@ const Brand = () => {
   );
 };
 
-export default Brand;
+export default StoreMapping;

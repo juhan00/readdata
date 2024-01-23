@@ -36,8 +36,8 @@ const SalesMonth = () => {
   const [isModified, setIsModified] = useState(false);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
-  const [isAdded, setIsAdded] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
+  // const [isAdded, setIsAdded] = useState(false);
+  // const [isEditing, setIsEditing] = useState(false);
   const [startDate, setStartDate] = useState(thisMonth);
   const [endDate, setEndDate] = useState(thisMonth);
 
@@ -61,7 +61,7 @@ const SalesMonth = () => {
     data: salesDateData,
     isLoading: isLoadingSalesDateData,
     refetch: refetchSalesDateData,
-  } = useQuery(["getTableMonth", formatEndDate], () => getSalesMonthList(formatStartDate, formatEndDate), {
+  } = useQuery(["getSalesMonthData", formatEndDate], () => getSalesMonthList(formatStartDate, formatEndDate), {
     enabled: formatStartDate !== undefined && formatEndDate !== undefined,
   });
 
@@ -120,30 +120,16 @@ const SalesMonth = () => {
     }));
   };
 
-  const handleUpdateData = (data) => {
-    updateMutation.mutate(data);
-  };
+  // const handleUpdateData = (data) => {
+  //   updateMutation.mutate(data);
+  // };
 
-  const handleAddData = (data) => {
-    addMutation.mutate(data);
-  };
+  // const handleAddData = (data) => {
+  //   addMutation.mutate(data);
+  // };
 
-  const transformExcelCell = (excelData) =>
-    excelData.map((item) => ({
-      uid: item["사용자 ID"],
-      upw: item["사용자 PW"],
-      uname: item["사용자명"],
-      email: item["이메일"],
-      phone: item["전화번호"],
-      company_code: item["회사코드"],
-      company_name: item["회사명"],
-      authority: item["사용권한"],
-      use_flag: item["사용여부"],
-    }));
-
-  useEffect(() => {
-    console.log("tableState", tableState);
-  }, [tableState]);
+  // const transformExcelCell = (excelData) =>
+  //   excelData.map((item) => Object.fromEntries(storeAccountColumns.map((column, index) => [column.header, item[index]])));
 
   return (
     <>
@@ -200,14 +186,14 @@ const SalesMonth = () => {
                     pageOptions,
                   }}
                   editMode={false}
-                  isAdded={isAdded}
-                  setIsAdded={setIsAdded}
-                  isEditing={isEditing}
-                  setIsEditing={setIsEditing}
-                  handleUpdateData={handleUpdateData}
-                  handleAddData={handleAddData}
+                  // isAdded={isAdded}
+                  // setIsAdded={setIsAdded}
+                  // isEditing={isEditing}
+                  // setIsEditing={setIsEditing}
+                  // handleUpdateData={handleUpdateData}
+                  // handleAddData={handleAddData}
                   setTableState={setTableState}
-                  transformExcelCell={transformExcelCell}
+                  // transformExcelCell={transformExcelCell}
                 />
               )}
             </div>

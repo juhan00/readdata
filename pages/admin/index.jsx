@@ -7,6 +7,8 @@ import SalesDay from "./salesDay";
 import SalesMonth from "./salesMonth";
 import User from "./user";
 import StoreAccount from "./storeAccount";
+import Store from "./store";
+import StoreMapping from "./storeMapping";
 
 //styles
 import className from "classnames/bind";
@@ -20,7 +22,9 @@ const Admin = ({ category }) => {
       <DataLayout useType={USE_TYPE_ADMIN} adminMenu={{ menu: category }}>
         {category === "company" && <Compnay />}
         {category === "user" && <User />}
+        {category === "store" && <Store />}
         {category === "store_account" && <StoreAccount />}
+        {category === "store_mapping" && <StoreMapping />}
         {category === "sales_day" && <SalesDay />}
         {category === "sales_month" && <SalesMonth />}
       </DataLayout>

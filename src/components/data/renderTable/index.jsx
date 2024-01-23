@@ -57,10 +57,13 @@ const RenderTable = ({
   const [{ popupState }, setGlobalState] = useGlobalState();
 
   const pages = useMemo(() => {
+    if (!pageOptions) {
+      return [];
+    }
     const start = Math.floor(pageIndex / 5) * 5;
     const end = Math.min(start + 5, pageOptions.length);
     return Array.from({ length: end - start }, (_, i) => start + i);
-  }, [pageIndex, pageOptions.length]);
+  }, [pageIndex, pageOptions]);
 
   const isObjectInArray = (array, targetObject, currentRowIndex) => {
     return array.filter((_, index) => index !== currentRowIndex).some((obj) => isEqual(obj, targetObject));
@@ -168,7 +171,7 @@ const RenderTable = ({
           ))}
         </thead>
         <tbody {...getTableBodyProps()}>
-          {page.map((row, rowIndex) => {
+          {page?.map((row, rowIndex) => {
             prepareRow(row);
 
             editingRow;
@@ -247,6 +250,8 @@ const RenderTable = ({
                             <button onClick={() => handleEditCancelClick()}>취소</button>
                           </>
                         )
+                      ) : handleClickReturn ? (
+                        <button onClick={() => handleClickReturn(row.values.fran_name)}>맵핑</button>
                       ) : (
                         <button onClick={() => handleEditClick(rowIndex, row.index)}>수정</button>
                       )}
@@ -261,19 +266,21 @@ const RenderTable = ({
       {/* <div className={cx("page-info-wrap")}>
         {pageIndex + 1} / {pageOptions.length}
       </div> */}
-      <div className={cx("pagination")}>
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage} className={cx("prev_double")}></button>
-        <button onClick={() => previousPage()} disabled={!canPreviousPage} className={cx("prev")}></button>
-        <div className={cx("number-wrap")}>
-          {pages.map((page, index) => (
-            <button key={index} onClick={() => gotoPage(page)} disabled={pageIndex === page} className={cx("number")}>
-              {page + 1}
-            </button>
-          ))}
+      {pageOptions && (
+        <div className={cx("pagination")}>
+          <button onClick={() => gotoPage(0)} disabled={!canPreviousPage} className={cx("prev_double")}></button>
+          <button onClick={() => previousPage()} disabled={!canPreviousPage} className={cx("prev")}></button>
+          <div className={cx("number-wrap")}>
+            {pages.map((page, index) => (
+              <button key={index} onClick={() => gotoPage(page)} disabled={pageIndex === page} className={cx("number")}>
+                {page + 1}
+              </button>
+            ))}
+          </div>
+          <button onClick={() => nextPage()} disabled={!canNextPage} className={cx("next")}></button>
+          <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage} className={cx("next_double")}></button>
         </div>
-        <button onClick={() => nextPage()} disabled={!canNextPage} className={cx("next")}></button>
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage} className={cx("next_double")}></button>
-      </div>
+      )}
     </div>
   );
 };

@@ -57,7 +57,7 @@ const Compnay = () => {
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { data: companyData, isLoading: isLoadingCompanyData, refetch: refetchCompanyData } = useQuery("getTableData", getCompanyList);
+  const { data: companyData, isLoading: isLoadingCompanyData, refetch: refetchCompanyData } = useQuery("getCompanyData", getCompanyList);
 
   useEffect(() => {
     if (!isLoadingCompanyData && companyData) {
@@ -201,16 +201,7 @@ const Compnay = () => {
   };
 
   const transformExcelCell = (excelData) =>
-    excelData.map((item) => ({
-      company_code: item[companyColumns[0].header],
-      company_name: item[companyColumns[1].header],
-      bizno: item[companyColumns[2].header],
-      boss: item[companyColumns[3].header],
-      email: item[companyColumns[4].header],
-      phone: item[companyColumns[5].header],
-      addr: item[companyColumns[6].header],
-      flag: item[companyColumns[7].header],
-    }));
+    excelData.map((item) => Object.fromEntries(storeAccountColumns.map((column, index) => [column.header, item[index]])));
 
   return (
     <>

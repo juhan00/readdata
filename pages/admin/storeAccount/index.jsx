@@ -45,7 +45,7 @@ const StoreAccount = () => {
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { data: storeData, isLoading: isLoadingStoreData, refetch: refetchStoreData } = useQuery("getTableData", getStoreAccountList);
+  const { data: storeData, isLoading: isLoadingStoreData, refetch: refetchStoreData } = useQuery("getStoreAccountData", getStoreAccountList);
 
   useEffect(() => {
     if (!isLoadingStoreData && storeData) {

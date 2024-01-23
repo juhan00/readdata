@@ -1,0 +1,53 @@
+.scraping-search {
+  .item {
+    .title {
+      @include label;
+      margin-bottom: 1.2rem;
+    }
+    .input-wrap {
+      input {
+        @include input;
+        width: 100%;
+      }
+      margin-bottom: 3rem;
+    }
+    .search-wrap {
+      display: flex;
+      align-items: center;
+      label {
+        font-size: 1.6rem;
+        font-weight: 400;
+        line-height: 2.4rem;
+        letter-spacing: -0.016rem;
+        margin-right: 1.5rem;
+      }
+      input {
+        @include input;
+        flex-grow: 1;
+      }
+      button {
+        @include default-button;
+        margin-left: 1rem;
+      }
+    }
+
+    .content-wrap {
+      @include table-content-wrap;
+      min-height: auto;
+      height: 39rem;
+      overflow-y: scroll;
+      padding: 1rem;
+      margin-top: 2rem;
+      border: 1px solid #c2c2c2;
+      background: #fbfbfb;
+      border-radius: 0.8rem;
+      &::-webkit-scrollbar {
+        width: 0.6rem;
+      }
+      &::-webkit-scrollbar-thumb {
+        border-radius: 0.6rem;
+        background: #bebebe;
+      }
+    }
+  }
+}
