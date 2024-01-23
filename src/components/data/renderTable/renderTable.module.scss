@@ -26,6 +26,9 @@
       th + th {
         border-left: 0.1rem solid $color-white;
       }
+      .edit-th {
+        min-width: 50px;
+      }
     }
     tbody {
       td {
@@ -66,6 +69,7 @@
             color: #333;
             font-size: 1.2rem;
             padding: 0.2rem 0.6rem;
+            white-space: nowrap;
           }
 
           button + button {

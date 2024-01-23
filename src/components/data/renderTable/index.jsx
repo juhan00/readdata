@@ -24,6 +24,7 @@ const RenderTable = ({
   tableState,
   setTableState,
   newRow,
+  addressFieldName,
 }) => {
   const {
     getTableProps,
@@ -134,7 +135,7 @@ const RenderTable = ({
 
   const handleSelectAddress = (selectedAddress) => {
     const addressCellName = headerGroups.flatMap((headerGroup) =>
-      headerGroup.headers.filter((column) => column.type === "address").map((addressColumn) => addressColumn.id)
+      headerGroup.headers.filter((column) => column.type === TABLE_COLUMN_TYPE_ADDRESS).map((addressColumn) => addressColumn.id)
     );
 
     setColumnValues((prevColumnValues) => ({
@@ -156,7 +157,7 @@ const RenderTable = ({
                   <span>{column.isSorted ? (column.isSortedDesc ? "v" : "^") : ""}</span>
                 </th>
               ))}
-              {editMode && <th></th>}
+              {editMode && <th className={cx("edit-th")}></th>}
             </tr>
           ))}
         </thead>
@@ -201,7 +202,6 @@ const RenderTable = ({
                               <PopupSearchAddress
                                 onSelectAddress={handleSelectAddress}
                                 orgAddress={columnValues[cell.column.id] || cell.value || ""}
-                                // isAddressPopupOpen={isAddressPopupOpen}
                                 onClose={() => setIsAddressPopupOpen(false)}
                               />
                             )}
