@@ -1,5 +1,5 @@
 import { SEARCH_TYPE_INPUT } from "@/consts/common";
-import { userColumns } from "@/consts/userColumns";
+import { storeColumns } from "@/consts/storeColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
@@ -16,20 +16,64 @@ import { POPUP_DEFAULT } from "@/consts/popup";
 
 //styles
 import className from "classnames/bind";
-import styles from "./user.module.scss";
+import styles from "./store.module.scss";
 const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const User = () => {
-  const newRow = userColumns.reduce((obj, item) => {
-    if (item.accessor === "authority" || item.accessor === "use_flag") {
+const Store = () => {
+  const newRow = {
+    fran_code: "",
+    fran_name: "",
+    bizno: "",
+    pos_name: "",
+    pos_id: "",
+    pos_pw: "",
+    pos_sid: "",
+    bae_id: "",
+    bae_pw: "",
+    bae_sid: "",
+    bae1_sid: "",
+    yogi_id: "",
+    yogi_pw: "",
+    yogi_sid: "",
+    cupang_id: "",
+    cupang_pw: "",
+    cupang_sid: "",
+    etc1_id: "",
+    etc1_pw: "",
+    etc1_sid: "",
+    etc1_name: "",
+    etc2_id: "",
+    etc2_pw: "",
+    etc2_sid: "",
+    etc2_name: "",
+    etc3_id: "",
+    etc3_pw: "",
+    etc3_sid: "",
+    etc3_name: "",
+    etc4_id: "",
+    etc4_pw: "",
+    etc4_sid: "",
+    etc4_name: "",
+    etc5_id: "",
+    etc5_pw: "",
+    etc5_sid: "",
+    etc5_name: "",
+    brand_name: "",
+    use_flag: 0,
+  };
+
+  const setNewRow = storeColumns.reduce((obj, item) => {
+    if (item.accessor === "use_flag") {
       obj[item.accessor] = 0;
     } else {
       obj[item.accessor] = "";
     }
     return obj;
   }, {});
+
+  console.log("setNewRow", setNewRow);
 
   const searchFieldData = {
     uid: "",
@@ -141,7 +185,7 @@ const User = () => {
     pageOptions,
   } = useTable(
     {
-      columns: userColumns,
+      columns: storeColumns,
       data: useMemo(() => memoizedData, [memoizedData]),
       initialState: { pageIndex: 0, pageSize: 10 },
       autoResetPage: false,
@@ -228,7 +272,7 @@ const User = () => {
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
                 <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={userColumns} tableData={memoizedData} />
+                <BtnExcelDown columns={storeColumns} tableData={memoizedData} />
                 <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
               </div>
             </div>
@@ -276,4 +320,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Store;

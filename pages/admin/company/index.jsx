@@ -22,16 +22,25 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const Compnay = () => {
-  const newRow = {
-    company_code: "",
-    company_name: "",
-    bizno: "",
-    boss: "",
-    email: "",
-    phone: 0,
-    addr: 0,
-    flag: "",
-  };
+  // const newRow = {
+  //   company_code: "",
+  //   company_name: "",
+  //   bizno: "",
+  //   boss: "",
+  //   email: "",
+  //   phone: 0,
+  //   addr: 0,
+  //   flag: "",
+  // };
+
+  const newRow = companyColumns.reduce((obj, item) => {
+    if (item.accessor === "flag") {
+      obj[item.accessor] = 0;
+    } else {
+      obj[item.accessor] = "";
+    }
+    return obj;
+  }, {});
 
   const searchFieldData = {
     company_name: "",
@@ -193,14 +202,14 @@ const Compnay = () => {
 
   const transformExcelCell = (excelData) =>
     excelData.map((item) => ({
-      company_code: item["회사코드"],
-      company_name: item["회사명"],
-      bizno: item["사업자등록번호"],
-      boss: item["대표자명"],
-      email: item["이메일"],
-      phone: item["전화번호"],
-      addr: item["회사주소"],
-      flag: item["사용여부"],
+      company_code: item[companyColumns[0].header],
+      company_name: item[companyColumns[1].header],
+      bizno: item[companyColumns[2].header],
+      boss: item[companyColumns[3].header],
+      email: item[companyColumns[4].header],
+      phone: item[companyColumns[5].header],
+      addr: item[companyColumns[6].header],
+      flag: item[companyColumns[7].header],
     }));
 
   return (

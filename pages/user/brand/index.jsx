@@ -22,13 +22,22 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const Brand = () => {
-  const newRow = {
-    brand_code: "",
-    brand_name: "",
-    company_code: "",
-    company_name: "",
-    use_flag: 0,
-  };
+  // const newRow = {
+  //   brand_code: "",
+  //   brand_name: "",
+  //   company_code: "",
+  //   company_name: "",
+  //   use_flag: 0,
+  // };
+
+  const newRow = brandColumns.reduce((obj, item) => {
+    if (item.accessor === "use_flag") {
+      obj[item.accessor] = 0;
+    } else {
+      obj[item.accessor] = "";
+    }
+    return obj;
+  }, {});
 
   const searchFieldData = {
     brand_name: "",
@@ -194,11 +203,11 @@ const Brand = () => {
 
   const transformExcelCell = (excelData) =>
     excelData.map((item) => ({
-      brand_code: item["브랜드 코드"],
-      brand_name: item["브랜드명"],
-      company_code: item["회사코드"],
-      company_name: item["회사명"],
-      use_flag: item["사용구분"],
+      brand_code: item[brandColumns[0].header],
+      brand_name: item[brandColumns[1].header],
+      company_code: item[brandColumns[2].header],
+      company_name: item[brandColumns[3].header],
+      use_flag: item[brandColumns[4].header],
     }));
 
   const exportExcelColumns = brandColumns.filter((column) => column.accessor !== "no");

@@ -1,18 +1,16 @@
-import DataLayout from "@/layouts/dataLayout";
 import { USE_TYPE_ADMIN } from "@/consts/common";
-import { useEffect, useState } from "react";
+import DataLayout from "@/layouts/dataLayout";
+import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import { useTranslation } from "next-i18next";
 import Compnay from "./company";
-import User from "./user";
 import SalesDay from "./salesDay";
 import SalesMonth from "./salesMonth";
-import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";
-import { useRouter } from "next/router";
+import User from "./user";
+import Store from "./store";
 
 //styles
-import styles from "./admin.module.scss";
 import className from "classnames/bind";
+import styles from "./admin.module.scss";
 const cx = className.bind(styles);
 
 const Admin = ({ category }) => {
@@ -22,6 +20,7 @@ const Admin = ({ category }) => {
       <DataLayout useType={USE_TYPE_ADMIN} adminMenu={{ menu: category }}>
         {category === "company" && <Compnay />}
         {category === "user" && <User />}
+        {category === "store" && <Store />}
         {category === "sales_day" && <SalesDay />}
         {category === "sales_month" && <SalesMonth />}
       </DataLayout>
