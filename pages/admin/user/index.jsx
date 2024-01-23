@@ -187,6 +187,7 @@ const User = () => {
       ]);
 
       setIsAdded(true);
+      gotoPage(0);
     }
   };
 

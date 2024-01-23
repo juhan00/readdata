@@ -188,6 +188,7 @@ const Compnay = () => {
       ]);
 
       setIsAdded(true);
+      gotoPage(0);
     }
   };
 

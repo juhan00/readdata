@@ -140,10 +140,6 @@ const SalesDay = () => {
       use_flag: item["사용여부"],
     }));
 
-  useEffect(() => {
-    console.log("tableState", tableState);
-  }, [tableState]);
-
   return (
     <>
       <div className={cx("brand")}>
