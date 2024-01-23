@@ -118,12 +118,18 @@
               background: url("/assets/images/data/admin/ico_admin_nav_franchisee_off.png") no-repeat 50% 50% / contain;
             }
             &.menu4::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_sales_off.png") no-repeat 50% 50% / contain;
+              background: url("/assets/images/data/admin/ico_admin_nav_franchisee_off.png") no-repeat 50% 50% / contain;
             }
             &.menu5::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_sales_off.png") no-repeat 50% 50% / contain;
+              background: url("/assets/images/data/admin/ico_admin_nav_franchisee_off.png") no-repeat 50% 50% / contain;
             }
             &.menu6::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_sales_off.png") no-repeat 50% 50% / contain;
+            }
+            &.menu7::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_sales_off.png") no-repeat 50% 50% / contain;
+            }
+            &.menu8::before {
               background: url("/assets/images/data/admin/ico_admin_nav_customer_off.png") no-repeat 50% 50% / contain;
             }
           }
@@ -138,12 +144,18 @@
               background: url("/assets/images/data/admin/ico_admin_nav_franchisee_on.png") no-repeat 50% 50% / contain;
             }
             &.menu4::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_sales_on.png") no-repeat 50% 50% / contain;
+              background: url("/assets/images/data/admin/ico_admin_nav_franchisee_on.png") no-repeat 50% 50% / contain;
             }
             &.menu5::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_sales_on.png") no-repeat 50% 50% / contain;
+              background: url("/assets/images/data/admin/ico_admin_nav_franchisee_on.png") no-repeat 50% 50% / contain;
             }
             &.menu6::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_sales_on.png") no-repeat 50% 50% / contain;
+            }
+            &.menu7::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_sales_on.png") no-repeat 50% 50% / contain;
+            }
+            &.menu8::before {
               background: url("/assets/images/data/admin/ico_admin_nav_customer_on.png") no-repeat 50% 50% / contain;
             }
           }

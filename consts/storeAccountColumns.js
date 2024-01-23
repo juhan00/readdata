@@ -1,6 +1,6 @@
 import { TABLE_COLUMN_TYPE_USEFLAG, TABLE_COLUMN_TYPE_NO_EDIT } from "./common";
 
-export const storeColumns = [
+export const storeAccountColumns = [
   {
     header: "가맹점 코드",
     accessor: "fran_code",
@@ -10,6 +10,7 @@ export const storeColumns = [
     cellStyle: {
       textAlign: "center",
     },
+    type: TABLE_COLUMN_TYPE_NO_EDIT,
   },
   {
     header: "가맹점 명",
@@ -20,6 +21,7 @@ export const storeColumns = [
     cellStyle: {
       textAlign: "center",
     },
+    type: TABLE_COLUMN_TYPE_NO_EDIT,
   },
   {
     header: "사업자등록번호",
@@ -30,6 +32,7 @@ export const storeColumns = [
     cellStyle: {
       textAlign: "center",
     },
+    type: TABLE_COLUMN_TYPE_NO_EDIT,
   },
   {
     header: "포스 이름",
@@ -390,7 +393,6 @@ export const storeColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    type: TABLE_COLUMN_TYPE_NO_EDIT,
     Cell: ({ value }) => (Number(value) === 0 ? "사용안함" : "사용"),
   },
 ];

@@ -1,5 +1,5 @@
 import { SEARCH_TYPE_INPUT } from "@/consts/common";
-import { storeColumns } from "@/consts/storeColumns";
+import { storeAccountColumns } from "@/consts/storeAccountColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
@@ -16,20 +16,20 @@ import { POPUP_DEFAULT } from "@/consts/popup";
 
 //styles
 import className from "classnames/bind";
-import styles from "./store.module.scss";
+import styles from "./storeAccount.module.scss";
 const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const Store = () => {
-  const newRow = storeColumns.reduce((obj, item) => {
-    if (item.accessor === "use_flag") {
-      obj[item.accessor] = 0;
-    } else {
-      obj[item.accessor] = "";
-    }
-    return obj;
-  }, {});
+const StoreAccount = () => {
+  // const newRow = storeAccountColumns.reduce((obj, item) => {
+  //   if (item.accessor === "use_flag") {
+  //     obj[item.accessor] = 0;
+  //   } else {
+  //     obj[item.accessor] = "";
+  //   }
+  //   return obj;
+  // }, {});
 
   const searchFieldData = {
     uid: "",
@@ -141,7 +141,7 @@ const Store = () => {
     pageOptions,
   } = useTable(
     {
-      columns: storeColumns,
+      columns: storeAccountColumns,
       data: useMemo(() => memoizedData, [memoizedData]),
       initialState: { pageIndex: 0, pageSize: 10 },
       autoResetPage: false,
@@ -169,9 +169,9 @@ const Store = () => {
     updateMutation.mutate(data);
   };
 
-  const handleAddData = (data) => {
-    addMutation.mutate(data);
-  };
+  // const handleAddData = (data) => {
+  //   addMutation.mutate(data);
+  // };
 
   const handleNewRowClick = () => {
     if (!isAdded && !isEditing) {
@@ -227,8 +227,8 @@ const Store = () => {
           <div className={cx("box", "content-wrap")}>
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
-                <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={storeColumns} tableData={memoizedData} />
+                {/* <BtnTableAdd onClick={() => handleNewRowClick()} /> */}
+                <BtnExcelDown columns={storeAccountColumns} tableData={memoizedData} />
                 <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
               </div>
             </div>
@@ -261,11 +261,11 @@ const Store = () => {
                   isEditing={isEditing}
                   setIsEditing={setIsEditing}
                   handleUpdateData={handleUpdateData}
-                  handleAddData={handleAddData}
+                  // handleAddData={handleAddData}
                   tableState={tableState}
                   setTableState={setTableState}
                   transformExcelCell={transformExcelCell}
-                  newRow={newRow}
+                  // newRow={newRow}
                 />
               )}
             </div>
@@ -276,4 +276,4 @@ const Store = () => {
   );
 };
 
-export default Store;
+export default StoreAccount;
