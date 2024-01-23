@@ -31,6 +31,7 @@ const RenderTable = ({
   setTableState,
   newRow,
   addressFieldName,
+  returnBtnName,
 }) => {
   const {
     getTableProps,
@@ -251,7 +252,7 @@ const RenderTable = ({
                           </>
                         )
                       ) : handleClickReturn ? (
-                        <button onClick={() => handleClickReturn(row.values.fran_name)}>맵핑</button>
+                        <button onClick={() => handleClickReturn(row.values)}>{returnBtnName || "선택"}</button>
                       ) : (
                         <button onClick={() => handleEditClick(rowIndex, row.index)}>수정</button>
                       )}

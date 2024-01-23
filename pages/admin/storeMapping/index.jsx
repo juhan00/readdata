@@ -8,7 +8,7 @@ import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
 import { getStoreMapingList, updateStoreMapingList } from "@/utils/api/store";
 import { useTranslation } from "next-i18next";
-import { use, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
 import { useGlobalState } from "@/context/globalStateContext";
@@ -33,6 +33,8 @@ const StoreMapping = () => {
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
+  const [selectFranName, setSelectFranName] = useState("");
+  const [selectFranCode, setSelectFranCode] = useState("");
 
   const {
     data: storeMapingData,
@@ -41,77 +43,74 @@ const StoreMapping = () => {
   } = useQuery("getStoreMapingData", getStoreMapingList);
 
   useEffect(() => {
-    console.log("storeMapingData", storeMapingData);
-  });
-  useEffect(() => {
     if (!isLoadingStoreMapingData && storeMapingData) {
       setTableState(storeMapingData);
     }
   }, [storeMapingData, isLoadingStoreMapingData]);
 
-  const updateMutation = useMutation(async (data) => await updateStoreList(data), {
-    onSuccess: () => {
-      refetchStoreMapingData();
-    },
-    onError: (error) => {
-      console.error("Update error:", error);
+  // const updateMutation = useMutation(async (data) => await updateStoreList(data), {
+  //   onSuccess: () => {
+  //     refetchStoreMapingData();
+  //   },
+  //   onError: (error) => {
+  //     console.error("Update error:", error);
 
-      setGlobalState({
-        popupState: {
-          isOn: true,
-          popup: POPUP_DEFAULT,
-          content: "업데이트에 실패했습니다.",
-        },
-      });
-    },
-  });
+  //     setGlobalState({
+  //       popupState: {
+  //         isOn: true,
+  //         popup: POPUP_DEFAULT,
+  //         content: "업데이트에 실패했습니다.",
+  //       },
+  //     });
+  //   },
+  // });
 
-  const addMutation = useMutation(async (data) => await addStoreList(data), {
-    onSuccess: () => {
-      refetchStoreMapingData();
-    },
-    onError: (error) => {
-      console.error("Update error:", error);
+  // const addMutation = useMutation(async (data) => await addStoreList(data), {
+  //   onSuccess: () => {
+  //     refetchStoreMapingData();
+  //   },
+  //   onError: (error) => {
+  //     console.error("Update error:", error);
 
-      setGlobalState({
-        popupState: {
-          isOn: true,
-          popup: POPUP_DEFAULT,
-          content: "추가에 실패했습니다.",
-        },
-      });
-    },
-  });
+  //     setGlobalState({
+  //       popupState: {
+  //         isOn: true,
+  //         popup: POPUP_DEFAULT,
+  //         content: "추가에 실패했습니다.",
+  //       },
+  //     });
+  //   },
+  // });
 
-  const excelMutation = useMutation(async (excelData) => {
-    for (const data of excelData) {
-      try {
-        await addStoreList(data);
-      } catch (error) {
-        console.error("Update error:", error);
+  // const excelMutation = useMutation(async (excelData) => {
+  //   for (const data of excelData) {
+  //     try {
+  //       await addStoreList(data);
+  //     } catch (error) {
+  //       console.error("Update error:", error);
 
-        setGlobalState({
-          popupState: {
-            isOn: true,
-            popup: POPUP_DEFAULT,
-            content: "엑셀업로드가 실패했습니다.",
-          },
-        });
+  //       setGlobalState({
+  //         popupState: {
+  //           isOn: true,
+  //           popup: POPUP_DEFAULT,
+  //           content: "엑셀업로드가 실패했습니다.",
+  //         },
+  //       });
 
-        return;
-      }
-    }
+  //       return;
+  //     }
+  //   }
 
-    refetchStoreMapingData();
+  //   refetchStoreMapingData();
 
-    setGlobalState({
-      popupState: {
-        isOn: true,
-        popup: POPUP_DEFAULT,
-        content: "엑셀업로드가 완료되었습니다.",
-      },
-    });
-  });
+  //   setGlobalState({
+  //     popupState: {
+  //       isOn: true,
+  //       popup: POPUP_DEFAULT,
+  //       content: "엑셀업로드가 완료되었습니다.",
+  //     },
+  //   });
+  // });
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
@@ -161,8 +160,14 @@ const StoreMapping = () => {
     }));
   };
 
-  const handleUpdateData = (data) => {
-    updateMutation.mutate(data);
+  // const handleUpdateData = (data) => {
+  //   updateMutation.mutate(data);
+  // };
+
+  const handleClickReturn = (state) => {
+    console.log("handleClickReturn", state);
+    setSelectFranName(state.fran_name);
+    setSelectFranCode(state.fran_code);
   };
 
   // const transformExcelCell = (excelData) =>
@@ -216,16 +221,18 @@ const StoreMapping = () => {
                     pageCount,
                     pageOptions,
                   }}
-                  editMode={false}
-                  handleUpdateData={handleUpdateData}
+                  editMode={true}
+                  // handleUpdateData={handleUpdateData}
                   tableState={tableState}
                   setTableState={setTableState}
+                  handleClickReturn={handleClickReturn}
+                  returnBtnName={"선택"}
                 />
               )}
             </div>
           </div>
           <div className={cx("box", "content-wrap")}>
-            <ScrapingSearch />
+            <ScrapingSearch selectFranName={selectFranName} selectFranCode={selectFranCode} refetchStoreMapingData={refetchStoreMapingData} />
           </div>
         </div>
       </div>

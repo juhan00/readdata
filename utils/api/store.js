@@ -162,11 +162,9 @@ export const updateStoreMapingList = async (data) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      brand_code: data.brand_code,
+      scrap_name: data.scrap_name,
       fran_name: data.fran_name,
-      bizno: data.bizno,
-      use_flag: data.use_flag,
-      joinFlag: "unjoin",
+      fran_code: data.fran_code,
     }),
   });
 

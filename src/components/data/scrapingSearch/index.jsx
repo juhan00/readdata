@@ -5,14 +5,14 @@ import { usePagination, useSortBy, useTable } from "react-table";
 import { scrapingColumns } from "@/consts/scrapingColumns";
 import { QueryClient, useMutation, useQuery } from "react-query";
 
-import { getScrapingList } from "@/utils/api/store";
+import { getScrapingList, updateStoreMapingList } from "@/utils/api/store";
 
 //styles
 import className from "classnames/bind";
 import styles from "./scrapingSearch.module.scss";
 const cx = className.bind(styles);
 
-const ScrapingSearch = () => {
+const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData }) => {
   const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
   const [franName, setFranName] = useState("");
@@ -22,10 +22,31 @@ const ScrapingSearch = () => {
   const { data: scrapingData, isLoading: isLoadingScrapingData, refetch: refetchScrapingData } = useQuery("getScrapingData", getScrapingList);
 
   useEffect(() => {
+    setFranName(selectFranName);
+  }, [selectFranName]);
+
+  useEffect(() => {
     if (!isLoadingScrapingData && scrapingData) {
       setTableState(scrapingData);
     }
   }, [scrapingData, isLoadingScrapingData]);
+
+  const updateMutation = useMutation(async (data) => await updateStoreMapingList(data), {
+    onSuccess: () => {
+      refetchStoreMapingData();
+    },
+    onError: (error) => {
+      console.error("Update error:", error);
+
+      setGlobalState({
+        popupState: {
+          isOn: true,
+          popup: POPUP_DEFAULT,
+          content: "업데이트에 실패했습니다.",
+        },
+      });
+    },
+  });
 
   const memoizedData = useMemo(() => {
     return tableState?.filter((row) => !filterBrandName || row.brand_name?.toString().toLowerCase().includes(filterBrandName.toLowerCase()));
@@ -59,6 +80,16 @@ const ScrapingSearch = () => {
 
   const handleClickReturn = (state) => {
     console.log("handleClickReturn", state);
+
+    if (!franName || !state) {
+      return;
+    }
+    const data = {
+      scrap_name: state.fran_name,
+      fran_name: franName,
+      fran_code: selectFranCode,
+    };
+    updateMutation.mutate(data);
   };
 
   return (
@@ -66,7 +97,7 @@ const ScrapingSearch = () => {
       <div className={cx("item")}>
         <div className={cx("title")}>가맹점 명</div>
         <div className={cx("input-wrap")}>
-          <input value={franName} onChange={(e) => setFranName(e.target.value)} readOnly />
+          <input value={franName} readOnly />
         </div>
       </div>
       <div className={cx("item")}>
@@ -99,6 +130,7 @@ const ScrapingSearch = () => {
             tableState={tableState}
             setTableState={setTableState}
             handleClickReturn={handleClickReturn}
+            returnBtnName={"맵핑"}
           />
         </div>
       </div>
