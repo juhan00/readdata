@@ -180,13 +180,13 @@ const RenderTable = ({
                   const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE_AUTHORITY;
                   const isUseflagColumn = cell.column.type === TABLE_COLUMN_TYPE_USEFLAG;
                   const isAddressColumn = cell.column.type === TABLE_COLUMN_TYPE_ADDRESS;
-                  const isNoEditColumn = cell.column.type === TABLE_COLUMN_TYPE_NO_EDIT;
+                  const isNoEditColumn = cell.column.noEdit === true;
 
                   return (
                     <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
                       {isEditingRow ? (
                         isNumberColumn || isNoEditColumn ? (
-                          ""
+                          <input value={columnValues[cell.column.id] || cell.value || ""} readOnly />
                         ) : isAuthorityColumn ? (
                           <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
                             {booleanOption.map((option) => (

@@ -1,4 +1,4 @@
-import { TABLE_COLUMN_TYPE_USEFLAG, TABLE_COLUMN_TYPE_NO_EDIT } from "./common";
+import { TABLE_COLUMN_TYPE_USEFLAG } from "./common";
 
 export const storeAccountColumns = [
   {
@@ -10,7 +10,7 @@ export const storeAccountColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    type: TABLE_COLUMN_TYPE_NO_EDIT,
+    noEdit: true,
   },
   {
     header: "가맹점 명",
@@ -21,7 +21,7 @@ export const storeAccountColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    type: TABLE_COLUMN_TYPE_NO_EDIT,
+    noEdit: true,
   },
   {
     header: "사업자등록번호",
@@ -32,7 +32,7 @@ export const storeAccountColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    type: TABLE_COLUMN_TYPE_NO_EDIT,
+    noEdit: true,
   },
   {
     header: "포스 이름",
@@ -383,6 +383,7 @@ export const storeAccountColumns = [
     cellStyle: {
       textAlign: "center",
     },
+    noEdit: true,
   },
   {
     header: "사용 구분",
@@ -393,6 +394,7 @@ export const storeAccountColumns = [
     cellStyle: {
       textAlign: "center",
     },
+    type: TABLE_COLUMN_TYPE_USEFLAG,
     Cell: ({ value }) => (Number(value) === 0 ? "사용안함" : "사용"),
   },
 ];

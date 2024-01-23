@@ -1,4 +1,4 @@
-import { SEARCH_TYPE_INPUT } from "@/consts/common";
+import { SEARCH_TYPE_INPUT, SEARCH_TYPE_SELECT_FLAG } from "@/consts/common";
 import { storeAccountColumns } from "@/consts/storeAccountColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
@@ -6,7 +6,7 @@ import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
 import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { addStoreList, getStoreList, updateStoreList } from "@/utils/api/store";
+import { addStoreAccountList, getStoreAccountList, updateStoreAccountList } from "@/utils/api/store";
 import { useTranslation } from "next-i18next";
 import { use, useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
@@ -32,8 +32,8 @@ const StoreAccount = () => {
   // }, {});
 
   const searchFieldData = {
-    uid: "",
-    uname: "",
+    fran_name: "",
+    use_flag: "",
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
@@ -45,7 +45,7 @@ const StoreAccount = () => {
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { data: storeData, isLoading: isLoadingStoreData, refetch: refetchStoreData } = useQuery("getTableData", getStoreList);
+  const { data: storeData, isLoading: isLoadingStoreData, refetch: refetchStoreData } = useQuery("getTableData", getStoreAccountList);
 
   useEffect(() => {
     if (!isLoadingStoreData && storeData) {
@@ -53,7 +53,7 @@ const StoreAccount = () => {
     }
   }, [storeData, isLoadingStoreData]);
 
-  const updateMutation = useMutation(async (data) => await updateUserList(data), {
+  const updateMutation = useMutation(async (data) => await updateStoreAccountList(data), {
     onSuccess: () => {
       refetchStoreData();
     },
@@ -70,58 +70,58 @@ const StoreAccount = () => {
     },
   });
 
-  const addMutation = useMutation(async (data) => await addUserList(data), {
-    onSuccess: () => {
-      refetchStoreData();
-    },
-    onError: (error) => {
-      console.error("Update error:", error);
+  // const addMutation = useMutation(async (data) => await addStoreAccountList(data), {
+  //   onSuccess: () => {
+  //     refetchStoreData();
+  //   },
+  //   onError: (error) => {
+  //     console.error("Update error:", error);
 
-      setGlobalState({
-        popupState: {
-          isOn: true,
-          popup: POPUP_DEFAULT,
-          content: "추가에 실패했습니다.",
-        },
-      });
-    },
-  });
+  //     setGlobalState({
+  //       popupState: {
+  //         isOn: true,
+  //         popup: POPUP_DEFAULT,
+  //         content: "추가에 실패했습니다.",
+  //       },
+  //     });
+  //   },
+  // });
 
-  const excelMutation = useMutation(async (excelData) => {
-    for (const data of excelData) {
-      try {
-        await addUserList(data);
-      } catch (error) {
-        console.error("Update error:", error);
+  // const excelMutation = useMutation(async (excelData) => {
+  //   for (const data of excelData) {
+  //     try {
+  //       await addUserList(data);
+  //     } catch (error) {
+  //       console.error("Update error:", error);
 
-        setGlobalState({
-          popupState: {
-            isOn: true,
-            popup: POPUP_DEFAULT,
-            content: "엑셀업로드가 실패했습니다.",
-          },
-        });
+  //       setGlobalState({
+  //         popupState: {
+  //           isOn: true,
+  //           popup: POPUP_DEFAULT,
+  //           content: "엑셀업로드가 실패했습니다.",
+  //         },
+  //       });
 
-        return;
-      }
-    }
+  //       return;
+  //     }
+  //   }
 
-    refetchStoreData();
+  //   refetchStoreData();
 
-    setGlobalState({
-      popupState: {
-        isOn: true,
-        popup: POPUP_DEFAULT,
-        content: "엑셀업로드가 완료되었습니다.",
-      },
-    });
-  });
+  //   setGlobalState({
+  //     popupState: {
+  //       isOn: true,
+  //       popup: POPUP_DEFAULT,
+  //       content: "엑셀업로드가 완료되었습니다.",
+  //     },
+  //   });
+  // });
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.uid || row.uid?.toString().toLowerCase().includes(searchData.uid.toLowerCase())) &&
-        (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
+        (!searchData.fran_name || row.fran_name?.toString().toLowerCase().includes(searchData.fran_name.toLowerCase())) &&
+        (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -187,24 +187,8 @@ const StoreAccount = () => {
     }
   };
 
-  const transformExcelCell = (excelData) =>
-    excelData.map((item) => ({
-      uid: item[userColumns[0].header],
-      upw: item[userColumns[1].header],
-      uname: item[userColumns[2].header],
-      email: item[userColumns[3].header],
-      phone: item[userColumns[4].header],
-      company_code: item[userColumns[5].header],
-      company_name: item[userColumns[6].header],
-      authority: item[userColumns[7].header],
-      use_flag: item[userColumns[8].header],
-    }));
-
-  // useEffect(() => {
-  //   if (transformExcelData.length > 0) {
-  //     excelMutation.mutate(transformExcelData);
-  //   }
-  // }, [excelMutation, transformExcelData]);
+  // const transformExcelCell = (excelData) =>
+  //   excelData.map((item) => Object.fromEntries(storeAccountColumns.map((column, index) => [column.header, item[index]])));
 
   return (
     <>
@@ -212,10 +196,22 @@ const StoreAccount = () => {
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.uid} title={"사용자 ID"} id={"uid"} onChange={handleFieldChange} />
+              <SearchItem
+                searchType={SEARCH_TYPE_INPUT}
+                value={searchField.fran_name}
+                title={"가맹점 명"}
+                id={"fran_name"}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.uname} title={"사용자명"} id={"uname"} onChange={handleFieldChange} />
+              <SearchItem
+                searchType={SEARCH_TYPE_SELECT_FLAG}
+                value={searchField.use_flag}
+                title={"사용여부"}
+                id={"use_flag"}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
@@ -229,7 +225,7 @@ const StoreAccount = () => {
               <div className={cx("content-btn-wrap")}>
                 {/* <BtnTableAdd onClick={() => handleNewRowClick()} /> */}
                 <BtnExcelDown columns={storeAccountColumns} tableData={memoizedData} />
-                <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
+                {/* <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} /> */}
               </div>
             </div>
             <div className={cx("item")}>
@@ -264,7 +260,7 @@ const StoreAccount = () => {
                   // handleAddData={handleAddData}
                   tableState={tableState}
                   setTableState={setTableState}
-                  transformExcelCell={transformExcelCell}
+                  // transformExcelCell={transformExcelCell}
                   // newRow={newRow}
                 />
               )}
