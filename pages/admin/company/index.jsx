@@ -6,7 +6,7 @@ import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { addUserList, getCompanyList, updateUserList } from "@/utils/api/company";
+import { addCompanyList, getCompanyList, updateCompanyList } from "@/utils/api/company";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
