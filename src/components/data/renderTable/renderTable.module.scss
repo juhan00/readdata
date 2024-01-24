@@ -1,13 +1,7 @@
 .table-wrap {
+  @include table-wrap;
   overflow-x: auto;
   padding-bottom: 2rem;
-  &::-webkit-scrollbar {
-    height: 0.6rem;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 0.6rem;
-    background: #bebebe;
-  }
 
   table {
     width: 100%;
@@ -82,61 +76,61 @@
       }
     }
   }
+}
 
-  .page-info-wrap {
-    width: 100%;
-    text-align: right;
-    margin-top: 1rem;
-    font-size: 1.2rem;
-    color: #888;
+.page-info-wrap {
+  width: 100%;
+  text-align: right;
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: #888;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin: 3rem 0 2rem;
+  .number-wrap {
+    margin: 0 1rem;
   }
-  .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 3rem;
-    .number-wrap {
-      margin: 0 1rem;
-    }
-    button.prev_double {
-      width: 2.4rem;
-      height: 2.4rem;
-      background: url("/assets/images/data/ico_page_double_arrow.png") no-repeat 50% 50% / contain;
-      transform: rotate(-180deg);
-    }
-    button.prev {
-      width: 2.4rem;
-      height: 2.4rem;
-      background: url("/assets/images/data/ico_page_arrow.png") no-repeat 50% 50% / contain;
-      transform: rotate(-180deg);
-    }
+  button.prev_double {
+    width: 2.4rem;
+    height: 2.4rem;
+    background: url("/assets/images/data/ico_page_double_arrow.png") no-repeat 50% 50% / contain;
+    transform: rotate(-180deg);
+  }
+  button.prev {
+    width: 2.4rem;
+    height: 2.4rem;
+    background: url("/assets/images/data/ico_page_arrow.png") no-repeat 50% 50% / contain;
+    transform: rotate(-180deg);
+  }
 
-    button.number {
-      min-width: 2.4rem;
-      height: 2.4rem;
-      border-radius: 2.4rem;
-      margin: 0 0.5rem;
-      background-color: #eeeeee;
-      color: #9d9d9d;
-    }
-    button.number:disabled {
-      background-color: $color-black;
-      color: $color-white;
-    }
-    button.next {
-      width: 2.4rem;
-      height: 2.4rem;
-      background: url("/assets/images/data/ico_page_arrow.png") no-repeat 50% 50% / contain;
-    }
-    button.next_double {
-      width: 2.4rem;
-      height: 2.4rem;
-      background: url("/assets/images/data/ico_page_double_arrow.png") no-repeat 50% 50% / contain;
-    }
-    button.prev_double:disabled,
-    button.prev:disabled,
-    button.next:disabled,
-    button.next_double:disabled {
-      opacity: 0.3;
-    }
+  button.number {
+    min-width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 2.4rem;
+    margin: 0 0.5rem;
+    background-color: #eeeeee;
+    color: #9d9d9d;
+  }
+  button.number:disabled {
+    background-color: $color-black;
+    color: $color-white;
+  }
+  button.next {
+    width: 2.4rem;
+    height: 2.4rem;
+    background: url("/assets/images/data/ico_page_arrow.png") no-repeat 50% 50% / contain;
+  }
+  button.next_double {
+    width: 2.4rem;
+    height: 2.4rem;
+    background: url("/assets/images/data/ico_page_double_arrow.png") no-repeat 50% 50% / contain;
+  }
+  button.prev_double:disabled,
+  button.prev:disabled,
+  button.next:disabled,
+  button.next_double:disabled {
+    opacity: 0.3;
   }
 }

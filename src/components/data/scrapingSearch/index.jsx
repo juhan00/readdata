@@ -129,6 +129,7 @@ const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData
             setTableState={setTableState}
             handleClickReturn={handleClickReturn}
             returnBtnName={"맵핑"}
+            tableHeight={"37.2rem"}
           />
         </div>
       </div>

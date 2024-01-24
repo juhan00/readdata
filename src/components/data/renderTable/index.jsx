@@ -32,6 +32,7 @@ const RenderTable = ({
   newRow,
   addressFieldName,
   returnBtnName,
+  tableHeight,
 }) => {
   const {
     getTableProps,
@@ -153,114 +154,116 @@ const RenderTable = ({
   };
 
   return (
-    <div className={cx("table-wrap")}>
-      <table {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column, index) => (
-                <th {...column.getHeaderProps(isAdded || editingRow != null ? {} : column.getSortByToggleProps())} style={column.headerStyle}>
-                  {column.render("header")}
-                  <span>{column.isSorted ? (column.isSortedDesc ? "v" : "^") : ""}</span>
-                </th>
-              ))}
-              {editMode && <th className={cx("edit-th")}></th>}
-            </tr>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {page?.map((row, rowIndex) => {
-            prepareRow(row);
+    <>
+      <div className={cx("table-wrap")} style={tableHeight && { height: `${tableHeight}` }}>
+        <table {...getTableProps()}>
+          <thead>
+            {headerGroups.map((headerGroup) => (
+              <tr {...headerGroup.getHeaderGroupProps()}>
+                {headerGroup.headers.map((column, index) => (
+                  <th {...column.getHeaderProps(isAdded || editingRow != null ? {} : column.getSortByToggleProps())} style={column.headerStyle}>
+                    {column.render("header")}
+                    <span>{column.isSorted ? (column.isSortedDesc ? "v" : "^") : ""}</span>
+                  </th>
+                ))}
+                {editMode && <th className={cx("edit-th")}></th>}
+              </tr>
+            ))}
+          </thead>
+          <tbody {...getTableBodyProps()}>
+            {page?.map((row, rowIndex) => {
+              prepareRow(row);
 
-            editingRow;
-            const isEditingRow = editingRow === row.index || (isAdded && row.index === 0);
-            return (
-              <tr {...row.getRowProps()} onDoubleClick={() => handleClickReturn && handleClickReturn(row.original[returnColumnName])}>
-                {row.cells.map((cell) => {
-                  const isNumberColumn = cell.column.type === TABLE_COLUMN_TYPE_NUMBER;
-                  const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE_AUTHORITY;
-                  const isUseflagColumn = cell.column.type === TABLE_COLUMN_TYPE_USEFLAG;
-                  const isAddressColumn = cell.column.type === TABLE_COLUMN_TYPE_ADDRESS;
-                  const isNoEditColumn = cell.column.noEdit === true;
+              editingRow;
+              const isEditingRow = editingRow === row.index || (isAdded && row.index === 0);
+              return (
+                <tr {...row.getRowProps()} onDoubleClick={() => handleClickReturn && handleClickReturn(row.original[returnColumnName])}>
+                  {row.cells.map((cell) => {
+                    const isNumberColumn = cell.column.type === TABLE_COLUMN_TYPE_NUMBER;
+                    const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE_AUTHORITY;
+                    const isUseflagColumn = cell.column.type === TABLE_COLUMN_TYPE_USEFLAG;
+                    const isAddressColumn = cell.column.type === TABLE_COLUMN_TYPE_ADDRESS;
+                    const isNoEditColumn = cell.column.noEdit === true;
 
-                  return (
-                    <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
-                      {isEditingRow ? (
-                        isNumberColumn || isNoEditColumn ? (
-                          <input value={columnValues[cell.column.id] || cell.value || ""} readOnly onfocus="this.blur()" />
-                        ) : isAuthorityColumn ? (
-                          <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
-                            {booleanOption.map((option) => (
-                              <option key={option} value={option}>
-                                {option === 0 ? "사용자" : "관리자"}
-                              </option>
-                            ))}
-                          </select>
-                        ) : isUseflagColumn ? (
-                          <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
-                            {booleanOption.map((option) => (
-                              <option key={option} value={option}>
-                                {option === 0 ? "사용안함" : "사용"}
-                              </option>
-                            ))}
-                          </select>
-                        ) : isAddressColumn ? (
-                          <>
-                            {isAddressPopupOpen && (
-                              <PopupSearchAddress
-                                onSelectAddress={handleSelectAddress}
-                                orgAddress={columnValues[cell.column.id] || cell.value || ""}
-                                onClose={() => setIsAddressPopupOpen(false)}
+                    return (
+                      <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
+                        {isEditingRow ? (
+                          isNumberColumn || isNoEditColumn ? (
+                            <input value={columnValues[cell.column.id] || cell.value || ""} readOnly onfocus="this.blur()" />
+                          ) : isAuthorityColumn ? (
+                            <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
+                              {booleanOption.map((option) => (
+                                <option key={option} value={option}>
+                                  {option === 0 ? "사용자" : "관리자"}
+                                </option>
+                              ))}
+                            </select>
+                          ) : isUseflagColumn ? (
+                            <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
+                              {booleanOption.map((option) => (
+                                <option key={option} value={option}>
+                                  {option === 0 ? "사용안함" : "사용"}
+                                </option>
+                              ))}
+                            </select>
+                          ) : isAddressColumn ? (
+                            <>
+                              {isAddressPopupOpen && (
+                                <PopupSearchAddress
+                                  onSelectAddress={handleSelectAddress}
+                                  orgAddress={columnValues[cell.column.id] || cell.value || ""}
+                                  onClose={() => setIsAddressPopupOpen(false)}
+                                />
+                              )}
+                              <input
+                                value={columnValues[cell.column.id] || cell.value || ""}
+                                onClick={(e) => handleClickAddress(cell.column.id, e.target.value)}
+                                readOnly
                               />
-                            )}
+                            </>
+                          ) : (
                             <input
                               value={columnValues[cell.column.id] || cell.value || ""}
-                              onClick={(e) => handleClickAddress(cell.column.id, e.target.value)}
-                              readOnly
+                              onChange={(e) => handleChange(cell.column.id, e.target.value)}
                             />
-                          </>
+                          )
+                        ) : isNumberColumn ? (
+                          row.index + 1
                         ) : (
-                          <input
-                            value={columnValues[cell.column.id] || cell.value || ""}
-                            onChange={(e) => handleChange(cell.column.id, e.target.value)}
-                          />
-                        )
-                      ) : isNumberColumn ? (
-                        row.index + 1
-                      ) : (
-                        cell.render("Cell")
-                      )}
+                          cell.render("Cell")
+                        )}
+                      </td>
+                    );
+                  })}
+                  {editMode && (
+                    <td>
+                      <div className={cx("button-wrap")}>
+                        {isEditingRow ? (
+                          isAdded && row.index === 0 ? (
+                            <>
+                              <button onClick={() => handleAddSaveClick()}>저장</button>
+                              <button onClick={() => handleAddCancelClick()}>취소</button>
+                            </>
+                          ) : (
+                            <>
+                              <button onClick={() => handleEditSaveClick(row.index)}>저장</button>
+                              <button onClick={() => handleEditCancelClick()}>취소</button>
+                            </>
+                          )
+                        ) : handleClickReturn ? (
+                          <button onClick={() => handleClickReturn(row.values)}>{returnBtnName || "선택"}</button>
+                        ) : (
+                          <button onClick={() => handleEditClick(rowIndex, row.index)}>수정</button>
+                        )}
+                      </div>
                     </td>
-                  );
-                })}
-                {editMode && (
-                  <td>
-                    <div className={cx("button-wrap")}>
-                      {isEditingRow ? (
-                        isAdded && row.index === 0 ? (
-                          <>
-                            <button onClick={() => handleAddSaveClick()}>저장</button>
-                            <button onClick={() => handleAddCancelClick()}>취소</button>
-                          </>
-                        ) : (
-                          <>
-                            <button onClick={() => handleEditSaveClick(row.index)}>저장</button>
-                            <button onClick={() => handleEditCancelClick()}>취소</button>
-                          </>
-                        )
-                      ) : handleClickReturn ? (
-                        <button onClick={() => handleClickReturn(row.values)}>{returnBtnName || "선택"}</button>
-                      ) : (
-                        <button onClick={() => handleEditClick(rowIndex, row.index)}>수정</button>
-                      )}
-                    </div>
-                  </td>
-                )}
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                  )}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
       {/* <div className={cx("page-info-wrap")}>
         {pageIndex + 1} / {pageOptions.length}
       </div> */}
@@ -279,7 +282,7 @@ const RenderTable = ({
           <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage} className={cx("next_double")}></button>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

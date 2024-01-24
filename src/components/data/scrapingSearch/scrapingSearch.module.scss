@@ -32,22 +32,12 @@
     }
 
     .content-wrap {
-      @include table-content-wrap;
       min-height: auto;
-      height: 39rem;
-      overflow-y: scroll;
       padding: 1rem;
       margin-top: 2rem;
-      border: 1px solid #c2c2c2;
+      border: 1px solid #eee;
       background: #fbfbfb;
       border-radius: 0.8rem;
-      &::-webkit-scrollbar {
-        width: 0.6rem;
-      }
-      &::-webkit-scrollbar-thumb {
-        border-radius: 0.6rem;
-        background: #bebebe;
-      }
     }
   }
 }
