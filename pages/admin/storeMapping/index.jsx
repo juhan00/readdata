@@ -94,7 +94,6 @@ const StoreMapping = () => {
   };
 
   const handleClickReturn = (state) => {
-    console.log("handleClickReturn", state);
     setSelectFranName(state.fran_name);
     setSelectFranCode(state.fran_code);
   };

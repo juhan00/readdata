@@ -39,7 +39,7 @@ const User = () => {
         {userMenu === "brand" && <Brand />}
         {userMenu === "store" && <Store />}
         {userMenu === "store_account" && <StoreAccount />}
-        {userMenu === "sotre_mapping" && <StoreMapping />}
+        {userMenu === "store_mapping" && <StoreMapping />}
         {userMenu === "sales_day" && <SalesDay />}
         {userMenu === "sales_month" && <SalesMonth />}
       </DataLayout>

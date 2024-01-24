@@ -5,7 +5,7 @@
 
   .search-wrap {
     display: flex;
-    .item {
+    .item + .item {
       margin-left: 2rem;
     }
     .btn-submit {

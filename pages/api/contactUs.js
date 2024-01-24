@@ -35,12 +35,10 @@ export default async function handler(req, res) {
 
     try {
       const info = await transporter.sendMail(mailOptions);
-      console.log("Email sent:", info);
-      // 이메일 전송 후 필요한 동작 수행
       res.status(200).json({ success: true });
     } catch (error) {
       console.error("Error sending email:", error);
-      // 에러 처리
+
       res.status(500).json({ success: false, error: "Error sending email" });
     }
   } else {

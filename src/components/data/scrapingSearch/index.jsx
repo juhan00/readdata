@@ -79,8 +79,6 @@ const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData
   );
 
   const handleClickReturn = (state) => {
-    console.log("handleClickReturn", state);
-
     if (!franName || !state) {
       return;
     }

@@ -60,7 +60,6 @@ const SalesDay = () => {
 
   useEffect(() => {
     if (!isLoadingSalesDayData && salesDayData) {
-      console.log("setTableState");
       setTableState(salesDayData);
     }
   }, [salesDayData, isLoadingSalesDayData]);

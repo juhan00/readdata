@@ -112,9 +112,6 @@ const RenderTable = ({
   };
 
   const handleAddSaveClick = () => {
-    console.log("tableState", tableState);
-    console.log("columnValues", columnValues);
-
     const checkCurrentTableEqual = isObjectInArray(tableState, columnValues, 0);
 
     if (checkCurrentTableEqual) {

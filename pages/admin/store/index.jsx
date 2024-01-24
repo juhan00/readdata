@@ -47,7 +47,6 @@ const Store = () => {
   const { data: storeData, isLoading: isLoadingStoreData, refetch: refetchStoreData } = useQuery("getStoreData", getStoreList);
 
   useEffect(() => {
-    console.log("storeData", storeData);
     if (!isLoadingStoreData && storeData) {
       setTableState(storeData);
     }

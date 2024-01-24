@@ -53,7 +53,6 @@ const Brand = () => {
 
   useEffect(() => {
     if (!isLoadingBrandData && brandData) {
-      console.log("setTableState");
       setTableState(brandData);
     }
   }, [brandData, isLoadingBrandData]);

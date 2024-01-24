@@ -26,7 +26,6 @@ const SalesMonth = () => {
 
   const today = new Date();
   const thisMonth = startOfMonth(set(today, { month: today.getMonth() }));
-  console.log("thisMonth", thisMonth);
 
   const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
@@ -61,7 +60,6 @@ const SalesMonth = () => {
 
   useEffect(() => {
     if (!isLoadingSalesDateData && salesDateData) {
-      console.log("setTableState");
       setTableState(salesDateData);
     }
   }, [salesDateData, isLoadingSalesDateData]);
