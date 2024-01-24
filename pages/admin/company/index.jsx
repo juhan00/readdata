@@ -202,7 +202,7 @@ const Compnay = () => {
   };
 
   const transformExcelCell = (excelData) =>
-    excelData.map((item) => Object.fromEntries(storeAccountColumns.map((column, index) => [column.header, item[index]])));
+    excelData.map((item) => Object.fromEntries(companyColumns.map((column, index) => [column.header, item[index]])));
 
   return (
     <>

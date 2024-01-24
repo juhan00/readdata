@@ -189,7 +189,7 @@ const User = () => {
   };
 
   const transformExcelCell = (excelData) =>
-    excelData.map((item) => Object.fromEntries(storeAccountColumns.map((column, index) => [column.header, item[index]])));
+    excelData.map((item) => Object.fromEntries(userColumns.map((column, index) => [column.header, item[index]])));
 
   // useEffect(() => {
   //   if (transformExcelData.length > 0) {

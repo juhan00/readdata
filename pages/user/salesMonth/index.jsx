@@ -130,7 +130,7 @@ const SalesMonth = () => {
   // };
 
   // const transformExcelCell = (excelData) =>
-  //   excelData.map((item) => Object.fromEntries(storeAccountColumns.map((column, index) => [column.header, item[index]])));
+  //   excelData.map((item) => Object.fromEntries(salesMonthColumns.map((column, index) => [column.header, item[index]])));
 
   return (
     <>

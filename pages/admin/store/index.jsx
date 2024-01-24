@@ -1,4 +1,4 @@
-import { SEARCH_TYPE_INPUT } from "@/consts/common";
+import { SEARCH_TYPE_INPUT, SEARCH_TYPE_SELECT_FLAG } from "@/consts/common";
 import { storeColumns } from "@/consts/storeColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
@@ -23,7 +23,7 @@ const queryClient = new QueryClient();
 
 const Store = () => {
   const newRow = storeColumns.reduce((obj, item) => {
-    if (item.accessor === "authority" || item.accessor === "use_flag") {
+    if (item.accessor === "use_flag") {
       obj[item.accessor] = 0;
     } else {
       obj[item.accessor] = "";
@@ -120,8 +120,9 @@ const Store = () => {
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.uid || row.uid?.toString().toLowerCase().includes(searchData.uid.toLowerCase())) &&
-        (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
+        (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
+        (!searchData.fran_name || row.fran_name?.toString().toLowerCase().includes(searchData.fran_name.toLowerCase())) &&
+        (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -189,7 +190,7 @@ const Store = () => {
   };
 
   const transformExcelCell = (excelData) =>
-    excelData.map((item) => Object.fromEntries(storeAccountColumns.map((column, index) => [column.header, item[index]])));
+    excelData.map((item) => Object.fromEntries(storeColumns.map((column, index) => [column.header, item[index]])));
 
   // useEffect(() => {
   //   if (transformExcelData.length > 0) {
@@ -203,10 +204,31 @@ const Store = () => {
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.uid} title={"사용자 ID"} id={"uid"} onChange={handleFieldChange} />
+              <SearchItem
+                searchType={SEARCH_TYPE_INPUT}
+                value={searchField.brand_name}
+                title={"브랜드 명"}
+                id={"brand_name"}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.uname} title={"사용자명"} id={"uname"} onChange={handleFieldChange} />
+              <SearchItem
+                searchType={SEARCH_TYPE_INPUT}
+                value={searchField.fran_name}
+                title={"가맹점 명"}
+                id={"fran_name"}
+                onChange={handleFieldChange}
+              />
+            </div>
+            <div className={cx("item")}>
+              <SearchItem
+                searchType={SEARCH_TYPE_SELECT_FLAG}
+                value={searchField.use_flag}
+                title={"사용여부"}
+                id={"use_flag"}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />

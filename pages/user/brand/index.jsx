@@ -203,7 +203,7 @@ const Brand = () => {
   };
 
   const transformExcelCell = (excelData) =>
-    excelData.map((item) => Object.fromEntries(storeAccountColumns.map((column, index) => [column.header, item[index]])));
+    excelData.map((item) => Object.fromEntries(brandColumns.map((column, index) => [column.header, item[index]])));
 
   const exportExcelColumns = brandColumns.filter((column) => column.accessor !== "no");
 
