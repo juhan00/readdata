@@ -34,16 +34,16 @@ const Admin = ({ category }) => {
 
 export default Admin;
 
-export const getServerSideProps = async ({ locale, query }) => {
-  const { category = "company" } = query;
+// export const getServerSideProps = async ({ locale, query }) => {
+//   const { category = "company" } = query;
 
-  return {
-    props: {
-      // ...(await serverSideTranslations(locale, ["common", "dataAdmin", "popup"])),
-      category,
-    },
-  };
-};
+//   return {
+//     props: {
+//       // ...(await serverSideTranslations(locale, ["common", "dataAdmin", "popup"])),
+//       category,
+//     },
+//   };
+// };
 
 export const getStaticProps = async ({ locale }) => {
   return {
