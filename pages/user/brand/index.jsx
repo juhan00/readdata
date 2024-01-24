@@ -1,18 +1,18 @@
-import { SEARCH_TYPE_INPUT, SEARCH_TYPE_SELECT_FLAG } from "@/consts/common";
 import { brandColumns } from "@/consts/brandColumns";
+import { SEARCH_TYPE_INPUT, SEARCH_TYPE_SELECT_FLAG } from "@/consts/common";
+import { POPUP_DEFAULT } from "@/consts/popup";
+import { useGlobalState } from "@/context/globalStateContext";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { getBrandList, updateBrandList, addBrandList } from "@/utils/api/brand";
+import { addBrandList, getBrandList, updateBrandList } from "@/utils/api/brand";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
-import { useGlobalState } from "@/context/globalStateContext";
-import { POPUP_DEFAULT } from "@/consts/popup";
 
 //styles
 import className from "classnames/bind";
@@ -22,14 +22,6 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const Brand = () => {
-  // const newRow = {
-  //   brand_code: "",
-  //   brand_name: "",
-  //   company_code: "",
-  //   company_name: "",
-  //   use_flag: 0,
-  // };
-
   const newRow = brandColumns.reduce((obj, item) => {
     if (item.accessor === "use_flag") {
       obj[item.accessor] = 0;
@@ -48,7 +40,6 @@ const Brand = () => {
   const { t } = useTranslation(["common", "dataUser"]);
   const [companyCode, setCompanyCode] = useState("");
   const [tableState, setTableState] = useState([]);
-  const [isModified, setIsModified] = useState(false);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
@@ -101,11 +92,31 @@ const Brand = () => {
     },
   });
 
-  const excelMutation = useMutation(async (excelData) => {
-    for (const data of excelData) {
-      try {
-        await addBrandList(data);
-      } catch (error) {
+  const excelMutation = useMutation(
+    async (excelData) => {
+      for (const data of excelData) {
+        try {
+          await addBrandList(data);
+        } catch (error) {
+          console.error("Update error:", error);
+          throw error;
+        }
+      }
+    },
+    {
+      onSuccess: () => {
+        refetchBrandData();
+        gotoPage(0);
+
+        setGlobalState({
+          popupState: {
+            isOn: true,
+            popup: POPUP_DEFAULT,
+            content: "엑셀업로드가 완료되었습니다.",
+          },
+        });
+      },
+      onError: (error) => {
         console.error("Update error:", error);
 
         setGlobalState({
@@ -115,21 +126,9 @@ const Brand = () => {
             content: "엑셀업로드가 실패했습니다.",
           },
         });
-
-        return;
-      }
-    }
-
-    refetchBrandData();
-
-    setGlobalState({
-      popupState: {
-        isOn: true,
-        popup: POPUP_DEFAULT,
-        content: "엑셀업로드가 완료되었습니다.",
       },
-    });
-  });
+    }
+  );
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
@@ -203,7 +202,15 @@ const Brand = () => {
   };
 
   const transformExcelCell = (excelData) =>
-    excelData.map((item) => Object.fromEntries(brandColumns.map((column, index) => [column.header, item[index]])));
+    excelData.map((item) => {
+      const transformedItem = {};
+      brandColumns.forEach((column) => {
+        if (item.hasOwnProperty(column.header)) {
+          transformedItem[column.accessor] = item[column.header];
+        }
+      });
+      return transformedItem;
+    });
 
   const exportExcelColumns = brandColumns.filter((column) => column.accessor !== "no");
 

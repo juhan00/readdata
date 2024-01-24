@@ -44,30 +44,30 @@
               background-color: #ccc;
               margin-right: 1.4rem;
             }
-            &.menu1::before {
-              background: url("/assets/images/data/user/ico_user_nav_brand_off.png") no-repeat 50% 50% / contain;
-            }
-            &.menu2::before {
-              background: url("/assets/images/data/user/ico_user_nav_franchisee_off.png") no-repeat 50% 50% / contain;
-            }
-            &.menu3::before {
-              background: url("/assets/images/data/user/ico_user_nav_sales_off.png") no-repeat 50% 50% / contain;
-            }
+            // &.menu1::before {
+            //   background: url("/assets/images/data/user/ico_user_nav_brand_off.png") no-repeat 50% 50% / contain;
+            // }
+            // &.menu2::before {
+            //   background: url("/assets/images/data/user/ico_user_nav_franchisee_off.png") no-repeat 50% 50% / contain;
+            // }
+            // &.menu3::before {
+            //   background: url("/assets/images/data/user/ico_user_nav_sales_off.png") no-repeat 50% 50% / contain;
+            // }
           }
           button.active {
             &::before {
               content: "";
               background-color: #fddc37;
             }
-            &.menu1::before {
-              background: url("/assets/images/data/user/ico_user_nav_brand_on.png") no-repeat 50% 50% / contain;
-            }
-            &.menu2::before {
-              background: url("/assets/images/data/user/ico_user_nav_franchisee_on.png") no-repeat 50% 50% / contain;
-            }
-            &.menu3::before {
-              background: url("/assets/images/data/user/ico_user_nav_sales_on.png") no-repeat 50% 50% / contain;
-            }
+            // &.menu1::before {
+            //   background: url("/assets/images/data/user/ico_user_nav_brand_on.png") no-repeat 50% 50% / contain;
+            // }
+            // &.menu2::before {
+            //   background: url("/assets/images/data/user/ico_user_nav_franchisee_on.png") no-repeat 50% 50% / contain;
+            // }
+            // &.menu3::before {
+            //   background: url("/assets/images/data/user/ico_user_nav_sales_on.png") no-repeat 50% 50% / contain;
+            // }
           }
         }
       }
@@ -82,9 +82,15 @@
               background: url("/assets/images/data/user/ico_user_nav_franchisee_off.png") no-repeat 50% 50% / contain;
             }
             &.menu3::before {
-              background: url("/assets/images/data/user/ico_user_nav_sales_off.png") no-repeat 50% 50% / contain;
+              background: url("/assets/images/data/user/ico_user_nav_franchisee_off.png") no-repeat 50% 50% / contain;
             }
             &.menu4::before {
+              background: url("/assets/images/data/user/ico_user_nav_franchisee_off.png") no-repeat 50% 50% / contain;
+            }
+            &.menu5::before {
+              background: url("/assets/images/data/user/ico_user_nav_sales_off.png") no-repeat 50% 50% / contain;
+            }
+            &.menu6::before {
               background: url("/assets/images/data/user/ico_user_nav_sales_off.png") no-repeat 50% 50% / contain;
             }
           }
@@ -96,9 +102,15 @@
               background: url("/assets/images/data/user/ico_user_nav_franchisee_on.png") no-repeat 50% 50% / contain;
             }
             &.menu3::before {
-              background: url("/assets/images/data/user/ico_user_nav_sales_on.png") no-repeat 50% 50% / contain;
+              background: url("/assets/images/data/user/ico_user_nav_franchisee_on.png") no-repeat 50% 50% / contain;
             }
             &.menu4::before {
+              background: url("/assets/images/data/user/ico_user_nav_franchisee_on.png") no-repeat 50% 50% / contain;
+            }
+            &.menu5::before {
+              background: url("/assets/images/data/user/ico_user_nav_sales_on.png") no-repeat 50% 50% / contain;
+            }
+            &.menu6::before {
               background: url("/assets/images/data/user/ico_user_nav_sales_on.png") no-repeat 50% 50% / contain;
             }
           }

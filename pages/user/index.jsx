@@ -7,6 +7,9 @@ import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";
 import SalesDay from "./salesDay";
 import SalesMonth from "./salesMonth";
 import { useRouter } from "next/router";
+import Store from "./store";
+import StoreAccount from "./storeAccount";
+import StoreMapping from "./storeMapping";
 
 //styles
 import styles from "./user.module.scss";
@@ -34,6 +37,9 @@ const User = () => {
       <PopupDataDefault />
       <DataLayout useType={USE_TYPE_USER} userMenu={{ menu: userMenu, setMenu: setUserMenu }}>
         {userMenu === "brand" && <Brand />}
+        {userMenu === "store" && <Store />}
+        {userMenu === "store_account" && <StoreAccount />}
+        {userMenu === "sotre_mapping" && <StoreMapping />}
         {userMenu === "sales_day" && <SalesDay />}
         {userMenu === "sales_month" && <SalesMonth />}
       </DataLayout>

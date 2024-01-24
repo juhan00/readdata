@@ -14,12 +14,10 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
 
   const handleClickUserMenu = (cagegory) => {
     router.push(`/user?category=${cagegory}`);
-    // userMenu.setMenu(menu);
   };
 
   const handleClickAdminMenu = (cagegory) => {
     router.push(`/admin?category=${cagegory}`);
-    // adminMenu.setMenu(menu);
   };
 
   return (
@@ -42,13 +40,23 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
                 </button>
               </li>
               <li>
-                <button className={cx("menu3", userMenu.menu === "sales_day" && "active")} onClick={() => handleClickUserMenu("sales_day")}>
+                <button className={cx("menu3", userMenu.menu === "store_account" && "active")} onClick={() => handleClickUserMenu("store_account")}>
                   {t("data.user_menu.menu3")}
                 </button>
               </li>
               <li>
-                <button className={cx("menu4", userMenu.menu === "sales_month" && "active")} onClick={() => handleClickUserMenu("sales_month")}>
+                <button className={cx("menu4", userMenu.menu === "store_mapping" && "active")} onClick={() => handleClickUserMenu("store_mapping")}>
                   {t("data.user_menu.menu4")}
+                </button>
+              </li>
+              <li>
+                <button className={cx("menu5", userMenu.menu === "sales_day" && "active")} onClick={() => handleClickUserMenu("sales_day")}>
+                  {t("data.user_menu.menu5")}
+                </button>
+              </li>
+              <li>
+                <button className={cx("menu6", userMenu.menu === "sales_month" && "active")} onClick={() => handleClickUserMenu("sales_month")}>
+                  {t("data.user_menu.menu6")}
                 </button>
               </li>
             </ul>

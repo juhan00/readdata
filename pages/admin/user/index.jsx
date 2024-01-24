@@ -1,18 +1,18 @@
 import { SEARCH_TYPE_INPUT } from "@/consts/common";
+import { POPUP_DEFAULT } from "@/consts/popup";
 import { userColumns } from "@/consts/userColumns";
+import { useGlobalState } from "@/context/globalStateContext";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
+import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
-import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
 import { addUserList, getUserList, updateUserList } from "@/utils/api/user";
 import { useTranslation } from "next-i18next";
-import { use, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
-import { useGlobalState } from "@/context/globalStateContext";
-import { POPUP_DEFAULT } from "@/consts/popup";
 
 //styles
 import className from "classnames/bind";
@@ -39,7 +39,6 @@ const User = () => {
   const [{ popupState }, setGlobalState] = useGlobalState();
   const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
-  const [isModified, setIsModified] = useState(false);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
@@ -87,11 +86,31 @@ const User = () => {
     },
   });
 
-  const excelMutation = useMutation(async (excelData) => {
-    for (const data of excelData) {
-      try {
-        await addUserList(data);
-      } catch (error) {
+  const excelMutation = useMutation(
+    async (excelData) => {
+      for (const data of excelData) {
+        try {
+          await addUserList(data);
+        } catch (error) {
+          console.error("Update error:", error);
+          throw error;
+        }
+      }
+    },
+    {
+      onSuccess: () => {
+        refetchUserData();
+        gotoPage(0);
+
+        setGlobalState({
+          popupState: {
+            isOn: true,
+            popup: POPUP_DEFAULT,
+            content: "엑셀업로드가 완료되었습니다.",
+          },
+        });
+      },
+      onError: (error) => {
         console.error("Update error:", error);
 
         setGlobalState({
@@ -101,21 +120,9 @@ const User = () => {
             content: "엑셀업로드가 실패했습니다.",
           },
         });
-
-        return;
-      }
-    }
-
-    refetchUserData();
-
-    setGlobalState({
-      popupState: {
-        isOn: true,
-        popup: POPUP_DEFAULT,
-        content: "엑셀업로드가 완료되었습니다.",
       },
-    });
-  });
+    }
+  );
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
@@ -189,13 +196,15 @@ const User = () => {
   };
 
   const transformExcelCell = (excelData) =>
-    excelData.map((item) => Object.fromEntries(userColumns.map((column, index) => [column.header, item[index]])));
-
-  // useEffect(() => {
-  //   if (transformExcelData.length > 0) {
-  //     excelMutation.mutate(transformExcelData);
-  //   }
-  // }, [excelMutation, transformExcelData]);
+    excelData.map((item) => {
+      const transformedItem = {};
+      userColumns.forEach((column) => {
+        if (item.hasOwnProperty(column.header)) {
+          transformedItem[column.accessor] = item[column.header];
+        }
+      });
+      return transformedItem;
+    });
 
   return (
     <>

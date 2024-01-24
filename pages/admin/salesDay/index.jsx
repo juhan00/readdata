@@ -1,18 +1,15 @@
 import { SEARCH_TYPE_INPUT } from "@/consts/common";
 import { salesDayColumns } from "@/consts/salesDayColumns";
-import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
-import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
-import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import RenderTable from "@/src/components/data/renderTable";
-import SearchItem from "@/src/components/data/searchItem";
 import SearchDateItems from "@/src/components/data/searchDateItems";
+import SearchItem from "@/src/components/data/searchItem";
 import { getSalesDayList } from "@/utils/api/sales";
-import { useTranslation } from "next-i18next";
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { QueryClient, useMutation, useQuery } from "react-query";
-import { usePagination, useSortBy, useTable } from "react-table";
 import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
+import { useTranslation } from "next-i18next";
+import { useEffect, useMemo, useState } from "react";
+import { QueryClient, useQuery } from "react-query";
+import { usePagination, useSortBy, useTable } from "react-table";
 
 //styles
 import className from "classnames/bind";
@@ -32,11 +29,8 @@ const SalesDay = () => {
 
   const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
-  const [isModified, setIsModified] = useState(false);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
-  // const [isAdded, setIsAdded] = useState(false);
-  // const [isEditing, setIsEditing] = useState(false);
   const [startDate, setStartDate] = useState(oneMonthAgo);
   const [endDate, setEndDate] = useState(today);
 
@@ -120,17 +114,6 @@ const SalesDay = () => {
     gotoPage(0);
   };
 
-  // const handleUpdateData = (data) => {
-  //   updateMutation.mutate(data);
-  // };
-
-  // const handleAddData = (data) => {
-  //   addMutation.mutate(data);
-  // };
-
-  // const transformExcelCell = (excelData) =>
-  //   excelData.map((item) => Object.fromEntries(salesDayColumns.map((column, index) => [column.header, item[index]])));
-
   return (
     <>
       <div className={cx("brand")}>
@@ -185,14 +168,7 @@ const SalesDay = () => {
                     pageOptions,
                   }}
                   editMode={false}
-                  // isAdded={isAdded}
-                  // setIsAdded={setIsAdded}
-                  // isEditing={isEditing}
-                  // setIsEditing={setIsEditing}
-                  // handleUpdateData={handleUpdateData}
-                  // handleAddData={handleAddData}
                   setTableState={setTableState}
-                  // transformExcelCell={transformExcelCell}
                 />
               )}
             </div>

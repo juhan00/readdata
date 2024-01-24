@@ -22,17 +22,6 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const Compnay = () => {
-  // const newRow = {
-  //   company_code: "",
-  //   company_name: "",
-  //   bizno: "",
-  //   boss: "",
-  //   email: "",
-  //   phone: 0,
-  //   addr: 0,
-  //   flag: "",
-  // };
-
   const newRow = companyColumns.reduce((obj, item) => {
     if (item.accessor === "flag") {
       obj[item.accessor] = 0;
@@ -99,11 +88,31 @@ const Compnay = () => {
     },
   });
 
-  const excelMutation = useMutation(async (excelData) => {
-    for (const data of excelData) {
-      try {
-        await addCompanyList(data);
-      } catch (error) {
+  const excelMutation = useMutation(
+    async (excelData) => {
+      for (const data of excelData) {
+        try {
+          await addCompanyList(data);
+        } catch (error) {
+          console.error("Update error:", error);
+          throw error;
+        }
+      }
+    },
+    {
+      onSuccess: () => {
+        refetchCompanyData();
+        gotoPage(0);
+
+        setGlobalState({
+          popupState: {
+            isOn: true,
+            popup: POPUP_DEFAULT,
+            content: "엑셀업로드가 완료되었습니다.",
+          },
+        });
+      },
+      onError: (error) => {
         console.error("Update error:", error);
 
         setGlobalState({
@@ -113,21 +122,9 @@ const Compnay = () => {
             content: "엑셀업로드가 실패했습니다.",
           },
         });
-
-        return;
-      }
-    }
-
-    refetchCompanyData();
-
-    setGlobalState({
-      popupState: {
-        isOn: true,
-        popup: POPUP_DEFAULT,
-        content: "엑셀업로드가 완료되었습니다.",
       },
-    });
-  });
+    }
+  );
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
@@ -202,7 +199,15 @@ const Compnay = () => {
   };
 
   const transformExcelCell = (excelData) =>
-    excelData.map((item) => Object.fromEntries(companyColumns.map((column, index) => [column.header, item[index]])));
+    excelData.map((item) => {
+      const transformedItem = {};
+      companyColumns.forEach((column) => {
+        if (item.hasOwnProperty(column.header)) {
+          transformedItem[column.accessor] = item[column.header];
+        }
+      });
+      return transformedItem;
+    });
 
   return (
     <>

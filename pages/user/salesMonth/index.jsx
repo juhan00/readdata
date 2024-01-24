@@ -1,19 +1,16 @@
 import { SEARCH_TYPE_INPUT } from "@/consts/common";
 import { salesMonthColumns } from "@/consts/salesMonthColumns";
-import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
-import BtnTableAdd from "@/src/components/data/button/btnTableAdd";
-import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import RenderTable from "@/src/components/data/renderTable";
-import SearchItem from "@/src/components/data/searchItem";
 import SearchDateItems from "@/src/components/data/searchDateItems";
+import SearchItem from "@/src/components/data/searchItem";
 import { getSalesMonthList } from "@/utils/api/sales";
-import { useTranslation } from "next-i18next";
-import { use, useCallback, useEffect, useMemo, useState } from "react";
-import { QueryClient, useMutation, useQuery } from "react-query";
-import { usePagination, useSortBy, useTable } from "react-table";
 import { useChangeFormatMonth } from "@/utils/useChangeFormatDate";
 import { set, startOfMonth } from "date-fns";
+import { useTranslation } from "next-i18next";
+import { useEffect, useMemo, useState } from "react";
+import { QueryClient, useQuery } from "react-query";
+import { usePagination, useSortBy, useTable } from "react-table";
 
 //styles
 import className from "classnames/bind";
@@ -33,11 +30,8 @@ const SalesMonth = () => {
 
   const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
-  const [isModified, setIsModified] = useState(false);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
-  // const [isAdded, setIsAdded] = useState(false);
-  // const [isEditing, setIsEditing] = useState(false);
   const [startDate, setStartDate] = useState(thisMonth);
   const [endDate, setEndDate] = useState(thisMonth);
 
@@ -121,17 +115,6 @@ const SalesMonth = () => {
     gotoPage(0);
   };
 
-  // const handleUpdateData = (data) => {
-  //   updateMutation.mutate(data);
-  // };
-
-  // const handleAddData = (data) => {
-  //   addMutation.mutate(data);
-  // };
-
-  // const transformExcelCell = (excelData) =>
-  //   excelData.map((item) => Object.fromEntries(salesMonthColumns.map((column, index) => [column.header, item[index]])));
-
   return (
     <>
       <div className={cx("brand")}>
@@ -157,12 +140,6 @@ const SalesMonth = () => {
 
         <div className={cx("row")}>
           <div className={cx("box", "content-wrap")}>
-            {/* <div className={cx("item")}>
-              <div className={cx("content-btn-wrap")}>
-                <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={salesDayColumns} tableData={memoizedData} />
-              </div>
-            </div> */}
             <div className={cx("item")}>
               {isLoadingSalesDateData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
@@ -187,14 +164,7 @@ const SalesMonth = () => {
                     pageOptions,
                   }}
                   editMode={false}
-                  // isAdded={isAdded}
-                  // setIsAdded={setIsAdded}
-                  // isEditing={isEditing}
-                  // setIsEditing={setIsEditing}
-                  // handleUpdateData={handleUpdateData}
-                  // handleAddData={handleAddData}
                   setTableState={setTableState}
-                  // transformExcelCell={transformExcelCell}
                 />
               )}
             </div>
