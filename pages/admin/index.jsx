@@ -39,8 +39,16 @@ export const getServerSideProps = async ({ locale, query }) => {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale, ["common", "dataAdmin", "popup"])),
+      // ...(await serverSideTranslations(locale, ["common", "dataAdmin", "popup"])),
       category,
+    },
+  };
+};
+
+export const getStaticProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale, ["common", "dataAdmin", "popup"])),
     },
   };
 };
