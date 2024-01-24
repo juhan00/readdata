@@ -34,7 +34,7 @@ export const updateBrandList = async (data) => {
     throw new Error("Failed to fetch data.");
   }
 
-  console.log("업데이트 완료");
+  // console.log("업데이트 완료");
 };
 
 export const addBrandList = async (data) => {
@@ -55,5 +55,5 @@ export const addBrandList = async (data) => {
     throw new Error("Failed to fetch data.");
   }
 
-  console.log("추가 완료");
+  // console.log("추가 완료");
 };

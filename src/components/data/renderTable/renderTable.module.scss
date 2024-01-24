@@ -46,6 +46,9 @@
           width: 100%;
           height: 3.8rem;
           border: 0.1rem solid #ebebeb;
+          &:read-only {
+            background-color: #eeeeee;
+          }
         }
         select {
           width: 100%;
@@ -108,7 +111,7 @@
     }
 
     button.number {
-      width: 2.4rem;
+      min-width: 2.4rem;
       height: 2.4rem;
       border-radius: 2.4rem;
       margin: 0 0.5rem;

@@ -11,7 +11,7 @@ export const getCompanyList = async () => {
   }
 
   const data = await response.json();
-  console.log("data.data", data.data);
+
   return data.data;
 };
 
@@ -37,7 +37,7 @@ export const updateCompanyList = async (data) => {
     throw new Error("Failed to fetch data.");
   }
 
-  console.log("업데이트 완료");
+  // console.log("업데이트 완료");
 };
 
 export const addCompanyList = async (data) => {
@@ -62,5 +62,5 @@ export const addCompanyList = async (data) => {
     throw new Error("Failed to fetch data.");
   }
 
-  console.log("추가 완료");
+  // console.log("추가 완료");
 };

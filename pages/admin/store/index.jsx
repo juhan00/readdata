@@ -163,6 +163,7 @@ const Store = () => {
       ...prevData,
       ...searchField,
     }));
+    gotoPage(0);
   };
 
   const handleUpdateData = (data) => {

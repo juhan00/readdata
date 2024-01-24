@@ -11,18 +11,20 @@ export const getStoreList = async () => {
   }
 
   const data = await response.json();
-  console.log("data.data user", data.data);
+
   return data.data;
 };
 
 export const updateStoreList = async (data) => {
-  const response = await fetch(`/user/post`, {
+  const response = await fetch(`/store/mng/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
       brand_code: data.brand_code,
+      brand_name: data.brand_name,
+      fran_code: data.fran_code,
       fran_name: data.fran_name,
       bizno: data.bizno,
       use_flag: data.use_flag,
@@ -34,25 +36,22 @@ export const updateStoreList = async (data) => {
     throw new Error("Failed to fetch data.");
   }
 
-  console.log("업데이트 완료");
+  // console.log("업데이트 완료");
 };
 
 export const addStoreList = async (data) => {
-  const response = await fetch(`/user/post`, {
+  const response = await fetch(`/store/mng/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      user_id: data.uid,
-      user_pw: data.upw,
-      user_name: data.uname,
-      email: data.email,
-      phone_num: data.phone,
-      authority: data.authority,
-      useflag: data.use_flag,
-      companyCode: data.company_code,
-      company_name: data.company_name,
+      brand_code: data.brand_code,
+      brand_name: data.brand_name,
+      fran_code: data.fran_code,
+      fran_name: data.fran_name,
+      bizno: data.bizno,
+      use_flag: data.use_flag,
       joinFlag: "join",
     }),
   });
@@ -61,7 +60,7 @@ export const addStoreList = async (data) => {
     throw new Error("Failed to fetch data.");
   }
 
-  console.log("추가 완료");
+  // console.log("추가 완료");
 };
 
 export const getStoreAccountList = async () => {
@@ -77,7 +76,7 @@ export const getStoreAccountList = async () => {
   }
 
   const data = await response.json();
-  console.log("data.data user", data.data);
+
   return data.data;
 };
 
@@ -135,7 +134,7 @@ export const updateStoreAccountList = async (data) => {
     throw new Error("Failed to fetch data.");
   }
 
-  console.log("업데이트 완료");
+  // console.log("업데이트 완료");
 };
 
 export const getStoreMapingList = async () => {
@@ -151,7 +150,7 @@ export const getStoreMapingList = async () => {
   }
 
   const data = await response.json();
-  console.log("data.data mapping", data.data);
+
   return data.data;
 };
 
@@ -172,7 +171,7 @@ export const updateStoreMapingList = async (data) => {
     throw new Error("Failed to fetch data.");
   }
 
-  console.log("업데이트 완료");
+  // console.log("업데이트 완료");
 };
 
 export const getScrapingList = async () => {
@@ -188,6 +187,6 @@ export const getScrapingList = async () => {
   }
 
   const data = await response.json();
-  console.log("data.data scrap", data.data);
+
   return data.data;
 };

@@ -11,7 +11,7 @@ export const getSalesDayList = async (startDate, endDate) => {
   }
 
   const data = await response.json();
-  console.log("data.data", data.data);
+
   return data.data;
 };
 
@@ -28,6 +28,6 @@ export const getSalesMonthList = async (startMonth, endMonth) => {
   }
 
   const data = await response.json();
-  console.log("data.data", data.data);
+
   return data.data;
 };

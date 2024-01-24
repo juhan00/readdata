@@ -176,6 +176,7 @@ const Compnay = () => {
       ...prevData,
       ...searchField,
     }));
+    gotoPage(0);
   };
 
   const handleUpdateData = (data) => {

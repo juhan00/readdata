@@ -158,6 +158,7 @@ const StoreMapping = () => {
       ...prevData,
       ...searchField,
     }));
+    gotoPage(0);
   };
 
   // const handleUpdateData = (data) => {

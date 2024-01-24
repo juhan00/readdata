@@ -32,6 +32,7 @@ const StoreAccount = () => {
   // }, {});
 
   const searchFieldData = {
+    brand_name: "",
     fran_name: "",
     use_flag: "",
   };
@@ -120,6 +121,7 @@ const StoreAccount = () => {
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
+        (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
         (!searchData.fran_name || row.fran_name?.toString().toLowerCase().includes(searchData.fran_name.toLowerCase())) &&
         (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase()))
     );
@@ -163,6 +165,7 @@ const StoreAccount = () => {
       ...prevData,
       ...searchField,
     }));
+    gotoPage(0);
   };
 
   const handleUpdateData = (data) => {
@@ -195,6 +198,15 @@ const StoreAccount = () => {
       <div className={cx("brand")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
+            <div className={cx("item")}>
+              <SearchItem
+                searchType={SEARCH_TYPE_INPUT}
+                value={searchField.brand_name}
+                title={"브랜드 명"}
+                id={"brand_name"}
+                onChange={handleFieldChange}
+              />
+            </div>
             <div className={cx("item")}>
               <SearchItem
                 searchType={SEARCH_TYPE_INPUT}

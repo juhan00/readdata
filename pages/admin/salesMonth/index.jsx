@@ -117,6 +117,7 @@ const SalesMonth = () => {
       ...prevData,
       ...searchField,
     }));
+    gotoPage(0);
   };
 
   // const handleUpdateData = (data) => {

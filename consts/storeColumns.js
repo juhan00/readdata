@@ -10,7 +10,6 @@ export const storeColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    noEdit: true,
   },
   {
     header: "가맹점 명",
@@ -21,7 +20,6 @@ export const storeColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    noEdit: true,
   },
   {
     header: "사업자등록번호",
@@ -32,7 +30,6 @@ export const storeColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    noEdit: true,
   },
   {
     header: "브랜드 코드",

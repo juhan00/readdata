@@ -190,7 +190,7 @@ const RenderTable = ({
                     <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
                       {isEditingRow ? (
                         isNumberColumn || isNoEditColumn ? (
-                          <input value={columnValues[cell.column.id] || cell.value || ""} readOnly />
+                          <input value={columnValues[cell.column.id] || cell.value || ""} readOnly onfocus="this.blur()" />
                         ) : isAuthorityColumn ? (
                           <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
                             {booleanOption.map((option) => (

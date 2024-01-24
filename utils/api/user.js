@@ -11,7 +11,7 @@ export const getUserList = async () => {
   }
 
   const data = await response.json();
-  console.log("data.data user", data.data);
+
   return data.data;
 };
 
@@ -39,7 +39,7 @@ export const updateUserList = async (data) => {
     throw new Error("Failed to fetch data.");
   }
 
-  console.log("업데이트 완료");
+  // console.log("업데이트 완료");
 };
 
 export const addUserList = async (data) => {
@@ -66,5 +66,5 @@ export const addUserList = async (data) => {
     throw new Error("Failed to fetch data.");
   }
 
-  console.log("추가 완료");
+  // console.log("추가 완료");
 };
