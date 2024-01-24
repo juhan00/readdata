@@ -19,14 +19,8 @@ const cx = className.bind(styles);
 
 const User = () => {
   const router = useRouter();
-  const { category } = router.query;
-  const [userMenu, setUserMenu] = useState();
-
-  useEffect(() => {
-    if (!userMenu) {
-      router.push(`/user?category=brand`);
-    }
-  }, []);
+  const { category = "brand" } = router.query;
+  const [userMenu, setUserMenu] = useState(category);
 
   useEffect(() => {
     setUserMenu(category);
@@ -35,7 +29,7 @@ const User = () => {
   return (
     <div className={cx("user")}>
       <PopupDataDefault />
-      <DataLayout useType={USE_TYPE_USER} userMenu={{ menu: userMenu, setMenu: setUserMenu }}>
+      <DataLayout useType={USE_TYPE_USER} userMenu={{ menu: userMenu }}>
         {userMenu === "brand" && <Brand />}
         {userMenu === "store" && <Store />}
         {userMenu === "store_account" && <StoreAccount />}
@@ -49,13 +43,10 @@ const User = () => {
 
 export default User;
 
-export const getServerSideProps = async ({ locale, query }) => {
-  const { category = "brand" } = query;
-
+export const getStaticProps = async ({ locale }) => {
   return {
     props: {
       ...(await serverSideTranslations(locale, ["common", "dataUser", "popup"])),
-      category,
     },
   };
 };

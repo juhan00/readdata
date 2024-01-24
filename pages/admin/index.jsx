@@ -9,24 +9,35 @@ import User from "./user";
 import StoreAccount from "./storeAccount";
 import Store from "./store";
 import StoreMapping from "./storeMapping";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 //styles
 import className from "classnames/bind";
 import styles from "./admin.module.scss";
+
 const cx = className.bind(styles);
 
-const Admin = ({ category }) => {
+const Admin = () => {
+  const router = useRouter();
+  const { category = "company" } = router.query;
+  const [adminMenu, setAdminMenu] = useState(category);
+
+  useEffect(() => {
+    setAdminMenu(category);
+  }, [category]);
+
   return (
     <div className={cx("admin")}>
       <PopupDataDefault />
-      <DataLayout useType={USE_TYPE_ADMIN} adminMenu={{ menu: category }}>
-        {category === "company" && <Compnay />}
-        {category === "user" && <User />}
-        {category === "store" && <Store />}
-        {category === "store_account" && <StoreAccount />}
-        {category === "store_mapping" && <StoreMapping />}
-        {category === "sales_day" && <SalesDay />}
-        {category === "sales_month" && <SalesMonth />}
+      <DataLayout useType={USE_TYPE_ADMIN} adminMenu={{ menu: adminMenu }}>
+        {adminMenu === "company" && <Compnay />}
+        {adminMenu === "user" && <User />}
+        {adminMenu === "store" && <Store />}
+        {adminMenu === "store_account" && <StoreAccount />}
+        {adminMenu === "store_mapping" && <StoreMapping />}
+        {adminMenu === "sales_day" && <SalesDay />}
+        {adminMenu === "sales_month" && <SalesMonth />}
       </DataLayout>
     </div>
   );
@@ -34,22 +45,10 @@ const Admin = ({ category }) => {
 
 export default Admin;
 
-export const getServerSideProps = async ({ locale, query }) => {
-  const { category = "company" } = query;
-  const translations = await serverSideTranslations(locale, ["common", "dataAdmin", "popup"]);
-
+export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      ...translations,
-      category,
+      ...(await serverSideTranslations(locale, ["common", "dataAdmin", "popup"])),
     },
   };
 };
-
-// export const getStaticProps = async ({ locale }) => {
-//   return {
-//     props: {
-//       ...(await serverSideTranslations(locale, ["common", "dataAdmin", "popup"])),
-//     },
-//   };
-// };
