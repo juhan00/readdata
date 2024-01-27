@@ -167,8 +167,18 @@ const RenderTable = ({
                 {editMode && <th className={cx("edit-th")}></th>}
                 {headerGroup.headers.map((column, index) => (
                   <th {...column.getHeaderProps(isAdded || editingRow != null ? {} : column.getSortByToggleProps())} style={column.headerStyle}>
-                    {column.render("Header")}
-                    <span>{column.isSorted ? (column.isSortedDesc ? "v" : "^") : ""}</span>
+                    <div className={cx("text")}>
+                      {column.render("Header")}
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <span className={cx("sort", "desc")}>v</span>
+                        ) : (
+                          <span className={cx("sort", "asc")}>^</span>
+                        )
+                      ) : (
+                        ""
+                      )}
+                    </div>
                   </th>
                 ))}
               </tr>

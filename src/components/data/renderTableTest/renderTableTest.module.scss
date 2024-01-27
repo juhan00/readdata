@@ -27,6 +27,26 @@
         z-index: 1;
         padding: 0.7rem 1rem;
         white-space: nowrap;
+        .text {
+          position: relative;
+          display: inline-block;
+          .sort {
+            position: absolute;
+            top: 0.4rem;
+            right: -1.4rem;
+            display: inline-block;
+            width: 0.8rem;
+            height: 0.7rem;
+            background: url("/assets/images/data/ico_sort_arrow.png") no-repeat 50% 50% / contain;
+            font-size: 0;
+            &.desc {
+              transform: rotate(-180deg);
+            }
+            &.asc {
+              transform: rotate(0deg);
+            }
+          }
+        }
       }
       th + th {
         border-left: 0.1rem solid $color-white;
