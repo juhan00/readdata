@@ -10,6 +10,8 @@ import { useRouter } from "next/router";
 import Store from "./store";
 import StoreAccount from "./storeAccount";
 import StoreMapping from "./storeMapping";
+import BrandTest from "./brandTest";
+import SalesTestMonth from "./salesTestMonth";
 
 //styles
 import styles from "./user.module.scss";
@@ -19,11 +21,12 @@ const cx = className.bind(styles);
 
 const User = () => {
   const router = useRouter();
-  const { category = "brand" } = router.query;
+  const { category = "brand_test" } = router.query;
   const [userMenu, setUserMenu] = useState(category);
 
   useEffect(() => {
     setUserMenu(category);
+    console.log(category);
   }, [category]);
 
   return (
@@ -36,6 +39,8 @@ const User = () => {
         {userMenu === "store_mapping" && <StoreMapping />}
         {userMenu === "sales_day" && <SalesDay />}
         {userMenu === "sales_month" && <SalesMonth />}
+        {userMenu === "brand_test" && <BrandTest />}
+        {userMenu === "sales_test_month" && <SalesTestMonth />}
       </DataLayout>
     </div>
   );
