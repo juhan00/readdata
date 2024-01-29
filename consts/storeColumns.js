@@ -1,4 +1,4 @@
-import { TABLE_COLUMN_TYPE_USEFLAG } from "./common";
+import { TABLE_COLUMN_TYPE } from "./common";
 
 export const storeColumns = [
   {
@@ -60,7 +60,7 @@ export const storeColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    type: TABLE_COLUMN_TYPE_USEFLAG,
+    type: TABLE_COLUMN_TYPE.USEFLAG,
     Cell: ({ value }) => (Number(value) === 0 ? "사용안함" : "사용"),
   },
 ];

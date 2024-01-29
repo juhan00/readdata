@@ -1,5 +1,3 @@
-import { TABLE_COLUMN_TYPE_USEFLAG } from "./common";
-
 export const storeMappingColumns = [
   {
     header: "가맹점명",

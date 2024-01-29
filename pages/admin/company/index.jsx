@@ -1,4 +1,4 @@
-import { SEARCH_TYPE_INPUT, SEARCH_TYPE_SELECT_FLAG } from "@/consts/common";
+import { SEARCH_TYPE } from "@/consts/common";
 import { companyColumns } from "@/consts/companyColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
@@ -214,7 +214,7 @@ const Compnay = () => {
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
               <SearchItem
-                searchType={SEARCH_TYPE_INPUT}
+                searchType={SEARCH_TYPE.INPUT}
                 value={searchField.company_name}
                 title={"회사명"}
                 id={"company_name"}
@@ -222,7 +222,7 @@ const Compnay = () => {
               />
             </div>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_SELECT_FLAG} value={searchField.flag} title={"사용여부"} id={"flag"} onChange={handleFieldChange} />
+              <SearchItem searchType={SEARCH_TYPE.SELECT_FLAG} value={searchField.flag} title={"사용여부"} id={"flag"} onChange={handleFieldChange} />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />

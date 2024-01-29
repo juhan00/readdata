@@ -1,4 +1,4 @@
-import { TABLE_COLUMN_TYPE, TABLE_COLUMN_TYPE_USEFLAG } from "./common";
+import { TABLE_COLUMN_TYPE } from "./common";
 
 export const brandTestColumns = [
   {
@@ -73,7 +73,7 @@ export const brandTestColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    type: TABLE_COLUMN_TYPE_USEFLAG,
+    type: TABLE_COLUMN_TYPE.USEFLAG,
     rowspan: 2,
     Cell: ({ value }) => (Number(value) === 0 ? "사용안함" : "사용"),
   },

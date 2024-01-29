@@ -1,8 +1,12 @@
 export const RESPONSIVE_MOBILE_SIZE = 767;
-export const USE_TYPE_USER = "USER";
-export const USE_TYPE_ADMIN = "ADMIN";
-export const SEARCH_TYPE_INPUT = "INPUT";
-export const SEARCH_TYPE_SELECT_FLAG = "SELECT_FLAG";
+export const USE_TYPE = {
+  USER: "USER",
+  ADMIN: "ADMIN",
+};
+export const SEARCH_TYPE = {
+  INPUT: "INPUT",
+  SELECT_FLAG: "SELECT_FLAG",
+};
 export const TABLE_COLUMN_TYPE = {
   NUMBER: "NUMBER",
   AUTHORITY: "AUTHORITY",

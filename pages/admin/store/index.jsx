@@ -1,4 +1,4 @@
-import { SEARCH_TYPE_INPUT, SEARCH_TYPE_SELECT_FLAG } from "@/consts/common";
+import { SEARCH_TYPE } from "@/consts/common";
 import { POPUP_DEFAULT } from "@/consts/popup";
 import { storeColumns } from "@/consts/storeColumns";
 import { useGlobalState } from "@/context/globalStateContext";
@@ -214,7 +214,7 @@ const Store = () => {
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
               <SearchItem
-                searchType={SEARCH_TYPE_INPUT}
+                searchType={SEARCH_TYPE.INPUT}
                 value={searchField.brand_name}
                 title={"브랜드 명"}
                 id={"brand_name"}
@@ -223,7 +223,7 @@ const Store = () => {
             </div>
             <div className={cx("item")}>
               <SearchItem
-                searchType={SEARCH_TYPE_INPUT}
+                searchType={SEARCH_TYPE.INPUT}
                 value={searchField.fran_name}
                 title={"가맹점 명"}
                 id={"fran_name"}
@@ -232,7 +232,7 @@ const Store = () => {
             </div>
             <div className={cx("item")}>
               <SearchItem
-                searchType={SEARCH_TYPE_SELECT_FLAG}
+                searchType={SEARCH_TYPE.SELECT_FLAG}
                 value={searchField.use_flag}
                 title={"사용여부"}
                 id={"use_flag"}

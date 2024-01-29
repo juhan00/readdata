@@ -1,5 +1,5 @@
 import { brandColumns } from "@/consts/brandColumns";
-import { SEARCH_TYPE_INPUT, SEARCH_TYPE_SELECT_FLAG } from "@/consts/common";
+import { SEARCH_TYPE } from "@/consts/common";
 import { POPUP_DEFAULT } from "@/consts/popup";
 import { useGlobalState } from "@/context/globalStateContext";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
@@ -220,7 +220,7 @@ const Brand = () => {
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
               <SearchItem
-                searchType={SEARCH_TYPE_INPUT}
+                searchType={SEARCH_TYPE.INPUT}
                 value={searchField.brand_name}
                 title={"브랜드명"}
                 id={"brand_name"}
@@ -229,7 +229,7 @@ const Brand = () => {
             </div>
             <div className={cx("item")}>
               <SearchItem
-                searchType={SEARCH_TYPE_SELECT_FLAG}
+                searchType={SEARCH_TYPE.SELECT_FLAG}
                 value={searchField.brand_flag}
                 title={"사용여부"}
                 id={"brand_flag"}

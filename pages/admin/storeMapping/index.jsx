@@ -1,4 +1,4 @@
-import { SEARCH_TYPE_INPUT } from "@/consts/common";
+import { SEARCH_TYPE } from "@/consts/common";
 import { storeMappingColumns } from "@/consts/storeMappingColumns";
 import { useGlobalState } from "@/context/globalStateContext";
 import BtnSearch from "@/src/components/data/button/btnSearch";
@@ -104,10 +104,10 @@ const StoreMapping = () => {
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.uid} title={"사용자 ID"} id={"uid"} onChange={handleFieldChange} />
+              <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"사용자 ID"} id={"uid"} onChange={handleFieldChange} />
             </div>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.uname} title={"사용자명"} id={"uname"} onChange={handleFieldChange} />
+              <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uname} title={"사용자명"} id={"uname"} onChange={handleFieldChange} />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />

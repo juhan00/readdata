@@ -1,5 +1,3 @@
-import { TABLE_COLUMN_TYPE_USEFLAG } from "./common";
-
 export const scrapingColumns = [
   {
     header: "브랜드명",

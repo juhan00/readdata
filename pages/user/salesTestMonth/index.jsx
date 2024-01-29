@@ -1,4 +1,4 @@
-import { SEARCH_TYPE_INPUT } from "@/consts/common";
+import { SEARCH_TYPE } from "@/consts/common";
 import { salesTestMonthColumns, salesMonthColumns } from "@/consts/salesTestMonthColumns";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTableTest from "@/src/components/data/renderTableTest";
@@ -209,7 +209,7 @@ const SalesTestMonth = () => {
               />
             </div>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
+              <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />

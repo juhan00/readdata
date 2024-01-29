@@ -1,4 +1,4 @@
-import { USE_TYPE_ADMIN } from "@/consts/common";
+import { USE_TYPE } from "@/consts/common";
 import { useTranslation } from "next-i18next";
 
 //styles
@@ -11,7 +11,7 @@ const TopHeader = ({ useType }) => {
 
   return (
     <div className={cx("top-header")}>
-      <div className={cx("use-type", useType === USE_TYPE_ADMIN ? "admin" : "user")}>{useType === USE_TYPE_ADMIN ? "관리자" : "사용자"}</div>
+      <div className={cx("use-type", useType === USE_TYPE.ADMIN ? "admin" : "user")}>{useType === USE_TYPE.ADMIN ? "관리자" : "사용자"}</div>
       <div className={cx("right")}>
         <div className={cx("name")}>
           <strong>홍길동</strong>

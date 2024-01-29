@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from "react";
 import DataPopupLayout from "@/layouts/dataPopupLayout";
 import PopupSearchItem from "../popupSearchItem";
-import { SEARCH_TYPE_INPUT } from "@/consts/common";
+import { SEARCH_TYPE } from "@/consts/common";
 import BtnPopupSearch from "../../button/btnPopupSearch";
 import { getBrandList } from "@/utils/api/brand";
 import { useMutation } from "react-query";
@@ -71,7 +71,7 @@ const PopupSearchBrand = ({ setReturnState, setIsPopup }) => {
     <DataPopupLayout title={"테스트 타이틀"} setIsPopup={setIsPopup}>
       <div className={cx("search-brand")}>
         <div className={cx("search-wrap")}>
-          <PopupSearchItem searchType={SEARCH_TYPE_INPUT} />
+          <PopupSearchItem searchType={SEARCH_TYPE.INPUT} />
           <BtnPopupSearch />
         </div>
         <div className={cx("content-wrap")}>

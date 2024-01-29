@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { USE_TYPE_USER, USE_TYPE_ADMIN } from "@/consts/common";
+import { USE_TYPE } from "@/consts/common";
 import { useTranslation } from "next-i18next";
 import { useRouter } from "next/router";
 
@@ -27,7 +27,7 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
           <img src="/assets/images/logo.png" alt="logo" />
         </div>
         <nav>
-          {useType === USE_TYPE_USER && (
+          {useType === USE_TYPE.USER && (
             <ul className={cx("user")}>
               <li>
                 <button className={cx("menu1", userMenu.menu === "brand" && "active")} onClick={() => handleClickUserMenu("brand")}>
@@ -62,7 +62,7 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
             </ul>
           )}
 
-          {useType === USE_TYPE_ADMIN && (
+          {useType === USE_TYPE.ADMIN && (
             <ul className={cx("admin")}>
               <li>
                 <button className={cx("menu1", adminMenu.menu === "company" && "active")} onClick={() => handleClickAdminMenu("company")}>

@@ -3,7 +3,7 @@ import PopupSearchAddress from "@/src/components/data/popup/popupSearchAddress";
 import { isEqual } from "lodash";
 import { useGlobalState } from "@/context/globalStateContext";
 import { POPUP_DEFAULT } from "@/consts/popup";
-import { TABLE_COLUMN_TYPE, TABLE_COLUMN_TYPE_AUTHORITY, TABLE_COLUMN_TYPE_USEFLAG, TABLE_COLUMN_TYPE_ADDRESS } from "@/consts/common";
+import { TABLE_COLUMN_TYPE } from "@/consts/common";
 
 //styles
 import styles from "./renderTable.module.scss";

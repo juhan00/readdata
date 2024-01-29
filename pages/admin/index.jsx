@@ -1,4 +1,4 @@
-import { USE_TYPE_ADMIN } from "@/consts/common";
+import { USE_TYPE } from "@/consts/common";
 import DataLayout from "@/layouts/dataLayout";
 import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
@@ -30,7 +30,7 @@ const Admin = () => {
   return (
     <div className={cx("admin")}>
       <PopupDataDefault />
-      <DataLayout useType={USE_TYPE_ADMIN} adminMenu={{ menu: adminMenu }}>
+      <DataLayout useType={USE_TYPE.ADMIN} adminMenu={{ menu: adminMenu }}>
         {adminMenu === "company" && <Compnay />}
         {adminMenu === "user" && <User />}
         {adminMenu === "store" && <Store />}

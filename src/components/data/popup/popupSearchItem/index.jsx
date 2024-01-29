@@ -1,4 +1,4 @@
-import { SEARCH_TYPE_SELECT, SEARCH_TYPE_INPUT } from "@/consts/common";
+import { SEARCH_TYPE } from "@/consts/common";
 
 //styles
 import styles from "./popupSearchItem.module.scss";
@@ -9,7 +9,7 @@ const PopupSearchItem = ({ searchType }) => {
   return (
     <div className={cx("search-item")}>
       <label>브랜드 명</label>
-      {searchType === SEARCH_TYPE_SELECT && (
+      {searchType === SEARCH_TYPE.SELECT && (
         <select>
           <option value="all">All</option>
           <option value="brand1">브랜드1</option>
@@ -17,7 +17,7 @@ const PopupSearchItem = ({ searchType }) => {
           <option value="brand3">브랜드3</option>
         </select>
       )}
-      {searchType === SEARCH_TYPE_INPUT && <input type="text" />}
+      {searchType === SEARCH_TYPE.INPUT && <input type="text" />}
     </div>
   );
 };
