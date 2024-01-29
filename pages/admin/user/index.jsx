@@ -34,6 +34,7 @@ const User = () => {
   const searchFieldData = {
     uid: "",
     uname: "",
+    use_flag: "",
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
@@ -128,7 +129,8 @@ const User = () => {
     return tableState?.filter(
       (row) =>
         (!searchData.uid || row.uid?.toString().toLowerCase().includes(searchData.uid.toLowerCase())) &&
-        (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
+        (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase())) &&
+        (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -216,6 +218,15 @@ const User = () => {
             </div>
             <div className={cx("item")}>
               <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uname} title={"사용자명"} id={"uname"} onChange={handleFieldChange} />
+            </div>
+            <div className={cx("item")}>
+              <SearchItem
+                searchType={SEARCH_TYPE.SELECT_FLAG}
+                value={searchField.use_flag}
+                title={"사용여부"}
+                id={"use_flag"}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />

@@ -55,9 +55,11 @@ export const userColumns = [
     header: "회사코드",
     accessor: "company_code",
     headerStyle: {
+      display: "none",
       textAlign: "center",
     },
     cellStyle: {
+      display: "none",
       textAlign: "center",
     },
   },
