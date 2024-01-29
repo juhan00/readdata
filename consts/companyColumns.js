@@ -96,6 +96,7 @@ export const companyColumns = [
     cellStyle: {
       textAlign: "center",
     },
+    noEdit: true,
     Cell: ({ value }) => useChangeFormatDateUTC(value),
   },
   {
@@ -107,6 +108,7 @@ export const companyColumns = [
     cellStyle: {
       textAlign: "center",
     },
+    noEdit: true,
     Cell: ({ value }) => useChangeFormatDateUTC(value),
   },
 ];

@@ -13,6 +13,9 @@ export const useChangeFormatMonth = (date) => {
 };
 
 export const useChangeFormatDateUTC = (date) => {
+  if (!date) {
+    return "";
+  }
   const originalDate = new Date(date);
   const formattedDate = originalDate.toISOString().split("T")[0];
   return formattedDate;

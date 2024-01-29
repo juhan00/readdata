@@ -6,6 +6,7 @@ export const USE_TYPE = {
 export const SEARCH_TYPE = {
   INPUT: "INPUT",
   SELECT_FLAG: "SELECT_FLAG",
+  SELECT_BRAND: "SELECT_BRAND",
 };
 export const TABLE_COLUMN_TYPE = {
   NUMBER: "NUMBER",
