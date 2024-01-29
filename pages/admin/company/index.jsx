@@ -33,7 +33,6 @@ const Compnay = () => {
 
   const searchFieldData = {
     company_name: "",
-    boss: "",
     flag: "",
   };
 
@@ -130,7 +129,6 @@ const Compnay = () => {
     return tableState?.filter(
       (row) =>
         (!searchData.company_name || row.company_name?.toString().toLowerCase().includes(searchData.company_name.toLowerCase())) &&
-        (!searchData.boss || row.boss?.toString().toLowerCase().includes(searchData.boss.toLowerCase())) &&
         (!searchData.flag || row.flag?.toString().toLowerCase().includes(searchData.flag.toLowerCase()))
     );
   }, [tableState, searchData]);
@@ -222,9 +220,6 @@ const Compnay = () => {
                 id={"company_name"}
                 onChange={handleFieldChange}
               />
-            </div>
-            <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE_INPUT} value={searchField.boss} title={"대표자"} id={"boss"} onChange={handleFieldChange} />
             </div>
             <div className={cx("item")}>
               <SearchItem searchType={SEARCH_TYPE_SELECT_FLAG} value={searchField.flag} title={"사용여부"} id={"flag"} onChange={handleFieldChange} />

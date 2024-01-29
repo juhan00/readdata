@@ -1,4 +1,4 @@
-import { TABLE_COLUMN_TYPE_NUMBER, TABLE_COLUMN_TYPE_USEFLAG } from "./common";
+import { TABLE_COLUMN_TYPE, TABLE_COLUMN_TYPE_USEFLAG } from "./common";
 
 export const brandTestColumns = [
   {
@@ -11,7 +11,7 @@ export const brandTestColumns = [
     cellStyle: {
       textAlign: "center",
     },
-    type: TABLE_COLUMN_TYPE_NUMBER,
+    type: TABLE_COLUMN_TYPE.NUMBER,
   },
   {
     Header: "브랜드 코드 제목",

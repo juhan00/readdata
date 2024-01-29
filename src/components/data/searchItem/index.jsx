@@ -11,7 +11,7 @@ const SearchItem = ({ searchType, title, value, id, onClick, onChange, readOnly 
       <label>{title}</label>
       {searchType === SEARCH_TYPE_SELECT_FLAG && (
         <select id={id} onClick={onClick} onChange={(e) => onChange(id, e)}>
-          <option value="">All</option>
+          <option value="">전체</option>
           <option value="0">사용안함</option>
           <option value="1">사용</option>
         </select>

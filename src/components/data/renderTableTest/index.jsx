@@ -3,13 +3,7 @@ import PopupSearchAddress from "@/src/components/data/popup/popupSearchAddress";
 import { isEqual } from "lodash";
 import { useGlobalState } from "@/context/globalStateContext";
 import { POPUP_DEFAULT } from "@/consts/popup";
-import {
-  TABLE_COLUMN_TYPE_NUMBER,
-  TABLE_COLUMN_TYPE_AUTHORITY,
-  TABLE_COLUMN_TYPE_USEFLAG,
-  TABLE_COLUMN_TYPE_ADDRESS,
-  TABLE_COLUMN_TYPE_NO_EDIT,
-} from "@/consts/common";
+import { TABLE_COLUMN_TYPE } from "@/consts/common";
 
 //styles
 import styles from "./renderTableTest.module.scss";
@@ -143,7 +137,7 @@ const RenderTable = ({
 
   const handleSelectAddress = (selectedAddress) => {
     const addressCellName = headerGroups.flatMap((headerGroup) =>
-      headerGroup.headers.filter((column) => column.type === TABLE_COLUMN_TYPE_ADDRESS).map((addressColumn) => addressColumn.id)
+      headerGroup.headers.filter((column) => column.type === TABLE_COLUMN_TYPE.ADDRESS).map((addressColumn) => addressColumn.id)
     );
 
     setColumnValues((prevColumnValues) => ({
@@ -216,10 +210,10 @@ const RenderTable = ({
                     </td>
                   )}
                   {row.cells.map((cell) => {
-                    const isNumberColumn = cell.column.type === TABLE_COLUMN_TYPE_NUMBER;
-                    const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE_AUTHORITY;
-                    const isUseflagColumn = cell.column.type === TABLE_COLUMN_TYPE_USEFLAG;
-                    const isAddressColumn = cell.column.type === TABLE_COLUMN_TYPE_ADDRESS;
+                    const isNumberColumn = cell.column.type === TABLE_COLUMN_TYPE.NUMBER;
+                    const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE.AUTHORITY;
+                    const isUseflagColumn = cell.column.type === TABLE_COLUMN_TYPE.USEFLAG;
+                    const isAddressColumn = cell.column.type === TABLE_COLUMN_TYPE.ADDRESS;
                     const isNoEditColumn = cell.column.noEdit === true;
 
                     return (
