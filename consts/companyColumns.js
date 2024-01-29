@@ -1,3 +1,4 @@
+import { useChangeFormatDateUTC } from "@/utils/useChangeFormatDate";
 import { TABLE_COLUMN_TYPE } from "./common";
 
 export const companyColumns = [
@@ -5,9 +6,11 @@ export const companyColumns = [
     header: "회사코드",
     accessor: "company_code",
     headerStyle: {
+      display: "none",
       textAlign: "center",
     },
     cellStyle: {
+      display: "none",
       textAlign: "center",
     },
   },
@@ -83,5 +86,27 @@ export const companyColumns = [
     },
     type: TABLE_COLUMN_TYPE.USEFLAG,
     Cell: ({ value }) => (Number(value) === 0 ? "사용안함" : "사용"),
+  },
+  {
+    header: "등록일자",
+    accessor: "reg_date",
+    headerStyle: {
+      textAlign: "center",
+    },
+    cellStyle: {
+      textAlign: "center",
+    },
+    Cell: ({ value }) => useChangeFormatDateUTC(value),
+  },
+  {
+    header: "수정일자",
+    accessor: "update_date",
+    headerStyle: {
+      textAlign: "center",
+    },
+    cellStyle: {
+      textAlign: "center",
+    },
+    Cell: ({ value }) => useChangeFormatDateUTC(value),
   },
 ];
