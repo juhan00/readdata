@@ -16,6 +16,7 @@ import SalesTestMonth from "./salesTestMonth";
 //styles
 import styles from "./user.module.scss";
 import className from "classnames/bind";
+import TossPay from "@/pages/user/tossPay";
 
 const cx = className.bind(styles);
 
@@ -41,6 +42,7 @@ const User = () => {
         {userMenu === "sales_month" && <SalesMonth />}
         {userMenu === "brand_test" && <BrandTest />}
         {userMenu === "sales_test_month" && <SalesTestMonth />}
+        {userMenu === "tossPay" && <TossPay />}
       </DataLayout>
     </div>
   );

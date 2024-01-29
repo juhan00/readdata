@@ -23,7 +23,7 @@ a {
 ul {
   list-style: none;
 }
-* {
+*:not(#discountSpan){
   box-sizing: border-box;
 }
 

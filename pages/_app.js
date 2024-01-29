@@ -3,6 +3,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "@/src/styles/globals.css";
+import "./user/tossPay/tossPay.css"
 
 import { appWithTranslation } from "next-i18next";
 import { QueryClient, QueryClientProvider } from "react-query";
