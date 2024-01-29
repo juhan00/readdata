@@ -19,7 +19,7 @@ export default async function handler(req, res) {
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: "jmpark@leadplanet.kr",
+      to: process.env.RECIPIENT_EMAIL,
       subject: "문의하기",
       text: `
         회사명: ${formData.company_name}
