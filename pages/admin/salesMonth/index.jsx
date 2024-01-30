@@ -113,6 +113,9 @@ const SalesMonth = () => {
     gotoPage(0);
   };
 
+  console.log("시작날짜=",formatStartDate);
+  console.log("종료날짜=",formatEndDate);
+
   return (
     <>
       <div className={cx("brand")}>
@@ -125,6 +128,7 @@ const SalesMonth = () => {
                 handleStartDateChange={handleStartDateChange}
                 handleEndDateChange={handleEndDateChange}
                 isMonth={true}
+                labelText={1}
               />
             </div>
             <div className={cx("item")}>

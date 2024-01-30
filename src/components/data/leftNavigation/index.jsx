@@ -79,45 +79,58 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
                 <li>
                   <button className={cx("menu1", adminMenu.menu === "company" && "active")}
                           onClick={() => handleClickAdminMenu("company")}>
-                  {t("data.admin_menu.menu1")}
-                </button>
-              </li>
-              <li>
-                <button className={cx("menu2", adminMenu.menu === "user" && "active")} onClick={() => handleClickAdminMenu("user")}>
-                  {t("data.admin_menu.menu2")}
-                </button>
-              </li>
-              <li>
-                <button className={cx("menu3", adminMenu.menu === "store" && "active")} onClick={() => handleClickAdminMenu("store")}>
-                  {t("data.admin_menu.menu3")}
-                </button>
-              </li>
-              <li>
-                <button className={cx("menu4", adminMenu.menu === "store_account" && "active")} onClick={() => handleClickAdminMenu("store_account")}>
-                  {t("data.admin_menu.menu4")}
-                </button>
-              </li>
-              <li>
-                <button className={cx("menu5", adminMenu.menu === "store_mapping" && "active")} onClick={() => handleClickAdminMenu("store_mapping")}>
-                  {t("data.admin_menu.menu5")}
-                </button>
-              </li>
-              <li>
-                <button className={cx("menu6", adminMenu.menu === "sales_day" && "active")} onClick={() => handleClickAdminMenu("sales_day")}>
-                  {t("data.admin_menu.menu6")}
-                </button>
-              </li>
-              <li>
-                <button className={cx("menu7", adminMenu.menu === "sales_month" && "active")} onClick={() => handleClickAdminMenu("sales_month")}>
-                  {t("data.admin_menu.menu7")}
-                </button>
-              </li>
-              <li>
-                <button className={cx("menu8", adminMenu.menu === "help" && "active")} onClick={() => handleClickAdminMenu("help")}>
-                  {t("data.admin_menu.menu8")}
-                </button>
-              </li>
-            </ul>
+                    {t("data.admin_menu.menu1")}
+                  </button>
+                </li>
+                <li>
+                  <button className={cx("menu2", adminMenu.menu === "user" && "active")}
+                          onClick={() => handleClickAdminMenu("user")}>
+                    {t("data.admin_menu.menu2")}
+                  </button>
+                </li>
+                <li>
+                  <button className={cx("menu3", adminMenu.menu === "store" && "active")}
+                          onClick={() => handleClickAdminMenu("store")}>
+                    {t("data.admin_menu.menu3")}
+                  </button>
+                </li>
+                <li>
+                  <button className={cx("menu4", adminMenu.menu === "store_account" && "active")}
+                          onClick={() => handleClickAdminMenu("store_account")}>
+                    {t("data.admin_menu.menu4")}
+                  </button>
+                </li>
+                <li>
+                  <button className={cx("menu5", adminMenu.menu === "store_mapping" && "active")}
+                          onClick={() => handleClickAdminMenu("store_mapping")}>
+                    {t("data.admin_menu.menu5")}
+                  </button>
+                </li>
+                <li>
+                  <button className={cx("menu6", adminMenu.menu === "sales_day" && "active")}
+                          onClick={() => handleClickAdminMenu("sales_day")}>
+                    {t("data.admin_menu.menu6")}
+                  </button>
+                </li>
+                <li>
+                  <button className={cx("menu7", adminMenu.menu === "sales_month" && "active")}
+                          onClick={() => handleClickAdminMenu("sales_month")}>
+                    {t("data.admin_menu.menu7")}
+                  </button>
+                </li>
+                <li>
+                  <button className={cx("menu8", adminMenu.menu === "help" && "active")}
+                          onClick={() => handleClickAdminMenu("help")}>
+                    {t("data.admin_menu.menu8")}
+                  </button>
+                </li>
+                <li>
+                  <button className={cx("menu9", adminMenu.menu === "sales_analysis" && "active")}
+                          onClick={() => handleClickAdminMenu("sales_analysis")}>
+                    {t("data.admin_menu.menu9")}
+                  </button>
+                </li>
+              </ul>
           )}
         </nav>
       </div>

@@ -150,6 +150,9 @@
             &.menu8::before {
               background: url("/assets/images/data/admin/ico_admin_nav_customer_off.png") no-repeat 50% 50% / contain;
             }
+            &.menu9::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_sales_off.png") no-repeat 50% 50% / contain;
+            }
           }
           button.active {
             &.menu1::before {
@@ -175,6 +178,9 @@
             }
             &.menu8::before {
               background: url("/assets/images/data/admin/ico_admin_nav_customer_on.png") no-repeat 50% 50% / contain;
+            }
+            &.menu9::before {
+              background: url("/assets/images/data/admin/ico_admin_nav_company_on.png") no-repeat 50% 50% / contain;
             }
           }
         }

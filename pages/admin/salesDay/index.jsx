@@ -62,6 +62,8 @@ const SalesDay = () => {
     if (!isLoadingSalesDayData && salesDayData) {
       setTableState(salesDayData);
     }
+    console.log("isLoadingSalesDayData=",isLoadingSalesDayData);
+    console.log("salesDayData=",salesDayData);
   }, [salesDayData, isLoadingSalesDayData]);
 
   const memoizedData = useMemo(() => {
@@ -113,6 +115,9 @@ const SalesDay = () => {
     gotoPage(0);
   };
 
+  console.log("시작날짜=",formatStartDate);
+  console.log("종료날짜=",formatEndDate);
+
   return (
     <>
       <div className={cx("brand")}>
@@ -124,6 +129,7 @@ const SalesDay = () => {
                 endDate={endDate}
                 handleStartDateChange={handleStartDateChange}
                 handleEndDateChange={handleEndDateChange}
+                labelText={1}
               />
             </div>
             <div className={cx("item")}>
