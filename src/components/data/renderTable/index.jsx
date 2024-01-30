@@ -163,7 +163,7 @@ const RenderTable = ({
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {headerGroup.headers.map((column, index) => (
                   <th {...column.getHeaderProps(isAdded || editingRow != null ? {} : column.getSortByToggleProps())} style={column.headerStyle}>
-                    {column.render("header")}
+                    {column.render("Header")}
                     <span>{column.isSorted ? (column.isSortedDesc ? "v" : "^") : ""}</span>
                   </th>
                 ))}

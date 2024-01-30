@@ -2,17 +2,23 @@ import { useChangeFormatDateUTC } from "@/utils/useChangeFormatDate";
 
 export const salesDayColumns = [
   {
-    header: "가맹점명",
-    accessor: "store",
-    headerStyle: {
-      textAlign: "center",
-    },
-    cellStyle: {
-      textAlign: "center",
-    },
+    Header: "매출일자",
+    columns: [
+      {
+        Header: "가맹점명",
+        accessor: "store",
+        headerStyle: {
+          textAlign: "center",
+        },
+        cellStyle: {
+          textAlign: "center",
+        },
+      },
+    ],
   },
+
   {
-    header: "가맹점코드",
+    Header: "가맹점코드",
     accessor: "fran_code",
     headerStyle: {
       textAlign: "center",
@@ -22,7 +28,7 @@ export const salesDayColumns = [
     },
   },
   {
-    header: "사업자등록번호",
+    Header: "사업자등록번호",
     accessor: "bizno",
     headerStyle: {
       textAlign: "center",
@@ -32,7 +38,7 @@ export const salesDayColumns = [
     },
   },
   {
-    header: "매출일자",
+    Header: "매출일자",
     accessor: "sale_date",
     headerStyle: {
       textAlign: "center",
@@ -43,7 +49,7 @@ export const salesDayColumns = [
     Cell: ({ value }) => useChangeFormatDateUTC(value.toLocaleString()),
   },
   {
-    header: "물류매출액",
+    Header: "물류매출액",
     accessor: "logi_sales",
     headerStyle: {
       textAlign: "center",
@@ -54,7 +60,7 @@ export const salesDayColumns = [
     Cell: ({ value }) => value.toLocaleString(),
   },
   {
-    header: "기타배달매출액",
+    Header: "기타배달매출액",
     accessor: "etc_sales",
     headerStyle: {
       textAlign: "center",
@@ -65,7 +71,7 @@ export const salesDayColumns = [
     Cell: ({ value }) => value.toLocaleString(),
   },
   {
-    header: "배달의민족 매출액",
+    Header: "배달의민족 매출액",
     accessor: "baemin_sales",
     headerStyle: {
       textAlign: "center",
@@ -76,7 +82,7 @@ export const salesDayColumns = [
     Cell: ({ value }) => value.toLocaleString(),
   },
   {
-    header: "요기요 매출액",
+    Header: "요기요 매출액",
     accessor: "yogiyo_sales",
     headerStyle: {
       textAlign: "center",
@@ -87,7 +93,7 @@ export const salesDayColumns = [
     Cell: ({ value }) => value.toLocaleString(),
   },
   {
-    header: "쿠팡이츠 매출액",
+    Header: "쿠팡이츠 매출액",
     accessor: "coupang_sales",
     headerStyle: {
       textAlign: "center",
@@ -98,7 +104,7 @@ export const salesDayColumns = [
     Cell: ({ value }) => value.toLocaleString(),
   },
   {
-    header: "포스 매출액",
+    Header: "포스 매출액",
     accessor: "pos_sales",
     headerStyle: {
       textAlign: "center",
@@ -109,3 +115,113 @@ export const salesDayColumns = [
     Cell: ({ value }) => value.toLocaleString(),
   },
 ];
+
+// export const salesDayColumns = [
+//   {
+//     header: "가맹점명",
+//     accessor: "store",
+//     headerStyle: {
+//       textAlign: "center",
+//     },
+//     cellStyle: {
+//       textAlign: "center",
+//     },
+//   },
+//   {
+//     header: "가맹점코드",
+//     accessor: "fran_code",
+//     headerStyle: {
+//       textAlign: "center",
+//     },
+//     cellStyle: {
+//       textAlign: "center",
+//     },
+//   },
+//   {
+//     header: "사업자등록번호",
+//     accessor: "bizno",
+//     headerStyle: {
+//       textAlign: "center",
+//     },
+//     cellStyle: {
+//       textAlign: "center",
+//     },
+//   },
+//   {
+//     header: "매출일자",
+//     accessor: "sale_date",
+//     headerStyle: {
+//       textAlign: "center",
+//     },
+//     cellStyle: {
+//       textAlign: "center",
+//     },
+//     Cell: ({ value }) => useChangeFormatDateUTC(value.toLocaleString()),
+//   },
+//   {
+//     header: "물류매출액",
+//     accessor: "logi_sales",
+//     headerStyle: {
+//       textAlign: "center",
+//     },
+//     cellStyle: {
+//       textAlign: "center",
+//     },
+//     Cell: ({ value }) => value.toLocaleString(),
+//   },
+//   {
+//     header: "기타배달매출액",
+//     accessor: "etc_sales",
+//     headerStyle: {
+//       textAlign: "center",
+//     },
+//     cellStyle: {
+//       textAlign: "center",
+//     },
+//     Cell: ({ value }) => value.toLocaleString(),
+//   },
+//   {
+//     header: "배달의민족 매출액",
+//     accessor: "baemin_sales",
+//     headerStyle: {
+//       textAlign: "center",
+//     },
+//     cellStyle: {
+//       textAlign: "center",
+//     },
+//     Cell: ({ value }) => value.toLocaleString(),
+//   },
+//   {
+//     header: "요기요 매출액",
+//     accessor: "yogiyo_sales",
+//     headerStyle: {
+//       textAlign: "center",
+//     },
+//     cellStyle: {
+//       textAlign: "center",
+//     },
+//     Cell: ({ value }) => value.toLocaleString(),
+//   },
+//   {
+//     header: "쿠팡이츠 매출액",
+//     accessor: "coupang_sales",
+//     headerStyle: {
+//       textAlign: "center",
+//     },
+//     cellStyle: {
+//       textAlign: "center",
+//     },
+//     Cell: ({ value }) => value.toLocaleString(),
+//   },
+//   {
+//     header: "포스 매출액",
+//     accessor: "pos_sales",
+//     headerStyle: {
+//       textAlign: "center",
+//     },
+//     cellStyle: {
+//       textAlign: "center",
+//     },
+//     Cell: ({ value }) => value.toLocaleString(),
+//   },
+// ];
