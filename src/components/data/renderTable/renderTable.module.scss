@@ -25,6 +25,11 @@
       }
     }
     tbody {
+      tr.active {
+        td {
+          background-color: #fffae3;
+        }
+      }
       td {
         background-color: $color-white;
         height: 3.5rem;
@@ -60,7 +65,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: transparent;
+            background-color: #fff;
             border: 0.1rem solid #888;
             border-radius: 0.3rem;
             color: #333;

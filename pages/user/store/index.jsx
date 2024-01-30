@@ -32,8 +32,9 @@ const Store = () => {
   }, {});
 
   const searchFieldData = {
-    uid: "",
-    uname: "",
+    brand_code: "",
+    fran_name: "",
+    use_flag: "",
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
@@ -127,7 +128,7 @@ const Store = () => {
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
+        (!searchData.brand_code || row.brand_code?.toString().toLowerCase().includes(searchData.brand_code.toLowerCase())) &&
         (!searchData.fran_name || row.fran_name?.toString().toLowerCase().includes(searchData.fran_name.toLowerCase())) &&
         (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase()))
     );
@@ -214,11 +215,12 @@ const Store = () => {
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
               <SearchItem
-                searchType={SEARCH_TYPE.INPUT}
-                value={searchField.brand_name}
+                searchType={SEARCH_TYPE.SELECT_BRAND}
+                value={searchField.brand_code}
                 title={"브랜드 명"}
-                id={"brand_name"}
+                id={"brand_code"}
                 onChange={handleFieldChange}
+                companyCode=""
               />
             </div>
             <div className={cx("item")}>

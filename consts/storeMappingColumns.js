@@ -1,6 +1,8 @@
+import { useChangeFormatDateUTC } from "@/utils/useChangeFormatDate";
+
 export const storeMappingColumns = [
   {
-    header: "가맹점명",
+    header: "가맹점명(리드데이타)",
     accessor: "fran_name",
     headerStyle: {
       textAlign: "center",
@@ -11,7 +13,7 @@ export const storeMappingColumns = [
     noEdit: true,
   },
   {
-    header: "가맹점명(스크랩)",
+    header: "가맹점명(POS)",
     accessor: "scrap_name",
     headerStyle: {
       textAlign: "center",
@@ -36,9 +38,11 @@ export const storeMappingColumns = [
     header: "브랜드 코드",
     accessor: "brand_code",
     headerStyle: {
+      display: "none",
       textAlign: "center",
     },
     cellStyle: {
+      display: "none",
       textAlign: "center",
     },
   },
@@ -61,5 +65,16 @@ export const storeMappingColumns = [
     cellStyle: {
       textAlign: "center",
     },
+  },
+  {
+    header: "수정일자",
+    accessor: "update_date",
+    headerStyle: {
+      textAlign: "center",
+    },
+    cellStyle: {
+      textAlign: "center",
+    },
+    Cell: ({ value }) => useChangeFormatDateUTC(value),
   },
 ];

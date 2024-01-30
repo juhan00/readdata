@@ -27,6 +27,8 @@ const RenderTable = ({
   addressFieldName,
   returnBtnName,
   tableHeight,
+  useDoubleClick,
+  rowSelect,
 }) => {
   const {
     getTableProps,
@@ -51,6 +53,7 @@ const RenderTable = ({
   const [columnValues, setColumnValues] = useState(newRow);
   const [booleanOption, setBooleanOption] = useState([0, 1]);
   const [{ popupState }, setGlobalState] = useGlobalState();
+  const [selectRowIndex, setSelectRowIndex] = useState(null);
 
   const pages = useMemo(() => {
     if (!pageOptions) {
@@ -147,6 +150,10 @@ const RenderTable = ({
     setIsAddressPopupOpen(false);
   };
 
+  const handleClickSelect = (index) => {
+    setSelectRowIndex(index);
+  };
+
   return (
     <>
       <div className={cx("table-wrap")} style={tableHeight && { height: `${tableHeight}` }}>
@@ -171,7 +178,11 @@ const RenderTable = ({
               editingRow;
               const isEditingRow = editingRow === row.index || (isAdded && row.index === 0);
               return (
-                <tr {...row.getRowProps()} onDoubleClick={() => handleClickReturn && handleClickReturn(row.original[returnColumnName])}>
+                <tr
+                  {...row.getRowProps()}
+                  onDoubleClick={() => (useDoubleClick ? handleClickReturn && handleClickReturn(row.original[returnColumnName]) : "")}
+                  className={cx(rowSelect && selectRowIndex === row.index ? "active" : "")}
+                >
                   {row.cells.map((cell) => {
                     const isNumberColumn = cell.column.type === TABLE_COLUMN_TYPE.NUMBER;
                     const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE.AUTHORITY;
@@ -245,7 +256,14 @@ const RenderTable = ({
                             </>
                           )
                         ) : handleClickReturn ? (
-                          <button onClick={() => handleClickReturn(row.values)}>{returnBtnName || "선택"}</button>
+                          <button
+                            onClick={() => {
+                              handleClickReturn(row.values);
+                              handleClickSelect(row.index);
+                            }}
+                          >
+                            {returnBtnName || "선택"}
+                          </button>
                         ) : (
                           <button onClick={() => handleEditClick(rowIndex, row.index)}>수정</button>
                         )}
