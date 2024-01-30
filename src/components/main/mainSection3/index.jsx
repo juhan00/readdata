@@ -10,7 +10,7 @@ const cx = className.bind(styles);
 
 const section3slideData = [
   {
-    src: "assets/images/section3_slide1_new.png",
+    src: "assets/images/section3_slide1.png",
     alt: "section3 slide1",
   },
   {
@@ -18,8 +18,12 @@ const section3slideData = [
     alt: "section3 slide2",
   },
   {
-    src: "assets/images/section3_slide3_new.png",
+    src: "assets/images/section3_slide3.png",
     alt: "section3 slide3",
+  },
+  {
+    src: "assets/images/section3_slide4.png",
+    alt: "section3 slide4",
   },
 ];
 
