@@ -4,6 +4,10 @@ export const salesDayColumns = (dates, headers) => {
   const dateColumns = [
     {
       Header: "매출일자",
+      headerStyle: {
+        display: "inline-block",
+        width: "200px",
+      },
       columns: [
         {
           Header: "가맹점명",

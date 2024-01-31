@@ -12,6 +12,7 @@ import { QueryClient, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
 import { useGetDateArray } from "@/utils/useGetDateArray";
 import BarChart from "@/src/components/data/barChart";
+import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 
 //styles
 import className from "classnames/bind";
@@ -26,14 +27,14 @@ const SalesDay = () => {
   };
 
   const today = new Date();
-  const oneMonthAgo = new Date(today);
-  oneMonthAgo.setMonth(today.getMonth() - 1);
+  const oneWeekAgo = new Date(today);
+  oneWeekAgo.setDate(today.getDate() - 7);
 
   const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
-  const [startDate, setStartDate] = useState(oneMonthAgo);
+  const [startDate, setStartDate] = useState(oneWeekAgo);
   const [endDate, setEndDate] = useState(today);
 
   const formatStartDate = useMemo(() => {
@@ -64,12 +65,11 @@ const SalesDay = () => {
     data: headersData,
     isLoading: isLoadingHeadersData,
     refetch: refetchHeadersData,
-  } = useQuery("getSalesHeadersData", () => getSalesHeadersList("B0002"), {
+  } = useQuery("getSalesHeadersData", () => getSalesHeadersList("B0003"), {
     enabled: true,
   });
 
   useEffect(() => {
-    console.log("salesDayData", salesDayData);
     if (!isLoadingSalesDayData && salesDayData) {
       setTableState(salesDayData);
     }
@@ -83,10 +83,7 @@ const SalesDay = () => {
     );
   }, [tableState, searchData]);
 
-  // const salesDates = ["2024-01-01", "2024-01-02", "2024-01-03"];
-
   const memoizedSalesDates = useMemo(() => {
-    console.log("useGetDateArray=============>", useGetDateArray(startDate, endDate));
     return useGetDateArray(startDate, endDate);
   }, [endDate]);
 
@@ -98,34 +95,74 @@ const SalesDay = () => {
     const setStoreGroupData = (data) => {
       const groupData = {};
 
-      data.forEach((item) => {
+      data.forEach((item, index) => {
         const key = `${item.brand_name}_${item.store}`;
+        const sale_date = item.sale_date;
         if (!groupData[key]) {
           groupData[key] = {
             brand_name: item.brand_name,
             store: item.store,
             fran_code: item.fran_code,
-            data: [],
+            data: {},
           };
         }
-        groupData[key].data[item.sale_date] = {
+
+        const salesData = {
           sale_date: item.sale_date,
-          bae1_sales: item.bae1_sales,
-          bae_sales: item.bae_sales,
-          baemin_sales: item.baemin_sales,
-          coupang_sales: item.coupang_sales,
-          etc_sales: item.etc_sales,
-          logi_sales: item.logi_sales,
-          pos_sales: item.pos_sales,
-          yogiyo_sales: item.yogiyo_sales,
         };
+
+        headersData?.forEach((header) => {
+          const accessor = header.accessor;
+          salesData[accessor] = item[accessor];
+        });
+
+        groupData[key].data[sale_date] = salesData;
       });
 
       const result = Object.values(groupData);
       return result;
     };
     return setStoreGroupData(memoizedData);
-  }, [memoizedData]);
+  }, [memoizedData, headersData]);
+
+  const memoizedSalesDayChartData = useMemo(() => {
+    const totalDataArray = [];
+
+    memoizedSalesDayData.forEach((item) => {
+      Object.keys(item.data).forEach((sale_date) => {
+        const saleDate = item.data[sale_date].sale_date;
+
+        let dateObject = totalDataArray.find((obj) => obj.sale_date === saleDate);
+
+        if (!dateObject) {
+          dateObject = {
+            sale_date: saleDate,
+          };
+          totalDataArray.push(dateObject);
+        }
+
+        Object.keys(item.data[sale_date]).forEach((column) => {
+          if (column !== "sale_date") {
+            dateObject[column] = (Number(dateObject[column]) || 0) + Number(item.data[sale_date][column]);
+          }
+        });
+      });
+    });
+
+    const test = totalDataArray.forEach((obj) => {
+      const total = Object.keys(obj).reduce((sum, key) => {
+        if (key !== "sale_date") {
+          sum += obj[key];
+        }
+        return sum;
+      }, 0);
+
+      obj.total = total;
+    });
+
+    // console.log("totalDataArray================>", totalDataArray);
+    return totalDataArray;
+  }, [memoizedSalesDayData]);
 
   const {
     getTableProps,
@@ -193,6 +230,11 @@ const SalesDay = () => {
         <div className={cx("row")}>
           <div className={cx("box", "content-wrap")}>
             <div className={cx("item")}>
+              <div className={cx("content-btn-wrap")}>
+                <BtnExcelDown columns={memoizedSalesDayColumns} tableData={memoizedSalesDayData} />
+              </div>
+            </div>
+            <div className={cx("item")}>
               {isLoadingSalesDayData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
               ) : !memoizedData.length ? (
@@ -226,7 +268,7 @@ const SalesDay = () => {
         <div className={cx("row")}>
           <div className={cx("box")}>
             <div className={cx("item")}>
-              <BarChart />
+              <BarChart memoizedSalesDayChartData={memoizedSalesDayChartData} headersData={headersData} />
             </div>
           </div>
         </div>

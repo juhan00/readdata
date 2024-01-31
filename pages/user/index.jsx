@@ -26,7 +26,6 @@ const User = () => {
 
   useEffect(() => {
     setUserMenu(category);
-    console.log(category);
   }, [category]);
 
   return (

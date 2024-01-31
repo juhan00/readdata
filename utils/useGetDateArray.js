@@ -1,5 +1,4 @@
 export const useGetDateArray = (startDate, endDate) => {
-  console.log("startDate,endDate", formatDate(startDate), formatDate(endDate));
   const start = new Date(startDate);
   const end = new Date(endDate);
   const dateArray = [];
