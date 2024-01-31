@@ -74,6 +74,39 @@ const SalesDay = () => {
     );
   }, [tableState, searchData]);
 
+  const storeGroupData = useMemo(() => {
+    const setStoreGroupData = (data) => {
+      const groupData = {};
+
+      data.forEach((item) => {
+        const key = `${item.brand_name}_${item.store}`;
+        if (!groupData[key]) {
+          groupData[key] = {
+            brand_name: item.brand_name,
+            store: item.store,
+            fran_code: item.fran_code,
+            data: [],
+          };
+        }
+        groupData[key].data.push({
+          sale_date: item.sale_date,
+          bae1_sales: item.bae1_sales,
+          bae_sales: item.bae_sales,
+          baemin_sales: item.baemin_sales,
+          coupang_sales: item.coupang_sales,
+          etc_sales: item.etc_sales,
+          logi_sales: item.logi_sales,
+          pos_sales: item.pos_sales,
+          yogiyo_sales: item.yogiyo_sales,
+        });
+      });
+
+      const result = Object.values(groupData);
+      return result;
+    };
+    return setStoreGroupData(memoizedData);
+  }, [memoizedData]);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -115,8 +148,14 @@ const SalesDay = () => {
     gotoPage(0);
   };
 
+<<<<<<< HEAD
   console.log("시작날짜=",formatStartDate);
   console.log("종료날짜=",formatEndDate);
+=======
+  // useEffect(() => {
+  //   console.log("tableState", tableState);
+  // }, [tableState]);
+>>>>>>> main
 
   return (
     <>

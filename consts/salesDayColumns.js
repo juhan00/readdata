@@ -1,8 +1,46 @@
 import { useChangeFormatDateUTC } from "@/utils/useChangeFormatDate";
 
+// export const salesDayColumns = (dates, headers) => {
+//   const dateColumns = [
+//     {
+//       Header: "매출일자",
+//       columns: [
+//         {
+//           Header: "가맹점명",
+//           accessor: "store",
+//           headerStyle: {
+//             textAlign: "center",
+//           },
+//           cellStyle: {
+//             textAlign: "center",
+//           },
+//         },
+//       ],
+//     },
+//     ...dates.map((date) => ({
+//       Header: date,
+//       columns: headers.map((header, index) => ({
+//         id: `${header.accessor}${date}`,
+//         Header: header.header,
+//         accessor: `data[${index}].${header.accessor}`,
+//         key: header.accessor,
+//         headerStyle: {
+//           textAlign: "center",
+//         },
+//         cellStyle: {
+//           textAlign: "center",
+//         },
+//         Cell: ({ value }) => value.toLocaleString(),
+//       })),
+//     })),
+//   ];
+
+//   return dateColumns;
+// };
+
 export const salesDayColumns = [
   {
-    header: "가맹점명",
+    Header: "가맹점명",
     accessor: "store",
     headerStyle: {
       textAlign: "center",
@@ -12,7 +50,7 @@ export const salesDayColumns = [
     },
   },
   {
-    header: "가맹점코드",
+    Header: "가맹점코드",
     accessor: "fran_code",
     headerStyle: {
       textAlign: "center",
@@ -22,7 +60,7 @@ export const salesDayColumns = [
     },
   },
   {
-    header: "사업자등록번호",
+    Header: "사업자등록번호",
     accessor: "bizno",
     headerStyle: {
       textAlign: "center",
@@ -32,7 +70,7 @@ export const salesDayColumns = [
     },
   },
   {
-    header: "매출일자",
+    Header: "매출일자",
     accessor: "sale_date",
     headerStyle: {
       textAlign: "center",
@@ -43,7 +81,7 @@ export const salesDayColumns = [
     Cell: ({ value }) => useChangeFormatDateUTC(value.toLocaleString()),
   },
   {
-    header: "물류매출액",
+    Header: "물류매출액",
     accessor: "logi_sales",
     headerStyle: {
       textAlign: "center",
@@ -54,7 +92,7 @@ export const salesDayColumns = [
     Cell: ({ value }) => value.toLocaleString(),
   },
   {
-    header: "기타배달매출액",
+    Header: "기타배달매출액",
     accessor: "etc_sales",
     headerStyle: {
       textAlign: "center",
@@ -65,7 +103,7 @@ export const salesDayColumns = [
     Cell: ({ value }) => value.toLocaleString(),
   },
   {
-    header: "배달의민족 매출액",
+    Header: "배달의민족 매출액",
     accessor: "baemin_sales",
     headerStyle: {
       textAlign: "center",
@@ -76,7 +114,7 @@ export const salesDayColumns = [
     Cell: ({ value }) => value.toLocaleString(),
   },
   {
-    header: "요기요 매출액",
+    Header: "요기요 매출액",
     accessor: "yogiyo_sales",
     headerStyle: {
       textAlign: "center",
@@ -87,7 +125,7 @@ export const salesDayColumns = [
     Cell: ({ value }) => value.toLocaleString(),
   },
   {
-    header: "쿠팡이츠 매출액",
+    Header: "쿠팡이츠 매출액",
     accessor: "coupang_sales",
     headerStyle: {
       textAlign: "center",
@@ -98,7 +136,7 @@ export const salesDayColumns = [
     Cell: ({ value }) => value.toLocaleString(),
   },
   {
-    header: "포스 매출액",
+    Header: "포스 매출액",
     accessor: "pos_sales",
     headerStyle: {
       textAlign: "center",

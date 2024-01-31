@@ -16,8 +16,8 @@ const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData
   const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
   const [franName, setFranName] = useState("");
-  const [filterBrandName, setFilterBrandName] = useState("");
-  const [brandName, setBrandName] = useState("");
+  const [filterScrapFranName, setFilterScrapFranName] = useState("");
+  const [scrapFranName, setScrapFranName] = useState("");
 
   const { data: scrapingData, isLoading: isLoadingScrapingData, refetch: refetchScrapingData } = useQuery("getScrapingData", getScrapingList);
 
@@ -49,8 +49,8 @@ const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData
   });
 
   const memoizedData = useMemo(() => {
-    return tableState?.filter((row) => !filterBrandName || row.brand_name?.toString().toLowerCase().includes(filterBrandName.toLowerCase()));
-  }, [tableState, filterBrandName]);
+    return tableState?.filter((row) => !filterScrapFranName || row.fran_name?.toString().toLowerCase().includes(filterScrapFranName.toLowerCase()));
+  }, [tableState, filterScrapFranName]);
 
   const {
     getTableProps,
@@ -101,9 +101,9 @@ const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData
       <div className={cx("item")}>
         <div className={cx("title")}>맵핑 가맹점 명(수집데이터)</div>
         <div className={cx("search-wrap")}>
-          <label>브랜드 명</label>
-          <input value={brandName} onChange={(e) => setBrandName(e.target.value)} />
-          <button onClick={() => setFilterBrandName(brandName)}>검색</button>
+          <label>가맹점 명</label>
+          <input value={scrapFranName} onChange={(e) => setScrapFranName(e.target.value)} />
+          <button onClick={() => setFilterScrapFranName(scrapFranName)}>검색</button>
         </div>
       </div>
       <div className={cx("item")}>

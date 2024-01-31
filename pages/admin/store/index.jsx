@@ -32,8 +32,9 @@ const Store = () => {
   }, {});
 
   const searchFieldData = {
-    uid: "",
-    uname: "",
+    brand_code: "",
+    fran_name: "",
+    use_flag: "",
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();

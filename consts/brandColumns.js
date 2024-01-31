@@ -2,7 +2,7 @@ import { TABLE_COLUMN_TYPE } from "./common";
 
 export const brandColumns = [
   {
-    header: "No",
+    Header: "No",
     accessor: "no",
     headerStyle: {
       width: "5%",
@@ -14,7 +14,7 @@ export const brandColumns = [
     type: TABLE_COLUMN_TYPE.NUMBER,
   },
   {
-    header: "브랜드 코드",
+    Header: "브랜드 코드",
     accessor: "brand_code",
     headerStyle: {
       textAlign: "center",
@@ -24,7 +24,7 @@ export const brandColumns = [
     },
   },
   {
-    header: "브랜드명",
+    Header: "브랜드명",
     accessor: "brand_name",
     headerStyle: {
       textAlign: "center",
@@ -34,7 +34,7 @@ export const brandColumns = [
     },
   },
   {
-    header: "회사코드",
+    Header: "회사코드",
     accessor: "company_code",
     headerStyle: {
       textAlign: "center",
@@ -44,7 +44,7 @@ export const brandColumns = [
     },
   },
   {
-    header: "회사명",
+    Header: "회사명",
     accessor: "company_name",
     headerStyle: {
       textAlign: "center",
@@ -54,7 +54,7 @@ export const brandColumns = [
     },
   },
   {
-    header: "사용구분",
+    Header: "사용구분",
     accessor: "use_flag",
     headerStyle: {
       textAlign: "center",

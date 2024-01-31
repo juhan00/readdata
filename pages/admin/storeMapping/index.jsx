@@ -20,8 +20,8 @@ const queryClient = new QueryClient();
 
 const StoreMapping = () => {
   const searchFieldData = {
-    uid: "",
-    uname: "",
+    fran_name: "",
+    scrap_name: "",
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
@@ -45,11 +45,20 @@ const StoreMapping = () => {
   }, [storeMapingData, isLoadingStoreMapingData]);
 
   const memoizedData = useMemo(() => {
-    return tableState?.filter(
-      (row) =>
-        (!searchData.uid || row.uid?.toString().toLowerCase().includes(searchData.uid.toLowerCase())) &&
-        (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
-    );
+    return tableState?.filter((row) => {
+      const conditions = Object.entries(searchData).map(([key, value]) => {
+        switch (key) {
+          case "fran_name":
+            return !value || row.fran_name?.toString().toLowerCase().includes(value.toLowerCase());
+          case "scrap_name":
+            return value === "" ? true : value === "0" ? !row.scrap_name : value === "1" ? !!row.scrap_name : true;
+          default:
+            return true;
+        }
+      });
+
+      return conditions.every((condition) => condition);
+    });
   }, [tableState, searchData]);
 
   const {
@@ -104,10 +113,22 @@ const StoreMapping = () => {
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"사용자 ID"} id={"uid"} onChange={handleFieldChange} />
+              <SearchItem
+                searchType={SEARCH_TYPE.INPUT}
+                value={searchField.fran_name}
+                title={"가맹점명"}
+                id={"fran_name"}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uname} title={"사용자명"} id={"uname"} onChange={handleFieldChange} />
+              <SearchItem
+                searchType={SEARCH_TYPE.SELECT_MAPPING}
+                value={searchField.scrap_name}
+                title={"맵핑여부"}
+                id={"scrap_name"}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
@@ -145,6 +166,7 @@ const StoreMapping = () => {
                   setTableState={setTableState}
                   handleClickReturn={handleClickReturn}
                   returnBtnName={"선택"}
+                  rowSelect={true}
                 />
               )}
             </div>
