@@ -1,44 +1,44 @@
 import { useChangeFormatDateUTC } from "@/utils/useChangeFormatDate";
 
-// export const salesDayColumns = (dates, headers) => {
-//   const dateColumns = [
-//     {
-//       Header: "매출일자",
-//       columns: [
-//         {
-//           Header: "가맹점명",
-//           accessor: "store",
-//           headerStyle: {
-//             textAlign: "center",
-//           },
-//           cellStyle: {
-//             textAlign: "center",
-//           },
-//         },
-//       ],
-//     },
-//     ...dates.map((date) => ({
-//       Header: date,
-//       columns: headers.map((header, index) => ({
-//         id: `${header.accessor}${date}`,
-//         Header: header.header,
-//         accessor: `data[${index}].${header.accessor}`,
-//         key: header.accessor,
-//         headerStyle: {
-//           textAlign: "center",
-//         },
-//         cellStyle: {
-//           textAlign: "center",
-//         },
-//         Cell: ({ value }) => value.toLocaleString(),
-//       })),
-//     })),
-//   ];
+export const salesDayColumns = (dates, headers) => {
+  const dateColumns = [
+    {
+      Header: "매출일자",
+      columns: [
+        {
+          Header: "가맹점명",
+          accessor: "store",
+          headerStyle: {
+            textAlign: "center",
+          },
+          cellStyle: {
+            textAlign: "center",
+          },
+        },
+      ],
+    },
+    ...dates.map((date) => ({
+      Header: date,
+      columns: headers.map((header) => ({
+        id: `${header.accessor}${date}`,
+        Header: header.header,
+        accessor: `data[${date}].${header.accessor}`,
+        key: header.accessor,
+        headerStyle: {
+          textAlign: "center",
+        },
+        cellStyle: {
+          textAlign: "center",
+        },
+        Cell: ({ value }) => (typeof value === "number" ? value.toLocaleString() : ""),
+      })),
+    })),
+  ];
 
-//   return dateColumns;
-// };
+  return dateColumns;
+};
 
-export const salesDayColumns = [
+export const salesDayTestColumns = [
   {
     Header: "가맹점명",
     accessor: "store",

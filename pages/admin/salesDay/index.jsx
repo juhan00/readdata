@@ -4,12 +4,14 @@ import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchDateItems from "@/src/components/data/searchDateItems";
 import SearchItem from "@/src/components/data/searchItem";
-import { getSalesDayList } from "@/utils/api/sales";
+import { getSalesDayList, getSalesHeadersList } from "@/utils/api/sales";
 import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
+import { useGetDateArray } from "@/utils/useGetDateArray";
+import BarChart from "@/src/components/data/barChart";
 
 //styles
 import className from "classnames/bind";
@@ -58,7 +60,16 @@ const SalesDay = () => {
     enabled: formatStartDate !== undefined && formatEndDate !== undefined,
   });
 
+  const {
+    data: headersData,
+    isLoading: isLoadingHeadersData,
+    refetch: refetchHeadersData,
+  } = useQuery("getSalesHeadersData", () => getSalesHeadersList("B0002"), {
+    enabled: true,
+  });
+
   useEffect(() => {
+    console.log("salesDayData", salesDayData);
     if (!isLoadingSalesDayData && salesDayData) {
       setTableState(salesDayData);
     }
@@ -72,7 +83,18 @@ const SalesDay = () => {
     );
   }, [tableState, searchData]);
 
-  const storeGroupData = useMemo(() => {
+  // const salesDates = ["2024-01-01", "2024-01-02", "2024-01-03"];
+
+  const memoizedSalesDates = useMemo(() => {
+    console.log("useGetDateArray=============>", useGetDateArray(startDate, endDate));
+    return useGetDateArray(startDate, endDate);
+  }, [endDate]);
+
+  const memoizedSalesDayColumns = useMemo(() => {
+    return headersData ? salesDayColumns(memoizedSalesDates, headersData) : [];
+  }, [memoizedSalesDates, headersData]);
+
+  const memoizedSalesDayData = useMemo(() => {
     const setStoreGroupData = (data) => {
       const groupData = {};
 
@@ -86,7 +108,7 @@ const SalesDay = () => {
             data: [],
           };
         }
-        groupData[key].data.push({
+        groupData[key].data[item.sale_date] = {
           sale_date: item.sale_date,
           bae1_sales: item.bae1_sales,
           bae_sales: item.bae_sales,
@@ -96,7 +118,7 @@ const SalesDay = () => {
           logi_sales: item.logi_sales,
           pos_sales: item.pos_sales,
           yogiyo_sales: item.yogiyo_sales,
-        });
+        };
       });
 
       const result = Object.values(groupData);
@@ -121,9 +143,9 @@ const SalesDay = () => {
     pageOptions,
   } = useTable(
     {
-      columns: salesDayColumns,
-      data: useMemo(() => memoizedData, [memoizedData]),
-      initialState: { pageIndex: 0, pageSize: 10 },
+      columns: memoizedSalesDayColumns,
+      data: useMemo(() => memoizedSalesDayData, [memoizedSalesDayData]),
+      initialState: { pageIndex: 0, pageSize: 50 },
       autoResetPage: false,
     },
     useSortBy,
@@ -145,10 +167,6 @@ const SalesDay = () => {
     }));
     gotoPage(0);
   };
-
-  // useEffect(() => {
-  //   console.log("tableState", tableState);
-  // }, [tableState]);
 
   return (
     <>
@@ -174,12 +192,6 @@ const SalesDay = () => {
 
         <div className={cx("row")}>
           <div className={cx("box", "content-wrap")}>
-            {/* <div className={cx("item")}>
-              <div className={cx("content-btn-wrap")}>
-                <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={salesDayColumns} tableData={memoizedData} />
-              </div>
-            </div> */}
             <div className={cx("item")}>
               {isLoadingSalesDayData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
@@ -207,6 +219,14 @@ const SalesDay = () => {
                   setTableState={setTableState}
                 />
               )}
+            </div>
+          </div>
+        </div>
+
+        <div className={cx("row")}>
+          <div className={cx("box")}>
+            <div className={cx("item")}>
+              <BarChart />
             </div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { SEARCH_TYPE } from "@/consts/common";
-import { salesDayColumns } from "@/consts/salesDayColumns";
+import { salesDayColumns, salesDayTestColumns } from "@/consts/salesDayColumns";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchDateItems from "@/src/components/data/searchDateItems";
@@ -88,7 +88,7 @@ const SalesDay = () => {
     pageOptions,
   } = useTable(
     {
-      columns: salesDayColumns,
+      columns: salesDayTestColumns,
       data: useMemo(() => memoizedData, [memoizedData]),
       initialState: { pageIndex: 0, pageSize: 10 },
       autoResetPage: false,
