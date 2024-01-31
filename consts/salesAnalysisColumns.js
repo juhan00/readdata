@@ -3,34 +3,12 @@ import {TABLE_COLUMN_TYPE} from "@/consts/common";
 
 export const salesAnalysisColumns = [
 
-    // {
-    //     Header: "No",
-    //     accessor: "no1",
-    //     HeaderStyle: {
-    //         width: "5%",
-    //         textAlign: "center",
-    //     },
-    //     cellStyle: {
-    //         textAlign: "center",
-    //     },
-    //     type: TABLE_COLUMN_TYPE.NUMBER,
-    // },
-
-    {
-        header: "가맹점명",
-        accessor: "store1",
-        headerStyle: {
-            textAlign: "center",
-        },
-        cellStyle: {
-            textAlign: "center",
-        },
-    },
     {
         header: "가맹점명",
         accessor: "store",
         headerStyle: {
             textAlign: "center",
+            width: "5%",
         },
         cellStyle: {
             textAlign: "center",
@@ -65,7 +43,7 @@ export const salesAnalysisColumns = [
         cellStyle: {
             textAlign: "center",
         },
-        Cell: ({ value }) => useChangeFormatDateUTC(value.toLocaleString()),
+        /*Cell: ({ value }) => useChangeFormatDateUTC(value.toLocaleString()),*/
     },
     {
         header: "물류매출액",
@@ -131,6 +109,6 @@ export const salesAnalysisColumns = [
         cellStyle: {
             textAlign: "center",
         },
-        Cell: ({ value }) => value.toLocaleString(),
+        // Cell: ({ value }) => value.toLocaleString(),
     },
 ];

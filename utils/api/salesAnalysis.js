@@ -11,13 +11,12 @@ export const getSalesAnalysisList = async (startDate, endDate) => {
     }
 
     const data = await response.json();
-
     return data.data;
 };
 
 
 export const getSalesCompareAnalysisList = async (startDate, endDate) => {
-    const response = await fetch(`/sales/month/search?from_month=${startMonth}&to_month=${endMonth}`, {
+    const response = await fetch(`/sales/day/search?from_date=${startDate}&to_date=${endDate}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -29,7 +28,6 @@ export const getSalesCompareAnalysisList = async (startDate, endDate) => {
     }
 
     const data = await response.json();
-
     return data.data;
 };
 

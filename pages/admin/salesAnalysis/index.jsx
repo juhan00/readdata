@@ -1,4 +1,4 @@
-import { SEARCH_TYPE } from "@/consts/common";
+import {SEARCH_TYPE} from "@/consts/common";
 import {salesAnalysisColumns} from "@/consts/salesAnalysisColumns";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
@@ -6,15 +6,16 @@ import SearchDateItems from "@/src/components/data/searchDateItems";
 import SearchItem from "@/src/components/data/searchItem";
 // import { getSalesDayList } from "@/utils/api/sales";
 import {getSalesAnalysisList, getSalesCompareAnalysisList} from "@/utils/api/salesAnalysis";
-import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
-import { useTranslation } from "next-i18next";
-import { useEffect, useMemo, useState } from "react";
-import { QueryClient, useQuery } from "react-query";
-import { usePagination, useSortBy, useTable } from "react-table";
+import {useChangeFormatDate} from "@/utils/useChangeFormatDate";
+import {useTranslation} from "next-i18next";
+import {useEffect, useMemo, useState} from "react";
+import {QueryClient, useQuery} from "react-query";
+import {usePagination, useSortBy, useTable} from "react-table";
 
 //styles
 import className from "classnames/bind";
 import styles from "./SalesAnalysis.module.scss";
+
 const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
@@ -28,18 +29,25 @@ const SalesAnalysis = () => {
     const oneMonthAgo = new Date(today);
     oneMonthAgo.setMonth(today.getMonth() - 1);
 
-    const { t } = useTranslation(["common", "dataAdmin"]);
+    const {t} = useTranslation(["common", "dataAdmin"]);
+
+    //조회기간 테이블
     const [tableState, setTableState] = useState([]);
+    //대비기간 테이블
+    const [compareTableState, setCompareTableState] = useState([]);
+
+    //조회기간
     const [searchData, setSearchData] = useState(searchFieldData);
     const [searchField, setSearchField] = useState(searchFieldData);
-    //조회기간
+    //대비기간
+    const [searchCompareData, setSearchCompareData] = useState(searchFieldData);
+    const [searchCompareField, setSearchCompareField] = useState(searchFieldData);
+
+
+    //조회기간-달력
     const [startDate, setStartDate] = useState(oneMonthAgo);
     const [endDate, setEndDate] = useState(today);
-
-    // const [compareSearchData, setCompareSearchData] = useState(searchFieldData);
-    // const [compareSearchField, setCompareSearchField] = useState(searchFieldData);
-
-    //대비기간
+    //대비기간-달력
     const [compareStartDate, setCompareStartDate] = useState(oneMonthAgo);
     const [compareEndDate, setCompareEndDate] = useState(today);
 
@@ -69,10 +77,10 @@ const SalesAnalysis = () => {
     };
 
     //대비기간 날짜 변경시
-    const handleCompareStartDateChange = (date) =>{
+    const handleCompareStartDateChange = (date) => {
         setCompareStartDate(date)
     };
-    const handleCompareEndDateChange = (date) =>{
+    const handleCompareEndDateChange = (date) => {
         setCompareEndDate(date)
     };
 
@@ -93,15 +101,33 @@ const SalesAnalysis = () => {
         enabled: formatCompareStartDate !== undefined && formatCompareEndDate !== undefined,
     });
 
-    console.log("조회기간=",formatStartDate," ~ ", formatEndDate);
-    console.log("대비기간=",formatCompareStartDate," ~ ", formatCompareEndDate);
 
+    console.log("조회기간=", formatStartDate, " ~ ", formatEndDate, " = ", salesDayData);
+    console.log("대비기간=", formatCompareStartDate, " ~ ", formatCompareEndDate, " = ", compareSalesDayData);
+
+
+    let effectTarget = "1"
+    //조회기간
     useEffect(() => {
         if (!isLoadingSalesDayData && salesDayData) {
             setTableState(salesDayData);
+            effectTarget = "1";
+            console.log("조회기간 누르면 1로 바껴야돼 = ", effectTarget);
         }
+
     }, [salesDayData, isLoadingSalesDayData]);
 
+    //대비기간
+    useEffect(() => {
+        if (!isLoadingCompareSalesDayData && compareSalesDayData) {
+            setCompareTableState(compareSalesDayData);
+            effectTarget = "2"
+            console.log("대비기간 누르면 2로 바껴야돼 = ", effectTarget);
+        }
+    }, [compareSalesDayData, isLoadingCompareSalesDayData]);
+
+
+    //조회기간
     const memoizedData = useMemo(() => {
         return tableState?.filter(
             (row) =>
@@ -110,47 +136,85 @@ const SalesAnalysis = () => {
         );
     }, [tableState, searchData]);
 
-    const {
-        getTableProps,
-        getTableBodyProps,
-        headerGroups,
-        prepareRow,
-        page,
-        state: { pageIndex, pageSize },
-        gotoPage,
-        previousPage,
-        nextPage,
-        canPreviousPage,
-        canNextPage,
-        pageCount,
-        pageOptions,
-    } = useTable(
-        {
-            columns: salesAnalysisColumns,
-            data: useMemo(() => memoizedData, [memoizedData]),
-            initialState: { pageIndex: 0, pageSize: 10 },
-            autoResetPage: false,
-        },
-        useSortBy,
-        usePagination
-    );
+    //대비기간
+    const memoizedCompareData = useMemo(() => {
+        return compareTableState?.filter(
+            (row) =>
+                (!searchCompareData.store || row.store?.toString().toLowerCase().includes(searchCompareData.store.toLowerCase())) &&
+                (!searchCompareData.uname || row.uname?.toString().toLowerCase().includes(searchCompareData.uname.toLowerCase()))
+        );
+    }, [compareTableState, searchCompareData]);
+
+    const getUseTable = (options) => {
+        return useTable(
+            {
+                columns: salesAnalysisColumns,
+                ...options,
+                initialState: {pageIndex: 0, pageSize: 10},
+                autoResetPage: false,
+            },
+            useSortBy,
+            usePagination
+        );
+    }
+
+    // const {
+    //     getTableProps,
+    //     getTableBodyProps,
+    //     headerGroups,
+    //     prepareRow,
+    //     page,
+    //     state: {pageIndex, pageSize},
+    //     gotoPage,
+    //     previousPage,
+    //     nextPage,
+    //     canPreviousPage,
+    //     canNextPage,
+    //     pageCount,
+    //     pageOptions,
+    // } = useTable(
+    //     {
+    //         columns: salesAnalysisColumns,
+    //         data: useMemo(() => memoizedData, [memoizedData]),
+    //
+    //         initialState: {pageIndex: 0, pageSize: 10},
+    //         autoResetPage: false,
+    //     },
+    //     useSortBy,
+    //     usePagination
+    // );
+
+    const table = getUseTable({data: useMemo(() => memoizedData, [memoizedData])})
+    const compareTable = getUseTable({data: useMemo(() => memoizedCompareData, [memoizedCompareData])})
 
     const handleFieldChange = (field, e) => {
-        console.log("이거나오니");
+        console.log("검색어 번경하면");
         e.preventDefault();
         setSearchField((prevData) => ({
+            ...prevData,
+            [field]: e.target.value,
+        }));
+        setSearchCompareField((prevData) => ({
             ...prevData,
             [field]: e.target.value,
         }));
     };
 
     const handleSearchSubmit = (e) => {
+        console.log("검색버튼 누르면");
         setSearchData((prevData) => ({
             ...prevData,
             ...searchField,
         }));
-        gotoPage(0);
+        // gotoPage(0);
+
+        setSearchCompareData((prevData) => ({
+            ...prevData,
+            ...searchCompareField,
+        }));
+        //gotoPage(0);
     };
+
 
     return (
         <>
@@ -204,27 +268,28 @@ const SalesAnalysis = () => {
                                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
                             ) : !memoizedData.length ? (
                                 <div className={cx("no-data")}>데이터가 없습니다.</div>
-                            ) : (
-                                <RenderTable
+                            ) : (<RenderTable
                                     tableProps={{
-                                        getTableProps,
-                                        getTableBodyProps,
-                                        headerGroups,
-                                        prepareRow,
-                                        page,
-                                        pageIndex,
-                                        pageSize,
-                                        gotoPage,
-                                        previousPage,
-                                        nextPage,
-                                        canPreviousPage,
-                                        canNextPage,
-                                        pageCount,
-                                        pageOptions,
+                                        ...table
                                     }}
                                     editMode={false}
                                     setTableState={setTableState}
-                                />
+                                ></RenderTable>
+                            )}
+                        </div>
+
+                        <div className={cx("item")}>
+                            {isLoadingCompareSalesDayData ? (
+                                <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+                            ) : !memoizedCompareData.length ? (
+                                <div className={cx("no-data")}>데이터가 없습니다.</div>
+                            ) : (<RenderTable
+                                    tableProps={{
+                                        ...compareTable
+                                    }}
+                                    editMode={false}
+                                    setCompareTableState={setCompareTableState}
+                                ></RenderTable>
                             )}
                         </div>
                     </div>
