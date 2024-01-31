@@ -1,6 +1,6 @@
 export const brandColumns = [
   {
-    header: "No",
+    Header: "No",
     accessor: "no",
     headerStyle: {
       width: "5%",
@@ -11,7 +11,7 @@ export const brandColumns = [
     },
   },
   {
-    header: "브랜드",
+    Header: "브랜드",
     accessor: "brand_name",
     headerStyle: {
       // width: "10%",
@@ -22,7 +22,7 @@ export const brandColumns = [
     },
   },
   {
-    header: "가맹점",
+    Header: "가맹점",
     accessor: "store",
     headerStyle: {
       // width: "30%",
@@ -33,7 +33,7 @@ export const brandColumns = [
     },
   },
   {
-    header: "매출일자",
+    Header: "매출일자",
     accessor: "brand_flag",
     headerStyle: {
       // width: "10%",

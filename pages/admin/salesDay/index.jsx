@@ -102,13 +102,8 @@ const SalesDay = () => {
       const result = Object.values(groupData);
       return result;
     };
-
-    setStoreGroupData(memoizedData);
+    return setStoreGroupData(memoizedData);
   }, [memoizedData]);
-
-  useEffect(() => {
-    console.log("storeGroupData", storeGroupData);
-  }, [storeGroupData]);
 
   const {
     getTableProps,
@@ -151,9 +146,9 @@ const SalesDay = () => {
     gotoPage(0);
   };
 
-  useEffect(() => {
-    console.log("tableState", tableState);
-  }, [tableState]);
+  // useEffect(() => {
+  //   console.log("tableState", tableState);
+  // }, [tableState]);
 
   return (
     <>

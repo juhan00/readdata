@@ -161,13 +161,23 @@ const RenderTable = ({
           <thead>
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
+                {editMode && <th className={cx("edit-th")}></th>}
                 {headerGroup.headers.map((column, index) => (
                   <th {...column.getHeaderProps(isAdded || editingRow != null ? {} : column.getSortByToggleProps())} style={column.headerStyle}>
-                    {column.render("Header")}
-                    <span>{column.isSorted ? (column.isSortedDesc ? "v" : "^") : ""}</span>
+                    <div className={cx("text")}>
+                      {column.render("Header")}
+                      {column.isSorted ? (
+                        column.isSortedDesc ? (
+                          <span className={cx("sort", "desc")}>v</span>
+                        ) : (
+                          <span className={cx("sort", "asc")}>^</span>
+                        )
+                      ) : (
+                        ""
+                      )}
+                    </div>
                   </th>
                 ))}
-                {editMode && <th className={cx("edit-th")}></th>}
               </tr>
             ))}
           </thead>
@@ -183,6 +193,36 @@ const RenderTable = ({
                   onDoubleClick={() => (useDoubleClick ? handleClickReturn && handleClickReturn(row.original[returnColumnName]) : "")}
                   className={cx(rowSelect && selectRowIndex === row.index ? "active" : "")}
                 >
+                  {editMode && (
+                    <td>
+                      <div className={cx("button-wrap")}>
+                        {isEditingRow ? (
+                          isAdded && row.index === 0 ? (
+                            <>
+                              <button onClick={() => handleAddSaveClick()}>저장</button>
+                              <button onClick={() => handleAddCancelClick()}>취소</button>
+                            </>
+                          ) : (
+                            <>
+                              <button onClick={() => handleEditSaveClick(row.index)}>저장</button>
+                              <button onClick={() => handleEditCancelClick()}>취소</button>
+                            </>
+                          )
+                        ) : handleClickReturn ? (
+                          <button
+                            onClick={() => {
+                              handleClickReturn(row.values);
+                              handleClickSelect(row.index);
+                            }}
+                          >
+                            {returnBtnName || "선택"}
+                          </button>
+                        ) : (
+                          <button onClick={() => handleEditClick(rowIndex, row.index)}>수정</button>
+                        )}
+                      </div>
+                    </td>
+                  )}
                   {row.cells.map((cell) => {
                     const isNumberColumn = cell.column.type === TABLE_COLUMN_TYPE.NUMBER;
                     const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE.AUTHORITY;
@@ -240,36 +280,6 @@ const RenderTable = ({
                       </td>
                     );
                   })}
-                  {editMode && (
-                    <td>
-                      <div className={cx("button-wrap")}>
-                        {isEditingRow ? (
-                          isAdded && row.index === 0 ? (
-                            <>
-                              <button onClick={() => handleAddSaveClick()}>저장</button>
-                              <button onClick={() => handleAddCancelClick()}>취소</button>
-                            </>
-                          ) : (
-                            <>
-                              <button onClick={() => handleEditSaveClick(row.index)}>저장</button>
-                              <button onClick={() => handleEditCancelClick()}>취소</button>
-                            </>
-                          )
-                        ) : handleClickReturn ? (
-                          <button
-                            onClick={() => {
-                              handleClickReturn(row.values);
-                              handleClickSelect(row.index);
-                            }}
-                          >
-                            {returnBtnName || "선택"}
-                          </button>
-                        ) : (
-                          <button onClick={() => handleEditClick(rowIndex, row.index)}>수정</button>
-                        )}
-                      </div>
-                    </td>
-                  )}
                 </tr>
               );
             })}

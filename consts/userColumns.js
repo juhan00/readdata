@@ -2,7 +2,7 @@ import { TABLE_COLUMN_TYPE } from "./common";
 
 export const userColumns = [
   {
-    header: "사용자 ID",
+    Header: "사용자 ID",
     accessor: "uid",
     headerStyle: {
       textAlign: "center",
@@ -12,7 +12,7 @@ export const userColumns = [
     },
   },
   {
-    header: "사용자 PW",
+    Header: "사용자 PW",
     accessor: "upw",
     headerStyle: {
       textAlign: "center",
@@ -22,7 +22,7 @@ export const userColumns = [
     },
   },
   {
-    header: "사용자명",
+    Header: "사용자명",
     accessor: "uname",
     headerStyle: {
       textAlign: "center",
@@ -32,7 +32,7 @@ export const userColumns = [
     },
   },
   {
-    header: "이메일",
+    Header: "이메일",
     accessor: "email",
     headerStyle: {
       textAlign: "center",
@@ -42,7 +42,7 @@ export const userColumns = [
     },
   },
   {
-    header: "전화번호",
+    Header: "전화번호",
     accessor: "phone",
     headerStyle: {
       textAlign: "center",
@@ -52,7 +52,7 @@ export const userColumns = [
     },
   },
   {
-    header: "회사코드",
+    Header: "회사코드",
     accessor: "company_code",
     headerStyle: {
       display: "none",
@@ -64,7 +64,7 @@ export const userColumns = [
     },
   },
   {
-    header: "회사명",
+    Header: "회사명",
     accessor: "company_name",
     headerStyle: {
       textAlign: "center",
@@ -74,7 +74,7 @@ export const userColumns = [
     },
   },
   {
-    header: "사용권한",
+    Header: "사용권한",
     accessor: "authority",
     headerStyle: {
       textAlign: "center",
@@ -86,7 +86,7 @@ export const userColumns = [
     Cell: ({ value }) => (Number(value) === 0 ? "사용자" : "관리자"),
   },
   {
-    header: "사용여부",
+    Header: "사용여부",
     accessor: "use_flag",
     headerStyle: {
       textAlign: "center",
