@@ -1,6 +1,7 @@
 import { useTranslation } from "next-i18next";
 import { saveAs } from "file-saver";
 import * as XLSX from "xlsx";
+import ExcelJS from "exceljs";
 
 //styles
 import styles from "./btnExcelDown.module.scss";
@@ -10,37 +11,67 @@ const cx = className.bind(styles);
 const BtnExcelDown = ({ columns, tableData }) => {
   const { t } = useTranslation("common");
 
-  const handleDownloadExcel = () => {
-    const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
-    const fileExtension = ".xlsx";
+  const handleDownloadExcel = async () => {
+    try {
+      const workbook = new ExcelJS.Workbook();
+      const sheet = workbook.addWorksheet("Sheet 1");
 
-    // Add an empty column to handle columns not present in the tableData
-    const emptyColumn = { header: "", accessor: "emptyColumn" };
-    const updatedColumns = [...columns, emptyColumn];
+      let rowIndex = 1;
+      let colIndex = 1;
 
-    const formattedData = [
-      updatedColumns.map((column) => column.header),
-      ...tableData.map((row) =>
-        updatedColumns.map((column) => {
-          const cellValue = row[column.accessor];
-          return cellValue !== undefined ? cellValue : "";
-        })
-      ),
-    ];
+      const processColumn = (column) => {
+        const currentHeader = column.Header || "";
+        const rowspan = column.rowspan;
 
-    const ws = XLSX.utils.aoa_to_sheet(formattedData);
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, "Sheet 1");
+        if (column.columns && column.columns.length > 0) {
+          if (rowspan) {
+            sheet.getCell(rowIndex, colIndex).value = currentHeader;
+            colIndex = colIndex + 1;
+          } else {
+            sheet.getCell(rowIndex, colIndex).value = currentHeader;
+            colIndex = colIndex + column.columns.length;
+          }
+        } else {
+          sheet.getCell(rowIndex, colIndex).value = currentHeader;
+          colIndex = colIndex + 1;
+        }
+      };
 
-    // Create a blob from workbook
-    const excelBlob = XLSX.write(wb, { bookType: "xlsx", type: "array", mimeType: fileType });
+      const setProcessColumn = (headers) => {
+        headers.forEach((column) => {
+          processColumn(column);
+        });
+      };
 
-    // Create a blob URL
-    const excelBlobUrl = URL.createObjectURL(new Blob([excelBlob]));
+      const setTableData = (rowData) => {
+        rowData.forEach((data) => {
+          if (data.value) {
+            sheet.getCell(rowIndex, colIndex).value = data.value;
+          }
+          colIndex++;
+        });
+      };
 
-    // Save the blob URL as a file
-    saveAs(excelBlobUrl, `tableData${fileExtension}`);
-    console.log("excel columns===============>", columns);
+      columns.forEach((column, index) => {
+        const depth = index + 1;
+        rowIndex = depth;
+        colIndex = 1;
+        setProcessColumn(column.headers);
+      });
+
+      if (tableData && tableData.length > 0) {
+        tableData.forEach((rowData) => {
+          rowIndex++;
+          colIndex = 1;
+          setTableData(rowData.cells);
+        });
+      }
+
+      const buffer = await workbook.xlsx.writeBuffer();
+      saveAs(new Blob([buffer]), "excel_file.xlsx");
+    } catch (error) {
+      console.error("Excel 생성 오류:", error);
+    }
   };
 
   return (

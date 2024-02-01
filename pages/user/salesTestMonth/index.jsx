@@ -222,7 +222,7 @@ const SalesTestMonth = () => {
           <div className={cx("box", "content-wrap")}>
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
-                <BtnExcelDown columns={salesTestMonthColumnsData} tableData={tableState} />
+                <BtnExcelDown columns={headerGroups} tableData={page} />
               </div>
             </div>
             <div className={cx("item")}>
