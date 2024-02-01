@@ -162,8 +162,13 @@ const RenderTable = ({
             {headerGroups.map((headerGroup) => (
               <tr {...headerGroup.getHeaderGroupProps()}>
                 {editMode && <th className={cx("edit-th")}></th>}
+
                 {headerGroup.headers.map((column, index) => (
-                  <th {...column.getHeaderProps(isAdded || editingRow != null ? {} : column.getSortByToggleProps())} style={column.headerStyle}>
+                  <th
+                    {...column.getHeaderProps(isAdded || editingRow != null ? {} : column.getSortByToggleProps())}
+                    style={column.headerStyle}
+                    rowSpan={column.rowspan ? column.rowspan : ""}
+                  >
                     <div className={cx("text")}>
                       {column.render("Header")}
                       {column.isSorted ? (

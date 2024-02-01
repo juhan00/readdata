@@ -14,14 +14,21 @@ const BtnExcelDown = ({ columns, tableData }) => {
     const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
     const fileExtension = ".xlsx";
 
-    const formattedData = tableData.map((row) =>
-      columns.map((column) => {
-        const cellValue = row[column.accessor];
-        return cellValue !== undefined ? cellValue : "";
-      })
-    );
+    // Add an empty column to handle columns not present in the tableData
+    const emptyColumn = { header: "", accessor: "emptyColumn" };
+    const updatedColumns = [...columns, emptyColumn];
 
-    const ws = XLSX.utils.aoa_to_sheet([columns.map((column) => column.header), ...formattedData]);
+    const formattedData = [
+      updatedColumns.map((column) => column.header),
+      ...tableData.map((row) =>
+        updatedColumns.map((column) => {
+          const cellValue = row[column.accessor];
+          return cellValue !== undefined ? cellValue : "";
+        })
+      ),
+    ];
+
+    const ws = XLSX.utils.aoa_to_sheet(formattedData);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, "Sheet 1");
 
@@ -33,7 +40,9 @@ const BtnExcelDown = ({ columns, tableData }) => {
 
     // Save the blob URL as a file
     saveAs(excelBlobUrl, `tableData${fileExtension}`);
+    console.log("excel columns===============>", columns);
   };
+
   return (
     <button className={cx("btn-excel-down")} onClick={() => handleDownloadExcel()}>
       엑셀다운

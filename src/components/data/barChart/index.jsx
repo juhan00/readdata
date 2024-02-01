@@ -11,15 +11,16 @@ import className from "classnames/bind";
 const cx = className.bind(styles);
 
 const BarChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
-  const [showTotal, setShowTotal] = useState(true);
-  const [showPos, setShowPos] = useState(false);
-  const [showDelivery1, setShowDelivery1] = useState(false);
-  const [showDelivery2, setShowDelivery2] = useState(false);
-  const [showDelivery3, setShowDelivery3] = useState(false);
+  console.log("headersData============>", headersData);
+  // const [showTotal, setShowTotal] = useState(true);
+  // const [showPos, setShowPos] = useState(false);
+  // const [showDelivery1, setShowDelivery1] = useState(false);
+  // const [showDelivery2, setShowDelivery2] = useState(false);
+  // const [showDelivery3, setShowDelivery3] = useState(false);
 
   const chartRef = useRef(null);
 
-  const totalWidth = "100%";
+  const totalWidth = memoizedSalesDayChartData.length <= 7 ? "100%" : memoizedSalesDayChartData.length * 100;
   const colorSet = ["#30BBB4", "#EE0046", "#844528", "#124994", "#FF993B", "#FDDC37"];
 
   const SaveChartImage = async () => {
@@ -29,45 +30,42 @@ const BarChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
     });
   };
 
-  const handleLegendClick = (dataKey) => {
-    switch (dataKey) {
-      case "total":
-        setShowTotal(!showTotal);
-        break;
-      case "pos":
-        setShowPos(!showPos);
-        break;
-      case "delivery1":
-        setShowDelivery1(!showDelivery1);
-        break;
-      case "delivery2":
-        setShowDelivery2(!showDelivery2);
-        break;
-      case "delivery3":
-        setShowDelivery3(!showDelivery3);
-        break;
-      default:
-        break;
-    }
-  };
+  // const handleLegendClick = (dataKey) => {
+  //   switch (dataKey) {
+  //     case "total":
+  //       setShowTotal(!showTotal);
+  //       break;
+  //     case "pos":
+  //       setShowPos(!showPos);
+  //       break;
+  //     case "delivery1":
+  //       setShowDelivery1(!showDelivery1);
+  //       break;
+  //     case "delivery2":
+  //       setShowDelivery2(!showDelivery2);
+  //       break;
+  //     case "delivery3":
+  //       setShowDelivery3(!showDelivery3);
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
   const CustomLegend = () => (
-    <div className="custom-legend">
-      <span onClick={() => handleLegendClick("total")} className={showTotal ? "active" : ""}>
-        Total
-      </span>
-      <span onClick={() => handleLegendClick("pos")} className={showPos ? "active" : ""}>
-        Pos
-      </span>
-      <span onClick={() => handleLegendClick("delivery1")} className={showDelivery1 ? "active" : ""}>
-        Delivery1
-      </span>
-      <span onClick={() => handleLegendClick("delivery2")} className={showDelivery2 ? "active" : ""}>
-        Delivery2
-      </span>
-      <span onClick={() => handleLegendClick("delivery3")} className={showDelivery3 ? "active" : ""}>
-        Delivery3
-      </span>
+    <div className={cx("custom-legend")}>
+      {headersData.map((header, index) => {
+        return (
+          <div key={header.accessor} className={cx("label")}>
+            <span className={cx("box")} style={{ backgroundColor: colorSet[index] }}></span>
+            {header.header}
+          </div>
+        );
+      })}
+      <div className={cx("label")}>
+        <span className={cx("line")} style={{ backgroundColor: "#FC2534" }}></span>
+        전체
+      </div>
     </div>
   );
 
@@ -82,12 +80,16 @@ const BarChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active) {
       return (
-        <div className="custom-tooltip">
-          <p style={{ marbinBottom: "20px" }}>
+        <div className={cx("custom-tooltip")}>
+          <p className={cx("label")}>
             <strong>{`${label}`}</strong>
           </p>
           {payload.map((item, index) => {
-            return <p style={{ color: item.color, fontWeight: "400" }} key={index}>{`${item.name} : ${item.value}`}</p>;
+            return (
+              <p className={cx("item")} style={{ color: item.color, fontWeight: "400" }} key={index}>{`${
+                item.name === "total" ? "전체" : item.name
+              } : ${item.value}`}</p>
+            );
           })}
         </div>
       );
@@ -99,13 +101,14 @@ const BarChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
   return (
     <>
       <div>
-        <div ref={chartRef} style={{ overflowX: "auto", minWidth: "800px", maxWidth: "100%" }}>
-          <ResponsiveContainer width={totalWidth} height={500}>
+        <button onClick={() => SaveChartImage()}>Save Chart as Image</button>
+        <CustomLegend className={cx("custom-legend")} />
+        <div ref={chartRef} className={cx("chart-container")}>
+          <ResponsiveContainer width={totalWidth} height={"100%"}>
             <ComposedChart id="chart" data={memoizedSalesDayChartData}>
               <XAxis dataKey={"sale_date"} />
               <YAxis width={80} tick={<CustomYAxisTick />} />
               <Tooltip content={<CustomTooltip />} />
-              <CustomLegend />
               <CartesianGrid stroke="#f5f5f5" />
 
               {headersData.map((header, index) => {
@@ -138,11 +141,9 @@ const BarChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
                 }
               })}
 
-              {showTotal && <Line type="monotone" dataKey="total" stackId="line-total" stroke="red" />}
+              <Line type="monotone" dataKey="total" stackId="line-total" stroke="#FC2534" />
             </ComposedChart>
           </ResponsiveContainer>
-          <CustomLegend />
-          <button onClick={() => SaveChartImage()}>Save Chart as Image</button>
         </div>
       </div>
     </>

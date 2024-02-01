@@ -65,7 +65,7 @@ const SalesDay = () => {
     data: headersData,
     isLoading: isLoadingHeadersData,
     refetch: refetchHeadersData,
-  } = useQuery("getSalesHeadersData", () => getSalesHeadersList("B0003"), {
+  } = useQuery("getSalesHeadersData", () => getSalesHeadersList("B0002"), {
     enabled: true,
   });
 
@@ -149,7 +149,7 @@ const SalesDay = () => {
       });
     });
 
-    const test = totalDataArray.forEach((obj) => {
+    totalDataArray.forEach((obj) => {
       const total = Object.keys(obj).reduce((sum, key) => {
         if (key !== "sale_date") {
           sum += obj[key];
@@ -163,6 +163,10 @@ const SalesDay = () => {
     // console.log("totalDataArray================>", totalDataArray);
     return totalDataArray;
   }, [memoizedSalesDayData]);
+
+  useEffect(() => {
+    console.log("memoizedSalesDayColumns===========>", memoizedSalesDayColumns);
+  }, [memoizedSalesDayColumns]);
 
   const {
     getTableProps,
@@ -231,7 +235,7 @@ const SalesDay = () => {
           <div className={cx("box", "content-wrap")}>
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
-                <BtnExcelDown columns={memoizedSalesDayColumns} tableData={memoizedSalesDayData} />
+                <BtnExcelDown columns={headerGroups} tableData={memoizedSalesDayData} />
               </div>
             </div>
             <div className={cx("item")}>

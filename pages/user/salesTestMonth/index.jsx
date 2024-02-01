@@ -11,6 +11,7 @@ import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
+import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 
 //styles
 import className from "classnames/bind";
@@ -219,6 +220,11 @@ const SalesTestMonth = () => {
 
         <div className={cx("row")}>
           <div className={cx("box", "content-wrap")}>
+            <div className={cx("item")}>
+              <div className={cx("content-btn-wrap")}>
+                <BtnExcelDown columns={salesTestMonthColumnsData} tableData={tableState} />
+              </div>
+            </div>
             <div className={cx("item")}>
               <RenderTableTest
                 tableProps={{
