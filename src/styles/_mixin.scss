@@ -29,8 +29,8 @@
   }
 }
 
-@mixin table-content-wrap {
-  $table-content-wrap-height: 57.4rem;
+@mixin table-content-wrap($min-height: 57.4rem) {
+  $table-content-wrap-height: $min-height;
 
   height: 100%;
   min-height: $table-content-wrap-height;
@@ -59,7 +59,7 @@
 
 @mixin table-wrap {
   height: 50rem;
-  border: 0.1rem solid #ccc;
+  border: 0.1rem solid #e0e0e0;
   overflow: auto;
 }
 

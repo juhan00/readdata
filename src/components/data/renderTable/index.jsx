@@ -29,6 +29,7 @@ const RenderTable = ({
   tableHeight,
   useDoubleClick,
   rowSelect,
+  totalRow,
 }) => {
   const {
     getTableProps,
@@ -196,7 +197,7 @@ const RenderTable = ({
                 <tr
                   {...row.getRowProps()}
                   onDoubleClick={() => (useDoubleClick ? handleClickReturn && handleClickReturn(row.original[returnColumnName]) : "")}
-                  className={cx(rowSelect && selectRowIndex === row.index ? "active" : "")}
+                  className={cx(rowSelect && selectRowIndex === row.index ? "active" : "", page.length === rowIndex + 1 ? "total" : "")}
                 >
                   {editMode && (
                     <td>

@@ -1,10 +1,318 @@
+import { useQuery } from "react-query";
+import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
+import { getDashboardBrandList, getDashboardYesterdayList, getDashboardThisMonthList } from "@/utils/api/dashboard";
+import { usePagination, useSortBy, useTable } from "react-table";
+import { dashboardColumns } from "@/consts/dashboardColumns";
+import RenderTable from "@/src/components/data/renderTable";
+
 //styles
 import className from "classnames/bind";
 import styles from "./dashboard.module.scss";
+import { useEffect, useMemo, useState } from "react";
 const cx = className.bind(styles);
 
+const today = new Date();
+const yesterday = new Date(today);
+yesterday.setDate(today.getDate() - 1);
+const yesterdayData = useChangeFormatDate(yesterday);
+const thisMonthData = `${today.getFullYear()}-${(today.getMonth() + 1).toString().padStart(2, "0")}`;
+
+const BrandTable = ({ columns, data }) => {
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    state: { pageIndex, pageSize },
+    gotoPage,
+    previousPage,
+    nextPage,
+    canPreviousPage,
+    canNextPage,
+    pageCount,
+  } = useTable(
+    {
+      columns: columns,
+      data: useMemo(() => data, [data]),
+      initialState: { pageIndex: 0, pageSize: data.length || 50 },
+      autoResetPage: false,
+    },
+    useSortBy,
+    usePagination
+  );
+
+  return (
+    <RenderTable
+      tableProps={{
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        prepareRow,
+        page,
+        pageIndex,
+        pageSize,
+        gotoPage,
+        previousPage,
+        nextPage,
+        canPreviousPage,
+        canNextPage,
+        pageCount,
+      }}
+      editMode={false}
+      tableHeight={"auto"}
+      totalRow={true}
+    />
+  );
+};
+
+const DayTable = ({ columns, data }) => {
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    state: { pageIndex, pageSize },
+    gotoPage,
+    previousPage,
+    nextPage,
+    canPreviousPage,
+    canNextPage,
+    pageCount,
+  } = useTable(
+    {
+      columns: columns,
+      data: useMemo(() => data, [data]),
+      initialState: { pageIndex: 0, pageSize: data.length || 50 },
+      autoResetPage: false,
+    },
+    useSortBy,
+    usePagination
+  );
+
+  return (
+    <RenderTable
+      tableProps={{
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        prepareRow,
+        page,
+        pageIndex,
+        pageSize,
+        gotoPage,
+        previousPage,
+        nextPage,
+        canPreviousPage,
+        canNextPage,
+        pageCount,
+      }}
+      editMode={false}
+      tableHeight={"auto"}
+      totalRow={true}
+    />
+  );
+};
+
+const MonthTable = ({ columns, data }) => {
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    state: { pageIndex, pageSize },
+    gotoPage,
+    previousPage,
+    nextPage,
+    canPreviousPage,
+    canNextPage,
+    pageCount,
+  } = useTable(
+    {
+      columns: columns,
+      data: useMemo(() => data, [data]),
+      initialState: { pageIndex: 0, pageSize: data.length || 50 },
+      autoResetPage: false,
+    },
+    useSortBy,
+    usePagination
+  );
+
+  return (
+    <RenderTable
+      tableProps={{
+        getTableProps,
+        getTableBodyProps,
+        headerGroups,
+        prepareRow,
+        page,
+        pageIndex,
+        pageSize,
+        gotoPage,
+        previousPage,
+        nextPage,
+        canPreviousPage,
+        canNextPage,
+        pageCount,
+      }}
+      editMode={false}
+      tableHeight={"auto"}
+      totalRow={true}
+    />
+  );
+};
 const Dashboard = () => {
-  return <div>대시보드</div>;
+  const [companyCode, setCompanyCode] = useState("C0000");
+  const [yesterday, setYesterday] = useState("2023-12-31");
+  const [thisMonth, setThisMonth] = useState("2023-12");
+
+  const {
+    data: dashBrandData,
+    isLoading: isLoadingDashBrandData,
+    refetch: refetchDashBrandData,
+  } = useQuery("getDashBrandData", () => getDashboardBrandList(companyCode, yesterday, thisMonth), {
+    enabled: companyCode !== undefined && yesterday !== undefined && thisMonth !== undefined,
+  });
+
+  const {
+    data: dashYesterdayData,
+    isLoading: isLoadingDashYesterdayData,
+    refetch: refetchDashYesterdayData,
+  } = useQuery("getDashYesterdayData", () => getDashboardYesterdayList(companyCode, yesterday), {
+    enabled: companyCode !== undefined && yesterday !== undefined,
+  });
+
+  const {
+    data: dashThisMonthData,
+    isLoading: isLoadingDashThisMonthData,
+    refetch: refetchDashThisMonthData,
+  } = useQuery("getDashThisMonthData", () => getDashboardThisMonthList(companyCode, thisMonth), {
+    enabled: companyCode !== undefined && thisMonth !== undefined,
+  });
+
+  const memoizedDashboardColumns = useMemo(() => {
+    return yesterday && thisMonth ? dashboardColumns(yesterday, thisMonth) : [];
+  }, [yesterday, thisMonth]);
+
+  const typeByDashBrandData = useMemo(() => {
+    const groupedData = dashBrandData?.reduce((result, item) => {
+      const { brand_name, type, ...rest } = item;
+      const existingBrand = result.find((data) => data.brand_name === brand_name);
+
+      if (existingBrand) {
+        existingBrand[type] = { ...rest, type };
+      } else {
+        const newBrand = {
+          brand_name,
+          Mon: type === "Mon" ? { ...rest, type } : {},
+          Day: type === "Day" ? { ...rest, type } : {},
+        };
+
+        result.push(newBrand);
+      }
+
+      return result;
+    }, []);
+
+    const totalRow = {
+      brand_name: "합계",
+      Mon: {
+        cnt: groupedData?.reduce((sum, data) => sum + (Number(data.Mon.cnt) || 0), 0),
+        total: groupedData?.reduce((sum, data) => sum + (Number(data.Mon.total) || 0), 0),
+      },
+      Day: {
+        cnt: groupedData?.reduce((sum, data) => sum + (Number(data.Day.cnt) || 0), 0),
+        total: groupedData?.reduce((sum, data) => sum + (Number(data.Day.total) || 0), 0),
+        avg: groupedData?.reduce((sum, data) => sum + (Number(data.Day.avg) || 0), 0),
+      },
+    };
+
+    groupedData?.push(totalRow);
+
+    return groupedData || [];
+  }, [dashBrandData]);
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    state: { pageIndex, pageSize },
+    gotoPage,
+    previousPage,
+    nextPage,
+    canPreviousPage,
+    canNextPage,
+    pageCount,
+  } = useTable(
+    {
+      columns: memoizedDashboardColumns,
+      data: useMemo(() => typeByDashBrandData, [typeByDashBrandData]),
+      initialState: { pageIndex: 0, pageSize: typeByDashBrandData.length || 50 },
+      autoResetPage: false,
+    },
+    useSortBy,
+    usePagination
+  );
+
+  // useEffect(() => {
+  //   console.log("typeByDashBrandData===========>", typeByDashBrandData);
+  //   // console.log("dashYesterdayData===========>", dashYesterdayData);
+  //   // console.log("dashThisMonthData===========>", dashThisMonthData);
+  // });
+  return (
+    <div className={cx("dashboard")}>
+      <div className={cx("row")}>
+        <div className={cx("box", "content-wrap")}>
+          <div className={cx("item")}>
+            <div className={cx("title", "brand")}>
+              <strong>브랜드별</strong> 매출 추이
+            </div>
+            {isLoadingDashBrandData ? (
+              <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+            ) : !typeByDashBrandData.length ? (
+              <div className={cx("no-data")}>데이터가 없습니다.</div>
+            ) : (
+              <BrandTable columns={memoizedDashboardColumns} data={typeByDashBrandData} />
+            )}
+          </div>
+        </div>
+      </div>
+      <div className={cx("row", "flex")}>
+        <div className={cx("box", "content-wrap")}>
+          <div className={cx("item")}>
+            <div className={cx("title", "yesterday")}>
+              <strong>전일</strong> 매출 순위 <span className={cx("date")}>({yesterday})</span>
+            </div>
+            {isLoadingDashBrandData ? (
+              <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+            ) : !typeByDashBrandData.length ? (
+              <div className={cx("no-data")}>데이터가 없습니다.</div>
+            ) : (
+              <DayTable columns={memoizedDashboardColumns} data={typeByDashBrandData} />
+            )}
+          </div>
+        </div>
+        <div className={cx("box", "content-wrap")}>
+          <div className={cx("item")}>
+            <div className={cx("title", "thisMonth")}>
+              <strong>당월</strong> 매출 순위 <span className={cx("date")}>({thisMonth})</span>
+            </div>
+            {isLoadingDashBrandData ? (
+              <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+            ) : !typeByDashBrandData.length ? (
+              <div className={cx("no-data")}>데이터가 없습니다.</div>
+            ) : (
+              <MonthTable columns={memoizedDashboardColumns} data={typeByDashBrandData} />
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Dashboard;
