@@ -18,7 +18,7 @@ const cx = className.bind(styles);
 
 const User = () => {
   const router = useRouter();
-  const { category = "brand_test" } = router.query;
+  const { category } = router.query;
   const [userMenu, setUserMenu] = useState(category);
 
   useEffect(() => {

@@ -24,7 +24,9 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
     <div className={cx("left-navigation")}>
       <div className={cx("left-nav-wrap")}>
         <div className={cx("logo-wrap")}>
-          <img src="/assets/images/logo.png" alt="logo" />
+          <Link href={useType === USE_TYPE.USER ? "/data/user" : "/data/admin"}>
+            <img src="/assets/images/logo.png" alt="logo" />
+          </Link>
         </div>
         <nav>
           {useType === USE_TYPE.USER && (
