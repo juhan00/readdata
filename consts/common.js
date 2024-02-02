@@ -2,6 +2,7 @@ export const RESPONSIVE_MOBILE_SIZE = 767;
 export const USE_TYPE = {
   USER: "USER",
   ADMIN: "ADMIN",
+  ADMINSUPER: "ADMINSUPER",
 };
 export const SEARCH_TYPE = {
   INPUT: "INPUT",

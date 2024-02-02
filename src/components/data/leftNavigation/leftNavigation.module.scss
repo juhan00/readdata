@@ -44,131 +44,80 @@
               background-color: #ccc;
               margin-right: 1.4rem;
             }
-            // &.menu1::before {
-            //   background: url("/assets/images/data/user/ico_user_nav_brand_off.png") no-repeat 50% 50% / contain;
-            // }
-            // &.menu2::before {
-            //   background: url("/assets/images/data/user/ico_user_nav_franchisee_off.png") no-repeat 50% 50% / contain;
-            // }
-            // &.menu3::before {
-            //   background: url("/assets/images/data/user/ico_user_nav_sales_off.png") no-repeat 50% 50% / contain;
-            // }
           }
           button.active {
             &::before {
               content: "";
               background-color: #fddc37;
             }
-            // &.menu1::before {
-            //   background: url("/assets/images/data/user/ico_user_nav_brand_on.png") no-repeat 50% 50% / contain;
-            // }
-            // &.menu2::before {
-            //   background: url("/assets/images/data/user/ico_user_nav_franchisee_on.png") no-repeat 50% 50% / contain;
-            // }
-            // &.menu3::before {
-            //   background: url("/assets/images/data/user/ico_user_nav_sales_on.png") no-repeat 50% 50% / contain;
-            // }
           }
         }
       }
-      ul.user {
+      ul {
         li {
           button {
             width: 100%;
-            &.menu1::before {
-              background: url("/assets/images/data/user/ico_user_nav_brand_off.png") no-repeat 50% 50% / contain;
+            &.company::before {
+              background: url("/assets/images/data/ico_nav_company_off.png") no-repeat 50% 50% / contain;
             }
-            &.menu2::before {
-              background: url("/assets/images/data/user/ico_user_nav_franchisee_off.png") no-repeat 50% 50% / contain;
+            &.user::before {
+              background: url("/assets/images/data/ico_nav_user_off.png") no-repeat 50% 50% / contain;
             }
-            &.menu3::before {
-              background: url("/assets/images/data/user/ico_user_nav_franchisee_off.png") no-repeat 50% 50% / contain;
+            &.brand::before {
+              background: url("/assets/images/data/ico_nav_brand_off.png") no-repeat 50% 50% / contain;
             }
-            &.menu4::before {
-              background: url("/assets/images/data/user/ico_user_nav_franchisee_off.png") no-repeat 50% 50% / contain;
+            &.store::before {
+              background: url("/assets/images/data/ico_nav_store_off.png") no-repeat 50% 50% / contain;
             }
-            &.menu5::before {
-              background: url("/assets/images/data/user/ico_user_nav_sales_off.png") no-repeat 50% 50% / contain;
+            &.store-account::before {
+              background: url("/assets/images/data/ico_nav_store_account_off.png") no-repeat 50% 50% / contain;
             }
-            &.menu6::before {
-              background: url("/assets/images/data/user/ico_user_nav_sales_off.png") no-repeat 50% 50% / contain;
+            &.store-mapping::before {
+              background: url("/assets/images/data/ico_nav_store_mapping_off.png") no-repeat 50% 50% / contain;
             }
-          }
-          button.active {
-            &.menu1::before {
-              background: url("/assets/images/data/user/ico_user_nav_brand_on.png") no-repeat 50% 50% / contain;
+            &.sales-day::before {
+              background: url("/assets/images/data/ico_nav_sales_day_off.png") no-repeat 50% 50% / contain;
             }
-            &.menu2::before {
-              background: url("/assets/images/data/user/ico_user_nav_franchisee_on.png") no-repeat 50% 50% / contain;
+            &.sales-month::before {
+              background: url("/assets/images/data/ico_nav_sales_month_off.png") no-repeat 50% 50% / contain;
             }
-            &.menu3::before {
-              background: url("/assets/images/data/user/ico_user_nav_franchisee_on.png") no-repeat 50% 50% / contain;
+            &.sales-region::before {
+              background: url("/assets/images/data/ico_nav_sales_region_off.png") no-repeat 50% 50% / contain;
             }
-            &.menu4::before {
-              background: url("/assets/images/data/user/ico_user_nav_franchisee_on.png") no-repeat 50% 50% / contain;
-            }
-            &.menu5::before {
-              background: url("/assets/images/data/user/ico_user_nav_sales_on.png") no-repeat 50% 50% / contain;
-            }
-            &.menu6::before {
-              background: url("/assets/images/data/user/ico_user_nav_sales_on.png") no-repeat 50% 50% / contain;
-            }
-          }
-        }
-      }
-
-      ul.admin {
-        li {
-          button {
-            &.menu1::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_company_off.png") no-repeat 50% 50% / contain;
-            }
-            &.menu2::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_user_off.png") no-repeat 50% 50% / contain;
-            }
-            &.menu3::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_franchisee_off.png") no-repeat 50% 50% / contain;
-            }
-            &.menu4::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_franchisee_off.png") no-repeat 50% 50% / contain;
-            }
-            &.menu5::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_franchisee_off.png") no-repeat 50% 50% / contain;
-            }
-            &.menu6::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_sales_off.png") no-repeat 50% 50% / contain;
-            }
-            &.menu7::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_sales_off.png") no-repeat 50% 50% / contain;
-            }
-            &.menu8::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_customer_off.png") no-repeat 50% 50% / contain;
+            &.sales-analyze::before {
+              background: url("/assets/images/data/ico_nav_sales_analyze_off.png") no-repeat 50% 50% / contain;
             }
           }
           button.active {
-            &.menu1::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_company_on.png") no-repeat 50% 50% / contain;
+            &.company::before {
+              background: url("/assets/images/data/ico_nav_company_on.png") no-repeat 50% 50% / contain;
             }
-            &.menu2::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_user_on.png") no-repeat 50% 50% / contain;
+            &.user::before {
+              background: url("/assets/images/data/ico_nav_user_on.png") no-repeat 50% 50% / contain;
             }
-            &.menu3::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_franchisee_on.png") no-repeat 50% 50% / contain;
+            &.brand::before {
+              background: url("/assets/images/data/ico_nav_brand_on.png") no-repeat 50% 50% / contain;
             }
-            &.menu4::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_franchisee_on.png") no-repeat 50% 50% / contain;
+            &.store::before {
+              background: url("/assets/images/data/ico_nav_store_on.png") no-repeat 50% 50% / contain;
             }
-            &.menu5::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_franchisee_on.png") no-repeat 50% 50% / contain;
+            &.store-account::before {
+              background: url("/assets/images/data/ico_nav_store_account_on.png") no-repeat 50% 50% / contain;
             }
-            &.menu6::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_sales_on.png") no-repeat 50% 50% / contain;
+            &.store-mapping::before {
+              background: url("/assets/images/data/ico_nav_store_mapping_on.png") no-repeat 50% 50% / contain;
             }
-            &.menu7::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_sales_on.png") no-repeat 50% 50% / contain;
+            &.sales-day::before {
+              background: url("/assets/images/data/ico_nav_sales_day_on.png") no-repeat 50% 50% / contain;
             }
-            &.menu8::before {
-              background: url("/assets/images/data/admin/ico_admin_nav_customer_on.png") no-repeat 50% 50% / contain;
+            &.sales-month::before {
+              background: url("/assets/images/data/ico_nav_sales_month_on.png") no-repeat 50% 50% / contain;
+            }
+            &.sales-region::before {
+              background: url("/assets/images/data/ico_nav_sales_region_on.png") no-repeat 50% 50% / contain;
+            }
+            &.sales-analyze::before {
+              background: url("/assets/images/data/ico_nav_sales_analyze_on.png") no-repeat 50% 50% / contain;
             }
           }
         }
