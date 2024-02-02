@@ -12,6 +12,7 @@ import StoreMapping from "./storeMapping";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import SalesAnalysis from "@/pages/admin/salesAnalysis";
+import TableTest from "@/pages/admin/tableTest";
 
 //styles
 import className from "classnames/bind";
@@ -40,6 +41,7 @@ const Admin = () => {
         {adminMenu === "sales_day" && <SalesDay />}
         {adminMenu === "sales_month" && <SalesMonth />}
         {adminMenu === "sales_analysis" && <SalesAnalysis />}
+        {adminMenu === "tableTest" && <TableTest />}
       </DataLayout>
     </div>
   );

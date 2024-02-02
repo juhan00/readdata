@@ -1,5 +1,5 @@
 export const getSalesAnalysisList = async (startDate, endDate) => {
-    const response = await fetch(`/sales/day/search?from_date=${startDate}&to_date=${endDate}`, {
+    const response = await fetch(`/profile/chk/all?company_code=C0002&from_date=${startDate}&to_date=${endDate}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -14,9 +14,8 @@ export const getSalesAnalysisList = async (startDate, endDate) => {
     return data.data;
 };
 
-
 export const getSalesCompareAnalysisList = async (startDate, endDate) => {
-    const response = await fetch(`/sales/day/search?from_date=${startDate}&to_date=${endDate}`, {
+    const response = await fetch(`/profile/chk/all?company_code=C0002&from_date=${startDate}&to_date=${endDate}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

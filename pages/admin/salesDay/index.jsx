@@ -148,14 +148,14 @@ const SalesDay = () => {
     gotoPage(0);
   };
 
-<<<<<<< HEAD
+
   console.log("시작날짜=",formatStartDate);
   console.log("종료날짜=",formatEndDate);
-=======
+
   // useEffect(() => {
   //   console.log("tableState", tableState);
   // }, [tableState]);
->>>>>>> main
+
 
   return (
     <>
