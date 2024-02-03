@@ -1,6 +1,6 @@
 import { TABLE_COLUMN_TYPE } from "./common";
 
-export const dashboardColumns = (yesterday, thisMonthData) => {
+export const dashBrandColumns = (yesterday, thisMonthData) => {
   const dateColumns = [
     {
       Header: "브랜드명",
@@ -93,3 +93,70 @@ export const dashboardColumns = (yesterday, thisMonthData) => {
 
   return dateColumns;
 };
+
+export const dashDayMonthColumns = [
+  {
+    Header: "상위 5개점",
+    headerStyle: {
+      textAlign: "center",
+      backgroundColor: "#FFC2BF",
+    },
+    columns: [
+      {
+        Header: "가맹점명",
+        accessor: "high5.fran_name",
+        headerStyle: {
+          textAlign: "center",
+          backgroundColor: "#FFC2BF",
+        },
+        cellStyle: {
+          textAlign: "center",
+        },
+      },
+      {
+        Header: "매출액(POS+배달)",
+        accessor: "high5.high5",
+        headerStyle: {
+          textAlign: "center",
+          backgroundColor: "#FFC2BF",
+        },
+        cellStyle: {
+          textAlign: "center",
+        },
+        Cell: ({ value }) => value.toLocaleString(),
+      },
+    ],
+  },
+  {
+    Header: "하위 5개점",
+    headerStyle: {
+      textAlign: "center",
+      backgroundColor: "#CBDFFD",
+    },
+    columns: [
+      {
+        Header: "가맹점명",
+        accessor: "low5.fran_name",
+        headerStyle: {
+          textAlign: "center",
+          backgroundColor: "#CBDFFD",
+        },
+        cellStyle: {
+          textAlign: "center",
+        },
+      },
+      {
+        Header: "매출액(POS+배달)",
+        accessor: "low5.low5",
+        headerStyle: {
+          textAlign: "center",
+          backgroundColor: "#CBDFFD",
+        },
+        cellStyle: {
+          textAlign: "center",
+        },
+        Cell: ({ value }) => value.toLocaleString(),
+      },
+    ],
+  },
+];

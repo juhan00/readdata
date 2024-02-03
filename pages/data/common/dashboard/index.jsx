@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
 import { getDashboardBrandList, getDashboardYesterdayList, getDashboardThisMonthList } from "@/utils/api/dashboard";
 import { usePagination, useSortBy, useTable } from "react-table";
-import { dashboardColumns } from "@/consts/dashboardColumns";
+import { dashBrandColumns, dashDayMonthColumns } from "@/consts/dashboardColumns";
 import RenderTable from "@/src/components/data/renderTable";
 
 //styles
@@ -35,7 +35,7 @@ const BrandTable = ({ columns, data }) => {
     {
       columns: columns,
       data: useMemo(() => data, [data]),
-      initialState: { pageIndex: 0, pageSize: data.length || 50 },
+      initialState: { pageIndex: 0, pageSize: 10 },
       autoResetPage: false,
     },
     useSortBy,
@@ -163,6 +163,7 @@ const MonthTable = ({ columns, data }) => {
     />
   );
 };
+
 const Dashboard = () => {
   const [companyCode, setCompanyCode] = useState("C0000");
   const [yesterday, setYesterday] = useState("2023-12-31");
@@ -193,7 +194,7 @@ const Dashboard = () => {
   });
 
   const memoizedDashboardColumns = useMemo(() => {
-    return yesterday && thisMonth ? dashboardColumns(yesterday, thisMonth) : [];
+    return yesterday && thisMonth ? dashBrandColumns(yesterday, thisMonth) : [];
   }, [yesterday, thisMonth]);
 
   const typeByDashBrandData = useMemo(() => {
@@ -234,35 +235,72 @@ const Dashboard = () => {
     return groupedData || [];
   }, [dashBrandData]);
 
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page,
-    state: { pageIndex, pageSize },
-    gotoPage,
-    previousPage,
-    nextPage,
-    canPreviousPage,
-    canNextPage,
-    pageCount,
-  } = useTable(
-    {
-      columns: memoizedDashboardColumns,
-      data: useMemo(() => typeByDashBrandData, [typeByDashBrandData]),
-      initialState: { pageIndex: 0, pageSize: typeByDashBrandData.length || 50 },
-      autoResetPage: false,
-    },
-    useSortBy,
-    usePagination
-  );
+  const typeByDashYesterdayData = useMemo(() => {
+    const high5Data = dashYesterdayData?.filter((item) => item.low5 === 0);
+    const low5Data = dashYesterdayData?.filter((item) => item.high5 === 0);
 
-  // useEffect(() => {
-  //   console.log("typeByDashBrandData===========>", typeByDashBrandData);
-  //   // console.log("dashYesterdayData===========>", dashYesterdayData);
-  //   // console.log("dashThisMonthData===========>", dashThisMonthData);
-  // });
+    const groupedData = high5Data?.map((item, index) => ({
+      high5: {
+        fran_name: item.fran_name,
+        high5: item.high5,
+      },
+      low5: {
+        fran_name: low5Data[index].fran_name,
+        low5: low5Data[index].low5,
+      },
+    }));
+
+    const totalRow = {
+      high5: {
+        fran_name: "합계",
+        high5: groupedData?.reduce((sum, data) => sum + (Number(data.high5.high5) || 0), 0),
+      },
+      low5: {
+        fran_name: "합계",
+        low5: groupedData?.reduce((sum, data) => sum + (Number(data.low5.low5) || 0), 0),
+      },
+    };
+    groupedData?.push(totalRow);
+
+    return groupedData || [];
+  }, [dashYesterdayData]);
+
+  const typeByDashThisMonthData = useMemo(() => {
+    const high5Data = dashThisMonthData?.filter((item) => item.low5 === 0);
+    const low5Data = dashThisMonthData?.filter((item) => item.high5 === 0);
+
+    console.log("dashThisMonthData", dashThisMonthData);
+
+    const groupedData = high5Data?.map((item, index) => ({
+      high5: {
+        fran_name: item.fran_name,
+        high5: item.high5,
+      },
+      low5: {
+        fran_name: low5Data[index].fran_name,
+        low5: low5Data[index].low5,
+      },
+    }));
+
+    const totalRow = {
+      high5: {
+        fran_name: "합계",
+        high5: groupedData?.reduce((sum, data) => sum + (Number(data.high5.high5) || 0), 0),
+      },
+      low5: {
+        fran_name: "합계",
+        low5: groupedData?.reduce((sum, data) => sum + (Number(data.low5.low5) || 0), 0),
+      },
+    };
+    groupedData?.push(totalRow);
+
+    return groupedData || [];
+  }, [dashThisMonthData]);
+
+  useEffect(() => {
+    console.log("dashThisMonthData========>", dashThisMonthData);
+  }, [dashThisMonthData]);
+
   return (
     <div className={cx("dashboard")}>
       <div className={cx("row")}>
@@ -287,12 +325,12 @@ const Dashboard = () => {
             <div className={cx("title", "yesterday")}>
               <strong>전일</strong> 매출 순위 <span className={cx("date")}>({yesterday})</span>
             </div>
-            {isLoadingDashBrandData ? (
+            {isLoadingDashYesterdayData ? (
               <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-            ) : !typeByDashBrandData.length ? (
+            ) : !typeByDashYesterdayData.length ? (
               <div className={cx("no-data")}>데이터가 없습니다.</div>
             ) : (
-              <DayTable columns={memoizedDashboardColumns} data={typeByDashBrandData} />
+              <DayTable columns={dashDayMonthColumns} data={typeByDashYesterdayData} />
             )}
           </div>
         </div>
@@ -301,12 +339,12 @@ const Dashboard = () => {
             <div className={cx("title", "thisMonth")}>
               <strong>당월</strong> 매출 순위 <span className={cx("date")}>({thisMonth})</span>
             </div>
-            {isLoadingDashBrandData ? (
+            {isLoadingDashThisMonthData ? (
               <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-            ) : !typeByDashBrandData.length ? (
+            ) : !typeByDashThisMonthData.length ? (
               <div className={cx("no-data")}>데이터가 없습니다.</div>
             ) : (
-              <MonthTable columns={memoizedDashboardColumns} data={typeByDashBrandData} />
+              <MonthTable columns={dashDayMonthColumns} data={typeByDashThisMonthData} />
             )}
           </div>
         </div>

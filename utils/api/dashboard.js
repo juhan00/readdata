@@ -45,6 +45,6 @@ export const getDashboardThisMonthList = async (companyCode, thisMonth) => {
   }
 
   const data = await response.json();
-
+  console.log("data.data======>", data.data);
   return data.data;
 };
