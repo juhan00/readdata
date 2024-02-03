@@ -11,7 +11,6 @@ import className from "classnames/bind";
 const cx = className.bind(styles);
 
 const BarChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
-  console.log("headersData============>", headersData);
   // const [showTotal, setShowTotal] = useState(true);
   // const [showPos, setShowPos] = useState(false);
   // const [showDelivery1, setShowDelivery1] = useState(false);

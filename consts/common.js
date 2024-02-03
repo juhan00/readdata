@@ -16,3 +16,8 @@ export const TABLE_COLUMN_TYPE = {
   USEFLAG: "USEFLAG",
   ADDRESS: "ADDRESS",
 };
+
+export const SEARCH_ADDRESS = {
+  SIDO: "SIDO",
+  SIGOON: "SIGOON",
+};

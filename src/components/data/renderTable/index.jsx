@@ -272,7 +272,6 @@ const RenderTable = ({
                               <input
                                 value={columnValues[cell.column.id] || cell.value || ""}
                                 onClick={(e) => handleClickAddress(cell.column.id, e.target.value)}
-                                readOnly
                               />
                             </>
                           ) : (

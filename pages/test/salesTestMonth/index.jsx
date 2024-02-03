@@ -101,8 +101,6 @@ const SalesTestMonth = () => {
   useEffect(() => {
     const testData = salesTestMonthColumns(salesDates, headers);
     setSalesTestMonthColumnsData(testData);
-    console.log("testData", testData);
-    console.log("salesMonthColumns", salesMonthColumns);
   }, []);
 
   // const [salesTestMonthColumnsData, setSalesTestMonthColumnsData] = useState();

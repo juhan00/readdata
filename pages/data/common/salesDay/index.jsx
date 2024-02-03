@@ -13,6 +13,8 @@ import { usePagination, useSortBy, useTable } from "react-table";
 import { useGetDateArray } from "@/utils/useGetDateArray";
 import BarChart from "@/src/components/data/barChart";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
+import SearchAddressItem from "@/src/components/data/searchAddressItem";
+import { SEARCH_ADDRESS } from "@/consts/common";
 
 //styles
 import className from "classnames/bind";
@@ -164,10 +166,6 @@ const SalesDay = () => {
     return totalDataArray;
   }, [memoizedSalesDayData]);
 
-  useEffect(() => {
-    console.log("memoizedSalesDayColumns===========>", memoizedSalesDayColumns);
-  }, [memoizedSalesDayColumns]);
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -224,6 +222,12 @@ const SalesDay = () => {
             </div>
             <div className={cx("item")}>
               <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
+            </div>
+            <div className={cx("item")}>
+              <SearchAddressItem title={"지역1"} type={SEARCH_ADDRESS.SIDO} />
+            </div>
+            <div className={cx("item")}>
+              <SearchAddressItem title={"지역2"} type={SEARCH_ADDRESS.SIGOON} />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
