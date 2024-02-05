@@ -32,7 +32,7 @@ const Brand = () => {
   }, {});
 
   const searchFieldData = {
-    brand_name: "",
+    brand_code: "",
     brand_flag: "",
   };
 
@@ -132,7 +132,7 @@ const Brand = () => {
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
+        (!searchData.brand_code || row.brand_code?.toString().toLowerCase().includes(searchData.brand_code.toLowerCase())) &&
         (!searchData.brand_flag || row.brand_flag?.toString().toLowerCase().includes(searchData.brand_flag.toLowerCase()))
     );
   }, [tableState, searchData]);
@@ -218,11 +218,12 @@ const Brand = () => {
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
               <SearchItem
-                searchType={SEARCH_TYPE.INPUT}
-                value={searchField.brand_name}
-                title={"브랜드명"}
-                id={"brand_name"}
+                searchType={SEARCH_TYPE.SELECT_BRAND}
+                value={searchField.brand_code}
+                title={"브랜드 명"}
+                id={"brand_code"}
                 onChange={handleFieldChange}
+                companyCode=""
               />
             </div>
             <div className={cx("item")}>

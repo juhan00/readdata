@@ -111,6 +111,14 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
               </li>
               <li>
                 <button
+                  className={cx("sales-channel", adminMenu.menu === "sales_channel" && "active")}
+                  onClick={() => handleClickAdminMenu("sales_channel")}
+                >
+                  {t("data.nav_menu.sales_channel")}
+                </button>
+              </li>
+              <li>
+                <button
                   className={cx("sales-analyze", adminMenu.menu === "sales_analyze" && "active")}
                   onClick={() => handleClickAdminMenu("sales_analyze")}
                 >
@@ -177,6 +185,14 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
                   onClick={() => handleClickAdminMenu("sales_region")}
                 >
                   {t("data.nav_menu.sales_region")}
+                </button>
+              </li>
+              <li>
+                <button
+                  className={cx("sales-channel", adminMenu.menu === "sales_channel" && "active")}
+                  onClick={() => handleClickAdminMenu("sales_channel")}
+                >
+                  {t("data.nav_menu.sales_channel")}
                 </button>
               </li>
               <li>

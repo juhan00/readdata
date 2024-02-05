@@ -84,6 +84,9 @@
             &.sales-region::before {
               background: url("/assets/images/data/ico_nav_sales_region_off.png") no-repeat 50% 50% / contain;
             }
+            &.sales-channel::before {
+              background: url("/assets/images/data/ico_nav_sales_channel_off.png") no-repeat 50% 50% / contain;
+            }
             &.sales-analyze::before {
               background: url("/assets/images/data/ico_nav_sales_analyze_off.png") no-repeat 50% 50% / contain;
             }
@@ -115,6 +118,9 @@
             }
             &.sales-region::before {
               background: url("/assets/images/data/ico_nav_sales_region_on.png") no-repeat 50% 50% / contain;
+            }
+            &.sales-channel::before {
+              background: url("/assets/images/data/ico_nav_sales_channel_on.png") no-repeat 50% 50% / contain;
             }
             &.sales-analyze::before {
               background: url("/assets/images/data/ico_nav_sales_analyze_on.png") no-repeat 50% 50% / contain;
