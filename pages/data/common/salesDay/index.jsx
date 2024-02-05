@@ -65,7 +65,6 @@ const SalesDay = () => {
   const {
     data: salesDayData,
     isLoading: isLoadingSalesDayData,
-    isFetching: isFetchingSalesDayData,
     refetch: refetchSalesDayData,
   } = useQuery(["getSalesDayData", endDate], () => getSalesDayList(companyCode, formatStartDate, formatEndDate), {
     enabled: companyCode !== undefined && formatStartDate !== undefined && formatEndDate !== undefined,
@@ -252,9 +251,9 @@ const SalesDay = () => {
               </div>
             </div>
             <div className={cx("item")}>
-              {isLoadingSalesDayData || isFetchingSalesDayData ? (
+              {isLoadingSalesDayData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : !isLoadingSalesDayData && !isFetchingSalesDayData && !page.length ? (
+              ) : !memoizedData.length ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <RenderTable

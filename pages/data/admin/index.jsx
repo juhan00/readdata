@@ -15,6 +15,7 @@ import Dashboard from "../common/dashboard";
 import SalesRegion from "../common/saleRegion";
 import SalesAnalyze from "../common/salesAnalyze";
 import Brand from "../common/brand";
+import SalesChannel from "../common/salesChannel";
 
 //styles
 import className from "classnames/bind";
@@ -46,6 +47,7 @@ const Admin = () => {
         {adminMenu === "sales_day" && <SalesDay />}
         {adminMenu === "sales_month" && <SalesMonth />}
         {adminMenu === "sales_region" && <SalesRegion />}
+        {adminMenu === "sales_channel" && <SalesChannel />}
         {adminMenu === "sales_analyze" && <SalesAnalyze />}
       </DataLayout>
     </div>
