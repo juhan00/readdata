@@ -38,6 +38,7 @@ const Compnay = () => {
 
   const [{ popupState }, setGlobalState] = useGlobalState();
   const { t } = useTranslation(["common", "dataAdmin"]);
+  const [companyCode, setCompanyCode] = useState("C0001");
   const [tableState, setTableState] = useState([]);
   const [isModified, setIsModified] = useState(false);
   const [searchData, setSearchData] = useState(searchFieldData);
@@ -45,7 +46,11 @@ const Compnay = () => {
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { data: companyData, isLoading: isLoadingCompanyData, refetch: refetchCompanyData } = useQuery("getCompanyData", getCompanyList);
+  const {
+    data: companyData,
+    isLoading: isLoadingCompanyData,
+    refetch: refetchCompanyData,
+  } = useQuery("getCompanyData", () => getCompanyList(companyCode), { enabled: companyCode !== undefined });
 
   useEffect(() => {
     if (!isLoadingCompanyData && companyData) {

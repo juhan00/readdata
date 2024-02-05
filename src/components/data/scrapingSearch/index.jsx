@@ -14,12 +14,17 @@ const cx = className.bind(styles);
 
 const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData }) => {
   const { t } = useTranslation(["common", "dataAdmin"]);
+  const [companyCode, setCompanyCode] = useState("C0001");
   const [tableState, setTableState] = useState([]);
   const [franName, setFranName] = useState("");
   const [filterScrapFranName, setFilterScrapFranName] = useState("");
   const [scrapFranName, setScrapFranName] = useState("");
 
-  const { data: scrapingData, isLoading: isLoadingScrapingData, refetch: refetchScrapingData } = useQuery("getScrapingData", getScrapingList);
+  const {
+    data: scrapingData,
+    isLoading: isLoadingScrapingData,
+    refetch: refetchScrapingData,
+  } = useQuery("getScrapingData", () => getScrapingList(companyCode), { enabled: companyCode !== undefined });
 
   useEffect(() => {
     setFranName(selectFranName);

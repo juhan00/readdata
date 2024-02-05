@@ -39,13 +39,18 @@ const User = () => {
 
   const [{ popupState }, setGlobalState] = useGlobalState();
   const { t } = useTranslation(["common", "dataAdmin"]);
+  const [companyCode, setCompanyCode] = useState("C0000");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { data: userData, isLoading: isLoadingUserData, refetch: refetchUserData } = useQuery("getUserData", getUserList);
+  const {
+    data: userData,
+    isLoading: isLoadingUserData,
+    refetch: refetchUserData,
+  } = useQuery("getUserData", () => getUserList(companyCode), { enabled: companyCode !== undefined });
 
   useEffect(() => {
     if (!isLoadingUserData && userData) {

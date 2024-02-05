@@ -92,7 +92,6 @@ const SalesMonth = () => {
   }, [tableState, searchData]);
 
   const memoizedSalesDates = useMemo(() => {
-    console.log("useGetDateArray(startDate, endDate)", useGetMonthArray(startDate, endDate));
     return useGetMonthArray(startDate, endDate);
   }, [startDate, endDate]);
 
@@ -214,13 +213,6 @@ const SalesMonth = () => {
     }));
     gotoPage(0);
   };
-
-  useEffect(() => {
-    console.log("page", page);
-    console.log("salesMonthData", salesMonthData);
-    console.log("headersData", headersData);
-    console.log("memoizedSalesMonthData", memoizedSalesMonthData);
-  }, [memoizedSalesMonthData, headersData, page]);
 
   return (
     <>

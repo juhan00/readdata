@@ -1,5 +1,5 @@
-export const getStoreList = async () => {
-  const response = await fetch(`/api_default/franchise/list`, {
+export const getStoreList = async (companyCode) => {
+  const response = await fetch(`/api_default/franchise/list?company_code=${companyCode}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -63,8 +63,8 @@ export const addStoreList = async (data) => {
   // console.log("추가 완료");
 };
 
-export const getStoreAccountList = async () => {
-  const response = await fetch(`/api_default/store/mng/list`, {
+export const getStoreAccountList = async (companyCode) => {
+  const response = await fetch(`/api_default/store/mng/list?company_code=${companyCode}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -137,8 +137,8 @@ export const updateStoreAccountList = async (data) => {
   // console.log("업데이트 완료");
 };
 
-export const getStoreMapingList = async () => {
-  const response = await fetch(`/api_default/mapping/list`, {
+export const getStoreMapingList = async (companyCode) => {
+  const response = await fetch(`/api_default/mapping/list?company_code=${companyCode}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -174,8 +174,8 @@ export const updateStoreMapingList = async (data) => {
   // console.log("업데이트 완료");
 };
 
-export const getScrapingList = async () => {
-  const response = await fetch(`/api_default/franchise/scrap`, {
+export const getScrapingList = async (companyCode) => {
+  const response = await fetch(`/api_default/franchise/scrap?company_code=${companyCode}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

@@ -28,13 +28,18 @@ const StoreAccount = () => {
 
   const [{ popupState }, setGlobalState] = useGlobalState();
   const { t } = useTranslation(["common", "dataAdmin"]);
+  const [companyCode, setCompanyCode] = useState("C0000");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { data: storeData, isLoading: isLoadingStoreData, refetch: refetchStoreData } = useQuery("getStoreAccountData", getStoreAccountList);
+  const {
+    data: storeData,
+    isLoading: isLoadingStoreData,
+    refetch: refetchStoreData,
+  } = useQuery("getStoreAccountData", () => getStoreAccountList(companyCode), { enabled: companyCode !== undefined });
 
   useEffect(() => {
     if (!isLoadingStoreData && storeData) {
