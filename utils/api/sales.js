@@ -31,3 +31,20 @@ export const getSalesMonthList = async (startMonth, endMonth) => {
 
   return data.data;
 };
+
+export const getSalesHeadersList = async (brandCode) => {
+  const response = await fetch(`/header/list?brand_code=${brandCode}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch data.");
+  }
+
+  const data = await response.json();
+
+  return data.data;
+};

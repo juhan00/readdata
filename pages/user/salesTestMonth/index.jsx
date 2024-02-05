@@ -11,6 +11,7 @@ import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
+import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 
 //styles
 import className from "classnames/bind";
@@ -18,33 +19,6 @@ import styles from "./salesTestMonth.module.scss";
 const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
-
-// const salesData = [
-//   {
-//     store: "명륜진사갈비",
-//     baemin_sales_20240101: 1000,
-//     yogiyo_sales_20240101: 800,
-//     pos_sales_20240101: 2000,
-//     baemin_sales_20240102: 1001,
-//     yogiyo_sales_20240102: 801,
-//     pos_sales_20240102: 2001,
-//     baemin_sales_20240103: 1002,
-//     yogiyo_sales_20240103: 802,
-//     pos_sales_20240103: 2002,
-//   },
-//   {
-//     store: "명륜진사갈비2",
-//     baemin_sales_20240101: 2000,
-//     yogiyo_sales_20240101: 900,
-//     pos_sales_20240101: 3000,
-//     baemin_sales_20240102: 2001,
-//     yogiyo_sales_20240102: 901,
-//     pos_sales_20240102: 3001,
-//     baemin_sales_20240103: 2002,
-//     yogiyo_sales_20240103: 902,
-//     pos_sales_20240103: 3002,
-//   },
-// ];
 
 const salesData = [
   {
@@ -104,16 +78,6 @@ const SalesTestMonth = () => {
     console.log("salesMonthColumns", salesMonthColumns);
   }, []);
 
-  // const [salesTestMonthColumnsData, setSalesTestMonthColumnsData] = useState();
-  // useEffect(() => {
-  //   console.log("start");
-  //   const data = salesTestMonthColumns(salesDates, headers);
-  //   console.log("data", data);
-  //   console.log("salesMonthColumns", salesMonthColumns);
-  //   setSalesTestMonthColumnsData(data);
-  //   return;
-  // }, []);
-
   const formatStartDate = useMemo(() => {
     return useChangeFormatMonth(startDate);
   }, [startDate]);
@@ -129,21 +93,6 @@ const SalesTestMonth = () => {
   const handleEndDateChange = (date) => {
     setEndDate(date);
   };
-
-  // const {
-  //   data: salesDateData,
-  //   isLoading: isLoadingSalesDateData,
-  //   refetch: refetchSalesDateData,
-  // } = useQuery(["getSalesMonthData", formatEndDate], () => getSalesMonthList(formatStartDate, formatEndDate), {
-  //   enabled: formatStartDate !== undefined && formatEndDate !== undefined,
-  // });
-
-  // useEffect(() => {
-  //   if (!isLoadingSalesDateData && salesDateData) {
-  //     setTableState(salesDateData);
-  //     console.log("salesDateData", salesDateData);
-  //   }
-  // }, [salesDateData, isLoadingSalesDateData]);
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
@@ -219,6 +168,11 @@ const SalesTestMonth = () => {
 
         <div className={cx("row")}>
           <div className={cx("box", "content-wrap")}>
+            <div className={cx("item")}>
+              <div className={cx("content-btn-wrap")}>
+                <BtnExcelDown columns={headerGroups} tableData={page} />
+              </div>
+            </div>
             <div className={cx("item")}>
               <RenderTableTest
                 tableProps={{

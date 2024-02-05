@@ -1,0 +1,45 @@
+.chart-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  min-width: 80rem;
+  max-width: 100%;
+  height: 40rem;
+  margin-top: 2rem;
+}
+
+.custom-legend {
+  display: flex;
+  align-items: center;
+  .label {
+    display: flex;
+    align-items: center;
+    color: #a6a4a4;
+    line-height: 100%;
+    & + .label {
+      margin-left: 1rem;
+    }
+
+    .box {
+      display: inline-block;
+      width: 0.8rem;
+      height: 0.8rem;
+      border-radius: 0.8rem;
+      margin-right: 0.5rem;
+    }
+    .line {
+      display: inline-block;
+      width: 1rem;
+      height: 0.3rem;
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.custom-tooltip {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  .label {
+    margin-bottom: 0.6rem;
+  }
+}

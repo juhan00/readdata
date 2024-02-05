@@ -12,7 +12,6 @@
       letter-spacing: -0.014rem;
       position: sticky;
       top: 0;
-      z-index: 1;
       tr + tr {
         th {
           border-top: 0.1rem solid $color-white;
@@ -23,7 +22,7 @@
         position: sticky;
         top: 0;
         z-index: 1;
-        padding: 0.7rem 1rem;
+        padding: 0.7rem 2rem;
         white-space: nowrap;
         .text {
           position: relative;

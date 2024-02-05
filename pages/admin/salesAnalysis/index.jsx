@@ -1,5 +1,6 @@
 import {SEARCH_TYPE} from "@/consts/common";
-import {salesAnalysisColumns} from "@/consts/salesAnalysisColumns";
+import {salesAnalysisColumns1, salesAnalysisColumns2} from "@/consts/salesAnalysisColumns";
+
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchDateItems from "@/src/components/data/searchDateItems";
@@ -12,9 +13,11 @@ import {useEffect, useMemo, useState} from "react";
 import {QueryClient, useQuery} from "react-query";
 import {usePagination, useSortBy, useTable} from "react-table";
 
+
 //styles
 import className from "classnames/bind";
 import styles from "./SalesAnalysis.module.scss";
+import {salesMonthColumns, salesTestMonthColumns} from "@/consts/salesTestMonthColumns";
 
 const cx = className.bind(styles);
 
@@ -27,7 +30,7 @@ const SalesAnalysis = () => {
 
     const today = new Date();
     const oneMonthAgo = new Date(today);
-    oneMonthAgo.setMonth(today.getMonth() - 1);
+    oneMonthAgo.setMonth(today.getMonth() - 2);
 
     const {t} = useTranslation(["common", "dataAdmin"]);
 
@@ -42,7 +45,6 @@ const SalesAnalysis = () => {
     //대비기간
     const [searchCompareData, setSearchCompareData] = useState(searchFieldData);
     const [searchCompareField, setSearchCompareField] = useState(searchFieldData);
-
 
     //조회기간-달력
     const [startDate, setStartDate] = useState(oneMonthAgo);
@@ -84,7 +86,9 @@ const SalesAnalysis = () => {
         setCompareEndDate(date)
     };
 
-    //조회기간 API
+    let effectTarget = "1"
+
+    // View period API
     const {
         data: salesDayData,
         isLoading: isLoadingSalesDayData,
@@ -92,7 +96,8 @@ const SalesAnalysis = () => {
     } = useQuery(["getSalesDayData", formatEndDate], () => getSalesAnalysisList(formatStartDate, formatEndDate), {
         enabled: formatStartDate !== undefined && formatEndDate !== undefined,
     });
-    //대비기간 API
+
+// Preparation period API
     const {
         data: compareSalesDayData,
         isLoading: isLoadingCompareSalesDayData,
@@ -101,33 +106,61 @@ const SalesAnalysis = () => {
         enabled: formatCompareStartDate !== undefined && formatCompareEndDate !== undefined,
     });
 
+    const combinedData = useMemo(() => {
+        if (salesDayData && compareSalesDayData) {
+            return [...salesDayData, ...compareSalesDayData];
+        }
+        return null;
+    }, [salesDayData, compareSalesDayData]);
 
-    console.log("조회기간=", formatStartDate, " ~ ", formatEndDate, " = ", salesDayData);
-    console.log("대비기간=", formatCompareStartDate, " ~ ", formatCompareEndDate, " = ", compareSalesDayData);
+    console.log("combinedData=", combinedData);
 
-
-    let effectTarget = "1"
     //조회기간
     useEffect(() => {
-        if (!isLoadingSalesDayData && salesDayData) {
-            setTableState(salesDayData);
+        if (!isLoadingSalesDayData && combinedData) {
+            setTableState(combinedData);
             effectTarget = "1";
             console.log("조회기간 누르면 1로 바껴야돼 = ", effectTarget);
         }
 
-    }, [salesDayData, isLoadingSalesDayData]);
+    }, [combinedData, isLoadingSalesDayData]);
 
-    //대비기간
+    // //대비기간
+    // useEffect(() => {
+    //     if (!isLoadingCompareSalesDayData && compareSalesDayData) {
+    //         setCompareTableState(compareSalesDayData);
+    //         effectTarget = "2"
+    //         console.log("대비기간 누르면 2로 바껴야돼 = ", effectTarget);
+    //     }
+    // }, [compareSalesDayData, isLoadingCompareSalesDayData]);
+
+
+    const mainHeader = ["매출구분"];
+
+    const headers1 = [
+        {header: "POS", accessor: "chk_pos_sales"},
+        {header: "배달", accessor: "chk_delivery_sales"},
+    ];
+    const headers2 = [
+        {header: "POS", accessor: "pre_pos_sales"},
+        {header: "배달", accessor: "pre_delivery_sales"},
+    ];
+
+    const [salesAnalysisColumnsData1, setsalesAnalysisColumnsData1] = useState([]);
+    const [salesAnalysisColumnsData2, setsalesAnalysisColumnsData2] = useState([]);
+
     useEffect(() => {
-        if (!isLoadingCompareSalesDayData && compareSalesDayData) {
-            setCompareTableState(compareSalesDayData);
-            effectTarget = "2"
-            console.log("대비기간 누르면 2로 바껴야돼 = ", effectTarget);
-        }
-    }, [compareSalesDayData, isLoadingCompareSalesDayData]);
+        const InquiryData = salesAnalysisColumns1(mainHeader, headers1,headers2);
+        setsalesAnalysisColumnsData1(InquiryData);
+        console.log("InquiryData=",InquiryData);
+    }, []);
+
+/*    useEffect(() => {
+        const preparationData = salesAnalysisColumns2(mainHeader, headers,headers2);
+        setsalesAnalysisColumnsData2(preparationData);
+    }, []);*/
 
 
-    //조회기간
     const memoizedData = useMemo(() => {
         return tableState?.filter(
             (row) =>
@@ -136,7 +169,6 @@ const SalesAnalysis = () => {
         );
     }, [tableState, searchData]);
 
-    //대비기간
     const memoizedCompareData = useMemo(() => {
         return compareTableState?.filter(
             (row) =>
@@ -145,10 +177,12 @@ const SalesAnalysis = () => {
         );
     }, [compareTableState, searchCompareData]);
 
-    const getUseTable = (options) => {
+
+    const getUseTable = (options, columns) => {
         return useTable(
             {
-                columns: salesAnalysisColumns,
+                //처음 진입 시 조회기간, 대비기간 출력 및 달력클릭 시 검색기능 구현
+                columns: columns || [],
                 ...options,
                 initialState: {pageIndex: 0, pageSize: 10},
                 autoResetPage: false,
@@ -157,6 +191,15 @@ const SalesAnalysis = () => {
             usePagination
         );
     }
+
+    //처음 진입 시 조회기간,대비기간 동시 출력 및 달력클릭 시 검색기능 구현
+    const InquiryTable = getUseTable({
+        data: useMemo(() => memoizedData, [memoizedData]),
+    }, salesAnalysisColumnsData1);
+
+    const preparationTable = getUseTable({
+        data: useMemo(() => memoizedCompareData, [memoizedCompareData]),
+    }, salesAnalysisColumnsData2);
 
     // const {
     //     getTableProps,
@@ -184,8 +227,6 @@ const SalesAnalysis = () => {
     //     usePagination
     // );
 
-    const table = getUseTable({data: useMemo(() => memoizedData, [memoizedData])})
-    const compareTable = getUseTable({data: useMemo(() => memoizedCompareData, [memoizedCompareData])})
 
     const handleFieldChange = (field, e) => {
         console.log("검색어 번경하면");
@@ -254,44 +295,31 @@ const SalesAnalysis = () => {
                         </div>
                     </div>
                 </div>
-
                 <div className={cx("row")}>
                     <div className={cx("box", "content-wrap")}>
-                        {/* <div className={cx("item")}>
-              <div className={cx("content-btn-wrap")}>
-                <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={salesDayColumns} tableData={memoizedData} />
-              </div>
-            </div> */}
-                        <div className={cx("item")}>
-                            {isLoadingSalesDayData ? (
-                                <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-                            ) : !memoizedData.length ? (
-                                <div className={cx("no-data")}>데이터가 없습니다.</div>
-                            ) : (<RenderTable
-                                    tableProps={{
-                                        ...table
-                                    }}
-                                    editMode={false}
-                                    setTableState={setTableState}
-                                ></RenderTable>
-                            )}
-                        </div>
-
-                        <div className={cx("item")}>
-                            {isLoadingCompareSalesDayData ? (
-                                <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-                            ) : !memoizedCompareData.length ? (
-                                <div className={cx("no-data")}>데이터가 없습니다.</div>
-                            ) : (<RenderTable
-                                    tableProps={{
-                                        ...compareTable
-                                    }}
-                                    editMode={false}
-                                    setCompareTableState={setCompareTableState}
-                                ></RenderTable>
-                            )}
-                        </div>
+                        {isLoadingSalesDayData ? (
+                            <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+                        ) : !memoizedData.length ? (
+                            <div className={cx("no-data")}>데이터가 없습니다.</div>
+                        ) : (<>
+                                <div className={cx("item")}>
+                                    <RenderTable
+                                        tableProps={{
+                                            ...InquiryTable
+                                        }}
+                                        editMode={false}
+                                        setTableState={setTableState}
+                                    ></RenderTable>
+                                   {/* <RenderTable
+                                        tableProps={{
+                                            ...preparationTable
+                                        }}
+                                        editMode={false}
+                                        setCompareTableState={setCompareTableState}
+                                    ></RenderTable>*/}
+                                </div>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

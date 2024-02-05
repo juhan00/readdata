@@ -1,9 +1,9 @@
-import {useState, useMemo, useEffect} from "react";
+import { useState, useMemo, useEffect } from "react";
 import PopupSearchAddress from "@/src/components/data/popup/popupSearchAddress";
-import {isEqual} from "lodash";
-import {useGlobalState} from "@/context/globalStateContext";
-import {POPUP_DEFAULT} from "@/consts/popup";
-import {TABLE_COLUMN_TYPE} from "@/consts/common";
+import { isEqual } from "lodash";
+import { useGlobalState } from "@/context/globalStateContext";
+import { POPUP_DEFAULT } from "@/consts/popup";
+import { TABLE_COLUMN_TYPE } from "@/consts/common";
 
 //styles
 import styles from "./renderTable.module.scss";
@@ -44,14 +44,15 @@ const RenderTable = ({
         canPreviousPage,
         canNextPage,
         pageCount,
-        pageOptions, // updateMyData,
+        pageOptions,
+        // updateMyData,
     } = tableProps;
 
     const [editingRow, setEditingRow] = useState(null);
     const [isAddressPopupOpen, setIsAddressPopupOpen] = useState(false);
     const [columnValues, setColumnValues] = useState(newRow);
     const [booleanOption, setBooleanOption] = useState([0, 1]);
-    const [{popupState}, setGlobalState] = useGlobalState();
+    const [{ popupState }, setGlobalState] = useGlobalState();
     const [selectRowIndex, setSelectRowIndex] = useState(null);
 
     const pages = useMemo(() => {
@@ -60,7 +61,7 @@ const RenderTable = ({
         }
         const start = Math.floor(pageIndex / 5) * 5;
         const end = Math.min(start + 5, pageOptions.length);
-        return Array.from({length: end - start}, (_, i) => start + i);
+        return Array.from({ length: end - start }, (_, i) => start + i);
     }, [pageIndex, pageOptions]);
 
     const isObjectInArray = (array, targetObject, currentRowIndex) => {
@@ -69,7 +70,8 @@ const RenderTable = ({
 
     const handleChange = (columnId, value) => {
         setColumnValues((prevColumnValues) => ({
-            ...prevColumnValues, [columnId]: value,
+            ...prevColumnValues,
+            [columnId]: value,
         }));
     };
 
@@ -88,14 +90,16 @@ const RenderTable = ({
         if (checkCurrentTableEqual) {
             setGlobalState({
                 popupState: {
-                    isOn: true, popup: POPUP_DEFAULT, content: "중복된 데이터가 있습니다.",
+                    isOn: true,
+                    popup: POPUP_DEFAULT,
+                    content: "중복된 데이터가 있습니다.",
                 },
             });
             return;
         }
 
         setEditingRow(null);
-        handleUpdateData({...columnValues});
+        handleUpdateData({ ...columnValues });
         setIsEditing(false);
     };
 
@@ -111,13 +115,15 @@ const RenderTable = ({
         if (checkCurrentTableEqual) {
             setGlobalState({
                 popupState: {
-                    isOn: true, popup: POPUP_DEFAULT, content: "중복된 데이터가 있습니다.",
+                    isOn: true,
+                    popup: POPUP_DEFAULT,
+                    content: "중복된 데이터가 있습니다.",
                 },
             });
             return;
         }
 
-        handleAddData({...columnValues});
+        handleAddData({ ...columnValues });
         setTableState((prevTableState) => prevTableState.slice(1));
         setIsAdded(false);
     };
@@ -133,10 +139,13 @@ const RenderTable = ({
     };
 
     const handleSelectAddress = (selectedAddress) => {
-        const addressCellName = headerGroups.flatMap((headerGroup) => headerGroup.headers.filter((column) => column.type === TABLE_COLUMN_TYPE.ADDRESS).map((addressColumn) => addressColumn.id));
+        const addressCellName = headerGroups.flatMap((headerGroup) =>
+            headerGroup.headers.filter((column) => column.type === TABLE_COLUMN_TYPE.ADDRESS).map((addressColumn) => addressColumn.id)
+        );
 
         setColumnValues((prevColumnValues) => ({
-            ...prevColumnValues, [addressCellName]: selectedAddress,
+            ...prevColumnValues,
+            [addressCellName]: selectedAddress,
         }));
         setIsAddressPopupOpen(false);
     };
@@ -145,23 +154,37 @@ const RenderTable = ({
         setSelectRowIndex(index);
     };
 
-    return (<>
-            <div className={cx("table-wrap")} style={tableHeight && {height: `${tableHeight}`}}>
+    return (
+        <>
+            <div className={cx("table-wrap")} style={tableHeight && { height: `${tableHeight}` }}>
                 <table {...getTableProps()}>
                     <thead>
-                    {headerGroups.map((headerGroup) => (<tr {...headerGroup.getHeaderGroupProps()}>
+                    {headerGroups.map((headerGroup) => (
+                        <tr {...headerGroup.getHeaderGroupProps()}>
                             {editMode && <th className={cx("edit-th")}></th>}
+
                             {headerGroup.headers.map((column, index) => (
-                                <th {...column.getHeaderProps(isAdded || editingRow != null ? {} : column.getSortByToggleProps())}
-                                    style={column.headerStyle}>
+                                <th
+                                    {...column.getHeaderProps(isAdded || editingRow != null ? {} : column.getSortByToggleProps())}
+                                    style={column.headerStyle}
+                                    rowSpan={column.rowspan ? column.rowspan : ""}
+                                >
                                     <div className={cx("text")}>
                                         {column.render("Header")}
-                                        {column.isSorted ? (column.isSortedDesc ? (
-                                                <span className={cx("sort", "desc")}>v</span>) : (
-                                                <span className={cx("sort", "asc")}>^</span>)) : ("")}
+                                        {column.isSorted ? (
+                                            column.isSortedDesc ? (
+                                                <span className={cx("sort", "desc")}>v</span>
+                                            ) : (
+                                                <span className={cx("sort", "asc")}>^</span>
+                                            )
+                                        ) : (
+                                            ""
+                                        )}
                                     </div>
-                                </th>))}
-                        </tr>))}
+                                </th>
+                            ))}
+                        </tr>
+                    ))}
                     </thead>
                     <tbody {...getTableBodyProps()}>
                     {page?.map((row, rowIndex) => {
@@ -169,31 +192,42 @@ const RenderTable = ({
 
                         editingRow;
                         const isEditingRow = editingRow === row.index || (isAdded && row.index === 0);
-                        return (<tr
+                        return (
+                            <tr
                                 {...row.getRowProps()}
                                 onDoubleClick={() => (useDoubleClick ? handleClickReturn && handleClickReturn(row.original[returnColumnName]) : "")}
                                 className={cx(rowSelect && selectRowIndex === row.index ? "active" : "")}
                             >
-                                {editMode && (<td>
+                                {editMode && (
+                                    <td>
                                         <div className={cx("button-wrap")}>
-                                            {isEditingRow ? (isAdded && row.index === 0 ? (<>
+                                            {isEditingRow ? (
+                                                isAdded && row.index === 0 ? (
+                                                    <>
                                                         <button onClick={() => handleAddSaveClick()}>저장</button>
                                                         <button onClick={() => handleAddCancelClick()}>취소</button>
-                                                    </>) : (<>
-                                                        <button onClick={() => handleEditSaveClick(row.index)}>저장
-                                                        </button>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <button onClick={() => handleEditSaveClick(row.index)}>저장</button>
                                                         <button onClick={() => handleEditCancelClick()}>취소</button>
-                                                    </>)) : handleClickReturn ? (<button
+                                                    </>
+                                                )
+                                            ) : handleClickReturn ? (
+                                                <button
                                                     onClick={() => {
                                                         handleClickReturn(row.values);
                                                         handleClickSelect(row.index);
                                                     }}
                                                 >
                                                     {returnBtnName || "선택"}
-                                                </button>) : (<button
-                                                    onClick={() => handleEditClick(rowIndex, row.index)}>수정</button>)}
+                                                </button>
+                                            ) : (
+                                                <button onClick={() => handleEditClick(rowIndex, row.index)}>수정</button>
+                                            )}
                                         </div>
-                                    </td>)}
+                                    </td>
+                                )}
                                 {row.cells.map((cell) => {
                                     const isNumberColumn = cell.column.type === TABLE_COLUMN_TYPE.NUMBER;
                                     const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE.AUTHORITY;
@@ -203,40 +237,56 @@ const RenderTable = ({
 
                                     return (
                                         <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
-                                            {isEditingRow ? (isNumberColumn || isNoEditColumn ? (
-                                                    <input value={columnValues[cell.column.id] || cell.value || ""}
-                                                           readOnly onfocus="this.blur()"/>) : isAuthorityColumn ? (
-                                                    <select value={columnValues[cell.column.id]}
-                                                            onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
+                                            {isEditingRow ? (
+                                                isNumberColumn || isNoEditColumn ? (
+                                                    <input value={columnValues[cell.column.id] || cell.value || ""} readOnly onfocus="this.blur()" />
+                                                ) : isAuthorityColumn ? (
+                                                    <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
                                                         {booleanOption.map((option) => (
                                                             <option key={option} value={option}>
                                                                 {option === 0 ? "사용자" : "관리자"}
-                                                            </option>))}
-                                                    </select>) : isUseflagColumn ? (
-                                                    <select value={columnValues[cell.column.id]}
-                                                            onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                ) : isUseflagColumn ? (
+                                                    <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
                                                         {booleanOption.map((option) => (
                                                             <option key={option} value={option}>
                                                                 {option === 0 ? "사용안함" : "사용"}
-                                                            </option>))}
-                                                    </select>) : isAddressColumn ? (<>
-                                                        {isAddressPopupOpen && (<PopupSearchAddress
+                                                            </option>
+                                                        ))}
+                                                    </select>
+                                                ) : isAddressColumn ? (
+                                                    <>
+                                                        {isAddressPopupOpen && (
+                                                            <PopupSearchAddress
                                                                 onSelectAddress={handleSelectAddress}
                                                                 orgAddress={columnValues[cell.column.id] || cell.value || ""}
                                                                 onClose={() => setIsAddressPopupOpen(false)}
-                                                            />)}
+                                                            />
+                                                        )}
                                                         <input
                                                             value={columnValues[cell.column.id] || cell.value || ""}
                                                             onClick={(e) => handleClickAddress(cell.column.id, e.target.value)}
                                                             readOnly
                                                         />
-                                                    </>) : (<input
+                                                    </>
+                                                ) : (
+                                                    <input
                                                         value={columnValues[cell.column.id] || cell.value || ""}
                                                         onChange={(e) => handleChange(cell.column.id, e.target.value)}
-                                                    />)) : isNumberColumn ? (row.index + 1) : (cell.render("Cell"))}
-                                        </td>);
+                                                    />
+                                                )
+                                            ) : isNumberColumn ? (
+                                                row.index + 1
+                                            ) : (
+                                                cell.render("Cell")
+                                            )}
+                                        </td>
+                                    );
                                 })}
-                            </tr>);
+                            </tr>
+                        );
                     })}
                     </tbody>
                 </table>
@@ -244,22 +294,23 @@ const RenderTable = ({
             {/* <div className={cx("page-info-wrap")}>
         {pageIndex + 1} / {pageOptions.length}
       </div> */}
-            {pageOptions && (<div className={cx("pagination")}>
-                    <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}
-                            className={cx("prev_double")}></button>
+            {pageOptions && (
+                <div className={cx("pagination")}>
+                    <button onClick={() => gotoPage(0)} disabled={!canPreviousPage} className={cx("prev_double")}></button>
                     <button onClick={() => previousPage()} disabled={!canPreviousPage} className={cx("prev")}></button>
                     <div className={cx("number-wrap")}>
                         {pages.map((page, index) => (
-                            <button key={index} onClick={() => gotoPage(page)} disabled={pageIndex === page}
-                                    className={cx("number")}>
+                            <button key={index} onClick={() => gotoPage(page)} disabled={pageIndex === page} className={cx("number")}>
                                 {page + 1}
-                            </button>))}
+                            </button>
+                        ))}
                     </div>
                     <button onClick={() => nextPage()} disabled={!canNextPage} className={cx("next")}></button>
-                    <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}
-                            className={cx("next_double")}></button>
-                </div>)}
-        </>);
+                    <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage} className={cx("next_double")}></button>
+                </div>
+            )}
+        </>
+    );
 };
 
 export default RenderTable;

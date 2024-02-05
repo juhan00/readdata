@@ -355,6 +355,7 @@ const Chart = () => {
   // const tableData = ["data1", "data2", "data3", "data4", "data5"];
   // const column = ["column1", "column2", "column3", "column4", "column5"];
   const totalWidth = data.length * 100;
+  // const totalWidth = "100%";
 
   const SaveChartImage = async () => {
     const chartImage = await html2canvas(chartRef.current);

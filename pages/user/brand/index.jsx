@@ -211,8 +211,6 @@ const Brand = () => {
       return transformedItem;
     });
 
-  const exportExcelColumns = brandColumns.filter((column) => column.accessor !== "no");
-
   return (
     <>
       <div className={cx("brand")}>
@@ -247,7 +245,7 @@ const Brand = () => {
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
                 <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={exportExcelColumns} tableData={memoizedData} />
+                <BtnExcelDown columns={headerGroups} tableData={page} />
                 <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
               </div>
             </div>

@@ -4,12 +4,15 @@ import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchDateItems from "@/src/components/data/searchDateItems";
 import SearchItem from "@/src/components/data/searchItem";
-import { getSalesDayList } from "@/utils/api/sales";
+import { getSalesDayList, getSalesHeadersList } from "@/utils/api/sales";
 import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
+import { useGetDateArray } from "@/utils/useGetDateArray";
+import BarChart from "@/src/components/data/barChart";
+import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 
 //styles
 import className from "classnames/bind";
@@ -24,14 +27,14 @@ const SalesDay = () => {
   };
 
   const today = new Date();
-  const oneMonthAgo = new Date(today);
-  oneMonthAgo.setMonth(today.getMonth() - 1);
+  const oneWeekAgo = new Date(today);
+  oneWeekAgo.setDate(today.getDate() - 7);
 
   const { t } = useTranslation(["common", "dataAdmin"]);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
-  const [startDate, setStartDate] = useState(oneMonthAgo);
+  const [startDate, setStartDate] = useState(oneWeekAgo);
   const [endDate, setEndDate] = useState(today);
 
   const formatStartDate = useMemo(() => {
@@ -58,6 +61,17 @@ const SalesDay = () => {
     enabled: formatStartDate !== undefined && formatEndDate !== undefined,
   });
 
+  const {
+    data: headersData,
+    isLoading: isLoadingHeadersData,
+    refetch: refetchHeadersData,
+  } = useQuery("getSalesHeadersData", () => getSalesHeadersList("B0002"), {
+    enabled: true,
+  });
+
+  console.log("salesDayData==",salesDayData);
+  console.log("headersData==",headersData);
+
   useEffect(() => {
     if (!isLoadingSalesDayData && salesDayData) {
       setTableState(salesDayData);
@@ -74,38 +88,92 @@ const SalesDay = () => {
     );
   }, [tableState, searchData]);
 
-  const storeGroupData = useMemo(() => {
+  const memoizedSalesDates = useMemo(() => {
+    return useGetDateArray(startDate, endDate);
+  }, [endDate]);
+
+  const memoizedSalesDayColumns = useMemo(() => {
+    return headersData ? salesDayColumns(memoizedSalesDates, headersData) : [];
+  }, [memoizedSalesDates, headersData]);
+
+  const memoizedSalesDayData = useMemo(() => {
     const setStoreGroupData = (data) => {
       const groupData = {};
 
-      data.forEach((item) => {
+      data.forEach((item, index) => {
         const key = `${item.brand_name}_${item.store}`;
+        const sale_date = item.sale_date;
+        //key= (주)프랭크에프엔비_명일점 @@@sale_date= 2023-12-01
         if (!groupData[key]) {
           groupData[key] = {
             brand_name: item.brand_name,
             store: item.store,
             fran_code: item.fran_code,
-            data: [],
+            data: {},
           };
         }
-        groupData[key].data.push({
+        console.log("groupData[key]@@@=:,");
+
+        const salesData = {
           sale_date: item.sale_date,
-          bae1_sales: item.bae1_sales,
-          bae_sales: item.bae_sales,
-          baemin_sales: item.baemin_sales,
-          coupang_sales: item.coupang_sales,
-          etc_sales: item.etc_sales,
-          logi_sales: item.logi_sales,
-          pos_sales: item.pos_sales,
-          yogiyo_sales: item.yogiyo_sales,
+        };
+
+        headersData?.forEach((header) => {
+          const accessor = header.accessor;
+          salesData[accessor] = item[accessor];
         });
+
+        groupData[key].data[sale_date] = salesData;
       });
 
       const result = Object.values(groupData);
       return result;
     };
     return setStoreGroupData(memoizedData);
-  }, [memoizedData]);
+  }, [memoizedData, headersData]);
+
+  const memoizedSalesDayChartData = useMemo(() => {
+    const totalDataArray = [];
+
+    memoizedSalesDayData.forEach((item) => {
+      Object.keys(item.data).forEach((sale_date) => {
+        const saleDate = item.data[sale_date].sale_date;
+
+        let dateObject = totalDataArray.find((obj) => obj.sale_date === saleDate);
+
+        if (!dateObject) {
+          dateObject = {
+            sale_date: saleDate,
+          };
+          totalDataArray.push(dateObject);
+        }
+
+        Object.keys(item.data[sale_date]).forEach((column) => {
+          if (column !== "sale_date") {
+            dateObject[column] = (Number(dateObject[column]) || 0) + Number(item.data[sale_date][column]);
+          }
+        });
+      });
+    });
+
+    totalDataArray.forEach((obj) => {
+      const total = Object.keys(obj).reduce((sum, key) => {
+        if (key !== "sale_date") {
+          sum += obj[key];
+        }
+        return sum;
+      }, 0);
+
+      obj.total = total;
+    });
+
+    // console.log("totalDataArray================>", totalDataArray);
+    return totalDataArray;
+  }, [memoizedSalesDayData]);
+
+  useEffect(() => {
+    console.log("memoizedSalesDayColumns===========>", memoizedSalesDayColumns);
+  }, [memoizedSalesDayColumns]);
 
   const {
     getTableProps,
@@ -123,9 +191,9 @@ const SalesDay = () => {
     pageOptions,
   } = useTable(
     {
-      columns: salesDayColumns,
-      data: useMemo(() => memoizedData, [memoizedData]),
-      initialState: { pageIndex: 0, pageSize: 10 },
+      columns: memoizedSalesDayColumns,
+      data: useMemo(() => memoizedSalesDayData, [memoizedSalesDayData]),
+      initialState: { pageIndex: 0, pageSize: 50 },
       autoResetPage: false,
     },
     useSortBy,
@@ -147,14 +215,6 @@ const SalesDay = () => {
     }));
     gotoPage(0);
   };
-
-
-  console.log("시작날짜=",formatStartDate);
-  console.log("종료날짜=",formatEndDate);
-
-  // useEffect(() => {
-  //   console.log("tableState", tableState);
-  // }, [tableState]);
 
 
   return (
@@ -182,12 +242,11 @@ const SalesDay = () => {
 
         <div className={cx("row")}>
           <div className={cx("box", "content-wrap")}>
-            {/* <div className={cx("item")}>
+            <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
-                <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={salesDayColumns} tableData={memoizedData} />
+                <BtnExcelDown columns={headerGroups} tableData={memoizedSalesDayData} />
               </div>
-            </div> */}
+            </div>
             <div className={cx("item")}>
               {isLoadingSalesDayData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
@@ -215,6 +274,14 @@ const SalesDay = () => {
                   setTableState={setTableState}
                 />
               )}
+            </div>
+          </div>
+        </div>
+
+        <div className={cx("row")}>
+          <div className={cx("box")}>
+            <div className={cx("item")}>
+              <BarChart memoizedSalesDayChartData={memoizedSalesDayChartData} headersData={headersData} />
             </div>
           </div>
         </div>
