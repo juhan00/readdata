@@ -8,10 +8,11 @@ import styles from "./searchDateItems.module.scss";
 import className from "classnames/bind";
 const cx = className.bind(styles);
 
-const SearchDateItem = ({ startDate, endDate, handleStartDateChange, handleEndDateChange, isMonth, updateData }) => {
+const SearchDateItem = ({ startDate, endDate, handleStartDateChange, handleEndDateChange, isMonth, updateDate }) => {
   const handleEndDateSelect = (date) => {
     if (date.getTime() === endDate.getTime()) {
-      updateData();
+      console.log("handleEndDateSelect", date);
+      updateDate(date);
     }
   };
 

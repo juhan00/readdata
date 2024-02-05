@@ -33,7 +33,7 @@ const SalesDay = () => {
   oneWeekAgo.setDate(today.getDate() - 7);
 
   const { t } = useTranslation(["common", "dataAdmin"]);
-  const [companyCode, setCompanyCode] = useState("C0001");
+  const [companyCode, setCompanyCode] = useState("C0002");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
@@ -54,18 +54,20 @@ const SalesDay = () => {
 
   const handleEndDateChange = (date) => {
     setEndDate(date);
-    updateData();
   };
 
-  const updateData = () => {
-    refetchSalesDayData();
+  const updateDate = (date) => {
+    console.log("updateData", date);
+    const updatedDate = new Date(date.getTime() + 1);
+    setEndDate(updatedDate);
   };
 
   const {
     data: salesDayData,
     isLoading: isLoadingSalesDayData,
+    isFetching: isFetchingSalesDayData,
     refetch: refetchSalesDayData,
-  } = useQuery(["getSalesDayData"], () => getSalesDayList(companyCode, formatStartDate, formatEndDate), {
+  } = useQuery(["getSalesDayData", endDate], () => getSalesDayList(companyCode, formatStartDate, formatEndDate), {
     enabled: companyCode !== undefined && formatStartDate !== undefined && formatEndDate !== undefined,
   });
 
@@ -224,7 +226,7 @@ const SalesDay = () => {
                 endDate={endDate}
                 handleStartDateChange={handleStartDateChange}
                 handleEndDateChange={handleEndDateChange}
-                updateData={updateData}
+                updateDate={updateDate}
               />
             </div>
             <div className={cx("item")}>
@@ -250,9 +252,9 @@ const SalesDay = () => {
               </div>
             </div>
             <div className={cx("item")}>
-              {isLoadingSalesDayData ? (
+              {isLoadingSalesDayData || isFetchingSalesDayData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : !memoizedData.length ? (
+              ) : !isLoadingSalesDayData && !isFetchingSalesDayData && !page.length ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <RenderTable

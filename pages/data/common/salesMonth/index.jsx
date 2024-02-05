@@ -33,7 +33,7 @@ const SalesMonth = () => {
   const thisMonth = startOfMonth(set(today, { month: today.getMonth() }));
 
   const { t } = useTranslation(["common", "dataAdmin"]);
-  const [companyCode, setCompanyCode] = useState("C0001");
+  const [companyCode, setCompanyCode] = useState("C0002");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
@@ -54,18 +54,19 @@ const SalesMonth = () => {
 
   const handleEndDateChange = (date) => {
     setEndDate(date);
-    updateData();
   };
 
-  const updateData = () => {
-    refetchSalesMonthData();
+  const updateDate = (date) => {
+    console.log("updateData", date);
+    const updatedDate = new Date(date.getTime() + 1);
+    setEndDate(updatedDate);
   };
 
   const {
     data: salesMonthData,
     isLoading: isLoadingSalesMonthData,
     refetch: refetchSalesMonthData,
-  } = useQuery(["getSalesMonthData"], () => getSalesMonthList(companyCode, formatStartDate, formatEndDate), {
+  } = useQuery(["getSalesMonthData", endDate], () => getSalesMonthList(companyCode, formatStartDate, formatEndDate), {
     enabled: companyCode !== undefined && formatStartDate !== undefined && formatEndDate !== undefined,
   });
 
@@ -93,7 +94,7 @@ const SalesMonth = () => {
 
   const memoizedSalesDates = useMemo(() => {
     return useGetMonthArray(startDate, endDate);
-  }, [startDate, endDate]);
+  }, [endDate]);
 
   const memoizedSalesMonthColumns = useMemo(() => {
     return headersData ? salesMonthColumns(memoizedSalesDates, headersData) : [];
@@ -226,7 +227,7 @@ const SalesMonth = () => {
                 handleStartDateChange={handleStartDateChange}
                 handleEndDateChange={handleEndDateChange}
                 isMonth={true}
-                updateData={updateData}
+                updateDate={updateDate}
               />
             </div>
             <div className={cx("item")}>
