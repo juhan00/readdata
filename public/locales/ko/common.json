@@ -83,27 +83,6 @@
     "name_text": "님 로그인 중입니다.",
     "help": "도움말",
     "logout": "로그아웃",
-<<<<<<< HEAD
-    "user_menu": {
-      "menu1": "브랜드관리",
-      "menu2": "가맹점관리",
-      "menu3": "가맹점계정관리",
-      "menu4": "가맹점맵핑관리",
-      "menu5": "일매출관리",
-      "menu6": "월매출관리",
-      "menu7": "결제관리"
-    },
-    "admin_menu": {
-      "menu1": "회사관리",
-      "menu2": "사용자관리",
-      "menu3": "가맹점관리",
-      "menu4": "가맹점계정관리",
-      "menu5": "가맹점맵핑관리",
-      "menu6": "일매출관리",
-      "menu7": "월매출관리",
-      "menu8": "고객센터",
-      "menu9": "매출분석"
-=======
     "nav_menu": {
       "company": "회사관리",
       "user": "사용자관리",
@@ -115,7 +94,6 @@
       "sales_month": "월매출관리",
       "sales_region": "지역매출관리",
       "sales_analyze": "매출분석"
->>>>>>> origin/main
     }
   },
   "search": "검색"

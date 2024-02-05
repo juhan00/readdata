@@ -11,15 +11,10 @@ import Store from "../common/store";
 import StoreMapping from "../common/storeMapping";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-<<<<<<< HEAD:pages/admin/index.jsx
-import SalesAnalysis from "@/pages/admin/salesAnalysis";
-import TableTest from "@/pages/admin/tableTest";
-=======
 import Dashboard from "../common/dashboard";
 import SalesRegion from "../common/saleRegion";
 import SalesAnalyze from "../common/salesAnalyze";
 import Brand from "../common/brand";
->>>>>>> origin/main:pages/data/admin/index.jsx
 
 //styles
 import className from "classnames/bind";
@@ -28,46 +23,41 @@ import styles from "./admin.module.scss";
 const cx = className.bind(styles);
 
 const Admin = () => {
-  const router = useRouter();
-  const { category } = router.query;
-  const [useType, setUseType] = useState(USE_TYPE.ADMINSUPER);
-  const [adminMenu, setAdminMenu] = useState(category);
+    const router = useRouter();
+    const { category } = router.query;
+    const [useType, setUseType] = useState(USE_TYPE.ADMINSUPER);
+    const [adminMenu, setAdminMenu] = useState(category);
 
-  useEffect(() => {
-    setAdminMenu(category);
-  }, [category]);
+    useEffect(() => {
+        setAdminMenu(category);
+    }, [category]);
 
-  return (
-    <div className={cx("admin")}>
-      <PopupDataDefault />
-      <DataLayout useType={useType} adminMenu={{ menu: adminMenu }}>
-        {!adminMenu && <Dashboard />}
-        {adminMenu === "company" && <Compnay />}
-        {adminMenu === "user" && <User />}
-        {adminMenu === "brand" && <Brand />}
-        {adminMenu === "store" && <Store />}
-        {adminMenu === "store_account" && <StoreAccount />}
-        {adminMenu === "store_mapping" && <StoreMapping />}
-        {adminMenu === "sales_day" && <SalesDay />}
-        {adminMenu === "sales_month" && <SalesMonth />}
-<<<<<<< HEAD:pages/admin/index.jsx
-        {adminMenu === "sales_analysis" && <SalesAnalysis />}
-        {adminMenu === "tableTest" && <TableTest />}
-=======
-        {adminMenu === "sales_region" && <SalesRegion />}
-        {adminMenu === "sales_analyze" && <SalesAnalyze />}
->>>>>>> origin/main:pages/data/admin/index.jsx
-      </DataLayout>
-    </div>
-  );
+    return (
+        <div className={cx("admin")}>
+            <PopupDataDefault />
+            <DataLayout useType={useType} adminMenu={{ menu: adminMenu }}>
+                {!adminMenu && <Dashboard />}
+                {adminMenu === "company" && <Compnay />}
+                {adminMenu === "user" && <User />}
+                {adminMenu === "brand" && <Brand />}
+                {adminMenu === "store" && <Store />}
+                {adminMenu === "store_account" && <StoreAccount />}
+                {adminMenu === "store_mapping" && <StoreMapping />}
+                {adminMenu === "sales_day" && <SalesDay />}
+                {adminMenu === "sales_month" && <SalesMonth />}
+                {adminMenu === "sales_region" && <SalesRegion />}
+                {adminMenu === "sales_analyze" && <SalesAnalyze />}
+            </DataLayout>
+        </div>
+    );
 };
 
 export default Admin;
 
 export const getStaticProps = async ({ locale }) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["common", "dataAdmin", "popup"])),
-    },
-  };
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ["common", "dataAdmin", "popup"])),
+        },
+    };
 };

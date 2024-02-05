@@ -12,49 +12,39 @@ import SalesAnalyze from "../common/salesAnalyze";
 
 //styles
 import className from "classnames/bind";
-<<<<<<< HEAD:pages/user/index.jsx
-import TossPay from "@/pages/user/tossPay";
-=======
 import styles from "./user.module.scss";
->>>>>>> origin/main:pages/data/user/index.jsx
 
 const cx = className.bind(styles);
 
 const User = () => {
-  const router = useRouter();
-  const { category } = router.query;
-  const [userMenu, setUserMenu] = useState(category);
+    const router = useRouter();
+    const { category } = router.query;
+    const [userMenu, setUserMenu] = useState(category);
 
-  useEffect(() => {
-    setUserMenu(category);
-  }, [category]);
+    useEffect(() => {
+        setUserMenu(category);
+    }, [category]);
 
-  return (
-    <div className={cx("user")}>
-      <PopupDataDefault />
-      <DataLayout useType={USE_TYPE.USER} userMenu={{ menu: userMenu }}>
-        {!userMenu && <Dashboard />}
-        {userMenu === "sales_day" && <SalesDay />}
-        {userMenu === "sales_month" && <SalesMonth />}
-<<<<<<< HEAD:pages/user/index.jsx
-        {userMenu === "brand_test" && <BrandTest />}
-        {userMenu === "sales_test_month" && <SalesTestMonth />}
-        {userMenu === "tossPay" && <TossPay />}
-=======
-        {userMenu === "sales_region" && <SalesRegion />}
-        {userMenu === "sales_analyze" && <SalesAnalyze />}
->>>>>>> origin/main:pages/data/user/index.jsx
-      </DataLayout>
-    </div>
-  );
+    return (
+        <div className={cx("user")}>
+            <PopupDataDefault />
+            <DataLayout useType={USE_TYPE.USER} userMenu={{ menu: userMenu }}>
+                {!userMenu && <Dashboard />}
+                {userMenu === "sales_day" && <SalesDay />}
+                {userMenu === "sales_month" && <SalesMonth />}
+                {userMenu === "sales_region" && <SalesRegion />}
+                {userMenu === "sales_analyze" && <SalesAnalyze />}
+            </DataLayout>
+        </div>
+    );
 };
 
 export default User;
 
 export const getStaticProps = async ({ locale }) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["common", "dataUser", "popup"])),
-    },
-  };
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ["common", "dataUser", "popup"])),
+        },
+    };
 };
