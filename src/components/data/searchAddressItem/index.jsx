@@ -25,11 +25,6 @@ const SearchAddressItem = ({ title, type = SEARCH_ADDRESS.SIDO }) => {
     enabled: true,
   });
 
-  useEffect(() => {
-    console.log("sidoData", sidoData);
-    console.log("sigoonData", sigoonData);
-  }, [sidoData, sigoonData]);
-
   return (
     <div className={cx("search-item")}>
       <label>{title}</label>

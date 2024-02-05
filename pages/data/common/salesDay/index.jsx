@@ -33,6 +33,7 @@ const SalesDay = () => {
   oneWeekAgo.setDate(today.getDate() - 7);
 
   const { t } = useTranslation(["common", "dataAdmin"]);
+  const [companyCode, setCompanyCode] = useState("C0001");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
@@ -53,14 +54,19 @@ const SalesDay = () => {
 
   const handleEndDateChange = (date) => {
     setEndDate(date);
+    updateData();
+  };
+
+  const updateData = () => {
+    refetchSalesDayData();
   };
 
   const {
     data: salesDayData,
     isLoading: isLoadingSalesDayData,
     refetch: refetchSalesDayData,
-  } = useQuery(["getSalesDayData", formatEndDate], () => getSalesDayList(formatStartDate, formatEndDate), {
-    enabled: formatStartDate !== undefined && formatEndDate !== undefined,
+  } = useQuery(["getSalesDayData"], () => getSalesDayList(companyCode, formatStartDate, formatEndDate), {
+    enabled: companyCode !== undefined && formatStartDate !== undefined && formatEndDate !== undefined,
   });
 
   const {
@@ -87,7 +93,7 @@ const SalesDay = () => {
 
   const memoizedSalesDates = useMemo(() => {
     return useGetDateArray(startDate, endDate);
-  }, [endDate]);
+  }, [startDate, endDate]);
 
   const memoizedSalesDayColumns = useMemo(() => {
     return headersData ? salesDayColumns(memoizedSalesDates, headersData) : [];
@@ -218,6 +224,7 @@ const SalesDay = () => {
                 endDate={endDate}
                 handleStartDateChange={handleStartDateChange}
                 handleEndDateChange={handleEndDateChange}
+                updateData={updateData}
               />
             </div>
             <div className={cx("item")}>

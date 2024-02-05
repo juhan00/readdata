@@ -13,6 +13,7 @@ export const salesDayColumns = (dates, headers) => {
           Header: "가맹점명",
           accessor: "store",
           headerStyle: {
+            width: "200px",
             textAlign: "center",
           },
           cellStyle: {
