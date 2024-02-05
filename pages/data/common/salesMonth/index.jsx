@@ -11,6 +11,7 @@ import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
+import BarChart from "@/src/components/data/barChart";
 
 //styles
 import className from "classnames/bind";
@@ -166,6 +167,12 @@ const SalesMonth = () => {
                 />
               )}
             </div>
+          </div>
+        </div>
+
+        <div className={cx("row")}>
+          <div className={cx("box")}>
+            <div className={cx("item")}>{/* <BarChart memoizedSalesDayChartData={memoizedSalesDayChartData} headersData={headersData} /> */}</div>
           </div>
         </div>
       </div>

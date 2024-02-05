@@ -3,6 +3,7 @@ import { Area, Line, Bar, XAxis, YAxis, Text, Tooltip, CartesianGrid, Legend, Co
 import html2canvas from "html2canvas";
 import { saveAs } from "file-saver";
 import { useRandomColor } from "@/utils/useRandomColor";
+import BtnChartSave from "../button/btnChartSave";
 
 //styles
 import styles from "./barChart.module.scss";
@@ -98,11 +99,14 @@ const BarChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
   };
 
   return (
-    <>
-      <div>
-        <button onClick={() => SaveChartImage()}>Save Chart as Image</button>
+    <div className={cx("chart")}>
+      <div className={cx("btn-wrap")}>
+        <BtnChartSave onClick={() => SaveChartImage()} />
+      </div>
+
+      <div ref={chartRef}>
         <CustomLegend className={cx("custom-legend")} />
-        <div ref={chartRef} className={cx("chart-container")}>
+        <div className={cx("chart-container")}>
           <ResponsiveContainer width={totalWidth} height={"100%"}>
             <ComposedChart id="chart" data={memoizedSalesDayChartData}>
               <XAxis dataKey={"sale_date"} />
@@ -145,7 +149,7 @@ const BarChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
           </ResponsiveContainer>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
