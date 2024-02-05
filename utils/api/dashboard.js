@@ -33,7 +33,7 @@ export const getDashboardYesterdayList = async (companyCode, yesterday) => {
 };
 
 export const getDashboardThisMonthList = async (companyCode, thisMonth) => {
-  const response = await fetch(`/api_default/dashboard/day?company_code=${companyCode}&sale_month=${thisMonth}`, {
+  const response = await fetch(`/api_default/dashboard/month?company_code=${companyCode}&sale_month=${thisMonth}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
