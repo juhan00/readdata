@@ -58,6 +58,13 @@
           background-color: #fffae3;
         }
       }
+      tr.total {
+        td {
+          font-weight: 700;
+          background-color: #fdeea8;
+          border-bottom: 0;
+        }
+      }
       td {
         background-color: $color-white;
         height: 3rem;

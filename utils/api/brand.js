@@ -1,6 +1,5 @@
 export const getBrandList = async (companyCode) => {
-  console.log(`/brand/list?brand_code=${companyCode}`);
-  const response = await fetch(`/brand/mng/list?company_code=${companyCode}`, {
+  const response = await fetch(`/api_default/brand/mng/list?company_code=${companyCode}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -17,7 +16,7 @@ export const getBrandList = async (companyCode) => {
 };
 
 export const updateBrandList = async (data) => {
-  const response = await fetch(`/brand/mng/post`, {
+  const response = await fetch(`/api_default/brand/mng/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -38,7 +37,7 @@ export const updateBrandList = async (data) => {
 };
 
 export const addBrandList = async (data) => {
-  const response = await fetch(`/brand/mng/post`, {
+  const response = await fetch(`/api_default/brand/mng/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

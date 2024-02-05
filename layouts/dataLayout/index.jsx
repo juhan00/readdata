@@ -8,7 +8,7 @@ const cx = className.bind(styles);
 
 const DataLayout = ({ children, useType, userMenu, adminMenu }) => {
   return (
-    <div className={cx("container", "user")}>
+    <div className={cx("container")}>
       <LeftNavigation useType={useType} userMenu={userMenu} adminMenu={adminMenu} />
 
       <div className={cx("content-container")}>

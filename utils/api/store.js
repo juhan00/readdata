@@ -1,5 +1,5 @@
 export const getStoreList = async () => {
-  const response = await fetch(`/franchise/list`, {
+  const response = await fetch(`/api_default/franchise/list`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -16,7 +16,7 @@ export const getStoreList = async () => {
 };
 
 export const updateStoreList = async (data) => {
-  const response = await fetch(`/store/mng/post`, {
+  const response = await fetch(`/api_default/store/mng/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -40,7 +40,7 @@ export const updateStoreList = async (data) => {
 };
 
 export const addStoreList = async (data) => {
-  const response = await fetch(`/store/mng/post`, {
+  const response = await fetch(`/api_default/store/mng/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -64,7 +64,7 @@ export const addStoreList = async (data) => {
 };
 
 export const getStoreAccountList = async () => {
-  const response = await fetch(`/store/mng/list`, {
+  const response = await fetch(`/api_default/store/mng/list`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -81,7 +81,7 @@ export const getStoreAccountList = async () => {
 };
 
 export const updateStoreAccountList = async (data) => {
-  const response = await fetch(`/store/acc/post`, {
+  const response = await fetch(`/api_default/store/acc/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -138,7 +138,7 @@ export const updateStoreAccountList = async (data) => {
 };
 
 export const getStoreMapingList = async () => {
-  const response = await fetch(`/mapping/list`, {
+  const response = await fetch(`/api_default/mapping/list`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -155,7 +155,7 @@ export const getStoreMapingList = async () => {
 };
 
 export const updateStoreMapingList = async (data) => {
-  const response = await fetch(`/franchise/mapping`, {
+  const response = await fetch(`/api_default/franchise/mapping`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -175,7 +175,7 @@ export const updateStoreMapingList = async (data) => {
 };
 
 export const getScrapingList = async () => {
-  const response = await fetch(`/franchise/scrap`, {
+  const response = await fetch(`/api_default/franchise/scrap`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

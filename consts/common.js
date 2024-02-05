@@ -2,6 +2,7 @@ export const RESPONSIVE_MOBILE_SIZE = 767;
 export const USE_TYPE = {
   USER: "USER",
   ADMIN: "ADMIN",
+  ADMINSUPER: "ADMINSUPER",
 };
 export const SEARCH_TYPE = {
   INPUT: "INPUT",
@@ -14,4 +15,9 @@ export const TABLE_COLUMN_TYPE = {
   AUTHORITY: "AUTHORITY",
   USEFLAG: "USEFLAG",
   ADDRESS: "ADDRESS",
+};
+
+export const SEARCH_ADDRESS = {
+  SIDO: "SIDO",
+  SIGOON: "SIGOON",
 };

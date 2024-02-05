@@ -1,11 +1,11 @@
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { SEARCH_TYPE } from "@/consts/common";
 import { getBrandList } from "@/utils/api/brand";
+import { useEffect } from "react";
 
 //styles
 import styles from "./searchItem.module.scss";
 import className from "classnames/bind";
-import { useEffect } from "react";
 const cx = className.bind(styles);
 
 const SearchItem = ({ searchType, title, value, id, onClick, onChange, readOnly, companyCode }) => {
@@ -14,10 +14,6 @@ const SearchItem = ({ searchType, title, value, id, onClick, onChange, readOnly,
     isLoading: isLoadingBrandData,
     refetch: refetchBrandData,
   } = useQuery(["getBrandSelectData", companyCode], () => getBrandList(companyCode), { enabled: companyCode !== undefined });
-
-  useEffect(() => {
-    console.log("brandData", brandData);
-  }, [brandData]);
 
   return (
     <div className={cx("search-item")}>

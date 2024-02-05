@@ -1,5 +1,5 @@
 export const getUserList = async () => {
-  const response = await fetch(`/user/list`, {
+  const response = await fetch(`/api_default/user/list`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -16,7 +16,7 @@ export const getUserList = async () => {
 };
 
 export const updateUserList = async (data) => {
-  const response = await fetch(`/user/post`, {
+  const response = await fetch(`/api_default/user/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export const updateUserList = async (data) => {
 };
 
 export const addUserList = async (data) => {
-  const response = await fetch(`/user/post`, {
+  const response = await fetch(`/api_default/user/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -1,5 +1,5 @@
 export const getCompanyList = async () => {
-  const response = await fetch(`/company/list`, {
+  const response = await fetch(`/api_default/company/list`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -16,7 +16,7 @@ export const getCompanyList = async () => {
 };
 
 export const updateCompanyList = async (data) => {
-  const response = await fetch(`/company/post`, {
+  const response = await fetch(`/api_default/company/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export const updateCompanyList = async (data) => {
 };
 
 export const addCompanyList = async (data) => {
-  const response = await fetch(`/company/post`, {
+  const response = await fetch(`/api_default/company/post`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -12,6 +12,7 @@ import className from "classnames/bind";
 const cx = className.bind(styles);
 
 const RenderTable = ({
+<<<<<<< HEAD
                          tableProps,
                          handleClickReturn,
                          returnColumnName,
@@ -47,6 +48,44 @@ const RenderTable = ({
         pageOptions,
         // updateMyData,
     } = tableProps;
+=======
+  tableProps,
+  handleClickReturn,
+  returnColumnName,
+  editMode,
+  handleUpdateData,
+  handleAddData,
+  isAdded,
+  setIsAdded,
+  setIsEditing,
+  tableState,
+  setTableState,
+  newRow,
+  addressFieldName,
+  returnBtnName,
+  tableHeight,
+  useDoubleClick,
+  rowSelect,
+  totalRow = false,
+}) => {
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page,
+    pageIndex,
+    pageSize,
+    gotoPage,
+    previousPage,
+    nextPage,
+    canPreviousPage,
+    canNextPage,
+    pageCount,
+    pageOptions,
+    // updateMyData,
+  } = tableProps;
+>>>>>>> origin/main
 
     const [editingRow, setEditingRow] = useState(null);
     const [isAddressPopupOpen, setIsAddressPopupOpen] = useState(false);
@@ -190,6 +229,7 @@ const RenderTable = ({
                     {page?.map((row, rowIndex) => {
                         prepareRow(row);
 
+<<<<<<< HEAD
                         editingRow;
                         const isEditingRow = editingRow === row.index || (isAdded && row.index === 0);
                         return (
@@ -292,6 +332,112 @@ const RenderTable = ({
                 </table>
             </div>
             {/* <div className={cx("page-info-wrap")}>
+=======
+              editingRow;
+              const isEditingRow = editingRow === row.index || (isAdded && row.index === 0);
+              return (
+                <tr
+                  {...row.getRowProps()}
+                  onDoubleClick={() => (useDoubleClick ? handleClickReturn && handleClickReturn(row.original[returnColumnName]) : "")}
+                  className={cx(
+                    rowSelect && selectRowIndex === row.index ? "active" : "",
+                    totalRow === true && page.length === rowIndex + 1 ? "total" : ""
+                  )}
+                >
+                  {editMode && (
+                    <td>
+                      <div className={cx("button-wrap")}>
+                        {isEditingRow ? (
+                          isAdded && row.index === 0 ? (
+                            <>
+                              <button onClick={() => handleAddSaveClick()}>저장</button>
+                              <button onClick={() => handleAddCancelClick()}>취소</button>
+                            </>
+                          ) : (
+                            <>
+                              <button onClick={() => handleEditSaveClick(row.index)}>저장</button>
+                              <button onClick={() => handleEditCancelClick()}>취소</button>
+                            </>
+                          )
+                        ) : handleClickReturn ? (
+                          <button
+                            onClick={() => {
+                              handleClickReturn(row.values);
+                              handleClickSelect(row.index);
+                            }}
+                          >
+                            {returnBtnName || "선택"}
+                          </button>
+                        ) : (
+                          <button onClick={() => handleEditClick(rowIndex, row.index)}>수정</button>
+                        )}
+                      </div>
+                    </td>
+                  )}
+                  {row.cells.map((cell) => {
+                    const isNumberColumn = cell.column.type === TABLE_COLUMN_TYPE.NUMBER;
+                    const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE.AUTHORITY;
+                    const isUseflagColumn = cell.column.type === TABLE_COLUMN_TYPE.USEFLAG;
+                    const isAddressColumn = cell.column.type === TABLE_COLUMN_TYPE.ADDRESS;
+                    const isNoEditColumn = cell.column.noEdit === true;
+
+                    return (
+                      <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
+                        {isEditingRow ? (
+                          isNumberColumn || isNoEditColumn ? (
+                            <input value={columnValues[cell.column.id] || cell.value || ""} readOnly onfocus="this.blur()" />
+                          ) : isAuthorityColumn ? (
+                            <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
+                              {booleanOption.map((option) => (
+                                <option key={option} value={option}>
+                                  {option === 0 ? "사용자" : "관리자"}
+                                </option>
+                              ))}
+                            </select>
+                          ) : isUseflagColumn ? (
+                            <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
+                              {booleanOption.map((option) => (
+                                <option key={option} value={option}>
+                                  {option === 0 ? "사용안함" : "사용"}
+                                </option>
+                              ))}
+                            </select>
+                          ) : isAddressColumn ? (
+                            <>
+                              {isAddressPopupOpen && (
+                                <PopupSearchAddress
+                                  onSelectAddress={handleSelectAddress}
+                                  orgAddress={columnValues[cell.column.id] || cell.value || ""}
+                                  onClose={() => setIsAddressPopupOpen(false)}
+                                />
+                              )}
+                              <input
+                                value={columnValues[cell.column.id] || cell.value || ""}
+                                onClick={(e) => handleClickAddress(cell.column.id, e.target.value)}
+                              />
+                            </>
+                          ) : (
+                            <input
+                              value={columnValues[cell.column.id] || cell.value || ""}
+                              onChange={(e) => handleChange(cell.column.id, e.target.value)}
+                            />
+                          )
+                        ) : isNumberColumn ? (
+                          row.index + 1
+                        ) : (
+                          cell.render("Cell")
+                        )}
+                      </td>
+                    );
+                  })}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </div>
+      {/* <div className={cx("page-info-wrap")}>
+>>>>>>> origin/main
         {pageIndex + 1} / {pageOptions.length}
       </div> */}
             {pageOptions && (

@@ -147,10 +147,6 @@ const RenderTable = ({
     setIsAddressPopupOpen(false);
   };
 
-  useState(() => {
-    console.log("page", page);
-  }, [page]);
-
   return (
     <>
       <div className={cx("table-wrap")} style={tableHeight && { height: `${tableHeight}` }}>
