@@ -157,7 +157,7 @@ const RenderTable = ({
 
     return (
         <>
-            <div className={cx("table-wrap")} style={tableHeight && { height: `${tableHeight}` }}>
+            <div className={cx("box","table-wrap")} style={tableHeight && { height: `${tableHeight}` }}>
                 <table {...getTableProps()}>
                     <thead>
                     {headerGroups.map((headerGroup) => (

@@ -78,8 +78,7 @@ const SalesDay = () => {
     if (!isLoadingSalesDayData && salesDayData) {
       setTableState(salesDayData);
     }
-    console.log("isLoadingSalesDayData=",isLoadingSalesDayData);
-    console.log("salesDayData=",salesDayData);
+
   }, [salesDayData, isLoadingSalesDayData]);
 
   const memoizedData = useMemo(() => {
@@ -114,7 +113,7 @@ const SalesDay = () => {
             data: {},
           };
         }
-        console.log("groupData[key]@@@=:,");
+        console.log("groupData[key]@@@=:", groupData[key]);
 
         const salesData = {
           sale_date: item.sale_date,

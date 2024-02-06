@@ -1,5 +1,5 @@
 export const getSalesAnalysisList = async (startDate, endDate) => {
-    const response = await fetch(`/profile/chk/all?company_code=C0002&from_date=${startDate}&to_date=${endDate}`, {
+    const response = await fetch(`/api_default/profile/chk/all?company_code=C0001&from_date=${startDate}&to_date=${endDate}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -11,11 +11,13 @@ export const getSalesAnalysisList = async (startDate, endDate) => {
     }
 
     const data = await response.json();
+    // console.log("조회기간 data=",data.data);
     return data.data;
+
 };
 
 export const getSalesCompareAnalysisList = async (startDate, endDate) => {
-    const response = await fetch(`/profile/pre/all?company_code=C0002&from_date=${startDate}&to_date=${endDate}`, {
+    const response = await fetch(`/api_default/profile/pre/all?company_code=C0001&from_date=${startDate}&to_date=${endDate}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -27,6 +29,7 @@ export const getSalesCompareAnalysisList = async (startDate, endDate) => {
     }
 
     const data = await response.json();
+    // console.log("대비기간 data=",data.data);
     return data.data;
 };
 
