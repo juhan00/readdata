@@ -294,6 +294,7 @@ const Store = () => {
                   setTableState={setTableState}
                   transformExcelCell={transformExcelCell}
                   newRow={newRow}
+                  addressItem={true}
                 />
               )}
             </div>

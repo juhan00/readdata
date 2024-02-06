@@ -15,6 +15,7 @@ import BarChart from "@/src/components/data/barChart";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import SearchAddressItem from "@/src/components/data/searchAddressItem";
 import { SEARCH_ADDRESS } from "@/consts/common";
+import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
 
 //styles
 import className from "classnames/bind";
@@ -39,6 +40,7 @@ const SalesDay = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [startDate, setStartDate] = useState(oneWeekAgo);
   const [endDate, setEndDate] = useState(today);
+  const [addressItem1, setAddressItem1] = useState("");
 
   const formatStartDate = useMemo(() => {
     return useChangeFormatDate(startDate);
@@ -57,7 +59,6 @@ const SalesDay = () => {
   };
 
   const updateDate = (date) => {
-    console.log("updateData", date);
     const updatedDate = new Date(date.getTime() + 1);
     setEndDate(updatedDate);
   };
@@ -76,6 +77,22 @@ const SalesDay = () => {
     refetch: refetchHeadersData,
   } = useQuery("getSalesHeadersData", () => getSalesHeadersList("B0002"), {
     enabled: true,
+  });
+
+  const {
+    data: sidoData,
+    isLoading: isLoadingSidoDataData,
+    refetch: refetchSidoData,
+  } = useQuery("getSidoData", () => getSidoDataList(), {
+    enabled: true,
+  });
+
+  const {
+    data: sigoonData,
+    isLoading: isLoadingSigoonDataData,
+    refetch: refetchSigoonData,
+  } = useQuery(["getSigoonData", addressItem1], () => getSigoonDataList(addressItem1), {
+    enabled: addressItem1 !== undefined && addressItem1 !== "",
   });
 
   useEffect(() => {
@@ -200,6 +217,11 @@ const SalesDay = () => {
 
   const handleFieldChange = (field, e) => {
     e.preventDefault();
+
+    if (field === "addressItem1") {
+      setAddressItem1(e.target.value);
+    }
+
     setSearchField((prevData) => ({
       ...prevData,
       [field]: e.target.value,
@@ -229,13 +251,27 @@ const SalesDay = () => {
               />
             </div>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
+              <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.store} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
             </div>
             <div className={cx("item")}>
-              <SearchAddressItem title={"지역1"} type={SEARCH_ADDRESS.SIDO} />
+              <SearchAddressItem
+                title={"지역1"}
+                type={SEARCH_ADDRESS.SIDO}
+                data={sidoData}
+                id={"addressItem1"}
+                value={searchField.addressItem1}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("item")}>
-              <SearchAddressItem title={"지역2"} type={SEARCH_ADDRESS.SIGOON} />
+              <SearchAddressItem
+                title={"지역2"}
+                type={SEARCH_ADDRESS.SIGOON}
+                data={sigoonData}
+                id={"addressItem2"}
+                value={searchField.addressItem2}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />

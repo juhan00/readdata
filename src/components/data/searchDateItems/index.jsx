@@ -11,7 +11,6 @@ const cx = className.bind(styles);
 const SearchDateItem = ({ startDate, endDate, handleStartDateChange, handleEndDateChange, isMonth, updateDate }) => {
   const handleEndDateSelect = (date) => {
     if (date.getTime() === endDate.getTime()) {
-      console.log("handleEndDateSelect", date);
       updateDate(date);
     }
   };

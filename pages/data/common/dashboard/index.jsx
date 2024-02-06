@@ -269,8 +269,6 @@ const Dashboard = () => {
     const high5Data = dashThisMonthData?.filter((item) => item.low5 === 0);
     const low5Data = dashThisMonthData?.filter((item) => item.high5 === 0);
 
-    console.log("dashThisMonthData", dashThisMonthData);
-
     const groupedData = high5Data?.map((item, index) => ({
       high5: {
         fran_name: item.fran_name,

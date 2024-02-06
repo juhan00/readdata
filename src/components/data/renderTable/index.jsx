@@ -4,6 +4,10 @@ import { isEqual } from "lodash";
 import { useGlobalState } from "@/context/globalStateContext";
 import { POPUP_DEFAULT } from "@/consts/popup";
 import { TABLE_COLUMN_TYPE } from "@/consts/common";
+import AddressItem from "../searchAddressItem/addressItem";
+import { SEARCH_ADDRESS } from "@/consts/common";
+import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
+import { QueryClient, useQuery } from "react-query";
 
 //styles
 import styles from "./renderTable.module.scss";
@@ -30,6 +34,7 @@ const RenderTable = ({
   useDoubleClick,
   rowSelect,
   totalRow = false,
+  addressItem = false,
 }) => {
   const {
     getTableProps,
@@ -55,6 +60,23 @@ const RenderTable = ({
   const [booleanOption, setBooleanOption] = useState([0, 1]);
   const [{ popupState }, setGlobalState] = useGlobalState();
   const [selectRowIndex, setSelectRowIndex] = useState(null);
+  const [addressItem1, setAddressItem1] = useState("");
+
+  const {
+    data: sidoData,
+    isLoading: isLoadingSidoDataData,
+    refetch: refetchSidoData,
+  } = useQuery("getSidoData", () => getSidoDataList(), {
+    enabled: addressItem,
+  });
+
+  const {
+    data: sigoonData,
+    isLoading: isLoadingSigoonDataData,
+    refetch: refetchSigoonData,
+  } = useQuery(["getSigoonData", addressItem1], () => getSigoonDataList(addressItem1), {
+    enabled: addressItem1 !== undefined && addressItem1 !== "" && addressItem,
+  });
 
   const pages = useMemo(() => {
     if (!pageOptions) {
@@ -70,6 +92,9 @@ const RenderTable = ({
   };
 
   const handleChange = (columnId, value) => {
+    if (columnId === "gubun1") {
+      setAddressItem1(value);
+    }
     setColumnValues((prevColumnValues) => ({
       ...prevColumnValues,
       [columnId]: value,
@@ -237,6 +262,8 @@ const RenderTable = ({
                     const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE.AUTHORITY;
                     const isUseflagColumn = cell.column.type === TABLE_COLUMN_TYPE.USEFLAG;
                     const isAddressColumn = cell.column.type === TABLE_COLUMN_TYPE.ADDRESS;
+                    const isAddressItem1Column = cell.column.type === TABLE_COLUMN_TYPE.ADDRESSITEM1;
+                    const isAddressItem2Column = cell.column.type === TABLE_COLUMN_TYPE.ADDRESSITEM2;
                     const isNoEditColumn = cell.column.noEdit === true;
 
                     return (
@@ -284,6 +311,22 @@ const RenderTable = ({
                                 }}
                               />
                             </>
+                          ) : isAddressItem1Column ? (
+                            <AddressItem
+                              data={sidoData}
+                              id={"addressItem1"}
+                              value={columnValues[cell.column.id]}
+                              onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}
+                              type={SEARCH_ADDRESS.SIDO}
+                            />
+                          ) : isAddressItem2Column ? (
+                            <AddressItem
+                              data={sigoonData}
+                              id={"addressItem2"}
+                              value={columnValues[cell.column.id]}
+                              onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}
+                              type={SEARCH_ADDRESS.SIGOON}
+                            />
                           ) : (
                             <input
                               value={columnValues[cell.column.id] || cell.value || ""}

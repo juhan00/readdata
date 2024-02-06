@@ -13,10 +13,10 @@ import { useGetMonthArray } from "@/utils/useGetDateArray";
 import BarChart from "@/src/components/data/barChart";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import SearchAddressItem from "@/src/components/data/searchAddressItem";
-import { SEARCH_ADDRESS } from "@/consts/common";
 import { set, startOfMonth } from "date-fns";
 import { useChangeFormatMonth } from "@/utils/useChangeFormatDate";
-
+import { SEARCH_ADDRESS } from "@/consts/common";
+import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
 //styles
 import className from "classnames/bind";
 import styles from "./salesMonth.module.scss";
@@ -39,6 +39,7 @@ const SalesMonth = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [startDate, setStartDate] = useState(thisMonth);
   const [endDate, setEndDate] = useState(thisMonth);
+  const [addressItem1, setAddressItem1] = useState();
 
   const formatStartDate = useMemo(() => {
     return useChangeFormatMonth(startDate);
@@ -76,6 +77,22 @@ const SalesMonth = () => {
     refetch: refetchHeadersData,
   } = useQuery("getSalesHeadersData", () => getSalesHeadersList("B0002"), {
     enabled: true,
+  });
+
+  const {
+    data: sidoData,
+    isLoading: isLoadingSidoDataData,
+    refetch: refetchSidoData,
+  } = useQuery("getSidoData", () => getSidoDataList(), {
+    enabled: true,
+  });
+
+  const {
+    data: sigoonData,
+    isLoading: isLoadingSigoonDataData,
+    refetch: refetchSigoonData,
+  } = useQuery(["getSigoonData", addressItem1], () => getSigoonDataList(addressItem1), {
+    enabled: addressItem1 !== undefined,
   });
 
   useEffect(() => {
@@ -200,6 +217,11 @@ const SalesMonth = () => {
 
   const handleFieldChange = (field, e) => {
     e.preventDefault();
+
+    if (field === "addressItem1") {
+      setAddressItem1(e.target.value);
+    }
+
     setSearchField((prevData) => ({
       ...prevData,
       [field]: e.target.value,
@@ -234,10 +256,24 @@ const SalesMonth = () => {
               <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
             </div>
             <div className={cx("item")}>
-              <SearchAddressItem title={"지역1"} type={SEARCH_ADDRESS.SIDO} />
+              <SearchAddressItem
+                title={"지역1"}
+                type={SEARCH_ADDRESS.SIDO}
+                data={sidoData}
+                id={"addressItem1"}
+                value={searchField.addressItem1}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("item")}>
-              <SearchAddressItem title={"지역2"} type={SEARCH_ADDRESS.SIGOON} />
+              <SearchAddressItem
+                title={"지역2"}
+                type={SEARCH_ADDRESS.SIGOON}
+                data={sigoonData}
+                id={"addressItem2"}
+                value={searchField.addressItem2}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
