@@ -243,7 +243,13 @@ const RenderTable = ({
                       <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
                         {isEditingRow ? (
                           isNumberColumn || isNoEditColumn ? (
-                            <input value={columnValues[cell.column.id] || cell.value || ""} readOnly onfocus="this.blur()" />
+                            <input
+                              value={columnValues[cell.column.id] || cell.value || ""}
+                              readOnly
+                              onFocus={(e) => {
+                                e.target.blur();
+                              }}
+                            />
                           ) : isAuthorityColumn ? (
                             <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
                               {booleanOption.map((option) => (
@@ -272,6 +278,10 @@ const RenderTable = ({
                               <input
                                 value={columnValues[cell.column.id] || cell.value || ""}
                                 onClick={(e) => handleClickAddress(cell.column.id, e.target.value)}
+                                readOnly
+                                onFocus={(e) => {
+                                  e.target.blur();
+                                }}
                               />
                             </>
                           ) : (
