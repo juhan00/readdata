@@ -1,5 +1,5 @@
-export const getUserList = async () => {
-  const response = await fetch(`/api_default/user/list`, {
+export const getUserList = async (companyCode) => {
+  const response = await fetch(`/api_default/user/list?company_code=${companyCode}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

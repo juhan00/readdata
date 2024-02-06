@@ -22,7 +22,11 @@ const SearchItem = ({ searchType, title, value, id, onClick, onChange, readOnly,
         <select id={id} onClick={onClick} onChange={(e) => onChange(id, e)}>
           <option value="">전체</option>
           {brandData?.map((data) => {
-            return <option value={data.brand_code}>{data.brand_name}</option>;
+            return (
+              <option key={data.brand_code} value={data.brand_code}>
+                {data.brand_name}
+              </option>
+            );
           })}
         </select>
       )}

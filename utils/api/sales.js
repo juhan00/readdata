@@ -1,5 +1,5 @@
-export const getSalesDayList = async (startDate, endDate) => {
-  const response = await fetch(`/api_default/sales/day/search?from_date=${startDate}&to_date=${endDate}`, {
+export const getSalesDayList = async (companyCode, startDate, endDate) => {
+  const response = await fetch(`/api_default/sales/day/search?company_code=${companyCode}&from_date=${startDate}&to_date=${endDate}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -15,8 +15,8 @@ export const getSalesDayList = async (startDate, endDate) => {
   return data.data;
 };
 
-export const getSalesMonthList = async (startMonth, endMonth) => {
-  const response = await fetch(`/api_default/sales/month/search?from_month=${startMonth}&to_month=${endMonth}`, {
+export const getSalesMonthList = async (companyCode, startMonth, endMonth) => {
+  const response = await fetch(`/api_default/sales/month/search?company_code=${companyCode}&from_month=${startMonth}&to_month=${endMonth}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

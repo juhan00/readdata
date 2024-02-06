@@ -19,3 +19,23 @@ export const useGetDateArray = (startDate, endDate) => {
     return `${year}-${month}-${day}`;
   }
 };
+
+export const useGetMonthArray = (startDate, endDate) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const dateArray = [];
+
+  let currentMonth = new Date(start);
+  currentMonth.setDate(1); // 각 월의 1일로 설정
+
+  while (currentMonth <= end) {
+    const year = currentMonth.getFullYear();
+    const month = String(currentMonth.getMonth() + 1).padStart(2, "0");
+    dateArray.push(`${year}-${month}`);
+
+    // 다음 월로 이동
+    currentMonth.setMonth(currentMonth.getMonth() + 1);
+  }
+
+  return dateArray;
+};

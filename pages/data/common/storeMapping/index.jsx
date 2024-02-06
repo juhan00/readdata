@@ -26,6 +26,7 @@ const StoreMapping = () => {
 
   const [{ popupState }, setGlobalState] = useGlobalState();
   const { t } = useTranslation(["common", "dataAdmin"]);
+  const [companyCode, setCompanyCode] = useState("C0001");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
@@ -36,7 +37,7 @@ const StoreMapping = () => {
     data: storeMapingData,
     isLoading: isLoadingStoreMapingData,
     refetch: refetchStoreMapingData,
-  } = useQuery("getStoreMapingData", getStoreMapingList);
+  } = useQuery("getStoreMapingData", () => getStoreMapingList(companyCode), { enabled: companyCode !== undefined });
 
   useEffect(() => {
     if (!isLoadingStoreMapingData && storeMapingData) {

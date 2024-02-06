@@ -297,10 +297,6 @@ const Dashboard = () => {
     return groupedData || [];
   }, [dashThisMonthData]);
 
-  useEffect(() => {
-    console.log("dashThisMonthData========>", dashThisMonthData);
-  }, [dashThisMonthData]);
-
   return (
     <div className={cx("dashboard")}>
       <div className={cx("row")}>
@@ -316,6 +312,7 @@ const Dashboard = () => {
             ) : (
               <BrandTable columns={memoizedDashboardColumns} data={typeByDashBrandData} />
             )}
+            <div className={cx("text")}>단위: 원</div>
           </div>
         </div>
       </div>
@@ -332,6 +329,7 @@ const Dashboard = () => {
             ) : (
               <DayTable columns={dashDayMonthColumns} data={typeByDashYesterdayData} />
             )}
+            <div className={cx("text")}>단위: 원</div>
           </div>
         </div>
         <div className={cx("box", "content-wrap")}>
@@ -346,6 +344,7 @@ const Dashboard = () => {
             ) : (
               <MonthTable columns={dashDayMonthColumns} data={typeByDashThisMonthData} />
             )}
+            <div className={cx("text")}>단위: 원</div>
           </div>
         </div>
       </div>

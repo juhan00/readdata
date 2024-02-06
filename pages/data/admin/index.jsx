@@ -15,6 +15,7 @@ import Dashboard from "../common/dashboard";
 import SalesRegion from "../common/saleRegion";
 import SalesAnalyze from "../common/salesAnalyze";
 import Brand from "../common/brand";
+import SalesChannel from "../common/salesChannel";
 
 //styles
 import className from "classnames/bind";
@@ -32,24 +33,26 @@ const Admin = () => {
         setAdminMenu(category);
     }, [category]);
 
-    return (
-        <div className={cx("admin")}>
-            <PopupDataDefault />
-            <DataLayout useType={useType} adminMenu={{ menu: adminMenu }}>
-                {!adminMenu && <Dashboard />}
-                {adminMenu === "company" && <Compnay />}
-                {adminMenu === "user" && <User />}
-                {adminMenu === "brand" && <Brand />}
-                {adminMenu === "store" && <Store />}
-                {adminMenu === "store_account" && <StoreAccount />}
-                {adminMenu === "store_mapping" && <StoreMapping />}
-                {adminMenu === "sales_day" && <SalesDay />}
-                {adminMenu === "sales_month" && <SalesMonth />}
-                {adminMenu === "sales_region" && <SalesRegion />}
-                {adminMenu === "sales_analyze" && <SalesAnalyze />}
-            </DataLayout>
-        </div>
-    );
+  return (
+    <div className={cx("admin")}>
+      <PopupDataDefault />
+      <DataLayout useType={useType} adminMenu={{ menu: adminMenu }}>
+        {!adminMenu && <Dashboard />}
+        {adminMenu === "company" && <Compnay />}
+        {adminMenu === "user" && <User />}
+        {adminMenu === "brand" && <Brand />}
+        {adminMenu === "store" && <Store />}
+        {adminMenu === "store_account" && <StoreAccount />}
+        {adminMenu === "store_mapping" && <StoreMapping />}
+        {adminMenu === "sales_day" && <SalesDay />}
+        {adminMenu === "sales_month" && <SalesMonth />}
+        {adminMenu === "sales_region" && <SalesRegion />}
+        {adminMenu === "sales_channel" && <SalesChannel />}
+        {adminMenu === "sales_analyze" && <SalesAnalyze />}
+      </DataLayout>
+    </div>
+  );
+
 };
 
 export default Admin;

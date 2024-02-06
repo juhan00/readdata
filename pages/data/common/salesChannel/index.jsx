@@ -15,15 +15,16 @@ import BarChart from "@/src/components/data/barChart";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import SearchAddressItem from "@/src/components/data/searchAddressItem";
 import { SEARCH_ADDRESS } from "@/consts/common";
+import ChannelChart from "@/src/components/data/channelChart";
 
 //styles
 import className from "classnames/bind";
-import styles from "./salesDay.module.scss";
+import styles from "./salesChannel.module.scss";
 const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const SalesDay = () => {
+const SalesChannel = () => {
   const searchFieldData = {
     store: "",
   };
@@ -65,6 +66,7 @@ const SalesDay = () => {
   const {
     data: salesDayData,
     isLoading: isLoadingSalesDayData,
+    isFetching: isFetchingSalesDayData,
     refetch: refetchSalesDayData,
   } = useQuery(["getSalesDayData", endDate], () => getSalesDayList(companyCode, formatStartDate, formatEndDate), {
     enabled: companyCode !== undefined && formatStartDate !== undefined && formatEndDate !== undefined,
@@ -78,14 +80,10 @@ const SalesDay = () => {
     enabled: true,
   });
 
-  console.log("salesDayData==",salesDayData);
-  console.log("headersData==",headersData);
-
   useEffect(() => {
     if (!isLoadingSalesDayData && salesDayData) {
       setTableState(salesDayData);
     }
-
   }, [salesDayData, isLoadingSalesDayData]);
 
   const memoizedData = useMemo(() => {
@@ -111,7 +109,6 @@ const SalesDay = () => {
       data.forEach((item, index) => {
         const key = `${item.brand_name}_${item.store}`;
         const sale_date = item.sale_date;
-        //key= (주)프랭크에프엔비_명일점 @@@sale_date= 2023-12-01
         if (!groupData[key]) {
           groupData[key] = {
             brand_name: item.brand_name,
@@ -120,7 +117,6 @@ const SalesDay = () => {
             data: {},
           };
         }
-        console.log("groupData[key]@@@=:", groupData[key]);
 
         const salesData = {
           sale_date: item.sale_date,
@@ -220,7 +216,6 @@ const SalesDay = () => {
     gotoPage(0);
   };
 
-
   return (
     <>
       <div className={cx("brand")}>
@@ -232,7 +227,6 @@ const SalesDay = () => {
                 endDate={endDate}
                 handleStartDateChange={handleStartDateChange}
                 handleEndDateChange={handleEndDateChange}
-                labelText={1}
                 updateDate={updateDate}
               />
             </div>
@@ -254,45 +248,13 @@ const SalesDay = () => {
         <div className={cx("row")}>
           <div className={cx("box", "content-wrap")}>
             <div className={cx("item")}>
-              <div className={cx("content-btn-wrap")}>
-                <BtnExcelDown columns={headerGroups} tableData={memoizedSalesDayData} />
-              </div>
-            </div>
-            <div className={cx("item")}>
               {isLoadingSalesDayData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : !memoizedData.length ? (
+              ) : !memoizedData.length === 0 ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
-                <RenderTable
-                  tableProps={{
-                    getTableProps,
-                    getTableBodyProps,
-                    headerGroups,
-                    prepareRow,
-                    page,
-                    pageIndex,
-                    pageSize,
-                    gotoPage,
-                    previousPage,
-                    nextPage,
-                    canPreviousPage,
-                    canNextPage,
-                    pageCount,
-                    pageOptions,
-                  }}
-                  editMode={false}
-                  setTableState={setTableState}
-                />
+                <ChannelChart memoizedSalesDayChartData={memoizedSalesDayChartData} headersData={headersData} />
               )}
-            </div>
-          </div>
-        </div>
-
-        <div className={cx("row")}>
-          <div className={cx("box")}>
-            <div className={cx("item")}>
-              <BarChart memoizedSalesDayChartData={memoizedSalesDayChartData} headersData={headersData} />
             </div>
           </div>
         </div>
@@ -301,4 +263,4 @@ const SalesDay = () => {
   );
 };
 
-export default SalesDay;
+export default SalesChannel;

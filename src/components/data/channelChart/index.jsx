@@ -4,24 +4,33 @@ import html2canvas from "html2canvas";
 import { saveAs } from "file-saver";
 import { useRandomColor } from "@/utils/useRandomColor";
 import BtnChartSave from "../button/btnChartSave";
+import isEqual from "lodash/isEqual";
 
 //styles
-import styles from "./barChart.module.scss";
+import styles from "./channelChart.module.scss";
 import className from "classnames/bind";
 
 const cx = className.bind(styles);
 
-const BarChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
-  // const [showTotal, setShowTotal] = useState(true);
-  // const [showPos, setShowPos] = useState(false);
-  // const [showDelivery1, setShowDelivery1] = useState(false);
-  // const [showDelivery2, setShowDelivery2] = useState(false);
-  // const [showDelivery3, setShowDelivery3] = useState(false);
+const ChannelChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
+  const [showLine, setShowLine] = useState([]);
 
   const chartRef = useRef(null);
-
   const totalWidth = memoizedSalesDayChartData.length <= 7 ? "100%" : memoizedSalesDayChartData.length * 100;
   const colorSet = ["#30BBB4", "#EE0046", "#844528", "#124994", "#FF993B", "#FDDC37"];
+
+  useEffect(() => {
+    if (headersData.length === 0) {
+      return;
+    }
+
+    let newData = {};
+    headersData?.map((item) => {
+      newData[item.accessor] = true;
+    });
+
+    setShowLine(newData);
+  }, [headersData]);
 
   const SaveChartImage = async () => {
     const chartImage = await html2canvas(chartRef.current);
@@ -30,42 +39,23 @@ const BarChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
     });
   };
 
-  // const handleLegendClick = (dataKey) => {
-  //   switch (dataKey) {
-  //     case "total":
-  //       setShowTotal(!showTotal);
-  //       break;
-  //     case "pos":
-  //       setShowPos(!showPos);
-  //       break;
-  //     case "delivery1":
-  //       setShowDelivery1(!showDelivery1);
-  //       break;
-  //     case "delivery2":
-  //       setShowDelivery2(!showDelivery2);
-  //       break;
-  //     case "delivery3":
-  //       setShowDelivery3(!showDelivery3);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
+  const handleLegendClick = (dataKey) => {
+    setShowLine((prevData) => ({
+      ...prevData,
+      [dataKey]: !prevData[dataKey],
+    }));
+  };
 
   const CustomLegend = () => (
     <div className={cx("custom-legend")}>
       {headersData.map((header, index) => {
         return (
-          <div key={header.accessor} className={cx("label")}>
-            <span className={cx("box")} style={{ backgroundColor: colorSet[index] }}></span>
+          <div key={header.accessor} className={cx("label")} onClick={() => handleLegendClick(header.accessor)}>
+            <span className={cx("line")} style={{ backgroundColor: colorSet[index] }}></span>
             {header.header}
           </div>
         );
       })}
-      <div className={cx("label")}>
-        <span className={cx("line")} style={{ backgroundColor: "#FC2534" }}></span>
-        전체
-      </div>
     </div>
   );
 
@@ -115,36 +105,18 @@ const BarChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
               <CartesianGrid stroke="#f5f5f5" />
 
               {headersData.map((header, index) => {
-                if (header.accessor === "pos_sales") {
-                  return (
-                    <Bar
+                return (
+                  showLine[header.accessor] && (
+                    <Line
                       key={header.accessor}
+                      type="monotone"
                       dataKey={header.accessor}
-                      name={header.header}
-                      stackId={`bar-${header.accessor}`}
-                      barSize={40}
-                      fill={"#5E5E5E"}
+                      stackId={`line-${header.accessor}`}
+                      stroke={colorSet[index]}
                     />
-                  );
-                }
+                  )
+                );
               })}
-
-              {headersData.map((header, index) => {
-                if (header.accessor !== "pos_sales") {
-                  return (
-                    <Bar
-                      key={header.accessor}
-                      dataKey={header.accessor}
-                      name={header.header}
-                      stackId={"bar-delivery"}
-                      barSize={40}
-                      fill={colorSet[index]}
-                    />
-                  );
-                }
-              })}
-
-              <Line type="monotone" dataKey="total" stackId="line-total" stroke="#FC2534" />
             </ComposedChart>
           </ResponsiveContainer>
         </div>
@@ -153,4 +125,4 @@ const BarChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
   );
 };
 
-export default BarChart;
+export default ChannelChart;

@@ -21,20 +21,25 @@ const queryClient = new QueryClient();
 
 const StoreAccount = () => {
   const searchFieldData = {
-    brand_name: "",
+    brand_code: "",
     fran_name: "",
     use_flag: "",
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
   const { t } = useTranslation(["common", "dataAdmin"]);
+  const [companyCode, setCompanyCode] = useState("C0000");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const { data: storeData, isLoading: isLoadingStoreData, refetch: refetchStoreData } = useQuery("getStoreAccountData", getStoreAccountList);
+  const {
+    data: storeData,
+    isLoading: isLoadingStoreData,
+    refetch: refetchStoreData,
+  } = useQuery("getStoreAccountData", () => getStoreAccountList(companyCode), { enabled: companyCode !== undefined });
 
   useEffect(() => {
     if (!isLoadingStoreData && storeData) {
@@ -62,7 +67,7 @@ const StoreAccount = () => {
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
+        (!searchData.brand_code || row.brand_code?.toString().toLowerCase().includes(searchData.brand_code.toLowerCase())) &&
         (!searchData.fran_name || row.fran_name?.toString().toLowerCase().includes(searchData.fran_name.toLowerCase())) &&
         (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase()))
     );
@@ -120,11 +125,12 @@ const StoreAccount = () => {
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
               <SearchItem
-                searchType={SEARCH_TYPE.INPUT}
-                value={searchField.brand_name}
+                searchType={SEARCH_TYPE.SELECT_BRAND}
+                value={searchField.brand_code}
                 title={"브랜드 명"}
-                id={"brand_name"}
+                id={"brand_code"}
                 onChange={handleFieldChange}
+                companyCode=""
               />
             </div>
             <div className={cx("item")}>
