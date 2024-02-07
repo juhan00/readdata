@@ -142,6 +142,7 @@ const Brand = () => {
     getTableBodyProps,
     headerGroups,
     prepareRow,
+    rows,
     page,
     state: { pageIndex, pageSize },
     gotoPage,
@@ -246,7 +247,7 @@ const Brand = () => {
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
                 <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={headerGroups} tableData={page} />
+                <BtnExcelDown columns={headerGroups} tableData={rows} prepareRow={prepareRow} />
                 <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
               </div>
             </div>

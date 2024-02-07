@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import SalesDay from "../common/salesDay";
 import SalesMonth from "../common/salesMonth";
 import Dashboard from "../common/dashboard";
-import SalesRegion from "../common/saleRegion";
+import SalesRegion from "../common/salesRegion";
 import SalesAnalyze from "../common/salesAnalyze";
 
 //styles

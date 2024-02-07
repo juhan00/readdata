@@ -196,6 +196,7 @@ const SalesMonth = () => {
     headerGroups,
     prepareRow,
     page,
+    rows,
     state: { pageIndex, pageSize },
     gotoPage,
     previousPage,
@@ -285,7 +286,7 @@ const SalesMonth = () => {
           <div className={cx("box", "content-wrap")}>
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
-                <BtnExcelDown columns={headerGroups} tableData={memoizedSalesMonthData} />
+                <BtnExcelDown columns={headerGroups} tableData={rows} prepareRow={prepareRow} />
               </div>
             </div>
             <div className={cx("item")}>

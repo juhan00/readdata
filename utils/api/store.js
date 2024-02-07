@@ -16,7 +16,7 @@ export const getStoreList = async (companyCode) => {
 };
 
 export const updateStoreList = async (data) => {
-  console.log("updateStoreList",data);
+  console.log("updateStoreList", data);
   const response = await fetch(`/api_default/store/mng/post`, {
     method: "POST",
     headers: {
@@ -182,7 +182,7 @@ export const updateStoreMapingList = async (data) => {
 };
 
 export const getScrapingList = async (companyCode) => {
-  const response = await fetch(`/api_default/franchise/scrap?company_code=${companyCode}`, {
+  const response = await fetch(`/api_default/franchise/scrap?company_code=${companyCode}&joinflag=unjoin`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
