@@ -262,8 +262,8 @@ const RenderTable = ({
                     const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE.AUTHORITY;
                     const isUseflagColumn = cell.column.type === TABLE_COLUMN_TYPE.USEFLAG;
                     const isAddressColumn = cell.column.type === TABLE_COLUMN_TYPE.ADDRESS;
-                    const isgubun1Column = cell.column.type === TABLE_COLUMN_TYPE.gubun1;
-                    const isAddressItem2Column = cell.column.type === TABLE_COLUMN_TYPE.gubun2;
+                    const isgubun1Column = cell.column.type === TABLE_COLUMN_TYPE.GUBUN1;
+                    const isAddressItem2Column = cell.column.type === TABLE_COLUMN_TYPE.GUBUN2;
                     const isNoEditColumn = cell.column.noEdit === true;
 
                     return (

@@ -5,7 +5,6 @@ const useDownloadExcel = (columns, tableData) => {
   const fileType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
   const fileExtension = ".xlsx";
 
-  console.log("tableData", tableData);
   const formattedData = tableData.map((row) =>
     columns.map((column) => {
       const cellValue = row[column.accessor];

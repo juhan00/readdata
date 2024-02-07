@@ -9,7 +9,6 @@ import className from "classnames/bind";
 const cx = className.bind(styles);
 
 const BtnExcelDown = ({ columns, tableData, prepareRow }) => {
-  console.log("tableData", tableData);
   const { t } = useTranslation("common");
 
   const handleDownloadExcel = async () => {

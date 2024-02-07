@@ -205,8 +205,8 @@ const BrandTest = () => {
     excelData.map((item) => {
       const transformedItem = {};
       brandTestColumns.forEach((column) => {
-        if (item.hasOwnProperty(column.header)) {
-          transformedItem[column.accessor] = item[column.header];
+        if (item.hasOwnProperty(column.Header)) {
+          transformedItem[column.accessor] = item[column.Header];
         }
       });
       return transformedItem;

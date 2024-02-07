@@ -51,6 +51,7 @@ const BtnExcelUpload = ({ transformExcelCell, excelMutation }) => {
         });
 
         const excelData = transformExcelCell([...formattedData]);
+
         excelMutation.mutate(excelData);
       };
       reader.readAsArrayBuffer(file);
