@@ -115,29 +115,57 @@ const SalesRegion = () => {
 
   const memoizedSalesRegionChartData = useMemo(() => {
     const headersArray = headersData?.map((header) => header.accessor);
+    const checkGubun2 = searchField.gubun2.length !== 0;
+    console.log("checkGubun2", checkGubun2);
     const groupedData = memoizedData?.reduce((result, item) => {
-      const { gubun1, gubun1_h, ...rest } = item;
-      const existingGubun1 = result.find((data) => data.gubun1 === gubun1);
+      if (!checkGubun2) {
+        const { gubun1, gubun1_h, ...rest } = item;
+        const existingGubun1 = result.find((data) => data.gubun1 === gubun1);
 
-      const newGubun1 = {};
-      const valueName = "value";
-      const totalName = "total";
+        const newGubun1 = {};
+        const valueName = "value";
+        const totalName = "total";
 
-      headersArray?.map((header) => {
-        if (existingGubun1) {
-          existingGubun1[header] = existingGubun1[header] + item[header];
-          existingGubun1[valueName] = existingGubun1[valueName] + item[header];
-          existingGubun1[totalName] = existingGubun1[totalName] + item[header];
-        } else {
-          newGubun1["gubun1"] = gubun1;
-          newGubun1["name"] = gubun1_h;
-          newGubun1[header] = item[header];
-          newGubun1[valueName] = (newGubun1[valueName] || 0) + item[header];
-          newGubun1[totalName] = (newGubun1[totalName] || 0) + item[header];
+        headersArray?.map((header) => {
+          if (existingGubun1) {
+            existingGubun1[header] = existingGubun1[header] + item[header];
+            existingGubun1[valueName] = existingGubun1[valueName] + item[header];
+            existingGubun1[totalName] = existingGubun1[totalName] + item[header];
+          } else {
+            newGubun1["gubun1"] = gubun1;
+            newGubun1["name"] = gubun1_h;
+            newGubun1[header] = item[header];
+            newGubun1[valueName] = (newGubun1[valueName] || 0) + item[header];
+            newGubun1[totalName] = (newGubun1[totalName] || 0) + item[header];
+          }
+        });
+        if (!existingGubun1) {
+          result.push(newGubun1);
         }
-      });
-      if (!existingGubun1) {
-        result.push(newGubun1);
+      } else {
+        const { gubun1, gubun1_h, gubun2, gubun2_h, ...rest } = item;
+        const existingGubun2 = result.find((data) => data.gubun2 === gubun2);
+
+        const newGubun2 = {};
+        const valueName = "value";
+        const totalName = "total";
+
+        headersArray?.map((header) => {
+          if (existingGubun2) {
+            existingGubun2[header] = existingGubun2[header] + item[header];
+            existingGubun2[valueName] = existingGubun2[valueName] + item[header];
+            existingGubun2[totalName] = existingGubun2[totalName] + item[header];
+          } else {
+            newGubun2["gubun2"] = gubun2;
+            newGubun2["name"] = gubun2_h;
+            newGubun2[header] = item[header];
+            newGubun2[valueName] = (newGubun2[valueName] || 0) + item[header];
+            newGubun2[totalName] = (newGubun2[totalName] || 0) + item[header];
+          }
+        });
+        if (!existingGubun2) {
+          result.push(newGubun2);
+        }
       }
 
       return result;
@@ -168,9 +196,11 @@ const SalesRegion = () => {
   };
 
   useEffect(() => {
+    console.log("tableState", tableState);
     console.log("memoizedData", memoizedData);
+    console.log("memoizedSalesRegionChartData", memoizedSalesRegionChartData);
     console.log("searchField", searchField);
-  }, [memoizedData, searchField]);
+  }, [memoizedSalesRegionChartData, searchField]);
 
   return (
     <>
