@@ -1,5 +1,5 @@
 import {SEARCH_TYPE} from "@/consts/common";
-import {salesAnalysisColumns1, salesAnalysisColumns2} from "@/consts/salesAnalysisColumns";
+import {salesAnalysisColumns1, salesAnalysisColumns2, salesAnalysisColumns3} from "@/consts/salesAnalysisColumns";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchDateItems from "@/src/components/data/searchDateItems";
@@ -16,6 +16,8 @@ import {usePagination, useSortBy, useTable} from "react-table";
 import className from "classnames/bind";
 import styles from "./salesAnalyze.module.scss";
 import ScrapingSearch from "@/src/components/data/scrapingSearch";
+import {dashDayMonthColumns} from "@/consts/dashboardColumns";
+import PieChartComponent from "@/pages/test/chartPie";
 
 const cx = className.bind(styles);
 
@@ -100,10 +102,8 @@ const SalesAnalysis = () => {
         enabled: formatCompareStartDate !== undefined && formatCompareEndDate !== undefined,
     });
 
-
     // console.log("조회기간=", formatStartDate, " ~ ", formatEndDate, " = ", salesDayData);
     // console.log("대비기간=", formatCompareStartDate, " ~ ", formatCompareEndDate, " = ", compareSalesDayData);
-
 
     let effectTarget = "1"
     //조회기간
@@ -113,7 +113,6 @@ const SalesAnalysis = () => {
             effectTarget = "1";
             console.log("조회기간 누르면 1로 바껴야돼 = ", effectTarget);
         }
-
     }, [salesDayData, isLoadingSalesDayData]);
 
     //대비기간
@@ -133,24 +132,13 @@ const SalesAnalysis = () => {
 
     const [salesAnalysisColumnsData1, setsalesAnalysisColumnsData1] = useState([]);
     const [salesAnalysisColumnsData2, setsalesAnalysisColumnsData2] = useState([]);
-
-    useEffect(() => {
-        const chkData = salesAnalysisColumns1(mainHeader, headers1);
-        setsalesAnalysisColumnsData1(chkData);
-
-        const preData = salesAnalysisColumns2(mainHeader, headers2);
-        setsalesAnalysisColumnsData2(preData);
-
-        console.log("chkData=", chkData);
-        console.log("preData=", preData);
-    }, []);
+    const [salesAnalysisColumnsData3, setsalesAnalysisColumnsData3] = useState([]);
 
 
     //조회기간
     const memoizedData = useMemo(() => {
         return tableState?.filter((row) => (!searchData.chk_fran_name || row.chk_fran_name?.toString().toLowerCase().includes(searchData.chk_fran_name.toLowerCase())));
     }, [tableState, searchData]);
-
 
     //대비기간
     const memoizedCompareData = useMemo(() => {
@@ -159,9 +147,8 @@ const SalesAnalysis = () => {
 
     const getUseTable = (options, columns) => {
         return useTable({
-            //처음 진입 시 조회기간, 대비기간 출력 및 달력클릭 시 검색기능 구현
             columns: columns || [], ...options, initialState: {pageIndex: 0, pageSize: 10}, autoResetPage: false,
-        }, useSortBy, usePagination);
+        }, useSortBy, usePagination,);
     }
 
     // const {
@@ -195,13 +182,14 @@ const SalesAnalysis = () => {
         data: useMemo(() => memoizedData, [memoizedData]),
     }, salesAnalysisColumnsData1);
 
-    //console.log("InquiryTable",InquiryTable);
-
     const preparationTable = getUseTable({
         data: useMemo(() => memoizedCompareData, [memoizedCompareData]),
     }, salesAnalysisColumnsData2);
 
-    //console.log("preparationTable",preparationTable);
+    const indeCreaseTable = getUseTable({
+        data: useMemo(() => memoizedCompareData, [memoizedCompareData]),
+    }, salesAnalysisColumnsData3);
+
 
     const handleFieldChange = (field, e) => {
         console.log("검색어 번경하면");
@@ -216,20 +204,101 @@ const SalesAnalysis = () => {
     };
 
     const handleSearchSubmit = (e) => {
-        console.log("검색버튼 누르면");
-        console.log("searchField==", searchField);
-        console.log("setSearchData==", setSearchData);
-        console.log("setSearchCompareData==", setSearchCompareData);
         setSearchData((prevData) => ({
             ...prevData, ...searchField,
         }));
-
         setSearchCompareData((prevData) => ({
             ...prevData, ...searchCompareField,
         }));
-        gotoPage(0);
+        // gotoPage(0);
     };
 
+    // const [indeCreaseTotal, setIndeCreaseTotal] = useState(0);
+    // const [indeCreaseAvg, setIndeCreaseAvg] = useState(0);
+    // const [indeCreasePos, setIndeCreasePos] = useState(0);
+    // const [indeCreaseDelivery, setIndeCreaseDelivery] = useState(0);
+
+    //조회기간, 대비기간 데이터 나열
+    const salesDayDataArray = useMemo(() => memoizedData?.map((item) => ({
+        total: Number(item.chk_total),
+        avg: Number(item.chk_avg),
+        pos: Number(item.chk_pos_sales),
+        delivery: Number(item.chk_delivery_sales)
+    })) || [], [memoizedData]);
+
+    //조회기간, 대비기간 데이터 나열
+    const compareSalesDayDataArray = useMemo(() => memoizedCompareData?.map((item) => ({
+        total: Number(item.pre_total),
+        avg: Number(item.pre_avg),
+        pos: Number(item.pre_pos_sales),
+        delivery: Number(item.pre_delivery_sales)
+    })) || [], [memoizedCompareData]);
+
+    //조회기간, 대비기간 데이터 합산 sum_~
+    const sum_chk_total = useMemo(() => salesDayDataArray.reduce((sum, {total}) => sum + total, 0), [salesDayDataArray]);
+    const sum_chk_pos = useMemo(() => salesDayDataArray.reduce((sum, {pos}) => sum + pos, 0), [salesDayDataArray]);
+    const sum_chk_delivery = useMemo(() => salesDayDataArray.reduce((sum, {delivery}) => sum + delivery, 0), [salesDayDataArray]);
+
+    const sum_pre_total = useMemo(() => compareSalesDayDataArray.reduce((sum, {total}) => sum + total, 0), [compareSalesDayDataArray]);
+    const sum_pre_pos = useMemo(() => compareSalesDayDataArray.reduce((sum, {pos}) => sum + pos, 0), [compareSalesDayDataArray]);
+    const sum_pre_delivery = useMemo(() => compareSalesDayDataArray.reduce((sum, {delivery}) => sum + delivery, 0), [compareSalesDayDataArray]);
+
+    //조회기간, 대비기간 avg / row.length 나누는 로직
+    const sum_chk_avg = useMemo(() => {
+        const totalAvg = salesDayDataArray.reduce((sum, {avg}) => sum + avg, 0);
+        const numberOfItems = salesDayDataArray.length;
+        const average = numberOfItems > 0 ? totalAvg / numberOfItems : 0;
+        return Math.round(average);
+    }, [salesDayDataArray]);
+
+    const sum_pre_avg = useMemo(() => {
+        const totalAvg = compareSalesDayDataArray.reduce((sum, {avg}) => sum + avg, 0);
+        const numberOfItems = compareSalesDayDataArray.length;
+        const average = numberOfItems > 0 ? totalAvg / numberOfItems : 0;
+        return Math.round(average);
+    }, [compareSalesDayDataArray]);
+
+
+    const indeCreaseTotal = (sum_chk_total - sum_pre_total).toLocaleString();
+    const indeCreaseAvg = (sum_chk_avg - sum_pre_avg).toLocaleString();
+    const indeCreasePos = (sum_chk_pos - sum_pre_pos).toLocaleString();
+    const indeCreaseDelivery = (sum_chk_delivery - sum_pre_delivery).toLocaleString();
+
+    console.log("증감 매출 합산:", indeCreaseTotal);
+    console.log("증감 평균 매출:", indeCreaseAvg);
+    console.log("증감 POS 매출:", indeCreasePos);
+    console.log("증감 배달 매출:", indeCreaseDelivery);
+
+    // const getCellStyle = (value) => {
+    //     const colorStyle = {
+    //         fontWeight: 'bold',
+    //     };
+    //     console.log("@@@여기나오니",value);
+    //
+    //     if (value >= 0) {
+    //         colorStyle.color = 'blue';
+    //     } else if (value < 0) {
+    //         colorStyle.color = 'red';
+    //     }
+    //
+    //     return colorStyle;
+    // };
+
+
+    useEffect(() => {
+        const chkData = salesAnalysisColumns1(mainHeader, headers1);
+        setsalesAnalysisColumnsData1(chkData);
+
+        const preData = salesAnalysisColumns2(mainHeader, headers2);
+        setsalesAnalysisColumnsData2(preData);
+
+        // const indeCrease = salesAnalysisColumns3(mainHeader, headers2);
+        // setsalesAnalysisColumnsData3(indeCrease);
+
+        console.log("chkData=", chkData);
+        console.log("preData=", preData);
+        //console.log("indeCrease=", indeCrease);
+    }, []);
 
     return (<>
         <div className={cx("brand")}>
@@ -271,22 +340,34 @@ const SalesAnalysis = () => {
                     </div>
                 </div>
             </div>
+            <div className={cx("row")}>
+                <div className={cx("item")}>
+                    <PieChartComponent/>
+                </div>
+            </div>
 
             <div className={cx("row", "flex")}>
                 <div className={cx("box", "content-wrap")}>
                     <div className={cx("item")}>
                         {isLoadingSalesDayData ? (
                             <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>) : !memoizedData.length ? (
-                            <div className={cx("no-data")}>데이터가 없습니다.</div>) : (<RenderTable
+                            <div className={cx("no-data")}>데이터가 없습니다.</div>) : (<>
+                            <RenderTable
                                 tableProps={{
                                     ...InquiryTable
                                 }}
                                 editMode={false}
                                 tableState={tableState}
                                 setTableState={setTableState}
+                                rowFixHeaderValues={{
+                                    sum_total: sum_chk_total,
+                                    sum_avg: sum_chk_avg,
+                                    sum_pos: sum_chk_pos,
+                                    sum_delivery: sum_chk_delivery,
+                                }}
                             ></RenderTable>
-
-                        )}
+                            {/*<DayTable columns={dashDayMonthColumns} data={typeByDashYesterdayData}/>*/}
+                        </>)}
                     </div>
                 </div>
                 <div className={cx("box", "content-wrap")}>
@@ -300,9 +381,104 @@ const SalesAnalysis = () => {
                             editMode={false}
                             compareTableState={compareTableState}
                             setCompareTableState={setCompareTableState}
+                            rowFixHeaderValues={{
+                                sum_total: sum_pre_total,
+                                sum_avg: sum_pre_avg,
+                                sum_pos: sum_pre_pos,
+                                sum_delivery: sum_pre_delivery,
+                            }}
                         ></RenderTable>)}
                     </div>
                 </div>
+
+                <div className={cx("box", "content-wrap")}>
+                    <div className={cx("item")}>
+                        <div className={cx("table-wrap")}>
+                            {isLoadingSalesDayData ? (
+                                <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>) : !memoizedData.length ? (
+                                <div className={cx("no-data")}>데이터가 없습니다.</div>) : (<table>
+                                <thead>
+                                <tr>
+
+                                    <th colSpan={5}>증감</th>
+                                </tr>
+                                <tr>
+                                    <th rowSpan={5}>합계</th>
+                                    <th rowSpan={2}>매출합계</th>
+                                    <th rowSpan={2}>평균매출</th>
+                                    <th colSpan={2}>매출구분</th>
+                                </tr>
+                                <tr>
+                                    <th>POS</th>
+                                    <th>배달</th>
+                                </tr>
+                                <tr>
+                                    <td style={{
+                                        fontWeight: 'bold',
+                                        textAlign: 'center',
+                                        color: indeCreaseTotal.includes('-') ? 'blue' : 'red'
+                                    }}>
+                                                 {indeCreaseTotal !== '0' ? (indeCreaseTotal.includes('-') ? indeCreaseTotal : `+${indeCreaseTotal}`) : indeCreaseTotal}
+                                    </td>
+                                    <td style={{
+                                        fontWeight: 'bold',
+                                        textAlign: 'center',
+                                        color: indeCreaseAvg.includes('-') ? 'blue' : 'red'
+                                    }}>
+                                                 {indeCreaseAvg !== '0' ? (indeCreaseAvg.includes('-') ? indeCreaseAvg : `+${indeCreaseAvg}`) : indeCreaseAvg}
+                                    </td>
+                                    <td style={{
+                                        fontWeight: 'bold',
+                                        textAlign: 'center',
+                                        color: indeCreasePos.includes('-') ? 'blue' : 'red'
+                                    }}>
+                                                 {indeCreasePos !== '0' ? (indeCreasePos.includes('-') ? indeCreasePos : `+${indeCreasePos}`) : indeCreasePos}
+                                    </td>
+                                    <td style={{
+                                        fontWeight: 'bold', textAlign: 'center',
+                                        color: indeCreaseDelivery.includes('-') ? 'blue' : 'red'
+                                    }}>
+                                                 {indeCreaseDelivery !== '0' ? (indeCreaseDelivery.includes('-') ? indeCreaseDelivery : `+${indeCreaseDelivery}`) : indeCreaseDelivery}
+                                    </td>
+                                </tr>
+                                </thead>
+
+                                <tbody>
+                                </tbody>
+                            </table>)}
+                        </div>
+                    </div>
+                </div>
+
+                {/*<div className={cx("box", "content-wrap")}>
+                    <div className={cx("item")}>
+
+                        {isLoadingSalesDayData ? (
+                            <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>) : !memoizedData.length ? (
+                            <div className={cx("no-data")}>데이터가 없습니다.</div>) : (
+
+                            <div className={cx("box", "table-wrap")}>
+                                <thead>
+                                <tr>
+                                    <th colSpan={6}>조회 기간</th>
+                                </tr>
+                                <tr>
+                                    <th rowSpan={2}>가맹점명</th>
+                                    <th rowSpan={2}>총 판매액</th>
+                                    <th rowSpan={2}>평균 일일 판매액</th>
+                                    <th colSpan={2}>판매 분류</th>
+                                </tr>
+                                <tr>
+                                    <th>POS</th>
+                                    <th>배송</th>
+                                </tr>
+                                </thead>
+
+                            </div>
+                        )}
+
+                    </div>
+                </div>*/}
             </div>
         </div>
     </>);

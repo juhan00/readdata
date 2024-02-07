@@ -78,21 +78,17 @@ const SalesDay = () => {
     enabled: true,
   });
 
-  console.log("salesDayData==",salesDayData);
-  console.log("headersData==",headersData);
-
   useEffect(() => {
     if (!isLoadingSalesDayData && salesDayData) {
       setTableState(salesDayData);
     }
-
   }, [salesDayData, isLoadingSalesDayData]);
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
-      (row) =>
-        (!searchData.store || row.store?.toString().toLowerCase().includes(searchData.store.toLowerCase())) &&
-        (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
+        (row) =>
+            (!searchData.store || row.store?.toString().toLowerCase().includes(searchData.store.toLowerCase())) &&
+            (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -111,7 +107,6 @@ const SalesDay = () => {
       data.forEach((item, index) => {
         const key = `${item.brand_name}_${item.store}`;
         const sale_date = item.sale_date;
-        //key= (주)프랭크에프엔비_명일점 @@@sale_date= 2023-12-01
         if (!groupData[key]) {
           groupData[key] = {
             brand_name: item.brand_name,
@@ -120,7 +115,6 @@ const SalesDay = () => {
             data: {},
           };
         }
-        console.log("groupData[key]@@@=:", groupData[key]);
 
         const salesData = {
           sale_date: item.sale_date,
@@ -194,14 +188,14 @@ const SalesDay = () => {
     pageCount,
     pageOptions,
   } = useTable(
-    {
-      columns: memoizedSalesDayColumns,
-      data: useMemo(() => memoizedSalesDayData, [memoizedSalesDayData]),
-      initialState: { pageIndex: 0, pageSize: 50 },
-      autoResetPage: false,
-    },
-    useSortBy,
-    usePagination
+      {
+        columns: memoizedSalesDayColumns,
+        data: useMemo(() => memoizedSalesDayData, [memoizedSalesDayData]),
+        initialState: { pageIndex: 0, pageSize: 50 },
+        autoResetPage: false,
+      },
+      useSortBy,
+      usePagination
   );
 
   const handleFieldChange = (field, e) => {
@@ -220,84 +214,82 @@ const SalesDay = () => {
     gotoPage(0);
   };
 
-
   return (
-    <>
-      <div className={cx("brand")}>
-        <div className={cx("row")}>
-          <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("item")}>
-              <SearchDateItems
-                startDate={startDate}
-                endDate={endDate}
-                handleStartDateChange={handleStartDateChange}
-                handleEndDateChange={handleEndDateChange}
-                labelText={1}
-                updateDate={updateDate}
-              />
-            </div>
-            <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
-            </div>
-            <div className={cx("item")}>
-              <SearchAddressItem title={"지역1"} type={SEARCH_ADDRESS.SIDO} />
-            </div>
-            <div className={cx("item")}>
-              <SearchAddressItem title={"지역2"} type={SEARCH_ADDRESS.SIGOON} />
-            </div>
-            <div className={cx("btn-submit")}>
-              <BtnSearch onClick={handleSearchSubmit} />
-            </div>
-          </div>
-        </div>
-
-        <div className={cx("row")}>
-          <div className={cx("box", "content-wrap")}>
-            <div className={cx("item")}>
-              <div className={cx("content-btn-wrap")}>
-                <BtnExcelDown columns={headerGroups} tableData={memoizedSalesDayData} />
+      <>
+        <div className={cx("brand")}>
+          <div className={cx("row")}>
+            <div className={cx("box", "flex", "search-wrap")}>
+              <div className={cx("item")}>
+                <SearchDateItems
+                    startDate={startDate}
+                    endDate={endDate}
+                    handleStartDateChange={handleStartDateChange}
+                    handleEndDateChange={handleEndDateChange}
+                    updateDate={updateDate}
+                />
+              </div>
+              <div className={cx("item")}>
+                <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
+              </div>
+              <div className={cx("item")}>
+                <SearchAddressItem title={"지역1"} type={SEARCH_ADDRESS.SIDO} />
+              </div>
+              <div className={cx("item")}>
+                <SearchAddressItem title={"지역2"} type={SEARCH_ADDRESS.SIGOON} />
+              </div>
+              <div className={cx("btn-submit")}>
+                <BtnSearch onClick={handleSearchSubmit} />
               </div>
             </div>
-            <div className={cx("item")}>
-              {isLoadingSalesDayData ? (
-                <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : !memoizedData.length ? (
-                <div className={cx("no-data")}>데이터가 없습니다.</div>
-              ) : (
-                <RenderTable
-                  tableProps={{
-                    getTableProps,
-                    getTableBodyProps,
-                    headerGroups,
-                    prepareRow,
-                    page,
-                    pageIndex,
-                    pageSize,
-                    gotoPage,
-                    previousPage,
-                    nextPage,
-                    canPreviousPage,
-                    canNextPage,
-                    pageCount,
-                    pageOptions,
-                  }}
-                  editMode={false}
-                  setTableState={setTableState}
-                />
-              )}
-            </div>
           </div>
-        </div>
 
-        <div className={cx("row")}>
-          <div className={cx("box")}>
-            <div className={cx("item")}>
-              <BarChart memoizedSalesDayChartData={memoizedSalesDayChartData} headersData={headersData} />
+          <div className={cx("row")}>
+            <div className={cx("box", "content-wrap")}>
+              <div className={cx("item")}>
+                <div className={cx("content-btn-wrap")}>
+                  <BtnExcelDown columns={headerGroups} tableData={memoizedSalesDayData} />
+                </div>
+              </div>
+              <div className={cx("item")}>
+                {isLoadingSalesDayData ? (
+                    <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+                ) : !memoizedData.length ? (
+                    <div className={cx("no-data")}>데이터가 없습니다.</div>
+                ) : (
+                    <RenderTable
+                        tableProps={{
+                          getTableProps,
+                          getTableBodyProps,
+                          headerGroups,
+                          prepareRow,
+                          page,
+                          pageIndex,
+                          pageSize,
+                          gotoPage,
+                          previousPage,
+                          nextPage,
+                          canPreviousPage,
+                          canNextPage,
+                          pageCount,
+                          pageOptions,
+                        }}
+                        editMode={false}
+                        setTableState={setTableState}
+                    />
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className={cx("row")}>
+            <div className={cx("box")}>
+              <div className={cx("item")}>
+                <BarChart memoizedSalesDayChartData={memoizedSalesDayChartData} headersData={headersData} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </>
   );
 };
 

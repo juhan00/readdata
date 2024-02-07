@@ -3,7 +3,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "@/src/styles/globals.css";
-import "./user/tossPay/tossPay.css"
 
 import { appWithTranslation } from "next-i18next";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -15,15 +14,15 @@ import CommonLayout from "/layouts/commonLayout";
 const queryClient = new QueryClient();
 
 function App({ Component, pageProps }) {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <GlobalStateProvider>
-        <CommonLayout>
-          <Component {...pageProps} />
-        </CommonLayout>
-      </GlobalStateProvider>
-    </QueryClientProvider>
-  );
+    return (
+        <QueryClientProvider client={queryClient}>
+            <GlobalStateProvider>
+                <CommonLayout>
+                    <Component {...pageProps} />
+                </CommonLayout>
+            </GlobalStateProvider>
+        </QueryClientProvider>
+    );
 }
 
 export default appWithTranslation(App);

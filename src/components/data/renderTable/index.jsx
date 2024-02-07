@@ -30,6 +30,7 @@ const RenderTable = ({
                          useDoubleClick,
                          rowSelect,
                          totalRow = false,
+                         rowFixHeaderValues = {}
                      }) => {
     const {
         getTableProps,
@@ -55,6 +56,7 @@ const RenderTable = ({
     const [booleanOption, setBooleanOption] = useState([0, 1]);
     const [{ popupState }, setGlobalState] = useGlobalState();
     const [selectRowIndex, setSelectRowIndex] = useState(null);
+    // const [rowFixHeaderValue, setRowFixHeaderValue] = useState(null);
 
     const pages = useMemo(() => {
         if (!pageOptions) {
@@ -155,9 +157,31 @@ const RenderTable = ({
         setSelectRowIndex(index);
     };
 
+
+    console.log("rowFixHeaderValues@@", rowFixHeaderValues);
+    const {
+        sum_total = '',
+        sum_avg = '',
+        sum_pos = '',
+        sum_delivery = ''
+    } = rowFixHeaderValues;
+
+    console.log("매출합계  =", sum_total);
+    console.log("매출일평균=", sum_avg);
+    console.log("배달배출합=", sum_pos);
+    console.log("매장매출합=", sum_delivery);
+
+    // Using toLocaleString for formatting
+    const SumTotal = sum_total ? Number(sum_total).toLocaleString() : '';
+    const SumAvg = sum_avg ? Number(sum_avg).toLocaleString() : '';
+    const SumPos = sum_pos ? Number(sum_pos).toLocaleString() : '';
+    const SumDelivery = sum_delivery ? Number(sum_delivery).toLocaleString() : '';
+
+
+
     return (
         <>
-            <div className={cx("box","table-wrap")} style={tableHeight && { height: `${tableHeight}` }}>
+            <div className={cx("table-wrap")} style={tableHeight && { height: `${tableHeight}` }}>
                 <table {...getTableProps()}>
                     <thead>
                     {headerGroups.map((headerGroup) => (
@@ -186,6 +210,17 @@ const RenderTable = ({
                             ))}
                         </tr>
                     ))}
+
+                    {Object.keys(rowFixHeaderValues).length > 0 && (
+                        <tr>
+                            <th>합계</th>
+                            <th>{SumTotal}</th>
+                            <th>{SumAvg}</th>
+                            <th>{SumPos}</th>
+                            <th>{SumDelivery}</th>
+                        </tr>
+                    )}
+
                     </thead>
                     <tbody {...getTableBodyProps()}>
                     {page?.map((row, rowIndex) => {

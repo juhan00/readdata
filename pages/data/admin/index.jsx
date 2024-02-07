@@ -33,26 +33,25 @@ const Admin = () => {
         setAdminMenu(category);
     }, [category]);
 
-  return (
-    <div className={cx("admin")}>
-      <PopupDataDefault />
-      <DataLayout useType={useType} adminMenu={{ menu: adminMenu }}>
-        {!adminMenu && <Dashboard />}
-        {adminMenu === "company" && <Compnay />}
-        {adminMenu === "user" && <User />}
-        {adminMenu === "brand" && <Brand />}
-        {adminMenu === "store" && <Store />}
-        {adminMenu === "store_account" && <StoreAccount />}
-        {adminMenu === "store_mapping" && <StoreMapping />}
-        {adminMenu === "sales_day" && <SalesDay />}
-        {adminMenu === "sales_month" && <SalesMonth />}
-        {adminMenu === "sales_region" && <SalesRegion />}
-        {adminMenu === "sales_channel" && <SalesChannel />}
-        {adminMenu === "sales_analyze" && <SalesAnalyze />}
-      </DataLayout>
-    </div>
-  );
-
+    return (
+        <div className={cx("admin")}>
+            <PopupDataDefault />
+            <DataLayout useType={useType} adminMenu={{ menu: adminMenu }}>
+                {!adminMenu && <Dashboard />}
+                {adminMenu === "company" && <Compnay />}
+                {adminMenu === "user" && <User />}
+                {adminMenu === "brand" && <Brand />}
+                {adminMenu === "store" && <Store />}
+                {adminMenu === "store_account" && <StoreAccount />}
+                {adminMenu === "store_mapping" && <StoreMapping />}
+                {adminMenu === "sales_day" && <SalesDay />}
+                {adminMenu === "sales_month" && <SalesMonth />}
+                {adminMenu === "sales_region" && <SalesRegion />}
+                {adminMenu === "sales_channel" && <SalesChannel />}
+                {adminMenu === "sales_analyze" && <SalesAnalyze />}
+            </DataLayout>
+        </div>
+    );
 };
 
 export default Admin;
