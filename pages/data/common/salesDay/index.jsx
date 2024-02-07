@@ -40,7 +40,7 @@ const SalesDay = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [startDate, setStartDate] = useState(oneWeekAgo);
   const [endDate, setEndDate] = useState(today);
-  const [addressItem1, setAddressItem1] = useState("");
+  const [gubun1, setGubun1] = useState("");
 
   const formatStartDate = useMemo(() => {
     return useChangeFormatDate(startDate);
@@ -91,8 +91,8 @@ const SalesDay = () => {
     data: sigoonData,
     isLoading: isLoadingSigoonDataData,
     refetch: refetchSigoonData,
-  } = useQuery(["getSigoonData", addressItem1], () => getSigoonDataList(addressItem1), {
-    enabled: addressItem1 !== undefined && addressItem1 !== "",
+  } = useQuery(["getSigoonData", gubun1], () => getSigoonDataList(gubun1), {
+    enabled: gubun1 !== undefined && gubun1 !== "",
   });
 
   useEffect(() => {
@@ -223,8 +223,8 @@ const SalesDay = () => {
   const handleFieldChange = (field, e) => {
     e.preventDefault();
 
-    if (field === "addressItem1") {
-      setAddressItem1(e.target.value);
+    if (field === "gubun1") {
+      setGubun1(e.target.value);
     }
 
     setSearchField((prevData) => ({
@@ -263,8 +263,8 @@ const SalesDay = () => {
                 title={"지역1"}
                 type={SEARCH_ADDRESS.SIDO}
                 data={sidoData}
-                id={"addressItem1"}
-                value={searchField.addressItem1}
+                id={"gubun1"}
+                value={searchField.gubun1}
                 onChange={handleFieldChange}
               />
             </div>
@@ -274,7 +274,7 @@ const SalesDay = () => {
                 type={SEARCH_ADDRESS.SIGOON}
                 data={sigoonData}
                 id={"addressItem2"}
-                value={searchField.addressItem2}
+                value={searchField.gubun2}
                 onChange={handleFieldChange}
               />
             </div>

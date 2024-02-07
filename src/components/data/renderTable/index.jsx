@@ -60,7 +60,7 @@ const RenderTable = ({
   const [booleanOption, setBooleanOption] = useState([0, 1]);
   const [{ popupState }, setGlobalState] = useGlobalState();
   const [selectRowIndex, setSelectRowIndex] = useState(null);
-  const [addressItem1, setAddressItem1] = useState("");
+  const [gubun1, setGubun1] = useState("");
 
   const {
     data: sidoData,
@@ -74,8 +74,8 @@ const RenderTable = ({
     data: sigoonData,
     isLoading: isLoadingSigoonDataData,
     refetch: refetchSigoonData,
-  } = useQuery(["getSigoonData", addressItem1], () => getSigoonDataList(addressItem1), {
-    enabled: addressItem1 !== undefined && addressItem1 !== "" && addressItem,
+  } = useQuery(["getSigoonData", gubun1], () => getSigoonDataList(gubun1), {
+    enabled: gubun1 !== undefined && gubun1 !== "" && addressItem,
   });
 
   const pages = useMemo(() => {
@@ -93,7 +93,7 @@ const RenderTable = ({
 
   const handleChange = (columnId, value) => {
     if (columnId === "gubun1") {
-      setAddressItem1(value);
+      setGubun1(value);
     }
     setColumnValues((prevColumnValues) => ({
       ...prevColumnValues,
@@ -262,8 +262,8 @@ const RenderTable = ({
                     const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE.AUTHORITY;
                     const isUseflagColumn = cell.column.type === TABLE_COLUMN_TYPE.USEFLAG;
                     const isAddressColumn = cell.column.type === TABLE_COLUMN_TYPE.ADDRESS;
-                    const isAddressItem1Column = cell.column.type === TABLE_COLUMN_TYPE.ADDRESSITEM1;
-                    const isAddressItem2Column = cell.column.type === TABLE_COLUMN_TYPE.ADDRESSITEM2;
+                    const isgubun1Column = cell.column.type === TABLE_COLUMN_TYPE.gubun1;
+                    const isAddressItem2Column = cell.column.type === TABLE_COLUMN_TYPE.gubun2;
                     const isNoEditColumn = cell.column.noEdit === true;
 
                     return (
@@ -311,10 +311,10 @@ const RenderTable = ({
                                 }}
                               />
                             </>
-                          ) : isAddressItem1Column ? (
+                          ) : isgubun1Column ? (
                             <AddressItem
                               data={sidoData}
-                              id={"addressItem1"}
+                              id={"gubun1"}
                               value={columnValues[cell.column.id]}
                               onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}
                               type={SEARCH_ADDRESS.SIDO}
@@ -322,7 +322,7 @@ const RenderTable = ({
                           ) : isAddressItem2Column ? (
                             <AddressItem
                               data={sigoonData}
-                              id={"addressItem2"}
+                              id={"gubun2"}
                               value={columnValues[cell.column.id]}
                               onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}
                               type={SEARCH_ADDRESS.SIGOON}
