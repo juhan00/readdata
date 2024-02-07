@@ -43,7 +43,8 @@ const SalesRegion = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [startDate, setStartDate] = useState(oneWeekAgo);
   const [endDate, setEndDate] = useState(today);
-  const [gubun1, setGubun1] = useState("");
+  const [gubun1, setGubun1] = useState([]);
+  const [gubun2, setGubun2] = useState([]);
 
   const formatStartDate = useMemo(() => {
     return useChangeFormatDate(startDate);
@@ -95,7 +96,7 @@ const SalesRegion = () => {
     isLoading: isLoadingSigoonDataData,
     refetch: refetchSigoonData,
   } = useQuery(["getSigoonData", gubun1], () => getSigoonDataList(gubun1), {
-    enabled: gubun1 !== undefined && gubun1 !== "",
+    enabled: gubun1 !== undefined && gubun1.length !== 0,
   });
 
   useEffect(() => {
@@ -186,6 +187,16 @@ const SalesRegion = () => {
       [field]: e.target.value,
     }));
   };
+
+  // const handleSelectChange = (selectedOption, { value }) => {
+  //   if (selectedOption === "gubun1") {
+  //     setGubun1([selectedOption]);
+  //   }
+  //   setSearchField((prevData) => ({
+  //     ...prevData,
+  //     [selectedOption]: value,
+  //   }));
+  // };
 
   const handleSearchSubmit = (e) => {
     setSearchData((prevData) => ({
