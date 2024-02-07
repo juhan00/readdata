@@ -58,7 +58,6 @@ const SalesChannel = () => {
   };
 
   const updateDate = (date) => {
-    console.log("updateData", date);
     const updatedDate = new Date(date.getTime() + 1);
     setEndDate(updatedDate);
   };
