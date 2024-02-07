@@ -239,7 +239,7 @@ const SalesMonth = () => {
 
   return (
     <>
-      <div className={cx("brand")}>
+      <div className={cx("sales-month")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>

@@ -4,7 +4,7 @@ import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchDateItems from "@/src/components/data/searchDateItems";
 import SearchItem from "@/src/components/data/searchItem";
-import { getSalesDayList, getSalesHeadersList } from "@/utils/api/sales";
+import { getSalesDayList, getSalesHeadersList, getSalesRegionList } from "@/utils/api/sales";
 import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
@@ -16,17 +16,20 @@ import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import SearchAddressItem from "@/src/components/data/searchAddressItem";
 import { SEARCH_ADDRESS } from "@/consts/common";
 import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
+import ChartPie from "@/src/components/data/chartPie";
 
 //styles
 import className from "classnames/bind";
-import styles from "./salesDay.module.scss";
+import styles from "./salesRegion.module.scss";
 const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const SalesDay = () => {
+const SalesRegion = () => {
   const searchFieldData = {
-    store: "",
+    brand_code: "",
+    gubun1: "",
+    gubun2: "",
   };
 
   const today = new Date();
@@ -64,10 +67,10 @@ const SalesDay = () => {
   };
 
   const {
-    data: salesDayData,
-    isLoading: isLoadingSalesDayData,
-    refetch: refetchSalesDayData,
-  } = useQuery(["getSalesDayData", endDate], () => getSalesDayList(companyCode, formatStartDate, formatEndDate), {
+    data: salesRegionData,
+    isLoading: isLoadingSalesRegionData,
+    refetch: refetchSalesRegionData,
+  } = useQuery(["getSalesRegionData", endDate], () => getSalesRegionList(companyCode, formatStartDate, formatEndDate), {
     enabled: companyCode !== undefined && formatStartDate !== undefined && formatEndDate !== undefined,
   });
 
@@ -96,129 +99,52 @@ const SalesDay = () => {
   });
 
   useEffect(() => {
-    if (!isLoadingSalesDayData && salesDayData) {
-      setTableState(salesDayData);
+    if (!isLoadingSalesRegionData && salesRegionData) {
+      setTableState(salesRegionData);
     }
-  }, [salesDayData, isLoadingSalesDayData]);
+  }, [salesRegionData, isLoadingSalesRegionData]);
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.store || row.store?.toString().toLowerCase().includes(searchData.store.toLowerCase())) &&
-        (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
+        (!searchData.brand_code || row.brand_code?.toString().toLowerCase().includes(searchData.brand_code.toLowerCase())) &&
+        (!searchData.gubun1 || row.gubun1?.toString().toLowerCase().includes(searchData.gubun1.toLowerCase())) &&
+        (!searchData.gubun2 || row.gubun2?.toString().toLowerCase().includes(searchData.gubun2.toLowerCase()))
     );
   }, [tableState, searchData]);
 
-  const memoizedSalesDates = useMemo(() => {
-    return useGetDateArray(startDate, endDate);
-  }, [startDate, endDate]);
+  const memoizedSalesRegionChartData = useMemo(() => {
+    const headersArray = headersData?.map((header) => header.accessor);
+    const groupedData = memoizedData?.reduce((result, item) => {
+      const { gubun1, gubun1_h, ...rest } = item;
+      const existingGubun1 = result.find((data) => data.gubun1 === gubun1);
 
-  const memoizedSalesDayColumns = useMemo(() => {
-    return headersData ? salesDayColumns(memoizedSalesDates, headersData) : [];
-  }, [memoizedSalesDates, headersData]);
+      const newGubun1 = {};
+      const valueName = "value";
+      const totalName = "total";
 
-  const memoizedSalesDayData = useMemo(() => {
-    const setStoreGroupData = (data) => {
-      const groupData = {};
-
-      data.forEach((item, index) => {
-        const key = `${item.brand_name}_${item.store}`;
-        const sale_date = item.sale_date;
-        if (!groupData[key]) {
-          groupData[key] = {
-            brand_name: item.brand_name,
-            store: item.store,
-            fran_code: item.fran_code,
-            data: {},
-          };
+      headersArray?.map((header) => {
+        if (existingGubun1) {
+          existingGubun1[header] = existingGubun1[header] + item[header];
+          existingGubun1[valueName] = existingGubun1[valueName] + item[header];
+          existingGubun1[totalName] = existingGubun1[totalName] + item[header];
+        } else {
+          newGubun1["gubun1"] = gubun1;
+          newGubun1["name"] = gubun1_h;
+          newGubun1[header] = item[header];
+          newGubun1[valueName] = (newGubun1[valueName] || 0) + item[header];
+          newGubun1[totalName] = (newGubun1[totalName] || 0) + item[header];
         }
-
-        const salesData = {
-          sale_date: item.sale_date,
-        };
-
-        headersData?.forEach((header) => {
-          const accessor = header.accessor;
-          salesData[accessor] = item[accessor];
-        });
-
-        groupData[key].data[sale_date] = salesData;
       });
+      if (!existingGubun1) {
+        result.push(newGubun1);
+      }
 
-      const result = Object.values(groupData);
       return result;
-    };
-    return setStoreGroupData(memoizedData);
+    }, []);
+
+    return groupedData || [];
   }, [memoizedData, headersData]);
-
-  const memoizedSalesDayChartData = useMemo(() => {
-    const totalDataArray = [];
-
-    memoizedSalesDayData.forEach((item) => {
-      Object.keys(item.data).forEach((sale_date) => {
-        const saleDate = item.data[sale_date].sale_date;
-
-        let dateObject = totalDataArray.find((obj) => obj.sale_date === saleDate);
-
-        if (!dateObject) {
-          dateObject = {
-            sale_date: saleDate,
-          };
-          totalDataArray.push(dateObject);
-        }
-
-        Object.keys(item.data[sale_date]).forEach((column) => {
-          if (column !== "sale_date") {
-            dateObject[column] = (Number(dateObject[column]) || 0) + Number(item.data[sale_date][column]);
-          }
-        });
-      });
-    });
-
-    totalDataArray.forEach((obj) => {
-      const total = Object.keys(obj).reduce((sum, key) => {
-        if (key !== "sale_date") {
-          sum += obj[key];
-        }
-        return sum;
-      }, 0);
-
-      obj.total = total;
-    });
-
-    // console.log("totalDataArray================>", totalDataArray);
-    return totalDataArray;
-  }, [memoizedSalesDayData]);
-
-  useEffect(() => {
-    console.log("memoizedSalesDayData", memoizedSalesDayData);
-    console.log("memoizedSalesDayChartData", memoizedSalesDayChartData);
-  }, [memoizedSalesDayData, memoizedSalesDayChartData]);
-
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page,
-    state: { pageIndex, pageSize },
-    gotoPage,
-    previousPage,
-    nextPage,
-    canPreviousPage,
-    canNextPage,
-    pageCount,
-    pageOptions,
-  } = useTable(
-    {
-      columns: memoizedSalesDayColumns,
-      data: useMemo(() => memoizedSalesDayData, [memoizedSalesDayData]),
-      initialState: { pageIndex: 0, pageSize: 50 },
-      autoResetPage: false,
-    },
-    useSortBy,
-    usePagination
-  );
 
   const handleFieldChange = (field, e) => {
     e.preventDefault();
@@ -238,12 +164,17 @@ const SalesDay = () => {
       ...prevData,
       ...searchField,
     }));
-    gotoPage(0);
+    // gotoPage(0);
   };
+
+  useEffect(() => {
+    console.log("memoizedData", memoizedData);
+    console.log("searchField", searchField);
+  }, [memoizedData, searchField]);
 
   return (
     <>
-      <div className={cx("sales-day")}>
+      <div className={cx("sales-region")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
@@ -256,14 +187,21 @@ const SalesDay = () => {
               />
             </div>
             <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.store} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
+              <SearchItem
+                searchType={SEARCH_TYPE.SELECT_BRAND}
+                value={searchField.brand_code}
+                title={"브랜드 명"}
+                id={"brand_code"}
+                onChange={handleFieldChange}
+                companyCode=""
+              />
             </div>
             <div className={cx("item")}>
               <SearchAddressItem
                 title={"지역1"}
                 type={SEARCH_ADDRESS.SIDO}
                 data={sidoData}
-                id={"addressItem1"}
+                id={"gubun1"}
                 value={searchField.addressItem1}
                 onChange={handleFieldChange}
               />
@@ -273,7 +211,7 @@ const SalesDay = () => {
                 title={"지역2"}
                 type={SEARCH_ADDRESS.SIGOON}
                 data={sigoonData}
-                id={"addressItem2"}
+                id={"gubun2"}
                 value={searchField.addressItem2}
                 onChange={handleFieldChange}
               />
@@ -285,47 +223,29 @@ const SalesDay = () => {
         </div>
 
         <div className={cx("row")}>
-          <div className={cx("box", "content-wrap")}>
+          <div className={cx("box", "pie")}>
             <div className={cx("item")}>
-              <div className={cx("content-btn-wrap")}>
-                <BtnExcelDown columns={headerGroups} tableData={memoizedSalesDayData} />
-              </div>
-            </div>
-            <div className={cx("item")}>
-              {isLoadingSalesDayData ? (
+              {isLoadingSalesRegionData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
               ) : !memoizedData.length ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
-                <RenderTable
-                  tableProps={{
-                    getTableProps,
-                    getTableBodyProps,
-                    headerGroups,
-                    prepareRow,
-                    page,
-                    pageIndex,
-                    pageSize,
-                    gotoPage,
-                    previousPage,
-                    nextPage,
-                    canPreviousPage,
-                    canNextPage,
-                    pageCount,
-                    pageOptions,
-                  }}
-                  editMode={false}
-                  setTableState={setTableState}
-                />
+                <ChartPie memoizedSalesRegionChartData={memoizedSalesRegionChartData} />
               )}
             </div>
           </div>
         </div>
 
         <div className={cx("row")}>
-          <div className={cx("box")}>
+          <div className={cx("box", "bar")}>
             <div className={cx("item")}>
-              <BarChart memoizedSalesDayChartData={memoizedSalesDayChartData} headersData={headersData} />
+              {isLoadingSalesRegionData ? (
+                <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+              ) : !memoizedData.length ? (
+                <div className={cx("no-data")}>데이터가 없습니다.</div>
+              ) : (
+                <BarChart memoizedSalesDayChartData={memoizedSalesRegionChartData} headersData={headersData} dataKey={"name"} />
+              )}
             </div>
           </div>
         </div>
@@ -334,4 +254,4 @@ const SalesDay = () => {
   );
 };
 
-export default SalesDay;
+export default SalesRegion;

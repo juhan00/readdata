@@ -218,7 +218,7 @@ const SalesChannel = () => {
 
   return (
     <>
-      <div className={cx("brand")}>
+      <div className={cx("sales-channel")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>

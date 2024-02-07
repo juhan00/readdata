@@ -37,7 +37,7 @@ const PieChartComponent = () => (
             fill="#8884d8"
             dataKey="value"
             labelLine={false}
-            label={(entry) => `${entry.name}: ${entry.value}`}
+            label={(entry) => `${entry.name}: ${entry.value},${(entry.percent * 100).toFixed(0)}%`}
           >
             {data01.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />

@@ -11,46 +11,19 @@ import className from "classnames/bind";
 
 const cx = className.bind(styles);
 
-const BarChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
-  // const [showTotal, setShowTotal] = useState(true);
-  // const [showPos, setShowPos] = useState(false);
-  // const [showDelivery1, setShowDelivery1] = useState(false);
-  // const [showDelivery2, setShowDelivery2] = useState(false);
-  // const [showDelivery3, setShowDelivery3] = useState(false);
-
+const BarChart = ({ memoizedSalesDayChartData, headersData = [], dataKey = "sale_date" }) => {
   const chartRef = useRef(null);
-
   const totalWidth = memoizedSalesDayChartData.length <= 7 ? "100%" : memoizedSalesDayChartData.length * 100;
   const colorSet = ["#30BBB4", "#EE0046", "#844528", "#124994", "#FF993B", "#FDDC37"];
 
   const SaveChartImage = async () => {
+    if (!chartRef.current) return;
+
     const chartImage = await html2canvas(chartRef.current);
     chartImage.toBlob((blob) => {
       saveAs(blob, "chart_image.png");
     });
   };
-
-  // const handleLegendClick = (dataKey) => {
-  //   switch (dataKey) {
-  //     case "total":
-  //       setShowTotal(!showTotal);
-  //       break;
-  //     case "pos":
-  //       setShowPos(!showPos);
-  //       break;
-  //     case "delivery1":
-  //       setShowDelivery1(!showDelivery1);
-  //       break;
-  //     case "delivery2":
-  //       setShowDelivery2(!showDelivery2);
-  //       break;
-  //     case "delivery3":
-  //       setShowDelivery3(!showDelivery3);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
 
   const CustomLegend = () => (
     <div className={cx("custom-legend")}>
@@ -104,12 +77,12 @@ const BarChart = ({ memoizedSalesDayChartData, headersData = [] }) => {
         <BtnChartSave onClick={() => SaveChartImage()} />
       </div>
 
-      <div ref={chartRef}>
-        <CustomLegend className={cx("custom-legend")} />
-        <div className={cx("chart-container")}>
+      <CustomLegend className={cx("custom-legend")} />
+      <div className={cx("chart-container")}>
+        <div className={cx("chart-ref")} ref={chartRef}>
           <ResponsiveContainer width={totalWidth} height={"100%"}>
             <ComposedChart id="chart" data={memoizedSalesDayChartData}>
-              <XAxis dataKey={"sale_date"} />
+              <XAxis dataKey={dataKey} />
               <YAxis width={80} tick={<CustomYAxisTick />} />
               <Tooltip content={<CustomTooltip />} />
               <CartesianGrid stroke="#f5f5f5" />

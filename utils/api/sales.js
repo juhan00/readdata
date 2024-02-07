@@ -48,3 +48,20 @@ export const getSalesHeadersList = async (brandCode) => {
 
   return data.data;
 };
+
+export const getSalesRegionList = async (companyCode, startDate, endDate) => {
+  const response = await fetch(`/api_default/sales/area?company_code=${companyCode}&from_date=${startDate}&to_date=${endDate}&yn=1`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch data.");
+  }
+
+  const data = await response.json();
+
+  return data.data;
+};
