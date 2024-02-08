@@ -218,24 +218,26 @@ const Compnay = () => {
       <div className={cx("brand")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("item-wrap")}>
-              <div className={cx("item")}>
-                <SearchItem
-                  searchType={SEARCH_TYPE.INPUT}
-                  value={searchField.company_name}
-                  title={"회사명"}
-                  id={"company_name"}
-                  onChange={handleFieldChange}
-                />
-              </div>
-              <div className={cx("item")}>
-                <SearchItem
-                  searchType={SEARCH_TYPE.SELECT_FLAG}
-                  value={searchField.flag}
-                  title={"사용여부"}
-                  id={"flag"}
-                  onChange={handleFieldChange}
-                />
+            <div className={cx("search-item")}>
+              <div className={cx("item-wrap")}>
+                <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.INPUT}
+                    value={searchField.company_name}
+                    title={"회사명"}
+                    id={"company_name"}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.SELECT_FLAG}
+                    value={searchField.flag}
+                    title={"사용여부"}
+                    id={"flag"}
+                    onChange={handleFieldChange}
+                  />
+                </div>
               </div>
             </div>
             <div className={cx("btn-submit")}>

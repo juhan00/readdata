@@ -226,18 +226,20 @@ const SalesDay = () => {
       <div className={cx("sales-day")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("item-wrap")}>
-              <div className={cx("item")}>
-                <SearchDateItems
-                  startDate={startDate}
-                  endDate={endDate}
-                  handleStartDateChange={handleStartDateChange}
-                  handleEndDateChange={handleEndDateChange}
-                  updateDate={updateDate}
-                />
-              </div>
-              <div className={cx("item")}>
-                <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.store} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
+            <div className={cx("search-item")}>
+              <div className={cx("item-wrap")}>
+                <div className={cx("item")}>
+                  <SearchDateItems
+                    startDate={startDate}
+                    endDate={endDate}
+                    handleStartDateChange={handleStartDateChange}
+                    handleEndDateChange={handleEndDateChange}
+                    updateDate={updateDate}
+                  />
+                </div>
+                <div className={cx("item")}>
+                  <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.store} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
+                </div>
               </div>
             </div>
             <div className={cx("btn-submit")}>

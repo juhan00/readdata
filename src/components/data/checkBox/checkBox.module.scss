@@ -1,0 +1,52 @@
+.checkbox-wrap {
+  display: flex;
+  align-items: center;
+  input[type="checkbox"] {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+  input[type="checkbox"] + label {
+    display: inline-block;
+    position: relative;
+    padding-left: 3rem;
+    cursor: pointer;
+  }
+  input[type="checkbox"] + label:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -0.1rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    text-align: center;
+    background: url("/assets/images/data/ic_data_checkbox_off.png") no-repeat 50% 50% / contain;
+    box-sizing: border-box;
+    border-radius: 5px;
+  }
+
+  input[type="checkbox"]:checked + label:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: -0.1rem;
+    width: 2.4rem;
+    height: 2.4rem;
+    background: url("/assets/images/data/ic_data_checkbox_on.png") no-repeat 50% 50% / contain;
+    background-position: center center;
+    border-radius: 5px;
+  }
+
+  input[type="checkbox"] + label span {
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 2.4rem;
+    letter-spacing: -0.036rem;
+    color: $color-black;
+  }
+}
