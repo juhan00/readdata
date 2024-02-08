@@ -1,7 +1,18 @@
-export const salesAnalysisColumns1 = (dates, headers1, headers2) => {
+export const salesAnalysisColumns1 = (dates, headers1, startDate, endDate) => {
     const dateColumns = [{
         //조회기간
-        Header: "조회기간", columns: [{
+        Header: `조회기간 (${startDate} ~ ${endDate})`, columns: [
+            /*{
+                Header: "매출일자", rowspan: 3, columns: [{
+                    Header: "", accessor: "chk_sale_date", headerStyle: {
+                        display: "none", textAlign: "center",
+                    }, cellStyle: {
+                        textAlign: "center",
+                    }, //Cell: ({ value }) => value.toLocaleString(),
+                },
+                ],
+            },*/
+            {
             Header: "가맹점명", rowspan: 2, columns: [{
                 Header: "", accessor: "chk_fran_name", headerStyle: {
                     display: "none", textAlign: "center",
@@ -56,10 +67,21 @@ export const salesAnalysisColumns1 = (dates, headers1, headers2) => {
     return dateColumns;
 };
 
-export const salesAnalysisColumns2 = (dates, headers1, headers2) => {
+export const salesAnalysisColumns2 = (dates, headers1, startDate, endDate) => {
     const dateColumns = [{
         //조회기간
-        Header: "대비기간", columns: [{
+        Header: `대비기간 (${startDate} ~ ${endDate})`, columns: [
+            /*{
+                Header: "매출일자", rowspan: 3, columns: [{
+                    Header: "", accessor: "pre_sale_date", headerStyle: {
+                        display: "none", textAlign: "center",
+                    }, cellStyle: {
+                        textAlign: "center",
+                    }, //Cell: ({ value }) => value.toLocaleString(),
+                },
+                ],
+            },*/
+            {
             Header: "가맹점명", rowspan: 2, columns: [{
                 Header: "", accessor: "pre_fran_name", headerStyle: {
                     display: "none", textAlign: "center",

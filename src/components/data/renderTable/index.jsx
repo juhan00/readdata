@@ -157,26 +157,17 @@ const RenderTable = ({
         setSelectRowIndex(index);
     };
 
-
-    console.log("rowFixHeaderValues@@", rowFixHeaderValues);
+    //매출분석페이지 합계 Header
     const {
         sum_total = '',
         sum_avg = '',
         sum_pos = '',
         sum_delivery = ''
     } = rowFixHeaderValues;
-
-    console.log("매출합계  =", sum_total);
-    console.log("매출일평균=", sum_avg);
-    console.log("배달배출합=", sum_pos);
-    console.log("매장매출합=", sum_delivery);
-
-    // Using toLocaleString for formatting
-    const SumTotal = sum_total ? Number(sum_total).toLocaleString() : '';
-    const SumAvg = sum_avg ? Number(sum_avg).toLocaleString() : '';
-    const SumPos = sum_pos ? Number(sum_pos).toLocaleString() : '';
-    const SumDelivery = sum_delivery ? Number(sum_delivery).toLocaleString() : '';
-
+    const SumTotal = sum_total ? Number(sum_total).toLocaleString() : 'ㅡ';
+    const SumAvg = sum_avg ? Number(sum_avg).toLocaleString() : 'ㅡ';
+    const SumPos = sum_pos ? Number(sum_pos).toLocaleString() : 'ㅡ';
+    const SumDelivery = sum_delivery ? Number(sum_delivery).toLocaleString() : 'ㅡ';
 
 
     return (
@@ -213,11 +204,11 @@ const RenderTable = ({
 
                     {Object.keys(rowFixHeaderValues).length > 0 && (
                         <tr>
-                            <th>합계</th>
-                            <th>{SumTotal}</th>
-                            <th>{SumAvg}</th>
-                            <th>{SumPos}</th>
-                            <th>{SumDelivery}</th>
+                            <th style={{backgroundColor:'#fdeea8'}}>합계</th>
+                            <th style={{backgroundColor:'#fdeea8'}}>{SumTotal}</th>
+                            <th style={{backgroundColor:'#fdeea8'}}>{SumAvg}</th>
+                            <th style={{backgroundColor:'#fdeea8'}}>{SumPos}</th>
+                            <th style={{backgroundColor:'#fdeea8'}}>{SumDelivery}</th>
                         </tr>
                     )}
 
