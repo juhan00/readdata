@@ -12,7 +12,7 @@ import StoreMapping from "../common/storeMapping";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Dashboard from "../common/dashboard";
-import SalesRegion from "../common/saleRegion";
+import SalesRegion from "../common/salesRegion";
 import SalesAnalyze from "../common/salesAnalyze";
 import Brand from "../common/brand";
 import SalesChannel from "../common/salesChannel";

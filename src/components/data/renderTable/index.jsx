@@ -4,6 +4,10 @@ import { isEqual } from "lodash";
 import { useGlobalState } from "@/context/globalStateContext";
 import { POPUP_DEFAULT } from "@/consts/popup";
 import { TABLE_COLUMN_TYPE } from "@/consts/common";
+import AddressItem from "../searchAddressItem/addressItem";
+import { SEARCH_ADDRESS } from "@/consts/common";
+import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
+import { QueryClient, useQuery } from "react-query";
 
 //styles
 import styles from "./renderTable.module.scss";
@@ -30,6 +34,7 @@ const RenderTable = ({
                          useDoubleClick,
                          rowSelect,
                          totalRow = false,
+                         addressItem = false,
                          rowFixHeaderValues = {}
                      }) => {
     const {
@@ -56,7 +61,23 @@ const RenderTable = ({
     const [booleanOption, setBooleanOption] = useState([0, 1]);
     const [{ popupState }, setGlobalState] = useGlobalState();
     const [selectRowIndex, setSelectRowIndex] = useState(null);
-    // const [rowFixHeaderValue, setRowFixHeaderValue] = useState(null);
+    const [gubun1, setGubun1] = useState("");
+
+    const {
+        data: sidoData,
+        isLoading: isLoadingSidoDataData,
+        refetch: refetchSidoData,
+    } = useQuery("getSidoData", () => getSidoDataList(), {
+        enabled: addressItem,
+    });
+
+    const {
+        data: sigoonData,
+        isLoading: isLoadingSigoonDataData,
+        refetch: refetchSigoonData,
+    } = useQuery(["getSigoonData", gubun1], () => getSigoonDataList(gubun1), {
+        enabled: gubun1 !== undefined && gubun1 !== "" && addressItem,
+    });
 
     const pages = useMemo(() => {
         if (!pageOptions) {
@@ -72,6 +93,9 @@ const RenderTable = ({
     };
 
     const handleChange = (columnId, value) => {
+        if (columnId === "gubun1") {
+            setGubun1(value);
+        }
         setColumnValues((prevColumnValues) => ({
             ...prevColumnValues,
             [columnId]: value,
@@ -169,7 +193,6 @@ const RenderTable = ({
     const SumPos = sum_pos ? Number(sum_pos).toLocaleString() : 'ㅡ';
     const SumDelivery = sum_delivery ? Number(sum_delivery).toLocaleString() : 'ㅡ';
 
-
     return (
         <>
             <div className={cx("table-wrap")} style={tableHeight && { height: `${tableHeight}` }}>
@@ -201,7 +224,6 @@ const RenderTable = ({
                             ))}
                         </tr>
                     ))}
-
                     {Object.keys(rowFixHeaderValues).length > 0 && (
                         <tr>
                             <th style={{backgroundColor:'#fdeea8'}}>합계</th>
@@ -211,7 +233,6 @@ const RenderTable = ({
                             <th style={{backgroundColor:'#fdeea8'}}>{SumDelivery}</th>
                         </tr>
                     )}
-
                     </thead>
                     <tbody {...getTableBodyProps()}>
                     {page?.map((row, rowIndex) => {
@@ -263,13 +284,21 @@ const RenderTable = ({
                                     const isAuthorityColumn = cell.column.type === TABLE_COLUMN_TYPE.AUTHORITY;
                                     const isUseflagColumn = cell.column.type === TABLE_COLUMN_TYPE.USEFLAG;
                                     const isAddressColumn = cell.column.type === TABLE_COLUMN_TYPE.ADDRESS;
+                                    const isgubun1Column = cell.column.type === TABLE_COLUMN_TYPE.GUBUN1;
+                                    const isAddressItem2Column = cell.column.type === TABLE_COLUMN_TYPE.GUBUN2;
                                     const isNoEditColumn = cell.column.noEdit === true;
 
                                     return (
                                         <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
                                             {isEditingRow ? (
                                                 isNumberColumn || isNoEditColumn ? (
-                                                    <input value={columnValues[cell.column.id] || cell.value || ""} readOnly onfocus="this.blur()" />
+                                                    <input
+                                                        value={columnValues[cell.column.id] || cell.value || ""}
+                                                        readOnly
+                                                        onFocus={(e) => {
+                                                            e.target.blur();
+                                                        }}
+                                                    />
                                                 ) : isAuthorityColumn ? (
                                                     <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
                                                         {booleanOption.map((option) => (
@@ -298,8 +327,28 @@ const RenderTable = ({
                                                         <input
                                                             value={columnValues[cell.column.id] || cell.value || ""}
                                                             onClick={(e) => handleClickAddress(cell.column.id, e.target.value)}
+                                                            readOnly
+                                                            onFocus={(e) => {
+                                                                e.target.blur();
+                                                            }}
                                                         />
                                                     </>
+                                                ) : isgubun1Column ? (
+                                                    <AddressItem
+                                                        data={sidoData}
+                                                        id={"gubun1"}
+                                                        value={columnValues[cell.column.id]}
+                                                        onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}
+                                                        type={SEARCH_ADDRESS.SIDO}
+                                                    />
+                                                ) : isAddressItem2Column ? (
+                                                    <AddressItem
+                                                        data={sigoonData}
+                                                        id={"gubun2"}
+                                                        value={columnValues[cell.column.id]}
+                                                        onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}
+                                                        type={SEARCH_ADDRESS.SIGOON}
+                                                    />
                                                 ) : (
                                                     <input
                                                         value={columnValues[cell.column.id] || cell.value || ""}

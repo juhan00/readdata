@@ -1,6 +1,15 @@
-.sales-day {
+.sales-region {
   .row {
     @include data-content-row;
+
+    .box {
+      &.pie {
+        @include table-content-wrap(30rem);
+      }
+      &.bar {
+        @include table-content-wrap(40rem);
+      }
+    }
   }
 
   .search-wrap {
@@ -21,13 +30,6 @@
     }
     label[for="file"] {
       margin-left: 1.8rem;
-    }
-  }
-  .content-wrap {
-    @include table-content-wrap;
-
-    &.full-height {
-      min-height: calc(100vh - 21.8rem);
     }
   }
 }

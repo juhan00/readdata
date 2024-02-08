@@ -8,7 +8,7 @@ import styles from "./btnExcelDown.module.scss";
 import className from "classnames/bind";
 const cx = className.bind(styles);
 
-const BtnExcelDown = ({ columns, tableData }) => {
+const BtnExcelDown = ({ columns, tableData, prepareRow }) => {
   const { t } = useTranslation("common");
 
   const handleDownloadExcel = async () => {
@@ -38,13 +38,13 @@ const BtnExcelDown = ({ columns, tableData }) => {
       };
 
       const setProcessColumn = (headers) => {
-        headers.forEach((column) => {
+        headers?.forEach((column) => {
           processColumn(column);
         });
       };
 
       const setTableData = (rowData) => {
-        rowData.forEach((data) => {
+        rowData?.forEach((data) => {
           if (data.value) {
             sheet.getCell(rowIndex, colIndex).value = data.value;
           }
@@ -61,6 +61,7 @@ const BtnExcelDown = ({ columns, tableData }) => {
 
       if (tableData && tableData.length > 0) {
         tableData.forEach((rowData) => {
+          prepareRow(rowData);
           rowIndex++;
           colIndex = 1;
           setTableData(rowData.cells);

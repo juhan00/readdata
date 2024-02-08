@@ -145,6 +145,7 @@ const User = () => {
     headerGroups,
     prepareRow,
     page,
+    rows,
     state: { pageIndex, pageSize },
     gotoPage,
     previousPage,
@@ -206,8 +207,8 @@ const User = () => {
     excelData.map((item) => {
       const transformedItem = {};
       userColumns.forEach((column) => {
-        if (item.hasOwnProperty(column.header)) {
-          transformedItem[column.accessor] = item[column.header];
+        if (item.hasOwnProperty(column.Header)) {
+          transformedItem[column.accessor] = item[column.Header];
         }
       });
       return transformedItem;
@@ -244,7 +245,7 @@ const User = () => {
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
                 <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={userColumns} tableData={memoizedData} />
+                <BtnExcelDown columns={headerGroups} tableData={rows} prepareRow={prepareRow} />
                 <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
               </div>
             </div>

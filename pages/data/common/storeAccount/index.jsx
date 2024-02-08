@@ -79,6 +79,7 @@ const StoreAccount = () => {
     headerGroups,
     prepareRow,
     page,
+    rows,
     state: { pageIndex, pageSize },
     gotoPage,
     previousPage,
@@ -161,7 +162,7 @@ const StoreAccount = () => {
           <div className={cx("box", "content-wrap")}>
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
-                <BtnExcelDown columns={storeAccountColumns} tableData={memoizedData} />
+                <BtnExcelDown columns={headerGroups} tableData={rows} prepareRow={prepareRow} />
               </div>
             </div>
             <div className={cx("item")}>

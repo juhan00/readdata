@@ -16,6 +16,7 @@ export const getStoreList = async (companyCode) => {
 };
 
 export const updateStoreList = async (data) => {
+  console.log("updateStoreList", data);
   const response = await fetch(`/api_default/store/mng/post`, {
     method: "POST",
     headers: {
@@ -27,6 +28,9 @@ export const updateStoreList = async (data) => {
       fran_code: data.fran_code,
       fran_name: data.fran_name,
       bizno: data.bizno,
+      addr: data.addr,
+      gubun1: data.gubun1,
+      qubun2: data.qubun2,
       use_flag: data.use_flag,
       joinFlag: "unjoin",
     }),
@@ -51,6 +55,9 @@ export const addStoreList = async (data) => {
       fran_code: data.fran_code,
       fran_name: data.fran_name,
       bizno: data.bizno,
+      addr: data.addr,
+      gubun1: data.gubun1,
+      qubun2: data.qubun2,
       use_flag: data.use_flag,
       joinFlag: "join",
     }),
@@ -175,7 +182,7 @@ export const updateStoreMapingList = async (data) => {
 };
 
 export const getScrapingList = async (companyCode) => {
-  const response = await fetch(`/api_default/franchise/scrap?company_code=${companyCode}`, {
+  const response = await fetch(`/api_default/franchise/scrap?company_code=${companyCode}&joinflag=unjoin`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

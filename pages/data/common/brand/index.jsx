@@ -142,6 +142,7 @@ const Brand = () => {
     getTableBodyProps,
     headerGroups,
     prepareRow,
+    rows,
     page,
     state: { pageIndex, pageSize },
     gotoPage,
@@ -204,8 +205,8 @@ const Brand = () => {
     excelData.map((item) => {
       const transformedItem = {};
       brandColumns.forEach((column) => {
-        if (item.hasOwnProperty(column.header)) {
-          transformedItem[column.accessor] = item[column.header];
+        if (item.hasOwnProperty(column.Header)) {
+          transformedItem[column.accessor] = item[column.Header];
         }
       });
       return transformedItem;
@@ -246,7 +247,7 @@ const Brand = () => {
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
                 <BtnTableAdd onClick={() => handleNewRowClick()} />
-                <BtnExcelDown columns={headerGroups} tableData={page} />
+                <BtnExcelDown columns={headerGroups} tableData={rows} prepareRow={prepareRow} />
                 <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
               </div>
             </div>

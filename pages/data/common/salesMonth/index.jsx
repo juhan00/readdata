@@ -13,10 +13,10 @@ import { useGetMonthArray } from "@/utils/useGetDateArray";
 import BarChart from "@/src/components/data/barChart";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import SearchAddressItem from "@/src/components/data/searchAddressItem";
-import { SEARCH_ADDRESS } from "@/consts/common";
 import { set, startOfMonth } from "date-fns";
 import { useChangeFormatMonth } from "@/utils/useChangeFormatDate";
-
+import { SEARCH_ADDRESS } from "@/consts/common";
+import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
 //styles
 import className from "classnames/bind";
 import styles from "./salesMonth.module.scss";
@@ -39,6 +39,7 @@ const SalesMonth = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [startDate, setStartDate] = useState(thisMonth);
   const [endDate, setEndDate] = useState(thisMonth);
+  const [gubun1, setGubun1] = useState();
 
   const formatStartDate = useMemo(() => {
     return useChangeFormatMonth(startDate);
@@ -76,6 +77,22 @@ const SalesMonth = () => {
     refetch: refetchHeadersData,
   } = useQuery("getSalesHeadersData", () => getSalesHeadersList("B0002"), {
     enabled: true,
+  });
+
+  const {
+    data: sidoData,
+    isLoading: isLoadingSidoDataData,
+    refetch: refetchSidoData,
+  } = useQuery("getSidoData", () => getSidoDataList(), {
+    enabled: true,
+  });
+
+  const {
+    data: sigoonData,
+    isLoading: isLoadingSigoonDataData,
+    refetch: refetchSigoonData,
+  } = useQuery(["getSigoonData", gubun1], () => getSigoonDataList(gubun1), {
+    enabled: gubun1 !== undefined,
   });
 
   useEffect(() => {
@@ -179,6 +196,7 @@ const SalesMonth = () => {
     headerGroups,
     prepareRow,
     page,
+    rows,
     state: { pageIndex, pageSize },
     gotoPage,
     previousPage,
@@ -200,6 +218,11 @@ const SalesMonth = () => {
 
   const handleFieldChange = (field, e) => {
     e.preventDefault();
+
+    if (field === "gubun1") {
+      setGubun1(e.target.value);
+    }
+
     setSearchField((prevData) => ({
       ...prevData,
       [field]: e.target.value,
@@ -220,7 +243,7 @@ const SalesMonth = () => {
 
   return (
     <>
-      <div className={cx("brand")}>
+      <div className={cx("sales-month")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("item")}>
@@ -238,10 +261,24 @@ const SalesMonth = () => {
               <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
             </div>
             <div className={cx("item")}>
-              <SearchAddressItem title={"지역1"} type={SEARCH_ADDRESS.SIDO} />
+              <SearchAddressItem
+                title={"지역1"}
+                type={SEARCH_ADDRESS.SIDO}
+                data={sidoData}
+                id={"gubun1"}
+                value={searchField.gubun1}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("item")}>
-              <SearchAddressItem title={"지역2"} type={SEARCH_ADDRESS.SIGOON} />
+              <SearchAddressItem
+                title={"지역2"}
+                type={SEARCH_ADDRESS.SIGOON}
+                data={sigoonData}
+                id={"addressItem2"}
+                value={searchField.gubun2}
+                onChange={handleFieldChange}
+              />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
@@ -253,7 +290,7 @@ const SalesMonth = () => {
           <div className={cx("box", "content-wrap")}>
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
-                <BtnExcelDown columns={headerGroups} tableData={memoizedSalesMonthData} />
+                <BtnExcelDown columns={headerGroups} tableData={rows} prepareRow={prepareRow} />
               </div>
             </div>
             <div className={cx("item")}>

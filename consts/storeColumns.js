@@ -56,7 +56,39 @@ export const storeColumns = [
       textAlign: "center",
     },
   },
-
+  {
+    Header: "주소",
+    accessor: "addr",
+    headerStyle: {
+      textAlign: "center",
+    },
+    cellStyle: {
+      textAlign: "center",
+    },
+    type: TABLE_COLUMN_TYPE.ADDRESS,
+  },
+  {
+    Header: "지역1",
+    accessor: "gubun1",
+    headerStyle: {
+      textAlign: "center",
+    },
+    cellStyle: {
+      textAlign: "center",
+    },
+    type: TABLE_COLUMN_TYPE.ADDRESSITEM1,
+  },
+  {
+    Header: "지역2",
+    accessor: "gubun2",
+    headerStyle: {
+      textAlign: "center",
+    },
+    cellStyle: {
+      textAlign: "center",
+    },
+    type: TABLE_COLUMN_TYPE.ADDRESSITEM2,
+  },
   {
     Header: "사용 구분",
     accessor: "use_flag",
