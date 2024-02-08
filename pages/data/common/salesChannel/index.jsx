@@ -220,23 +220,19 @@ const SalesChannel = () => {
       <div className={cx("sales-channel")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("item")}>
-              <SearchDateItems
-                startDate={startDate}
-                endDate={endDate}
-                handleStartDateChange={handleStartDateChange}
-                handleEndDateChange={handleEndDateChange}
-                updateDate={updateDate}
-              />
-            </div>
-            <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
-            </div>
-            <div className={cx("item")}>
-              <SearchAddressItem title={"지역1"} type={SEARCH_ADDRESS.SIDO} />
-            </div>
-            <div className={cx("item")}>
-              <SearchAddressItem title={"지역2"} type={SEARCH_ADDRESS.SIGOON} />
+            <div className={cx("item-wrap")}>
+              <div className={cx("item")}>
+                <SearchDateItems
+                  startDate={startDate}
+                  endDate={endDate}
+                  handleStartDateChange={handleStartDateChange}
+                  handleEndDateChange={handleEndDateChange}
+                  updateDate={updateDate}
+                />
+              </div>
+              <div className={cx("item")}>
+                <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
+              </div>
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />

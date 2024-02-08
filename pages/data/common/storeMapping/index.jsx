@@ -113,23 +113,25 @@ const StoreMapping = () => {
       <div className={cx("brand")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE.INPUT}
-                value={searchField.fran_name}
-                title={"가맹점명"}
-                id={"fran_name"}
-                onChange={handleFieldChange}
-              />
-            </div>
-            <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE.SELECT_MAPPING}
-                value={searchField.scrap_name}
-                title={"맵핑여부"}
-                id={"scrap_name"}
-                onChange={handleFieldChange}
-              />
+            <div className={cx("item-wrap")}>
+              <div className={cx("item")}>
+                <SearchItem
+                  searchType={SEARCH_TYPE.INPUT}
+                  value={searchField.fran_name}
+                  title={"가맹점명"}
+                  id={"fran_name"}
+                  onChange={handleFieldChange}
+                />
+              </div>
+              <div className={cx("item")}>
+                <SearchItem
+                  searchType={SEARCH_TYPE.SELECT_MAPPING}
+                  value={searchField.scrap_name}
+                  title={"맵핑여부"}
+                  id={"scrap_name"}
+                  onChange={handleFieldChange}
+                />
+              </div>
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />

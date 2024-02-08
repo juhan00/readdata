@@ -219,20 +219,22 @@ const User = () => {
       <div className={cx("brand")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"사용자 ID"} id={"uid"} onChange={handleFieldChange} />
-            </div>
-            <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uname} title={"사용자명"} id={"uname"} onChange={handleFieldChange} />
-            </div>
-            <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE.SELECT_FLAG}
-                value={searchField.use_flag}
-                title={"사용여부"}
-                id={"use_flag"}
-                onChange={handleFieldChange}
-              />
+            <div className={cx("item-wrap")}>
+              <div className={cx("item")}>
+                <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"사용자 ID"} id={"uid"} onChange={handleFieldChange} />
+              </div>
+              <div className={cx("item")}>
+                <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uname} title={"사용자명"} id={"uname"} onChange={handleFieldChange} />
+              </div>
+              <div className={cx("item")}>
+                <SearchItem
+                  searchType={SEARCH_TYPE.SELECT_FLAG}
+                  value={searchField.use_flag}
+                  title={"사용여부"}
+                  id={"use_flag"}
+                  onChange={handleFieldChange}
+                />
+              </div>
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />

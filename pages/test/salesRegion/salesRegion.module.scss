@@ -13,7 +13,13 @@
   }
 
   .search-wrap {
-    @include search-wrap;
+    display: flex;
+    .item + .item {
+      margin-left: 2rem;
+    }
+    .btn-submit {
+      margin-left: 2rem;
+    }
   }
   .content-btn-wrap {
     display: flex;

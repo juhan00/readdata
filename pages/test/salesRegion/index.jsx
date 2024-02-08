@@ -13,7 +13,7 @@ import { usePagination, useSortBy, useTable } from "react-table";
 import { useGetDateArray } from "@/utils/useGetDateArray";
 import BarChart from "@/src/components/data/barChart";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
-import SearchAddressItem from "@/src/components/data/searchAddressItem";
+import SearchAddressItem from "./searchAddressItem";
 import { SEARCH_ADDRESS } from "@/consts/common";
 import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
 import ChartPie from "@/src/components/data/chartPie";
@@ -117,6 +117,7 @@ const SalesRegion = () => {
   const memoizedSalesRegionChartData = useMemo(() => {
     const headersArray = headersData?.map((header) => header.accessor);
     const checkGubun2 = searchField.gubun2.length !== 0;
+    console.log("checkGubun2", checkGubun2);
     const groupedData = memoizedData?.reduce((result, item) => {
       if (!checkGubun2) {
         const { gubun1, gubun1_h, ...rest } = item;
@@ -187,15 +188,15 @@ const SalesRegion = () => {
     }));
   };
 
-  // const handleSelectChange = (selectedOption, { value }) => {
-  //   if (selectedOption === "gubun1") {
-  //     setGubun1([selectedOption]);
-  //   }
-  //   setSearchField((prevData) => ({
-  //     ...prevData,
-  //     [selectedOption]: value,
-  //   }));
-  // };
+  const handleSelectChange = (selectedOption, { value }) => {
+    if (selectedOption === "gubun1") {
+      setGubun1([selectedOption]);
+    }
+    setSearchField((prevData) => ({
+      ...prevData,
+      [selectedOption]: value,
+    }));
+  };
 
   const handleSearchSubmit = (e) => {
     setSearchData((prevData) => ({
@@ -217,46 +218,44 @@ const SalesRegion = () => {
       <div className={cx("sales-region")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("item-wrap")}>
-              <div className={cx("item")}>
-                <SearchDateItems
-                  startDate={startDate}
-                  endDate={endDate}
-                  handleStartDateChange={handleStartDateChange}
-                  handleEndDateChange={handleEndDateChange}
-                  updateDate={updateDate}
-                />
-              </div>
-              <div className={cx("item")}>
-                <SearchItem
-                  searchType={SEARCH_TYPE.SELECT_BRAND}
-                  value={searchField.brand_code}
-                  title={"브랜드 명"}
-                  id={"brand_code"}
-                  onChange={handleFieldChange}
-                  companyCode=""
-                />
-              </div>
-              <div className={cx("item")}>
-                <SearchAddressItem
-                  title={"지역1"}
-                  type={SEARCH_ADDRESS.SIDO}
-                  data={sidoData}
-                  id={"gubun1"}
-                  value={searchField.gubun1}
-                  onChange={handleFieldChange}
-                />
-              </div>
-              <div className={cx("item")}>
-                <SearchAddressItem
-                  title={"지역2"}
-                  type={SEARCH_ADDRESS.SIGOON}
-                  data={sigoonData}
-                  id={"gubun2"}
-                  value={searchField.gubun2}
-                  onChange={handleFieldChange}
-                />
-              </div>
+            <div className={cx("item")}>
+              <SearchDateItems
+                startDate={startDate}
+                endDate={endDate}
+                handleStartDateChange={handleStartDateChange}
+                handleEndDateChange={handleEndDateChange}
+                updateDate={updateDate}
+              />
+            </div>
+            <div className={cx("item")}>
+              <SearchItem
+                searchType={SEARCH_TYPE.SELECT_BRAND}
+                value={searchField.brand_code}
+                title={"브랜드 명"}
+                id={"brand_code"}
+                onChange={handleFieldChange}
+                companyCode=""
+              />
+            </div>
+            <div className={cx("item")}>
+              <SearchAddressItem
+                title={"지역1"}
+                type={SEARCH_ADDRESS.SIDO}
+                data={sidoData}
+                id={"gubun1"}
+                value={searchField.gubun1}
+                onChange={handleSelectChange}
+              />
+            </div>
+            <div className={cx("item")}>
+              <SearchAddressItem
+                title={"지역2"}
+                type={SEARCH_ADDRESS.SIGOON}
+                data={sigoonData}
+                id={"gubun2"}
+                value={searchField.gubun2}
+                onChange={handleSelectChange}
+              />
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
