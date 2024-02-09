@@ -1,6 +1,6 @@
 import { useChangeFormatDateUTC } from "@/utils/useChangeFormatDate";
 
-export const storeMappingColumns = [
+export const changeStoreMappingColumns = (t) => [
   {
     Header: "가맹점명(리드데이타)",
     accessor: "fran_name",

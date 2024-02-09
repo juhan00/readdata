@@ -1,6 +1,6 @@
 import { TABLE_COLUMN_TYPE } from "./common";
 
-export const storeAccountColumns = [
+export const changeStoreAccountColumns = (t) => [
   {
     Header: "가맹점 코드",
     accessor: "fran_code",

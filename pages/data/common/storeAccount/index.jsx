@@ -1,6 +1,6 @@
 import { SEARCH_TYPE } from "@/consts/common";
 import { POPUP_DEFAULT } from "@/consts/popup";
-import { storeAccountColumns } from "@/consts/storeAccountColumns";
+import { changeStoreAccountColumns } from "@/consts/storeAccountColumns";
 import { useGlobalState } from "@/context/globalStateContext";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
@@ -20,6 +20,9 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const StoreAccount = () => {
+  const { t } = useTranslation(["common", "columns"]);
+  const storeAccountColumns = useMemo(() => changeStoreAccountColumns(t), []);
+
   const searchFieldData = {
     brand_code: "",
     fran_name: "",
@@ -27,7 +30,6 @@ const StoreAccount = () => {
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
-  const { t } = useTranslation(["common", "dataAdmin"]);
   const [companyCode, setCompanyCode] = useState("C0001");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);

@@ -1,4 +1,4 @@
-import { brandColumns } from "@/consts/brandColumns";
+import { changeBrandColumns } from "@/consts/brandColumns";
 import { SEARCH_TYPE } from "@/consts/common";
 import { POPUP_DEFAULT } from "@/consts/popup";
 import { useGlobalState } from "@/context/globalStateContext";
@@ -22,7 +22,10 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const Brand = () => {
-  const newRow = brandColumns.reduce((obj, item) => {
+  const { t } = useTranslation(["common", "columns"]);
+  const brandColumns = useMemo(() => changeBrandColumns(t), []);
+
+  const newRow = brandColumns?.reduce((obj, item) => {
     if (item.accessor === "use_flag") {
       obj[item.accessor] = 0;
     } else {
@@ -37,7 +40,7 @@ const Brand = () => {
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
-  const { t } = useTranslation(["common", "dataUser"]);
+
   const [companyCode, setCompanyCode] = useState("");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);

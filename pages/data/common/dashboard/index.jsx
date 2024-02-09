@@ -2,8 +2,9 @@ import { useQuery } from "react-query";
 import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
 import { getDashboardBrandList, getDashboardYesterdayList, getDashboardThisMonthList } from "@/utils/api/dashboard";
 import { usePagination, useSortBy, useTable } from "react-table";
-import { dashBrandColumns, dashDayMonthColumns } from "@/consts/dashboardColumns";
+import { changeDashBrandColumns, changeDashDayMonthColumns } from "@/consts/dashboardColumns";
 import RenderTable from "@/src/components/data/renderTable";
+import { useTranslation } from "next-i18next";
 
 //styles
 import className from "classnames/bind";
@@ -168,6 +169,10 @@ const Dashboard = () => {
   const [companyCode, setCompanyCode] = useState("C0000");
   const [yesterday, setYesterday] = useState("2023-12-31");
   const [thisMonth, setThisMonth] = useState("2023-12");
+  const { t } = useTranslation(["common", "columns"]);
+
+  const dashBrandColumns = changeDashBrandColumns(t, yesterday, thisMonth);
+  const dashDayMonthColumns = changeDashDayMonthColumns(t);
 
   const {
     data: dashBrandData,
@@ -194,7 +199,7 @@ const Dashboard = () => {
   });
 
   const memoizedDashboardColumns = useMemo(() => {
-    return yesterday && thisMonth ? dashBrandColumns(yesterday, thisMonth) : [];
+    return yesterday && thisMonth ? dashBrandColumns : [];
   }, [yesterday, thisMonth]);
 
   const typeByDashBrandData = useMemo(() => {

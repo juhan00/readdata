@@ -1,5 +1,5 @@
 import { SEARCH_TYPE } from "@/consts/common";
-import { storeMappingColumns } from "@/consts/storeMappingColumns";
+import { changeStoreMappingColumns } from "@/consts/storeMappingColumns";
 import { useGlobalState } from "@/context/globalStateContext";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
@@ -19,13 +19,15 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const StoreMapping = () => {
+  const { t } = useTranslation(["common", "columns"]);
+  const storeMappingColumns = useMemo(() => changeStoreMappingColumns(t), []);
+
   const searchFieldData = {
     fran_name: "",
     scrap_name: "",
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
-  const { t } = useTranslation(["common", "dataAdmin"]);
   const [companyCode, setCompanyCode] = useState("C0001");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);

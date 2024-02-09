@@ -1,5 +1,5 @@
 import { SEARCH_TYPE } from "@/consts/common";
-import { companyColumns } from "@/consts/companyColumns";
+import { changeCompanyColumns } from "@/consts/companyColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import BtnSearch from "@/src/components/data/button/btnSearch";
@@ -22,6 +22,9 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const Compnay = () => {
+  const { t } = useTranslation(["common", "columns"]);
+  const companyColumns = useMemo(() => changeCompanyColumns(t), []);
+
   const newRow = companyColumns.reduce((obj, item) => {
     if (item.accessor === "flag") {
       obj[item.accessor] = 0;
@@ -37,7 +40,6 @@ const Compnay = () => {
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
-  const { t } = useTranslation(["common", "dataAdmin"]);
   const [companyCode, setCompanyCode] = useState("");
   const [tableState, setTableState] = useState([]);
   const [isModified, setIsModified] = useState(false);

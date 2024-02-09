@@ -1,22 +1,19 @@
 import { SEARCH_TYPE } from "@/consts/common";
-import { salesMonthColumns } from "@/consts/salesMonthColumns";
+import { changeSalesMonthColumns } from "@/consts/salesMonthColumns";
+import BarChart from "@/src/components/data/barChart";
+import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchDateItems from "@/src/components/data/searchDateItems";
 import SearchItem from "@/src/components/data/searchItem";
-import { getSalesMonthList, getSalesHeadersList } from "@/utils/api/sales";
+import { getSalesHeadersList, getSalesMonthList } from "@/utils/api/sales";
+import { useChangeFormatMonth } from "@/utils/useChangeFormatDate";
+import { useGetMonthArray } from "@/utils/useGetDateArray";
+import { set, startOfMonth } from "date-fns";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
-import { useGetMonthArray } from "@/utils/useGetDateArray";
-import BarChart from "@/src/components/data/barChart";
-import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
-import SearchAddressItem from "@/src/components/data/searchAddressItem";
-import { set, startOfMonth } from "date-fns";
-import { useChangeFormatMonth } from "@/utils/useChangeFormatDate";
-import { SEARCH_ADDRESS } from "@/consts/common";
-import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
 //styles
 import className from "classnames/bind";
 import styles from "./salesMonth.module.scss";
@@ -57,7 +54,6 @@ const SalesMonth = () => {
   };
 
   const updateDate = (date) => {
-
     const updatedDate = new Date(date.getTime() + 1);
     setEndDate(updatedDate);
   };
@@ -97,7 +93,7 @@ const SalesMonth = () => {
   }, [endDate]);
 
   const memoizedSalesMonthColumns = useMemo(() => {
-    return headersData ? salesMonthColumns(memoizedSalesDates, headersData) : [];
+    return headersData ? changeSalesMonthColumns(t, memoizedSalesDates, headersData) : [];
   }, [memoizedSalesDates, headersData]);
 
   const memoizedSalesMonthData = useMemo(() => {

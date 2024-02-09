@@ -1,7 +1,7 @@
 import { useChangeFormatDateUTC } from "@/utils/useChangeFormatDate";
 import { TABLE_COLUMN_TYPE } from "./common";
 
-export const storeColumns = [
+export const changeStoreColumns = (t) => [
   {
     Header: "브랜드 코드",
     accessor: "brand_code",

@@ -1,6 +1,6 @@
 import { TABLE_COLUMN_TYPE } from "./common";
 
-export const brandColumns = [
+export const changeBrandColumns = (t) => [
   {
     Header: "No",
     accessor: "no",

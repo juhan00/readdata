@@ -1,23 +1,17 @@
-import { SEARCH_TYPE } from "@/consts/common";
-import { salesDayColumns } from "@/consts/salesDayColumns";
+import { SEARCH_ADDRESS, SEARCH_TYPE } from "@/consts/common";
+import BarChart from "@/src/components/data/barChart";
 import BtnSearch from "@/src/components/data/button/btnSearch";
-import RenderTable from "@/src/components/data/renderTable";
+import ChartPie from "@/src/components/data/chartPie";
+import CheckBox from "@/src/components/data/checkBox";
+import SearchAddressItem from "@/src/components/data/searchAddressItem";
 import SearchDateItems from "@/src/components/data/searchDateItems";
 import SearchItem from "@/src/components/data/searchItem";
-import { getSalesDayList, getSalesHeadersList, getSalesRegionList } from "@/utils/api/sales";
+import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
+import { getSalesHeadersList, getSalesRegionList } from "@/utils/api/sales";
 import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useQuery } from "react-query";
-import { usePagination, useSortBy, useTable } from "react-table";
-import { useGetDateArray } from "@/utils/useGetDateArray";
-import BarChart from "@/src/components/data/barChart";
-import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
-import SearchAddressItem from "@/src/components/data/searchAddressItem";
-import { SEARCH_ADDRESS } from "@/consts/common";
-import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
-import ChartPie from "@/src/components/data/chartPie";
-import CheckBox from "@/src/components/data/checkBox";
 
 //styles
 import className from "classnames/bind";
@@ -336,7 +330,6 @@ const SalesRegion = () => {
     }));
     // gotoPage(0);
   };
-
 
   return (
     <>

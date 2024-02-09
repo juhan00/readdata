@@ -1,21 +1,18 @@
 import { SEARCH_TYPE } from "@/consts/common";
-import { salesDayColumns } from "@/consts/salesDayColumns";
+import { changeSalesDayColumns } from "@/consts/salesDayColumns";
+import BarChart from "@/src/components/data/barChart";
+import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchDateItems from "@/src/components/data/searchDateItems";
 import SearchItem from "@/src/components/data/searchItem";
 import { getSalesDayList, getSalesHeadersList } from "@/utils/api/sales";
 import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
+import { useGetDateArray } from "@/utils/useGetDateArray";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
-import { useGetDateArray } from "@/utils/useGetDateArray";
-import BarChart from "@/src/components/data/barChart";
-import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
-import SearchAddressItem from "@/src/components/data/searchAddressItem";
-import { SEARCH_ADDRESS } from "@/consts/common";
-import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
 
 //styles
 import className from "classnames/bind";
@@ -33,7 +30,7 @@ const SalesDay = () => {
   const oneWeekAgo = new Date(today);
   oneWeekAgo.setDate(today.getDate() - 7);
 
-  const { t } = useTranslation(["common", "dataAdmin"]);
+  const { t } = useTranslation(["common", "columns"]);
   const [companyCode, setCompanyCode] = useState("C0002");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
@@ -97,7 +94,7 @@ const SalesDay = () => {
   }, [startDate, endDate]);
 
   const memoizedSalesDayColumns = useMemo(() => {
-    return headersData ? salesDayColumns(memoizedSalesDates, headersData) : [];
+    return headersData ? changeSalesDayColumns(t, memoizedSalesDates, headersData) : [];
   }, [memoizedSalesDates, headersData]);
 
   const memoizedSalesDayData = useMemo(() => {

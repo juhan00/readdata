@@ -1,6 +1,6 @@
 import { TABLE_COLUMN_TYPE } from "./common";
 
-export const dashBrandColumns = (yesterday, thisMonthData) => {
+export const changeDashBrandColumns = (t, yesterday, thisMonthData) => {
   const dateColumns = [
     {
       Header: "브랜드명",
@@ -94,7 +94,7 @@ export const dashBrandColumns = (yesterday, thisMonthData) => {
   return dateColumns;
 };
 
-export const dashDayMonthColumns = [
+export const changeDashDayMonthColumns = (t) => [
   {
     Header: "상위 5개점",
     headerStyle: {

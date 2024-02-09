@@ -1,6 +1,6 @@
 import { SEARCH_TYPE } from "@/consts/common";
 import { POPUP_DEFAULT } from "@/consts/popup";
-import { storeColumns } from "@/consts/storeColumns";
+import { changeStoreColumns } from "@/consts/storeColumns";
 import { useGlobalState } from "@/context/globalStateContext";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
@@ -22,6 +22,9 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const Store = () => {
+  const { t } = useTranslation(["common", "columns"]);
+  const storeColumns = useMemo(() => changeStoreColumns(t), []);
+
   const newRow = storeColumns.reduce((obj, item) => {
     if (item.accessor === "use_flag") {
       obj[item.accessor] = 0;
@@ -36,7 +39,7 @@ const Store = () => {
     fran_name: "",
     use_flag: "",
   };
-  const { t } = useTranslation(["common", "dataAdmin"]);
+
   const [{ popupState }, setGlobalState] = useGlobalState();
   const [companyCode, setCompanyCode] = useState("C0001");
   const [tableState, setTableState] = useState([]);
@@ -212,7 +215,6 @@ const Store = () => {
       });
       return transformedItem;
     });
-
 
   return (
     <>
