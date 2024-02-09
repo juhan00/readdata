@@ -119,6 +119,9 @@ const StoreAccount = () => {
     updateMutation.mutate(data);
   };
 
+  useEffect(() => {
+    console.log("tableState", tableState);
+  }, [tableState]);
   return (
     <>
       <div className={cx("brand")}>

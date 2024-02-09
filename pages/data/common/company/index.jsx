@@ -157,7 +157,7 @@ const Compnay = () => {
     {
       columns: companyColumns,
       data: useMemo(() => memoizedData, [memoizedData]),
-      initialState: { pageIndex: 0, pageSize: 10 },
+      initialState: { pageIndex: 0, pageSize: 50 },
       autoResetPage: false,
     },
     useSortBy,
