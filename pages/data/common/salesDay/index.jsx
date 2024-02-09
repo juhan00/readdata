@@ -173,11 +173,6 @@ const SalesDay = () => {
     return totalDataArray;
   }, [memoizedSalesDayData]);
 
-  useEffect(() => {
-    console.log("memoizedSalesDayData", memoizedSalesDayData);
-    console.log("memoizedSalesDayChartData", memoizedSalesDayChartData);
-  }, [memoizedSalesDayData, memoizedSalesDayChartData]);
-
   const {
     getTableProps,
     getTableBodyProps,

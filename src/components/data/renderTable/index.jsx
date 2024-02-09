@@ -114,7 +114,6 @@ const RenderTable = ({
     setIsEditing(true);
 
     if (!isAdded) {
-      console.log("page[rowIndex]?.values", page[rowIndex]?.values);
       setEditingRow(fullRowIndex);
       setColumnValues(page[rowIndex]?.values);
     }
@@ -189,10 +188,6 @@ const RenderTable = ({
   const handleClickSelect = (index) => {
     setSelectRowIndex(index);
   };
-
-  useEffect(() => {
-    console.log("columnValues", columnValues);
-  }, [columnValues]);
 
   return (
     <>

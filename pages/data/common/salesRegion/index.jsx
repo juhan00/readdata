@@ -277,9 +277,6 @@ const SalesRegion = () => {
           const isDuplicate = prev[field].some((item) => item.code === e.target.value);
           const isAll = e.target.value === "";
 
-          console.log("isDuplicate", isDuplicate);
-          console.log("isAll", isAll);
-
           if (!isDuplicate && !isAll) {
             return {
               ...prev,
@@ -340,15 +337,6 @@ const SalesRegion = () => {
     // gotoPage(0);
   };
 
-  useEffect(() => {
-    console.log("tableState", tableState);
-    console.log("memoizedData", memoizedData);
-    // console.log("memoizedSalesRegionChartData", memoizedSalesRegionChartData);
-    console.log("searchField", searchField);
-    console.log("searchData", searchData);
-    // console.log("gubun1.code", gubun1.code);
-    console.log("selectedGubun", selectedGubun);
-  }, [memoizedSalesRegionChartData, searchField, selectedGubun, gubun1.code]);
 
   return (
     <>

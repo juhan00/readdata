@@ -39,7 +39,7 @@ const User = () => {
 
   const [{ popupState }, setGlobalState] = useGlobalState();
   const { t } = useTranslation(["common", "dataAdmin"]);
-  const [companyCode, setCompanyCode] = useState("C0000");
+  const [companyCode, setCompanyCode] = useState("");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
