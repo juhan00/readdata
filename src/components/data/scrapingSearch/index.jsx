@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, use } from "react";
 import { useTranslation } from "next-i18next";
 import RenderTable from "@/src/components/data/renderTable";
 import { usePagination, useSortBy, useTable } from "react-table";
-import { scrapingColumns } from "@/consts/scrapingColumns";
+import { changeScrapingColumns } from "@/consts/scrapingColumns";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { useGlobalState } from "@/context/globalStateContext";
 import { POPUP_DEFAULT } from "@/consts/popup";
@@ -14,7 +14,9 @@ import styles from "./scrapingSearch.module.scss";
 const cx = className.bind(styles);
 
 const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData }) => {
-  const { t } = useTranslation(["common", "dataAdmin"]);
+  const { t } = useTranslation(["common", "columns"]);
+  const scrapingColumns = useMemo(() => changeScrapingColumns(t), []);
+
   const [companyCode, setCompanyCode] = useState("C0001");
   const [{ popupState }, setGlobalState] = useGlobalState();
   const [tableState, setTableState] = useState([]);

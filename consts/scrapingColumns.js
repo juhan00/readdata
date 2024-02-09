@@ -1,4 +1,4 @@
-export const scrapingColumns = [
+export const changeScrapingColumns = (t) => [
   {
     Header: "브랜드명",
     accessor: "brand_name",
