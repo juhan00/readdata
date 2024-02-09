@@ -213,6 +213,10 @@ const Store = () => {
       return transformedItem;
     });
 
+  useEffect(() => {
+    console.log("tableState", tableState);
+  }, [tableState]);
+
   return (
     <>
       <div className={cx("brand")}>

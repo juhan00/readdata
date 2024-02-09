@@ -69,25 +69,37 @@ export const storeColumns = [
   },
   {
     Header: "지역1",
-    accessor: "gubun1",
+    id: "gubun1",
+    accessor: "gubun1_h",
     headerStyle: {
       textAlign: "center",
     },
     cellStyle: {
       textAlign: "center",
     },
-    type: TABLE_COLUMN_TYPE.ADDRESSITEM1,
+    type: TABLE_COLUMN_TYPE.GUBUN1,
   },
   {
     Header: "지역2",
-    accessor: "gubun2",
+    id: "gubun2",
+    accessor: "gubun2_h",
     headerStyle: {
       textAlign: "center",
     },
     cellStyle: {
       textAlign: "center",
     },
-    type: TABLE_COLUMN_TYPE.ADDRESSITEM2,
+    type: TABLE_COLUMN_TYPE.GUBUN2,
+  },
+  {
+    Header: "담당자",
+    accessor: "supervisor",
+    headerStyle: {
+      textAlign: "center",
+    },
+    cellStyle: {
+      textAlign: "center",
+    },
   },
   {
     Header: "사용 구분",

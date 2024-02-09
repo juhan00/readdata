@@ -200,7 +200,6 @@ const SalesRegion = () => {
   };
 
   const handleGubunChange = (field, e) => {
-    console.log("field", field);
     e.preventDefault();
 
     if (field === "gubun1") {
@@ -427,7 +426,7 @@ const SalesRegion = () => {
             <div className={cx("item")}>
               {isLoadingSalesRegionData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : !memoizedData.length ? (
+              ) : memoizedData.length === 0 ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <ChartPie memoizedSalesRegionChartData={memoizedSalesRegionChartData} />
@@ -441,7 +440,7 @@ const SalesRegion = () => {
             <div className={cx("item")}>
               {isLoadingSalesRegionData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : !memoizedData.length ? (
+              ) : memoizedData.length === 0 ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <BarChart memoizedSalesDayChartData={memoizedSalesRegionChartData} headersData={headersData} dataKey={"name"} />

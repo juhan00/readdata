@@ -41,6 +41,7 @@ export const updateCompanyList = async (data) => {
 };
 
 export const addCompanyList = async (data) => {
+  console.log("addCompanyList", data);
   const response = await fetch(`/api_default/company/post`, {
     method: "POST",
     headers: {
