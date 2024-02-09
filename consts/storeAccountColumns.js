@@ -385,16 +385,4 @@ export const changeStoreAccountColumns = (t) => [
     },
     noEdit: true,
   },
-  {
-    Header: "사용 구분",
-    accessor: "use_flag",
-    headerStyle: {
-      textAlign: "center",
-    },
-    cellStyle: {
-      textAlign: "center",
-    },
-    type: TABLE_COLUMN_TYPE.USEFLAG,
-    Cell: ({ value }) => (Number(value) === 0 ? "사용안함" : "사용"),
-  },
 ];
