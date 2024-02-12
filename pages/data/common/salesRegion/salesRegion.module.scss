@@ -20,6 +20,7 @@
       flex-wrap: wrap;
       gap: 0.5rem;
       max-width: 90rem;
+      margin-top: 2rem;
       .item {
         display: inline-flex;
         align-items: center;
@@ -29,7 +30,6 @@
         border-radius: 0.5rem;
         font-size: 1.3rem;
         line-height: 2.4rem;
-        margin-top: 2rem;
 
         .close {
           display: inline-block;
