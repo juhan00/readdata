@@ -26,7 +26,6 @@ const StoreAccount = () => {
   const searchFieldData = {
     brand_code: "",
     fran_name: "",
-    use_flag: "",
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
@@ -70,8 +69,7 @@ const StoreAccount = () => {
     return tableState?.filter(
       (row) =>
         (!searchData.brand_code || row.brand_code?.toString().toLowerCase().includes(searchData.brand_code.toLowerCase())) &&
-        (!searchData.fran_name || row.fran_name?.toString().toLowerCase().includes(searchData.fran_name.toLowerCase())) &&
-        (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase()))
+        (!searchData.fran_name || row.fran_name?.toString().toLowerCase().includes(searchData.fran_name.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -147,15 +145,6 @@ const StoreAccount = () => {
                     value={searchField.fran_name}
                     title={"가맹점 명"}
                     id={"fran_name"}
-                    onChange={handleFieldChange}
-                  />
-                </div>
-                <div className={cx("item")}>
-                  <SearchItem
-                    searchType={SEARCH_TYPE.SELECT_FLAG}
-                    value={searchField.use_flag}
-                    title={"사용여부"}
-                    id={"use_flag"}
                     onChange={handleFieldChange}
                   />
                 </div>
