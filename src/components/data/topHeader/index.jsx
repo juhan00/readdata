@@ -22,7 +22,7 @@ const TopHeader = ({ useType }) => {
 
   return (
     <div className={cx("top-header")}>
-      <div className={cx("use-type", useType === USE_TYPE.ADMIN ? "admin" : "user")}>{useType === USE_TYPE.ADMIN ? "관리자" : "사용자"}</div>
+      <div className={cx("use-type", useType === USE_TYPE.USER ? "user" : "admin")}>{useType === USE_TYPE.USER ? "사용자" : "관리자"}</div>
       <div className={cx("right")}>
         <div className={cx("name")}>
           <strong>{userInfo.id}</strong>
