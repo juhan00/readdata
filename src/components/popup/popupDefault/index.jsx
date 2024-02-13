@@ -18,11 +18,12 @@ export default function PopupDefault() {
   const { t } = useTranslation("popup");
 
   const handleCloseClick = () => {
-    setGlobalState({
+    setGlobalState((prevGlobalState) => ({
+      ...prevGlobalState,
       popupState: {
         isOn: !popupState.isOn,
       },
-    });
+    }));
   };
 
   return (

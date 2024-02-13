@@ -123,13 +123,14 @@ const RenderTable = ({
     const checkCurrentTableEqual = isObjectInArray(tableState, columnValues, rowIndex);
 
     if (checkCurrentTableEqual) {
-      setGlobalState({
+      setGlobalState((prevGlobalState) => ({
+        ...prevGlobalState,
         popupState: {
           isOn: true,
           popup: POPUP_DEFAULT,
           content: "중복된 데이터가 있습니다.",
         },
-      });
+      }));
       return;
     }
 
@@ -148,13 +149,14 @@ const RenderTable = ({
     const checkCurrentTableEqual = isObjectInArray(tableState, columnValues, 0);
 
     if (checkCurrentTableEqual) {
-      setGlobalState({
+      setGlobalState((prevGlobalState) => ({
+        ...prevGlobalState,
         popupState: {
           isOn: true,
           popup: POPUP_DEFAULT,
           content: "중복된 데이터가 있습니다.",
         },
-      });
+      }));
       return;
     }
 

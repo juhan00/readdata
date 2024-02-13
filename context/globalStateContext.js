@@ -11,6 +11,9 @@ export const GlobalStateProvider = ({ children }) => {
       title: "",
       content: "",
     },
+    userInfo: {
+      id: "",
+    },
   });
 
   return <GlobalStateContext.Provider value={[globalState, setGlobalState]}>{children}</GlobalStateContext.Provider>;

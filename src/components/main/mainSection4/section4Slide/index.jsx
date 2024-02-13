@@ -17,12 +17,13 @@ export default function Section4Slide({ props: section4slideData }) {
   const swiperRef = useRef(null);
 
   const handlePopupOpenClick = (popup) => {
-    setGlobalState({
+    setGlobalState((prevGlobalState) => ({
+      ...prevGlobalState,
       popupState: {
         isOn: !popupState.isOn,
         popup: popup,
       },
-    });
+    }));
   };
 
   return (

@@ -55,13 +55,14 @@ const StoreAccount = () => {
     onError: (error) => {
       console.error("Update error:", error);
 
-      setGlobalState({
+      setGlobalState((prevGlobalState) => ({
+        ...prevGlobalState,
         popupState: {
           isOn: true,
           popup: POPUP_DEFAULT,
           content: "업데이트에 실패했습니다.",
         },
-      });
+      }));
     },
   });
 

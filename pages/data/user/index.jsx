@@ -9,6 +9,9 @@ import SalesMonth from "../common/salesMonth";
 import Dashboard from "../common/dashboard";
 import SalesRegion from "../common/salesRegion";
 import SalesAnalyze from "../common/salesAnalyze";
+import { getCookie, setCookie, deleteCookie } from "cookies-next";
+import { useGlobalState } from "@/context/globalStateContext";
+import { COOKIE_NAME } from "@/consts/common";
 
 //styles
 import className from "classnames/bind";
@@ -19,23 +22,49 @@ const cx = className.bind(styles);
 const User = () => {
   const router = useRouter();
   const { category } = router.query;
+  const [auth, setAuth] = useState(false);
   const [userMenu, setUserMenu] = useState(category);
+  const [{ userInfo }, setGlobalState] = useGlobalState();
+
+  useEffect(() => {
+    const cookie = getCookie(COOKIE_NAME);
+    if (cookie) {
+      setAuth(true);
+      const cookieObj = JSON.parse(cookie);
+      const userType = cookieObj.user_type;
+
+      if (userType === 0) {
+        setGlobalState((prevGlobalState) => ({
+          ...prevGlobalState,
+          userInfo: {
+            id: cookieObj.user_id,
+          },
+        }));
+      } else {
+        router.push("/data/login");
+      }
+    } else {
+      router.push("/data/login");
+    }
+  }, []);
 
   useEffect(() => {
     setUserMenu(category);
   }, [category]);
 
   return (
-    <div className={cx("user")}>
-      <PopupDataDefault />
-      <DataLayout useType={USE_TYPE.USER} userMenu={{ menu: userMenu }}>
-        {!userMenu && <Dashboard />}
-        {userMenu === "sales_day" && <SalesDay />}
-        {userMenu === "sales_month" && <SalesMonth />}
-        {userMenu === "sales_region" && <SalesRegion />}
-        {userMenu === "sales_analyze" && <SalesAnalyze />}
-      </DataLayout>
-    </div>
+    auth && (
+      <div className={cx("user")}>
+        <PopupDataDefault />
+        <DataLayout useType={USE_TYPE.USER} userMenu={{ menu: userMenu }}>
+          {!userMenu && <Dashboard />}
+          {userMenu === "sales_day" && <SalesDay />}
+          {userMenu === "sales_month" && <SalesMonth />}
+          {userMenu === "sales_region" && <SalesRegion />}
+          {userMenu === "sales_analyze" && <SalesAnalyze />}
+        </DataLayout>
+      </div>
+    )
   );
 };
 

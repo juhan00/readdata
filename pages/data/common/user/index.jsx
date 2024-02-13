@@ -67,13 +67,14 @@ const User = () => {
     onError: (error) => {
       console.error("Update error:", error);
 
-      setGlobalState({
+      setGlobalState((prevGlobalState) => ({
+        ...prevGlobalState,
         popupState: {
           isOn: true,
           popup: POPUP_DEFAULT,
           content: "업데이트에 실패했습니다.",
         },
-      });
+      }));
     },
   });
 
@@ -84,13 +85,14 @@ const User = () => {
     onError: (error) => {
       console.error("Update error:", error);
 
-      setGlobalState({
+      setGlobalState((prevGlobalState) => ({
+        ...prevGlobalState,
         popupState: {
           isOn: true,
           popup: POPUP_DEFAULT,
           content: "추가에 실패했습니다.",
         },
-      });
+      }));
     },
   });
 
@@ -110,24 +112,26 @@ const User = () => {
         refetchUserData();
         gotoPage(0);
 
-        setGlobalState({
+        setGlobalState((prevGlobalState) => ({
+          ...prevGlobalState,
           popupState: {
             isOn: true,
             popup: POPUP_DEFAULT,
             content: "엑셀업로드가 완료되었습니다.",
           },
-        });
+        }));
       },
       onError: (error) => {
         console.error("Update error:", error);
 
-        setGlobalState({
+        setGlobalState((prevGlobalState) => ({
+          ...prevGlobalState,
           popupState: {
             isOn: true,
             popup: POPUP_DEFAULT,
             content: "엑셀업로드가 실패했습니다.",
           },
-        });
+        }));
       },
     }
   );

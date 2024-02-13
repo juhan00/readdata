@@ -7,11 +7,12 @@ const DataPopupLayout = ({ children, title, setIsPopup, setGlobalState }) => {
   const handleClickClose = () => {
     setIsPopup(false);
     if (setGlobalState) {
-      setGlobalState({
+      setGlobalState((prevGlobalState) => ({
+        ...prevGlobalState,
         popupState: {
           isOn: false,
         },
-      });
+      }));
     }
   };
   return (

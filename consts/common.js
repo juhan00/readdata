@@ -23,3 +23,7 @@ export const SEARCH_ADDRESS = {
   SIDO: "SIDO",
   SIGOON: "SIGOON",
 };
+
+export const COOKIE_EXPIRATION_TIME = 3600000;
+export const COOKIE_NAME = "leaddataCookie";
+export const COOKIE_SUPERADMIN_ID = "SUPERADMIN";
