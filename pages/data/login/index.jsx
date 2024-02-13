@@ -55,7 +55,7 @@ const Login = () => {
         popupState: {
           isOn: true,
           popup: POPUP_DEFAULT,
-          content: "아이디나 패스워드를 확인해주세요.11111111",
+          content: "아이디나 패스워드를 확인해주세요.",
         },
       }));
     }
@@ -102,7 +102,7 @@ const Login = () => {
         popupState: {
           isOn: true,
           popup: POPUP_DEFAULT,
-          content: "아이디나 패스워드를 확인해주세요.333333333",
+          content: "아이디나 패스워드를 확인해주세요.",
         },
       }));
     } else {
