@@ -84,7 +84,6 @@ const Login = () => {
   };
 
   useEffect(() => {
-    console.log("isLoadingLoginInfo", isLoadingLoginInfo);
     const cookie = getCookie(COOKIE_NAME);
     if (cookie) {
       router.push("/data");
