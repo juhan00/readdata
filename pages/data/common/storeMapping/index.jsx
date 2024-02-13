@@ -1,5 +1,5 @@
 import { SEARCH_TYPE } from "@/consts/common";
-import { storeMappingColumns } from "@/consts/storeMappingColumns";
+import { changeStoreMappingColumns } from "@/consts/storeMappingColumns";
 import { useGlobalState } from "@/context/globalStateContext";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
@@ -19,13 +19,15 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const StoreMapping = () => {
+  const { t } = useTranslation(["common", "columns"]);
+  const storeMappingColumns = useMemo(() => changeStoreMappingColumns(t), []);
+
   const searchFieldData = {
     fran_name: "",
     scrap_name: "",
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
-  const { t } = useTranslation(["common", "dataAdmin"]);
   const [companyCode, setCompanyCode] = useState("C0001");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
@@ -80,7 +82,7 @@ const StoreMapping = () => {
     {
       columns: storeMappingColumns,
       data: useMemo(() => memoizedData, [memoizedData]),
-      initialState: { pageIndex: 0, pageSize: 10 },
+      initialState: { pageIndex: 0, pageSize: 50 },
       autoResetPage: false,
     },
     useSortBy,
@@ -113,23 +115,27 @@ const StoreMapping = () => {
       <div className={cx("brand")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE.INPUT}
-                value={searchField.fran_name}
-                title={"가맹점명"}
-                id={"fran_name"}
-                onChange={handleFieldChange}
-              />
-            </div>
-            <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE.SELECT_MAPPING}
-                value={searchField.scrap_name}
-                title={"맵핑여부"}
-                id={"scrap_name"}
-                onChange={handleFieldChange}
-              />
+            <div className={cx("search-item")}>
+              <div className={cx("item-wrap")}>
+                <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.INPUT}
+                    value={searchField.fran_name}
+                    title={"가맹점명"}
+                    id={"fran_name"}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.SELECT_MAPPING}
+                    value={searchField.scrap_name}
+                    title={"맵핑여부"}
+                    id={"scrap_name"}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+              </div>
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
@@ -142,7 +148,7 @@ const StoreMapping = () => {
             <div className={cx("item")}>
               {isLoadingStoreMapingData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : !memoizedData.length ? (
+              ) : memoizedData.length === 0 ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <RenderTable

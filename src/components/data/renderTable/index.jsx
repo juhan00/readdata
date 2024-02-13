@@ -92,14 +92,23 @@ const RenderTable = ({
         return array.filter((_, index) => index !== currentRowIndex).some((obj) => isEqual(obj, targetObject));
     };
 
-    const handleChange = (columnId, value) => {
-        if (columnId === "gubun1") {
-            setGubun1(value);
+    const handleChange = (columnId, value, e) => {
+        if (columnId === "gubun1" || columnId === "gubun2") {
+            if (columnId === "gubun1") {
+                setGubun1(value);
+            }
+
+            setColumnValues((prevColumnValues) => ({
+                ...prevColumnValues,
+                [columnId]: value,
+                [`${columnId}_h`]: e.target.options[e.target.selectedIndex].text,
+            }));
+        } else {
+            setColumnValues((prevColumnValues) => ({
+                ...prevColumnValues,
+                [columnId]: value,
+            }));
         }
-        setColumnValues((prevColumnValues) => ({
-            ...prevColumnValues,
-            [columnId]: value,
-        }));
     };
 
     const handleEditClick = (rowIndex, fullRowIndex) => {
@@ -193,6 +202,7 @@ const RenderTable = ({
     const SumPos = sum_pos ? Number(sum_pos).toLocaleString() : 'ㅡ';
     const SumDelivery = sum_delivery ? Number(sum_delivery).toLocaleString() : 'ㅡ';
 
+
     return (
         <>
             <div className={cx("table-wrap")} style={tableHeight && { height: `${tableHeight}` }}>
@@ -285,7 +295,7 @@ const RenderTable = ({
                                     const isUseflagColumn = cell.column.type === TABLE_COLUMN_TYPE.USEFLAG;
                                     const isAddressColumn = cell.column.type === TABLE_COLUMN_TYPE.ADDRESS;
                                     const isgubun1Column = cell.column.type === TABLE_COLUMN_TYPE.GUBUN1;
-                                    const isAddressItem2Column = cell.column.type === TABLE_COLUMN_TYPE.GUBUN2;
+                                    const isgubun2Column = cell.column.type === TABLE_COLUMN_TYPE.GUBUN2;
                                     const isNoEditColumn = cell.column.noEdit === true;
 
                                     return (
@@ -338,15 +348,15 @@ const RenderTable = ({
                                                         data={sidoData}
                                                         id={"gubun1"}
                                                         value={columnValues[cell.column.id]}
-                                                        onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}
+                                                        onChange={(e) => handleChange(cell.column.id, e.target.value, e)}
                                                         type={SEARCH_ADDRESS.SIDO}
                                                     />
-                                                ) : isAddressItem2Column ? (
+                                                ) : isgubun2Column ? (
                                                     <AddressItem
                                                         data={sigoonData}
                                                         id={"gubun2"}
                                                         value={columnValues[cell.column.id]}
-                                                        onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}
+                                                        onChange={(e) => handleChange(cell.column.id, e.target.value, e)}
                                                         type={SEARCH_ADDRESS.SIGOON}
                                                     />
                                                 ) : (

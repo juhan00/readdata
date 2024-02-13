@@ -63,12 +63,32 @@
   overflow: auto;
 }
 
+@mixin search-wrap {
+  display: flex;
+  .search-item {
+    display: inline-block;
+    .item-wrap {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem 2rem;
+    }
+  }
+
+  .btn-submit {
+    display: flex;
+    margin-left: 2rem;
+  }
+}
+
 @mixin label {
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.5rem;
   letter-spacing: -0.016rem;
   margin-right: 1.5rem;
+  white-space: nowrap;
 }
 
 @mixin select {

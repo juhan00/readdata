@@ -1,4 +1,4 @@
-import { brandColumns } from "@/consts/brandColumns";
+import { changeBrandColumns } from "@/consts/brandColumns";
 import { SEARCH_TYPE } from "@/consts/common";
 import { POPUP_DEFAULT } from "@/consts/popup";
 import { useGlobalState } from "@/context/globalStateContext";
@@ -22,7 +22,10 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const Brand = () => {
-  const newRow = brandColumns.reduce((obj, item) => {
+  const { t } = useTranslation(["common", "columns"]);
+  const brandColumns = useMemo(() => changeBrandColumns(t), []);
+
+  const newRow = brandColumns?.reduce((obj, item) => {
     if (item.accessor === "use_flag") {
       obj[item.accessor] = 0;
     } else {
@@ -37,7 +40,7 @@ const Brand = () => {
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
-  const { t } = useTranslation(["common", "dataUser"]);
+
   const [companyCode, setCompanyCode] = useState("");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
@@ -156,7 +159,7 @@ const Brand = () => {
     {
       columns: brandColumns,
       data: useMemo(() => memoizedData, [memoizedData]),
-      initialState: { pageIndex: 0, pageSize: 10 },
+      initialState: { pageIndex: 0, pageSize: 50 },
       autoResetPage: false,
     },
     useSortBy,
@@ -217,24 +220,28 @@ const Brand = () => {
       <div className={cx("brand")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE.SELECT_BRAND}
-                value={searchField.brand_code}
-                title={"브랜드 명"}
-                id={"brand_code"}
-                onChange={handleFieldChange}
-                companyCode=""
-              />
-            </div>
-            <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE.SELECT_FLAG}
-                value={searchField.brand_flag}
-                title={"사용여부"}
-                id={"brand_flag"}
-                onChange={handleFieldChange}
-              />
+            <div className={cx("search-item")}>
+              <div className={cx("item-wrap")}>
+                <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.SELECT_BRAND}
+                    value={searchField.brand_code}
+                    title={"브랜드 명"}
+                    id={"brand_code"}
+                    onChange={handleFieldChange}
+                    companyCode=""
+                  />
+                </div>
+                <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.SELECT_FLAG}
+                    value={searchField.brand_flag}
+                    title={"사용여부"}
+                    id={"brand_flag"}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+              </div>
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
@@ -254,7 +261,7 @@ const Brand = () => {
             <div className={cx("item")}>
               {isLoadingBrandData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : !memoizedData.length ? (
+              ) : memoizedData.length === 0 ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <RenderTable

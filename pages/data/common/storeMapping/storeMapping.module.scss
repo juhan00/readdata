@@ -14,13 +14,7 @@
   }
 
   .search-wrap {
-    display: flex;
-    .item + .item {
-      margin-left: 2rem;
-    }
-    .btn-submit {
-      margin-left: 2rem;
-    }
+    @include search-wrap;
   }
   .content-btn-wrap {
     display: flex;

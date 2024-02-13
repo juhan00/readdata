@@ -1,6 +1,6 @@
 import { SEARCH_TYPE } from "@/consts/common";
 import { POPUP_DEFAULT } from "@/consts/popup";
-import { storeAccountColumns } from "@/consts/storeAccountColumns";
+import { changeStoreAccountColumns } from "@/consts/storeAccountColumns";
 import { useGlobalState } from "@/context/globalStateContext";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
@@ -20,15 +20,16 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const StoreAccount = () => {
+  const { t } = useTranslation(["common", "columns"]);
+  const storeAccountColumns = useMemo(() => changeStoreAccountColumns(t), []);
+
   const searchFieldData = {
     brand_code: "",
     fran_name: "",
-    use_flag: "",
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
-  const { t } = useTranslation(["common", "dataAdmin"]);
-  const [companyCode, setCompanyCode] = useState("C0000");
+  const [companyCode, setCompanyCode] = useState("C0001");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
@@ -68,8 +69,7 @@ const StoreAccount = () => {
     return tableState?.filter(
       (row) =>
         (!searchData.brand_code || row.brand_code?.toString().toLowerCase().includes(searchData.brand_code.toLowerCase())) &&
-        (!searchData.fran_name || row.fran_name?.toString().toLowerCase().includes(searchData.fran_name.toLowerCase())) &&
-        (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase()))
+        (!searchData.fran_name || row.fran_name?.toString().toLowerCase().includes(searchData.fran_name.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -119,38 +119,36 @@ const StoreAccount = () => {
     updateMutation.mutate(data);
   };
 
+  useEffect(() => {
+    console.log("tableState", tableState);
+  }, [tableState]);
   return (
     <>
       <div className={cx("brand")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE.SELECT_BRAND}
-                value={searchField.brand_code}
-                title={"브랜드 명"}
-                id={"brand_code"}
-                onChange={handleFieldChange}
-                companyCode=""
-              />
-            </div>
-            <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE.INPUT}
-                value={searchField.fran_name}
-                title={"가맹점 명"}
-                id={"fran_name"}
-                onChange={handleFieldChange}
-              />
-            </div>
-            <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE.SELECT_FLAG}
-                value={searchField.use_flag}
-                title={"사용여부"}
-                id={"use_flag"}
-                onChange={handleFieldChange}
-              />
+            <div className={cx("search-item")}>
+              <div className={cx("item-wrap")}>
+                <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.SELECT_BRAND}
+                    value={searchField.brand_code}
+                    title={"브랜드 명"}
+                    id={"brand_code"}
+                    onChange={handleFieldChange}
+                    companyCode=""
+                  />
+                </div>
+                <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.INPUT}
+                    value={searchField.fran_name}
+                    title={"가맹점 명"}
+                    id={"fran_name"}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+              </div>
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
@@ -168,7 +166,7 @@ const StoreAccount = () => {
             <div className={cx("item")}>
               {isLoadingStoreData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : !memoizedData.length ? (
+              ) : memoizedData.length === 0 ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <RenderTable

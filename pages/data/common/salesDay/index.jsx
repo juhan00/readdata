@@ -1,21 +1,18 @@
 import { SEARCH_TYPE } from "@/consts/common";
-import { salesDayColumns } from "@/consts/salesDayColumns";
+import { changeSalesDayColumns } from "@/consts/salesDayColumns";
+import BarChart from "@/src/components/data/barChart";
+import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchDateItems from "@/src/components/data/searchDateItems";
 import SearchItem from "@/src/components/data/searchItem";
 import { getSalesDayList, getSalesHeadersList } from "@/utils/api/sales";
 import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
+import { useGetDateArray } from "@/utils/useGetDateArray";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
-import { useGetDateArray } from "@/utils/useGetDateArray";
-import BarChart from "@/src/components/data/barChart";
-import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
-import SearchAddressItem from "@/src/components/data/searchAddressItem";
-import { SEARCH_ADDRESS } from "@/consts/common";
-import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
 
 //styles
 import className from "classnames/bind";
@@ -33,14 +30,13 @@ const SalesDay = () => {
   const oneWeekAgo = new Date(today);
   oneWeekAgo.setDate(today.getDate() - 7);
 
-  const { t } = useTranslation(["common", "dataAdmin"]);
+  const { t } = useTranslation(["common", "columns"]);
   const [companyCode, setCompanyCode] = useState("C0002");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
   const [startDate, setStartDate] = useState(oneWeekAgo);
   const [endDate, setEndDate] = useState(today);
-  const [gubun1, setGubun1] = useState("");
 
   const formatStartDate = useMemo(() => {
     return useChangeFormatDate(startDate);
@@ -79,22 +75,6 @@ const SalesDay = () => {
     enabled: true,
   });
 
-  const {
-    data: sidoData,
-    isLoading: isLoadingSidoDataData,
-    refetch: refetchSidoData,
-  } = useQuery("getSidoData", () => getSidoDataList(), {
-    enabled: true,
-  });
-
-  const {
-    data: sigoonData,
-    isLoading: isLoadingSigoonDataData,
-    refetch: refetchSigoonData,
-  } = useQuery(["getSigoonData", gubun1], () => getSigoonDataList(gubun1), {
-    enabled: gubun1 !== undefined && gubun1 !== "",
-  });
-
   useEffect(() => {
     if (!isLoadingSalesDayData && salesDayData) {
       setTableState(salesDayData);
@@ -114,7 +94,7 @@ const SalesDay = () => {
   }, [startDate, endDate]);
 
   const memoizedSalesDayColumns = useMemo(() => {
-    return headersData ? salesDayColumns(memoizedSalesDates, headersData) : [];
+    return headersData ? changeSalesDayColumns(t, memoizedSalesDates, headersData) : [];
   }, [memoizedSalesDates, headersData]);
 
   const memoizedSalesDayData = useMemo(() => {
@@ -190,11 +170,6 @@ const SalesDay = () => {
     return totalDataArray;
   }, [memoizedSalesDayData]);
 
-  useEffect(() => {
-    console.log("memoizedSalesDayData", memoizedSalesDayData);
-    console.log("memoizedSalesDayChartData", memoizedSalesDayChartData);
-  }, [memoizedSalesDayData, memoizedSalesDayChartData]);
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -224,10 +199,6 @@ const SalesDay = () => {
   const handleFieldChange = (field, e) => {
     e.preventDefault();
 
-    if (field === "gubun1") {
-      setGubun1(e.target.value);
-    }
-
     setSearchField((prevData) => ({
       ...prevData,
       [field]: e.target.value,
@@ -247,37 +218,21 @@ const SalesDay = () => {
         <div className={cx("sales-day")}>
           <div className={cx("row")}>
             <div className={cx("box", "flex", "search-wrap")}>
-              <div className={cx("item")}>
-                <SearchDateItems
-                    startDate={startDate}
-                    endDate={endDate}
-                    handleStartDateChange={handleStartDateChange}
-                    handleEndDateChange={handleEndDateChange}
-                    updateDate={updateDate}
-                />
-              </div>
-              <div className={cx("item")}>
-                <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.store} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
-              </div>
-              <div className={cx("item")}>
-                <SearchAddressItem
-                    title={"지역1"}
-                    type={SEARCH_ADDRESS.SIDO}
-                    data={sidoData}
-                    id={"gubun1"}
-                    value={searchField.gubun1}
-                    onChange={handleFieldChange}
-                />
-              </div>
-              <div className={cx("item")}>
-                <SearchAddressItem
-                    title={"지역2"}
-                    type={SEARCH_ADDRESS.SIGOON}
-                    data={sigoonData}
-                    id={"addressItem2"}
-                    value={searchField.gubun2}
-                    onChange={handleFieldChange}
-                />
+              <div className={cx("search-item")}>
+                <div className={cx("item-wrap")}>
+                  <div className={cx("item")}>
+                    <SearchDateItems
+                        startDate={startDate}
+                        endDate={endDate}
+                        handleStartDateChange={handleStartDateChange}
+                        handleEndDateChange={handleEndDateChange}
+                        updateDate={updateDate}
+                    />
+                  </div>
+                  <div className={cx("item")}>
+                    <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.store} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
+                  </div>
+                </div>
               </div>
               <div className={cx("btn-submit")}>
                 <BtnSearch onClick={handleSearchSubmit} />
@@ -295,7 +250,7 @@ const SalesDay = () => {
               <div className={cx("item")}>
                 {isLoadingSalesDayData ? (
                     <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-                ) : !memoizedData.length ? (
+                ) : memoizedData.length === 0 ? (
                     <div className={cx("no-data")}>데이터가 없습니다.</div>
                 ) : (
                     <RenderTable

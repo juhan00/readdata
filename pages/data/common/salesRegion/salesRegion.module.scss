@@ -13,12 +13,31 @@
   }
 
   .search-wrap {
-    display: flex;
-    .item + .item {
-      margin-left: 2rem;
-    }
-    .btn-submit {
-      margin-left: 2rem;
+    @include search-wrap;
+
+    .region-item-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      max-width: 90rem;
+      margin-top: 2rem;
+      .item {
+        display: inline-flex;
+        align-items: center;
+        padding: 0 0.6rem 0 1rem;
+        background-color: #ededed;
+        color: #333;
+        border-radius: 0.5rem;
+        font-size: 1.3rem;
+        line-height: 2.4rem;
+
+        .close {
+          display: inline-block;
+          width: 0.8rem;
+          height: 0.8rem;
+          background: url("/assets/images/data/ic_item_close.png") no-repeat 50% 50% / contain;
+        }
+      }
     }
   }
   .content-btn-wrap {

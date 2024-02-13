@@ -1,6 +1,6 @@
 import { useChangeFormatDateUTC } from "@/utils/useChangeFormatDate";
 
-export const salesDayColumns = (dates, headers) => {
+export const changeSalesDayColumns = (t, dates, headers) => {
   const dateColumns = [
     {
       Header: "매출일자",

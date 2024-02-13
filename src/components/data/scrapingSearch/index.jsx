@@ -2,9 +2,10 @@ import React, { useState, useEffect, useMemo, use } from "react";
 import { useTranslation } from "next-i18next";
 import RenderTable from "@/src/components/data/renderTable";
 import { usePagination, useSortBy, useTable } from "react-table";
-import { scrapingColumns } from "@/consts/scrapingColumns";
+import { changeScrapingColumns } from "@/consts/scrapingColumns";
 import { QueryClient, useMutation, useQuery } from "react-query";
-
+import { useGlobalState } from "@/context/globalStateContext";
+import { POPUP_DEFAULT } from "@/consts/popup";
 import { getScrapingList, updateStoreMapingList } from "@/utils/api/store";
 
 //styles
@@ -13,8 +14,11 @@ import styles from "./scrapingSearch.module.scss";
 const cx = className.bind(styles);
 
 const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData }) => {
-  const { t } = useTranslation(["common", "dataAdmin"]);
+  const { t } = useTranslation(["common", "columns"]);
+  const scrapingColumns = useMemo(() => changeScrapingColumns(t), []);
+
   const [companyCode, setCompanyCode] = useState("C0001");
+  const [{ popupState }, setGlobalState] = useGlobalState();
   const [tableState, setTableState] = useState([]);
   const [franName, setFranName] = useState("");
   const [filterScrapFranName, setFilterScrapFranName] = useState("");
@@ -39,6 +43,15 @@ const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData
   const updateMutation = useMutation(async (data) => await updateStoreMapingList(data), {
     onSuccess: () => {
       refetchStoreMapingData();
+      refetchScrapingData();
+
+      setGlobalState({
+        popupState: {
+          isOn: true,
+          popup: POPUP_DEFAULT,
+          content: "업데이트를 완료했습니다.",
+        },
+      });
     },
     onError: (error) => {
       console.error("Update error:", error);

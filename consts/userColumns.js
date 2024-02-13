@@ -1,6 +1,6 @@
 import { TABLE_COLUMN_TYPE } from "./common";
 
-export const userColumns = [
+export const changeUserColumns = (t) => [
   {
     Header: "사용자 ID",
     accessor: "uid",

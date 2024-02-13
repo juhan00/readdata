@@ -1,5 +1,5 @@
 import { SEARCH_TYPE } from "@/consts/common";
-import { companyColumns } from "@/consts/companyColumns";
+import { changeCompanyColumns } from "@/consts/companyColumns";
 import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
 import BtnSearch from "@/src/components/data/button/btnSearch";
@@ -22,6 +22,9 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const Compnay = () => {
+  const { t } = useTranslation(["common", "columns"]);
+  const companyColumns = useMemo(() => changeCompanyColumns(t), []);
+
   const newRow = companyColumns.reduce((obj, item) => {
     if (item.accessor === "flag") {
       obj[item.accessor] = 0;
@@ -37,8 +40,7 @@ const Compnay = () => {
   };
 
   const [{ popupState }, setGlobalState] = useGlobalState();
-  const { t } = useTranslation(["common", "dataAdmin"]);
-  const [companyCode, setCompanyCode] = useState("C0001");
+  const [companyCode, setCompanyCode] = useState("");
   const [tableState, setTableState] = useState([]);
   const [isModified, setIsModified] = useState(false);
   const [searchData, setSearchData] = useState(searchFieldData);
@@ -157,7 +159,7 @@ const Compnay = () => {
     {
       columns: companyColumns,
       data: useMemo(() => memoizedData, [memoizedData]),
-      initialState: { pageIndex: 0, pageSize: 10 },
+      initialState: { pageIndex: 0, pageSize: 50 },
       autoResetPage: false,
     },
     useSortBy,
@@ -218,17 +220,27 @@ const Compnay = () => {
       <div className={cx("brand")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("item")}>
-              <SearchItem
-                searchType={SEARCH_TYPE.INPUT}
-                value={searchField.company_name}
-                title={"회사명"}
-                id={"company_name"}
-                onChange={handleFieldChange}
-              />
-            </div>
-            <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE.SELECT_FLAG} value={searchField.flag} title={"사용여부"} id={"flag"} onChange={handleFieldChange} />
+            <div className={cx("search-item")}>
+              <div className={cx("item-wrap")}>
+                <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.INPUT}
+                    value={searchField.company_name}
+                    title={"회사명"}
+                    id={"company_name"}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+                <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.SELECT_FLAG}
+                    value={searchField.flag}
+                    title={"사용여부"}
+                    id={"flag"}
+                    onChange={handleFieldChange}
+                  />
+                </div>
+              </div>
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
@@ -248,7 +260,7 @@ const Compnay = () => {
             <div className={cx("item")}>
               {isLoadingCompanyData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : !memoizedData.length ? (
+              ) : memoizedData.length === 0 ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <RenderTable

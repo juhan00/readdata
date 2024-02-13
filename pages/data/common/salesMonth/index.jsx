@@ -1,22 +1,19 @@
 import { SEARCH_TYPE } from "@/consts/common";
-import { salesMonthColumns } from "@/consts/salesMonthColumns";
+import { changeSalesMonthColumns } from "@/consts/salesMonthColumns";
+import BarChart from "@/src/components/data/barChart";
+import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchDateItems from "@/src/components/data/searchDateItems";
 import SearchItem from "@/src/components/data/searchItem";
-import { getSalesMonthList, getSalesHeadersList } from "@/utils/api/sales";
+import { getSalesHeadersList, getSalesMonthList } from "@/utils/api/sales";
+import { useChangeFormatMonth } from "@/utils/useChangeFormatDate";
+import { useGetMonthArray } from "@/utils/useGetDateArray";
+import { set, startOfMonth } from "date-fns";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
-import { useGetMonthArray } from "@/utils/useGetDateArray";
-import BarChart from "@/src/components/data/barChart";
-import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
-import SearchAddressItem from "@/src/components/data/searchAddressItem";
-import { set, startOfMonth } from "date-fns";
-import { useChangeFormatMonth } from "@/utils/useChangeFormatDate";
-import { SEARCH_ADDRESS } from "@/consts/common";
-import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
 //styles
 import className from "classnames/bind";
 import styles from "./salesMonth.module.scss";
@@ -39,7 +36,6 @@ const SalesMonth = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [startDate, setStartDate] = useState(thisMonth);
   const [endDate, setEndDate] = useState(thisMonth);
-  const [gubun1, setGubun1] = useState();
 
   const formatStartDate = useMemo(() => {
     return useChangeFormatMonth(startDate);
@@ -58,7 +54,6 @@ const SalesMonth = () => {
   };
 
   const updateDate = (date) => {
-    console.log("updateData", date);
     const updatedDate = new Date(date.getTime() + 1);
     setEndDate(updatedDate);
   };
@@ -79,22 +74,6 @@ const SalesMonth = () => {
     enabled: true,
   });
 
-  const {
-    data: sidoData,
-    isLoading: isLoadingSidoDataData,
-    refetch: refetchSidoData,
-  } = useQuery("getSidoData", () => getSidoDataList(), {
-    enabled: true,
-  });
-
-  const {
-    data: sigoonData,
-    isLoading: isLoadingSigoonDataData,
-    refetch: refetchSigoonData,
-  } = useQuery(["getSigoonData", gubun1], () => getSigoonDataList(gubun1), {
-    enabled: gubun1 !== undefined,
-  });
-
   useEffect(() => {
     if (!isLoadingSalesMonthData && salesMonthData) {
       setTableState(salesMonthData);
@@ -103,9 +82,9 @@ const SalesMonth = () => {
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
-      (row) =>
-        (!searchData.store || row.store?.toString().toLowerCase().includes(searchData.store.toLowerCase())) &&
-        (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
+        (row) =>
+            (!searchData.store || row.store?.toString().toLowerCase().includes(searchData.store.toLowerCase())) &&
+            (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -114,7 +93,7 @@ const SalesMonth = () => {
   }, [endDate]);
 
   const memoizedSalesMonthColumns = useMemo(() => {
-    return headersData ? salesMonthColumns(memoizedSalesDates, headersData) : [];
+    return headersData ? changeSalesMonthColumns(t, memoizedSalesDates, headersData) : [];
   }, [memoizedSalesDates, headersData]);
 
   const memoizedSalesMonthData = useMemo(() => {
@@ -206,22 +185,18 @@ const SalesMonth = () => {
     pageCount,
     pageOptions,
   } = useTable(
-    {
-      columns: memoizedSalesMonthColumns,
-      data: useMemo(() => memoizedSalesMonthData, [memoizedSalesMonthData]),
-      initialState: { pageIndex: 0, pageSize: 50 },
-      autoResetPage: false,
-    },
-    useSortBy,
-    usePagination
+      {
+        columns: memoizedSalesMonthColumns,
+        data: useMemo(() => memoizedSalesMonthData, [memoizedSalesMonthData]),
+        initialState: { pageIndex: 0, pageSize: 50 },
+        autoResetPage: false,
+      },
+      useSortBy,
+      usePagination
   );
 
   const handleFieldChange = (field, e) => {
     e.preventDefault();
-
-    if (field === "gubun1") {
-      setGubun1(e.target.value);
-    }
 
     setSearchField((prevData) => ({
       ...prevData,
@@ -238,101 +213,81 @@ const SalesMonth = () => {
     gotoPage(0);
   };
 
-  console.log("시작날짜=",formatStartDate);
-  console.log("종료날짜=",formatEndDate);
-
   return (
-    <>
-      <div className={cx("sales-month")}>
-        <div className={cx("row")}>
-          <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("item")}>
-              <SearchDateItems
-                startDate={startDate}
-                endDate={endDate}
-                handleStartDateChange={handleStartDateChange}
-                handleEndDateChange={handleEndDateChange}
-                isMonth={true}
-                labelText={1}
-                updateDate={updateDate}
-              />
-            </div>
-            <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
-            </div>
-            <div className={cx("item")}>
-              <SearchAddressItem
-                title={"지역1"}
-                type={SEARCH_ADDRESS.SIDO}
-                data={sidoData}
-                id={"gubun1"}
-                value={searchField.gubun1}
-                onChange={handleFieldChange}
-              />
-            </div>
-            <div className={cx("item")}>
-              <SearchAddressItem
-                title={"지역2"}
-                type={SEARCH_ADDRESS.SIGOON}
-                data={sigoonData}
-                id={"addressItem2"}
-                value={searchField.gubun2}
-                onChange={handleFieldChange}
-              />
-            </div>
-            <div className={cx("btn-submit")}>
-              <BtnSearch onClick={handleSearchSubmit} />
-            </div>
-          </div>
-        </div>
-
-        <div className={cx("row")}>
-          <div className={cx("box", "content-wrap")}>
-            <div className={cx("item")}>
-              <div className={cx("content-btn-wrap")}>
-                <BtnExcelDown columns={headerGroups} tableData={rows} prepareRow={prepareRow} />
+      <>
+        <div className={cx("sales-month")}>
+          <div className={cx("row")}>
+            <div className={cx("box", "flex", "search-wrap")}>
+              <div className={cx("search-item")}>
+                <div className={cx("item-wrap")}>
+                  <div className={cx("item")}>
+                    <SearchDateItems
+                        startDate={startDate}
+                        endDate={endDate}
+                        handleStartDateChange={handleStartDateChange}
+                        handleEndDateChange={handleEndDateChange}
+                        isMonth={true}
+                        updateDate={updateDate}
+                    />
+                  </div>
+                  <div className={cx("item")}>
+                    <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
+                  </div>
+                </div>
+              </div>
+              <div className={cx("btn-submit")}>
+                <BtnSearch onClick={handleSearchSubmit} />
               </div>
             </div>
-            <div className={cx("item")}>
-              {isLoadingSalesMonthData ? (
-                <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : !memoizedData.length ? (
-                <div className={cx("no-data")}>데이터가 없습니다.</div>
-              ) : (
-                <RenderTable
-                  tableProps={{
-                    getTableProps,
-                    getTableBodyProps,
-                    headerGroups,
-                    prepareRow,
-                    page,
-                    pageIndex,
-                    pageSize,
-                    gotoPage,
-                    previousPage,
-                    nextPage,
-                    canPreviousPage,
-                    canNextPage,
-                    pageCount,
-                    pageOptions,
-                  }}
-                  editMode={false}
-                  setTableState={setTableState}
-                />
-              )}
-            </div>
           </div>
-        </div>
 
-        <div className={cx("row")}>
-          <div className={cx("box")}>
-            <div className={cx("item")}>
-              <BarChart memoizedSalesDayChartData={memoizedSalesMonthChartData} headersData={headersData} />
+          <div className={cx("row")}>
+            <div className={cx("box", "content-wrap")}>
+              <div className={cx("item")}>
+                <div className={cx("content-btn-wrap")}>
+                  <BtnExcelDown columns={headerGroups} tableData={rows} prepareRow={prepareRow} />
+                </div>
+              </div>
+              <div className={cx("item")}>
+                {isLoadingSalesMonthData ? (
+                    <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+                ) : memoizedData.length === 0 ? (
+                    <div className={cx("no-data")}>데이터가 없습니다.</div>
+                ) : (
+                    <RenderTable
+                        tableProps={{
+                          getTableProps,
+                          getTableBodyProps,
+                          headerGroups,
+                          prepareRow,
+                          page,
+                          pageIndex,
+                          pageSize,
+                          gotoPage,
+                          previousPage,
+                          nextPage,
+                          canPreviousPage,
+                          canNextPage,
+                          pageCount,
+                          pageOptions,
+                        }}
+                        editMode={false}
+                        setTableState={setTableState}
+                    />
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className={cx("row")}>
+            <div className={cx("box")}>
+              <div className={cx("item")}>
+                <BarChart memoizedSalesDayChartData={memoizedSalesMonthChartData} headersData={headersData} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </>
   );
 };
 

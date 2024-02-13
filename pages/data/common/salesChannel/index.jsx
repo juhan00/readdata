@@ -1,21 +1,16 @@
 import { SEARCH_TYPE } from "@/consts/common";
-import { salesDayColumns } from "@/consts/salesDayColumns";
+import { changeSalesDayColumns } from "@/consts/salesDayColumns";
 import BtnSearch from "@/src/components/data/button/btnSearch";
-import RenderTable from "@/src/components/data/renderTable";
+import ChannelChart from "@/src/components/data/channelChart";
 import SearchDateItems from "@/src/components/data/searchDateItems";
 import SearchItem from "@/src/components/data/searchItem";
 import { getSalesDayList, getSalesHeadersList } from "@/utils/api/sales";
 import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
+import { useGetDateArray } from "@/utils/useGetDateArray";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
-import { useGetDateArray } from "@/utils/useGetDateArray";
-import BarChart from "@/src/components/data/barChart";
-import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
-import SearchAddressItem from "@/src/components/data/searchAddressItem";
-import { SEARCH_ADDRESS } from "@/consts/common";
-import ChannelChart from "@/src/components/data/channelChart";
 
 //styles
 import className from "classnames/bind";
@@ -33,13 +28,13 @@ const SalesChannel = () => {
   const oneWeekAgo = new Date(today);
   oneWeekAgo.setDate(today.getDate() - 7);
 
-  const { t } = useTranslation(["common", "dataAdmin"]);
   const [companyCode, setCompanyCode] = useState("C0002");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
   const [startDate, setStartDate] = useState(oneWeekAgo);
   const [endDate, setEndDate] = useState(today);
+  const { t } = useTranslation(["common", "columns"]);
 
   const formatStartDate = useMemo(() => {
     return useChangeFormatDate(startDate);
@@ -98,7 +93,7 @@ const SalesChannel = () => {
   }, [startDate, endDate]);
 
   const memoizedSalesDayColumns = useMemo(() => {
-    return headersData ? salesDayColumns(memoizedSalesDates, headersData) : [];
+    return headersData ? changeSalesDayColumns(t, memoizedSalesDates, headersData) : [];
   }, [memoizedSalesDates, headersData]);
 
   const memoizedSalesDayData = useMemo(() => {
@@ -220,23 +215,21 @@ const SalesChannel = () => {
       <div className={cx("sales-channel")}>
         <div className={cx("row")}>
           <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("item")}>
-              <SearchDateItems
-                startDate={startDate}
-                endDate={endDate}
-                handleStartDateChange={handleStartDateChange}
-                handleEndDateChange={handleEndDateChange}
-                updateDate={updateDate}
-              />
-            </div>
-            <div className={cx("item")}>
-              <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
-            </div>
-            <div className={cx("item")}>
-              <SearchAddressItem title={"지역1"} type={SEARCH_ADDRESS.SIDO} />
-            </div>
-            <div className={cx("item")}>
-              <SearchAddressItem title={"지역2"} type={SEARCH_ADDRESS.SIGOON} />
+            <div className={cx("search-item")}>
+              <div className={cx("item-wrap")}>
+                <div className={cx("item")}>
+                  <SearchDateItems
+                    startDate={startDate}
+                    endDate={endDate}
+                    handleStartDateChange={handleStartDateChange}
+                    handleEndDateChange={handleEndDateChange}
+                    updateDate={updateDate}
+                  />
+                </div>
+                <div className={cx("item")}>
+                  <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
+                </div>
+              </div>
             </div>
             <div className={cx("btn-submit")}>
               <BtnSearch onClick={handleSearchSubmit} />
@@ -249,7 +242,7 @@ const SalesChannel = () => {
             <div className={cx("item")}>
               {isLoadingSalesDayData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : !memoizedData.length === 0 ? (
+              ) : memoizedData.length === 0 ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <ChannelChart memoizedSalesDayChartData={memoizedSalesDayChartData} headersData={headersData} />
