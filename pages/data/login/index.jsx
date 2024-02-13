@@ -28,6 +28,7 @@ const Login = () => {
   const {
     data: loginInfo,
     isLoading: isLoadingLoginInfo,
+    isFetching: isFetchingLoginInfo,
     refetch: refetchLoginInfo,
   } = useQuery("getLoginInfo", () => getLoginInfo(id, pw), { enabled: false });
 
@@ -46,6 +47,7 @@ const Login = () => {
 
   const handleSubmitClick = () => {
     if (id && pw) {
+      console.log("id, pw", id, pw);
       refetchLoginInfo();
     } else {
       setGlobalState((prevGlobalState) => ({
@@ -53,23 +55,14 @@ const Login = () => {
         popupState: {
           isOn: true,
           popup: POPUP_DEFAULT,
-          content: "아이디나 패스워드를 확인해주세요.",
+          content: "아이디나 패스워드를 확인해주세요.11111111",
         },
       }));
     }
   };
 
-  const loginCheck = (token, admin) => {
-    if (!token && !admin) {
-      setGlobalState((prevGlobalState) => ({
-        ...prevGlobalState,
-        popupState: {
-          isOn: true,
-          popup: POPUP_DEFAULT,
-          content: "아이디나 패스워드를 확인해주세요.",
-        },
-      }));
-    }
+  const userLogin = (token, admin) => {
+    console.log("token, admin", token, admin);
 
     if (admin !== null) {
       if (token) {
@@ -87,32 +80,36 @@ const Login = () => {
       }
 
       router.push("/data");
-    } else {
-      setGlobalState((prevGlobalState) => ({
-        ...prevGlobalState,
-        popupState: {
-          isOn: true,
-          popup: POPUP_DEFAULT,
-          content: "아이디나 패스워드를 확인해주세요.",
-        },
-      }));
     }
   };
 
   useEffect(() => {
+    console.log("isLoadingLoginInfo", isLoadingLoginInfo);
     const cookie = getCookie(COOKIE_NAME);
     if (cookie) {
       router.push("/data");
     }
 
-    if (!loginInfo) {
+    if (!loginInfo || isFetchingLoginInfo) {
       return;
     }
+    console.log("loginInfo", loginInfo);
     const token = loginInfo.tk;
     const admin = loginInfo.admin;
 
-    loginCheck(token, admin);
-  }, [loginInfo]);
+    if (!token && !admin) {
+      setGlobalState((prevGlobalState) => ({
+        ...prevGlobalState,
+        popupState: {
+          isOn: true,
+          popup: POPUP_DEFAULT,
+          content: "아이디나 패스워드를 확인해주세요.333333333",
+        },
+      }));
+    } else {
+      userLogin(token, admin);
+    }
+  }, [loginInfo, isFetchingLoginInfo]);
 
   useEffect(() => {
     if (tk) {
@@ -127,7 +124,7 @@ const Login = () => {
     const token = tk;
     const admin = tokenCheckInfo.admin;
 
-    loginCheck(token, admin);
+    userLogin(token, admin);
   }, [tokenCheckInfo]);
 
   return (
