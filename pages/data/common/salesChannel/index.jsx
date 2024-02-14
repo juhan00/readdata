@@ -224,14 +224,6 @@ const SalesChannel = () => {
     gotoPage(0);
   };
 
-  useEffect(() => {
-    console.log("searchData", searchData);
-  }, [searchData]);
-
-  useEffect(() => {
-    console.log("memoizedData", memoizedData);
-  }, [memoizedData]);
-
   return (
     <>
       <div className={cx("sales-channel")}>

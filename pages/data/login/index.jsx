@@ -47,7 +47,6 @@ const Login = () => {
 
   const handleSubmitClick = () => {
     if (id && pw) {
-      console.log("id, pw", id, pw);
       refetchLoginInfo();
     } else {
       setGlobalState((prevGlobalState) => ({
@@ -62,8 +61,6 @@ const Login = () => {
   };
 
   const userLogin = (token, admin, companyCode) => {
-    console.log("token, admin", token, admin);
-
     if (admin !== null) {
       if (token) {
         const decodedToken = jwt.decode(token);
@@ -92,7 +89,7 @@ const Login = () => {
     if (!loginInfo || isFetchingLoginInfo) {
       return;
     }
-    console.log("loginInfo", loginInfo);
+
     const token = loginInfo.tk;
     const admin = loginInfo.admin;
     const companyCode = loginInfo.companyCode;

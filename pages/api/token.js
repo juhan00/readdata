@@ -2,7 +2,6 @@ require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
 export default function handler(req, res) {
-  console.log("api접근 완료", req.body);
   const { user_id, user_name, email, companyCode } = req.body;
 
   const userInfo = {

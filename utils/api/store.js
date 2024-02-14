@@ -16,7 +16,6 @@ export const getStoreList = async (companyCode) => {
 };
 
 export const updateStoreList = async (data) => {
-  console.log("updateStoreList", data);
   const response = await fetch(`/api_default/store/mng/post`, {
     method: "POST",
     headers: {

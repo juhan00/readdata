@@ -2,7 +2,6 @@ import { getCookie, setCookie, deleteCookie } from "cookies-next";
 import { COOKIE_NAME } from "@/consts/common";
 
 export const setTokenCookie = (userId, superAdmin, userType, companyCode, token, expirationTime) => {
-  console.log("setTokenCookie");
   const expiryDate = new Date(Number(new Date()) + expirationTime);
   setCookie(
     COOKIE_NAME,

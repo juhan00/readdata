@@ -196,7 +196,6 @@ const User = () => {
   };
 
   const handleNewRowClick = () => {
-    console.log("newRow", newRow);
     if (!isAdded && !isEditing) {
       setTableState((prevTableState) => [
         {
