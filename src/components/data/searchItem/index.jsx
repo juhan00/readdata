@@ -17,7 +17,6 @@ const SearchItem = ({ searchType, title, value, setDefaultValue, id, onClick, on
 
   useEffect(() => {
     if (brandData && brandData.length && setDefaultValue) {
-      console.log("brandData", brandData);
       setDefaultValue({ brand_code: brandData[0].brand_code, brand_name: brandData[0].brand_name });
     }
   }, [brandData]);
