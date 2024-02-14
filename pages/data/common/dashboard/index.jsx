@@ -206,7 +206,7 @@ const Dashboard = () => {
 
   const typeByDashBrandData = useMemo(() => {
     if (!dashBrandData) {
-      return;
+      return [];
     }
     const groupedData = dashBrandData?.reduce((result, item) => {
       const { brand_name, type, ...rest } = item;
