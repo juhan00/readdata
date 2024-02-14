@@ -169,8 +169,8 @@ const MonthTable = ({ columns, data }) => {
 const Dashboard = () => {
   const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
   const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
-  const [yesterday, setYesterday] = useState("2023-12-31");
-  const [thisMonth, setThisMonth] = useState("2023-12");
+  const [yesterday, setYesterday] = useState(yesterdayData);
+  const [thisMonth, setThisMonth] = useState(thisMonthData);
   const { t } = useTranslation(["common", "columns"]);
 
   const dashBrandColumns = changeDashBrandColumns(t, yesterday, thisMonth);

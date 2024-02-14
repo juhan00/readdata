@@ -29,14 +29,22 @@ const SalesChannel = () => {
   const oneWeekAgo = new Date(today);
   oneWeekAgo.setDate(today.getDate() - 7);
 
-  const [{ popupState,userInfo }, setGlobalState] = useGlobalState();
+  const { t } = useTranslation(["common", "columns"]);
+  const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
   const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
   const [startDate, setStartDate] = useState(oneWeekAgo);
   const [endDate, setEndDate] = useState(today);
-  const { t } = useTranslation(["common", "columns"]);
+  const [defaultBrand, setDefaultBrand] = useState({});
+
+  useEffect(() => {
+    setSearchData((prevData) => ({
+      ...prevData,
+      ["brand_name"]: defaultBrand.brand_name,
+    }));
+  }, [defaultBrand]);
 
   const formatStartDate = useMemo(() => {
     return useChangeFormatDate(startDate);
@@ -72,8 +80,8 @@ const SalesChannel = () => {
     data: headersData,
     isLoading: isLoadingHeadersData,
     refetch: refetchHeadersData,
-  } = useQuery("getSalesHeadersData", () => getSalesHeadersList("B0002"), {
-    enabled: true,
+  } = useQuery(["getSalesHeadersData", defaultBrand.brand_code], () => getSalesHeadersList(defaultBrand.brand_code), {
+    enabled: defaultBrand.brand_code !== undefined,
   });
 
   useEffect(() => {
@@ -85,8 +93,8 @@ const SalesChannel = () => {
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.store || row.store?.toString().toLowerCase().includes(searchData.store.toLowerCase())) &&
-        (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
+        (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
+        (!searchData.store || row.store?.toString().toLowerCase().includes(searchData.store.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -198,9 +206,13 @@ const SalesChannel = () => {
 
   const handleFieldChange = (field, e) => {
     e.preventDefault();
+
+    const fieldName = field === "brand_code" ? "brand_name" : field;
+    const fieldValue = field === "brand_code" ? e.target.options[e.target.selectedIndex].text : e.target.value;
+
     setSearchField((prevData) => ({
       ...prevData,
-      [field]: e.target.value,
+      [fieldName]: fieldValue,
     }));
   };
 
@@ -212,6 +224,14 @@ const SalesChannel = () => {
     gotoPage(0);
   };
 
+  useEffect(() => {
+    console.log("searchData", searchData);
+  }, [searchData]);
+
+  useEffect(() => {
+    console.log("memoizedData", memoizedData);
+  }, [memoizedData]);
+
   return (
     <>
       <div className={cx("sales-channel")}>
@@ -219,6 +239,17 @@ const SalesChannel = () => {
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("search-item")}>
               <div className={cx("item-wrap")}>
+                <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.SELECT_BRAND}
+                    value={searchField.brand_code}
+                    setDefaultValue={setDefaultBrand}
+                    title={"브랜드 명"}
+                    id={"brand_code"}
+                    onChange={handleFieldChange}
+                    companyCode={companyCode}
+                  />
+                </div>
                 <div className={cx("item")}>
                   <SearchDateItems
                     startDate={startDate}
@@ -244,8 +275,6 @@ const SalesChannel = () => {
             <div className={cx("item")}>
               {isLoadingSalesDayData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : memoizedData.length === 0 ? (
-                <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <ChannelChart memoizedSalesDayChartData={memoizedSalesDayChartData} headersData={headersData} />
               )}

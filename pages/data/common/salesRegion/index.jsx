@@ -46,7 +46,14 @@ const SalesRegion = () => {
   const [selectedGubun, setSelectedGubun] = useState([]);
   const [checkedUseFlag, setCheckedUseFlag] = useState(false);
   const [checkedUseGubun2, setCheckedUseGubun2] = useState(false);
-  const [defaultBrandCode, setDefaultBrandCode] = useState("");
+  const [defaultBrand, setDefaultBrand] = useState({});
+
+  useEffect(() => {
+    setSearchData((prevData) => ({
+      ...prevData,
+      ["brand_name"]: defaultBrand.brand_name,
+    }));
+  }, [defaultBrand]);
 
   const formatStartDate = useMemo(() => {
     return useChangeFormatDate(startDate);
@@ -81,8 +88,8 @@ const SalesRegion = () => {
     data: headersData,
     isLoading: isLoadingHeadersData,
     refetch: refetchHeadersData,
-  } = useQuery(["getSalesHeadersData", defaultBrandCode], () => getSalesHeadersList(defaultBrandCode), {
-    enabled: defaultBrandCode !== undefined,
+  } = useQuery(["getSalesHeadersData", defaultBrand.brand_code], () => getSalesHeadersList(defaultBrand.brand_code), {
+    enabled: defaultBrand.brand_code !== undefined,
   });
 
   const {
@@ -120,7 +127,7 @@ const SalesRegion = () => {
       }
 
       return (
-        (!searchData.brand_code || row.brand_code?.toString().toLowerCase().includes(searchData.brand_code.toLowerCase())) &&
+        (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
         (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase())) &&
         gubun1Condition &&
         gubun2Condition
@@ -190,9 +197,13 @@ const SalesRegion = () => {
 
   const handleFieldChange = (field, e) => {
     e.preventDefault();
+
+    const fieldName = field === "brand_code" ? "brand_name" : field;
+    const fieldValue = field === "brand_code" ? e.target.options[e.target.selectedIndex].text : e.target.value;
+
     setSearchField((prevData) => ({
       ...prevData,
-      [field]: e.target.value,
+      [fieldName]: fieldValue,
     }));
   };
 
@@ -334,6 +345,14 @@ const SalesRegion = () => {
     // gotoPage(0);
   };
 
+  useEffect(() => {
+    console.log("searchData", searchData);
+  }, [searchData]);
+
+  useEffect(() => {
+    console.log("memoizedData", memoizedData);
+  }, [memoizedData]);
+
   return (
     <>
       <div className={cx("sales-region")}>
@@ -345,7 +364,7 @@ const SalesRegion = () => {
                   <SearchItem
                     searchType={SEARCH_TYPE.SELECT_BRAND}
                     value={searchField.brand_code}
-                    setDefaultValue={setDefaultBrandCode}
+                    setDefaultValue={setDefaultBrand}
                     title={"브랜드 명"}
                     id={"brand_code"}
                     onChange={handleFieldChange}
@@ -412,8 +431,6 @@ const SalesRegion = () => {
             <div className={cx("item")}>
               {isLoadingSalesRegionData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : memoizedData.length === 0 ? (
-                <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <ChartPie memoizedSalesRegionChartData={memoizedSalesRegionChartData} />
               )}
@@ -426,8 +443,6 @@ const SalesRegion = () => {
             <div className={cx("item")}>
               {isLoadingSalesRegionData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : memoizedData.length === 0 ? (
-                <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <BarChart memoizedSalesDayChartData={memoizedSalesRegionChartData} headersData={headersData} dataKey={"name"} />
               )}

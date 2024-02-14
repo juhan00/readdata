@@ -264,8 +264,6 @@ const Brand = () => {
             <div className={cx("item")}>
               {isLoadingBrandData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : memoizedData.length === 0 ? (
-                <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <RenderTable
                   tableProps={{
