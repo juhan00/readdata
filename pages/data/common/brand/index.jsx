@@ -39,7 +39,7 @@ const Brand = () => {
     brand_flag: "",
   };
 
-  const [{ popupState,userInfo }, setGlobalState] = useGlobalState();
+  const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
   const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);

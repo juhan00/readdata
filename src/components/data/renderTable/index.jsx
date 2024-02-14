@@ -8,6 +8,7 @@ import AddressItem from "../searchAddressItem/addressItem";
 import { SEARCH_ADDRESS } from "@/consts/common";
 import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
 import { QueryClient, useQuery } from "react-query";
+import PopupSearchCompany from "../popup/popupSearchCompany";
 
 //styles
 import styles from "./renderTable.module.scss";
@@ -61,6 +62,7 @@ const RenderTable = ({
   const [{ popupState }, setGlobalState] = useGlobalState();
   const [selectRowIndex, setSelectRowIndex] = useState(null);
   const [gubun1, setGubun1] = useState("");
+  const [isCompanyPopupOpen, setIsCompanyPopupOpen] = useState(false);
 
   const {
     data: sidoData,
@@ -137,6 +139,7 @@ const RenderTable = ({
     setEditingRow(null);
     handleUpdateData({ ...columnValues });
     setIsEditing(false);
+    setColumnValues({});
   };
 
   const handleEditCancelClick = () => {
@@ -185,6 +188,28 @@ const RenderTable = ({
       [addressCellName]: selectedAddress,
     }));
     setIsAddressPopupOpen(false);
+  };
+
+  const handleClickCompany = () => {
+    setIsCompanyPopupOpen(true);
+  };
+
+  const handleSelectCompany = (selectedCompany) => {
+    setIsCompanyPopupOpen(false);
+
+    const compnayCellId = headerGroups.flatMap((headerGroup) =>
+      headerGroup.headers.filter((column) => column.id === "company_code").map((companyColumn) => companyColumn.id)
+    );
+
+    const compnayCellName = headerGroups.flatMap((headerGroup) =>
+      headerGroup.headers.filter((column) => column.type === TABLE_COLUMN_TYPE.COMPANY).map((companyColumn) => companyColumn.id)
+    );
+
+    setColumnValues((prevColumnValues) => ({
+      ...prevColumnValues,
+      [compnayCellId]: selectedCompany.company_code,
+      [compnayCellName]: selectedCompany.company_name,
+    }));
   };
 
   const handleClickSelect = (index) => {
@@ -276,6 +301,7 @@ const RenderTable = ({
                     const isgubun1Column = cell.column.type === TABLE_COLUMN_TYPE.GUBUN1;
                     const isgubun2Column = cell.column.type === TABLE_COLUMN_TYPE.GUBUN2;
                     const isNoEditColumn = cell.column.noEdit === true;
+                    const isCompanyColumn = cell.column.type === TABLE_COLUMN_TYPE.COMPANY;
 
                     return (
                       <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
@@ -338,6 +364,20 @@ const RenderTable = ({
                               onChange={(e) => handleChange(cell.column.id, e.target.value, e)}
                               type={SEARCH_ADDRESS.SIGOON}
                             />
+                          ) : isCompanyColumn ? (
+                            <>
+                              {isCompanyPopupOpen && (
+                                <PopupSearchCompany handleClickReturn={handleSelectCompany} setIsPopup={() => setIsCompanyPopupOpen(false)} />
+                              )}
+                              <input
+                                value={columnValues[cell.column.id] || cell.value || ""}
+                                onClick={(e) => handleClickCompany()}
+                                readOnly
+                                onFocus={(e) => {
+                                  e.target.blur();
+                                }}
+                              />
+                            </>
                           ) : (
                             <input
                               value={columnValues[cell.column.id] || cell.value || ""}

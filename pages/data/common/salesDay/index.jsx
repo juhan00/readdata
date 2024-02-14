@@ -32,7 +32,7 @@ const SalesDay = () => {
   oneWeekAgo.setDate(today.getDate() - 7);
 
   const { t } = useTranslation(["common", "columns"]);
-  const [{ popupState,userInfo }, setGlobalState] = useGlobalState();
+  const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
   const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);

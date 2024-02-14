@@ -16,6 +16,20 @@ export const getUserList = async (companyCode) => {
 };
 
 export const updateUserList = async (data) => {
+  console.log(
+    "updateUserList",
+    JSON.stringify({
+      user_id: data.uid,
+      user_pw: data.upw,
+      user_name: data.uname,
+      email: data.email,
+      phone_num: data.phone,
+      authority: data.authority,
+      useflag: data.use_flag,
+      companyCode: data.company_code,
+      joinFlag: "unjoin",
+    })
+  );
   const response = await fetch(`/api_default/user/post`, {
     method: "POST",
     headers: {
@@ -30,7 +44,6 @@ export const updateUserList = async (data) => {
       authority: data.authority,
       useflag: data.use_flag,
       companyCode: data.company_code,
-      company_name: data.company_name,
       joinFlag: "unjoin",
     }),
   });
@@ -64,7 +77,6 @@ export const addUserList = async (data) => {
     const tokenData = await tokenResponse.json();
     const token = tokenData.token;
 
-    console.log(token);
     const response = await fetch(`/api_default/user/post`, {
       method: "POST",
       headers: {
@@ -81,7 +93,6 @@ export const addUserList = async (data) => {
         authority: data.authority,
         useflag: data.use_flag,
         companyCode: data.company_code,
-        company_name: data.company_name,
         joinFlag: "join",
       }),
     });

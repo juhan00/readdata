@@ -17,6 +17,7 @@ export const TABLE_COLUMN_TYPE = {
   ADDRESS: "ADDRESS",
   GUBUN1: "GUBUN1",
   GUBUN2: "GUBUN2",
+  COMPANY: "COMPANY",
 };
 
 export const SEARCH_ADDRESS = {
