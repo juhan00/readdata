@@ -40,7 +40,7 @@ const Store = () => {
     use_flag: "",
   };
 
-  const [{ popupState,userInfo }, setGlobalState] = useGlobalState();
+  const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
   const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
@@ -234,7 +234,7 @@ const Store = () => {
                     title={"브랜드 명"}
                     id={"brand_code"}
                     onChange={handleFieldChange}
-                    companyCode=""
+                    companyCode={companyCode}
                   />
                 </div>
                 <div className={cx("item")}>

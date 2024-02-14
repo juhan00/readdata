@@ -34,7 +34,7 @@ const SalesRegion = () => {
   oneWeekAgo.setDate(today.getDate() - 7);
 
   const { t } = useTranslation(["common", "dataAdmin"]);
-  const [{ popupState,userInfo }, setGlobalState] = useGlobalState();
+  const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
   const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
@@ -46,6 +46,7 @@ const SalesRegion = () => {
   const [selectedGubun, setSelectedGubun] = useState([]);
   const [checkedUseFlag, setCheckedUseFlag] = useState(false);
   const [checkedUseGubun2, setCheckedUseGubun2] = useState(false);
+  const [defaultBrandCode, setDefaultBrandCode] = useState("");
 
   const formatStartDate = useMemo(() => {
     return useChangeFormatDate(startDate);
@@ -80,8 +81,8 @@ const SalesRegion = () => {
     data: headersData,
     isLoading: isLoadingHeadersData,
     refetch: refetchHeadersData,
-  } = useQuery("getSalesHeadersData", () => getSalesHeadersList("B0002"), {
-    enabled: true,
+  } = useQuery(["getSalesHeadersData", defaultBrandCode], () => getSalesHeadersList(defaultBrandCode), {
+    enabled: defaultBrandCode !== undefined,
   });
 
   const {
@@ -341,6 +342,17 @@ const SalesRegion = () => {
             <div className={cx("search-item")}>
               <div className={cx("item-wrap")}>
                 <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.SELECT_BRAND}
+                    value={searchField.brand_code}
+                    setDefaultValue={setDefaultBrandCode}
+                    title={"브랜드 명"}
+                    id={"brand_code"}
+                    onChange={handleFieldChange}
+                    companyCode={companyCode}
+                  />
+                </div>
+                <div className={cx("item")}>
                   <SearchDateItems
                     startDate={startDate}
                     endDate={endDate}
@@ -349,16 +361,7 @@ const SalesRegion = () => {
                     updateDate={updateDate}
                   />
                 </div>
-                <div className={cx("item")}>
-                  <SearchItem
-                    searchType={SEARCH_TYPE.SELECT_BRAND}
-                    value={searchField.brand_code}
-                    title={"브랜드 명"}
-                    id={"brand_code"}
-                    onChange={handleFieldChange}
-                    companyCode=""
-                  />
-                </div>
+
                 <div className={cx("item")}>
                   <SearchAddressItem
                     title={"지역1"}

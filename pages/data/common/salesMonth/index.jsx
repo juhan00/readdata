@@ -24,6 +24,7 @@ const queryClient = new QueryClient();
 
 const SalesMonth = () => {
   const searchFieldData = {
+    brand_code: "",
     store: "",
   };
 
@@ -31,13 +32,14 @@ const SalesMonth = () => {
   const thisMonth = startOfMonth(set(today, { month: today.getMonth() }));
 
   const { t } = useTranslation(["common", "dataAdmin"]);
-  const [{ popupState,userInfo }, setGlobalState] = useGlobalState();
+  const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
   const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
   const [startDate, setStartDate] = useState(thisMonth);
   const [endDate, setEndDate] = useState(thisMonth);
+  const [defaultBrandCode, setDefaultBrandCode] = useState("");
 
   const formatStartDate = useMemo(() => {
     return useChangeFormatMonth(startDate);
@@ -72,8 +74,8 @@ const SalesMonth = () => {
     data: headersData,
     isLoading: isLoadingHeadersData,
     refetch: refetchHeadersData,
-  } = useQuery("getSalesHeadersData", () => getSalesHeadersList("B0002"), {
-    enabled: true,
+  } = useQuery(["getSalesHeadersData", defaultBrandCode], () => getSalesHeadersList(defaultBrandCode), {
+    enabled: defaultBrandCode !== undefined,
   });
 
   useEffect(() => {
@@ -85,8 +87,8 @@ const SalesMonth = () => {
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.store || row.store?.toString().toLowerCase().includes(searchData.store.toLowerCase())) &&
-        (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
+        (!searchData.brand_code || row.brand_code?.toString().toLowerCase().includes(searchData.brand_code.toLowerCase())) &&
+        (!searchData.store || row.store?.toString().toLowerCase().includes(searchData.store.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -222,6 +224,17 @@ const SalesMonth = () => {
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("search-item")}>
               <div className={cx("item-wrap")}>
+                <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.SELECT_BRAND}
+                    value={searchField.brand_code}
+                    setDefaultValue={setDefaultBrandCode}
+                    title={"브랜드 명"}
+                    id={"brand_code"}
+                    onChange={handleFieldChange}
+                    companyCode={companyCode}
+                  />
+                </div>
                 <div className={cx("item")}>
                   <SearchDateItems
                     startDate={startDate}

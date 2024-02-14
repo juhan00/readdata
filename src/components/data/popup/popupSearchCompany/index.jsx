@@ -26,7 +26,7 @@ const PopupSearchCompany = ({ handleClickReturn, setIsPopup }) => {
 
   const { t } = useTranslation(["common", "columns"]);
   const [{ userInfo }] = useGlobalState();
-  const [companyCode, setCompanyCode] = useState(userInfo.companyCode === "C0000" ? "" : userInfo.companyCode);
+  const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const companyPopupColumns = useMemo(() => changeCompanyPopupColumns(t), []);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);

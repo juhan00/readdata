@@ -24,6 +24,7 @@ const queryClient = new QueryClient();
 
 const SalesDay = () => {
   const searchFieldData = {
+    brand_code: "",
     store: "",
   };
 
@@ -39,6 +40,7 @@ const SalesDay = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [startDate, setStartDate] = useState(oneWeekAgo);
   const [endDate, setEndDate] = useState(today);
+  const [defaultBrandCode, setDefaultBrandCode] = useState("");
 
   const formatStartDate = useMemo(() => {
     return useChangeFormatDate(startDate);
@@ -73,8 +75,8 @@ const SalesDay = () => {
     data: headersData,
     isLoading: isLoadingHeadersData,
     refetch: refetchHeadersData,
-  } = useQuery("getSalesHeadersData", () => getSalesHeadersList("B0002"), {
-    enabled: true,
+  } = useQuery(["getSalesHeadersData", defaultBrandCode], () => getSalesHeadersList(defaultBrandCode), {
+    enabled: defaultBrandCode !== undefined,
   });
 
   useEffect(() => {
@@ -86,8 +88,8 @@ const SalesDay = () => {
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.store || row.store?.toString().toLowerCase().includes(searchData.store.toLowerCase())) &&
-        (!searchData.uname || row.uname?.toString().toLowerCase().includes(searchData.uname.toLowerCase()))
+        (!searchData.brand_code || row.brand_code?.toString().toLowerCase().includes(searchData.brand_code.toLowerCase())) &&
+        (!searchData.store || row.store?.toString().toLowerCase().includes(searchData.store.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -222,6 +224,17 @@ const SalesDay = () => {
           <div className={cx("box", "flex", "search-wrap")}>
             <div className={cx("search-item")}>
               <div className={cx("item-wrap")}>
+                <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.SELECT_BRAND}
+                    value={searchField.brand_code}
+                    setDefaultValue={setDefaultBrandCode}
+                    title={"브랜드 명"}
+                    id={"brand_code"}
+                    onChange={handleFieldChange}
+                    companyCode={companyCode}
+                  />
+                </div>
                 <div className={cx("item")}>
                   <SearchDateItems
                     startDate={startDate}

@@ -137,7 +137,7 @@ const StoreAccount = () => {
                     title={"브랜드 명"}
                     id={"brand_code"}
                     onChange={handleFieldChange}
-                    companyCode=""
+                    companyCode={companyCode}
                   />
                 </div>
                 <div className={cx("item")}>
