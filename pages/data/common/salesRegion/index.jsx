@@ -12,6 +12,7 @@ import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useQuery } from "react-query";
+import { useGlobalState } from "@/context/globalStateContext";
 
 //styles
 import className from "classnames/bind";
@@ -33,7 +34,8 @@ const SalesRegion = () => {
   oneWeekAgo.setDate(today.getDate() - 7);
 
   const { t } = useTranslation(["common", "dataAdmin"]);
-  const [companyCode, setCompanyCode] = useState("C0002");
+  const [{ popupState,userInfo }, setGlobalState] = useGlobalState();
+  const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);

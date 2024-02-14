@@ -38,6 +38,7 @@ const User = () => {
           ...prevGlobalState,
           userInfo: {
             id: cookieObj.user_id,
+            companyCode: cookieObj.company_code,
           },
         }));
       } else {

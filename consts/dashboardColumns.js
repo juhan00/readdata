@@ -123,7 +123,7 @@ export const changeDashDayMonthColumns = (t) => [
         cellStyle: {
           textAlign: "center",
         },
-        Cell: ({ value }) => value.toLocaleString(),
+        Cell: ({ value }) => value?.toLocaleString(),
       },
     ],
   },
@@ -155,7 +155,7 @@ export const changeDashDayMonthColumns = (t) => [
         cellStyle: {
           textAlign: "center",
         },
-        Cell: ({ value }) => value.toLocaleString(),
+        Cell: ({ value }) => value?.toLocaleString(),
       },
     ],
   },

@@ -14,6 +14,7 @@ import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
+import { useGlobalState } from "@/context/globalStateContext";
 //styles
 import className from "classnames/bind";
 import styles from "./salesMonth.module.scss";
@@ -30,7 +31,8 @@ const SalesMonth = () => {
   const thisMonth = startOfMonth(set(today, { month: today.getMonth() }));
 
   const { t } = useTranslation(["common", "dataAdmin"]);
-  const [companyCode, setCompanyCode] = useState("C0002");
+  const [{ popupState,userInfo }, setGlobalState] = useGlobalState();
+  const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);

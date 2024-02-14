@@ -13,6 +13,7 @@ export const GlobalStateProvider = ({ children }) => {
     },
     userInfo: {
       id: "",
+      companyCode: "",
     },
   });
 

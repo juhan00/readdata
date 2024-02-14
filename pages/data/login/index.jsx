@@ -61,7 +61,7 @@ const Login = () => {
     }
   };
 
-  const userLogin = (token, admin) => {
+  const userLogin = (token, admin, companyCode) => {
     console.log("token, admin", token, admin);
 
     if (admin !== null) {
@@ -69,10 +69,10 @@ const Login = () => {
         const decodedToken = jwt.decode(token);
         const superAdmin = decodedToken.user_id === COOKIE_SUPERADMIN_ID ? true : false;
 
-        setTokenCookie(decodedToken.user_id, superAdmin, admin, token, COOKIE_EXPIRATION_TIME);
+        setTokenCookie(decodedToken.user_id, superAdmin, admin, companyCode, token, COOKIE_EXPIRATION_TIME);
       } else {
         if (id === COOKIE_SUPERADMIN_ID) {
-          setTokenCookie(COOKIE_SUPERADMIN_ID, true, admin, token, COOKIE_EXPIRATION_TIME);
+          setTokenCookie(COOKIE_SUPERADMIN_ID, true, admin, companyCode, token, COOKIE_EXPIRATION_TIME);
         } else {
           console.log("No token");
           return;
@@ -95,6 +95,7 @@ const Login = () => {
     console.log("loginInfo", loginInfo);
     const token = loginInfo.tk;
     const admin = loginInfo.admin;
+    const companyCode = loginInfo.companyCode;
 
     if (!token && !admin) {
       setGlobalState((prevGlobalState) => ({
@@ -106,7 +107,7 @@ const Login = () => {
         },
       }));
     } else {
-      userLogin(token, admin);
+      userLogin(token, admin, companyCode);
     }
   }, [loginInfo, isFetchingLoginInfo]);
 
@@ -122,8 +123,9 @@ const Login = () => {
     }
     const token = tk;
     const admin = tokenCheckInfo.admin;
+    const companyCode = loginInfo.companyCode;
 
-    userLogin(token, admin);
+    userLogin(token, admin, companyCode);
   }, [tokenCheckInfo]);
 
   return (

@@ -5,6 +5,7 @@ import { usePagination, useSortBy, useTable } from "react-table";
 import { changeDashBrandColumns, changeDashDayMonthColumns } from "@/consts/dashboardColumns";
 import RenderTable from "@/src/components/data/renderTable";
 import { useTranslation } from "next-i18next";
+import { useGlobalState } from "@/context/globalStateContext";
 
 //styles
 import className from "classnames/bind";
@@ -166,7 +167,8 @@ const MonthTable = ({ columns, data }) => {
 };
 
 const Dashboard = () => {
-  const [companyCode, setCompanyCode] = useState("C0000");
+  const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
+  const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [yesterday, setYesterday] = useState("2023-12-31");
   const [thisMonth, setThisMonth] = useState("2023-12");
   const { t } = useTranslation(["common", "columns"]);
@@ -203,6 +205,9 @@ const Dashboard = () => {
   }, [yesterday, thisMonth]);
 
   const typeByDashBrandData = useMemo(() => {
+    if (!dashBrandData) {
+      return;
+    }
     const groupedData = dashBrandData?.reduce((result, item) => {
       const { brand_name, type, ...rest } = item;
       const existingBrand = result.find((data) => data.brand_name === brand_name);
@@ -241,6 +246,9 @@ const Dashboard = () => {
   }, [dashBrandData]);
 
   const typeByDashYesterdayData = useMemo(() => {
+    if (dashYesterdayData) {
+      return;
+    }
     const high5Data = dashYesterdayData?.filter((item) => item.low5 === 0);
     const low5Data = dashYesterdayData?.filter((item) => item.high5 === 0);
 
@@ -271,6 +279,10 @@ const Dashboard = () => {
   }, [dashYesterdayData]);
 
   const typeByDashThisMonthData = useMemo(() => {
+    if (dashThisMonthData) {
+      return;
+    }
+
     const high5Data = dashThisMonthData?.filter((item) => item.low5 === 0);
     const low5Data = dashThisMonthData?.filter((item) => item.high5 === 0);
 
@@ -327,7 +339,7 @@ const Dashboard = () => {
             </div>
             {isLoadingDashYesterdayData ? (
               <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-            ) : typeByDashYesterdayData.length === 0 ? (
+            ) : !typeByDashYesterdayData ? (
               <div className={cx("no-data")}>데이터가 없습니다.</div>
             ) : (
               <DayTable columns={dashDayMonthColumns} data={typeByDashYesterdayData} />
@@ -342,7 +354,7 @@ const Dashboard = () => {
             </div>
             {isLoadingDashThisMonthData ? (
               <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-            ) : typeByDashThisMonthData.length === 0 ? (
+            ) : !typeByDashThisMonthData ? (
               <div className={cx("no-data")}>데이터가 없습니다.</div>
             ) : (
               <MonthTable columns={dashDayMonthColumns} data={typeByDashThisMonthData} />

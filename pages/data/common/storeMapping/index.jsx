@@ -27,8 +27,8 @@ const StoreMapping = () => {
     scrap_name: "",
   };
 
-  const [{ popupState }, setGlobalState] = useGlobalState();
-  const [companyCode, setCompanyCode] = useState("C0001");
+  const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
+  const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
