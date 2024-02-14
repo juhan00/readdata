@@ -247,7 +247,7 @@ const Dashboard = () => {
 
   const typeByDashYesterdayData = useMemo(() => {
     if (dashYesterdayData) {
-      return;
+      return [];
     }
     const high5Data = dashYesterdayData?.filter((item) => item.low5 === 0);
     const low5Data = dashYesterdayData?.filter((item) => item.high5 === 0);
@@ -280,7 +280,7 @@ const Dashboard = () => {
 
   const typeByDashThisMonthData = useMemo(() => {
     if (dashThisMonthData) {
-      return;
+      return [];
     }
 
     const high5Data = dashThisMonthData?.filter((item) => item.low5 === 0);
@@ -322,8 +322,6 @@ const Dashboard = () => {
             </div>
             {isLoadingDashBrandData ? (
               <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-            ) : !typeByDashBrandData.length ? (
-              <div className={cx("no-data")}>데이터가 없습니다.</div>
             ) : (
               <BrandTable columns={memoizedDashboardColumns} data={typeByDashBrandData} />
             )}
@@ -339,8 +337,6 @@ const Dashboard = () => {
             </div>
             {isLoadingDashYesterdayData ? (
               <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-            ) : !typeByDashYesterdayData ? (
-              <div className={cx("no-data")}>데이터가 없습니다.</div>
             ) : (
               <DayTable columns={dashDayMonthColumns} data={typeByDashYesterdayData} />
             )}
@@ -354,8 +350,6 @@ const Dashboard = () => {
             </div>
             {isLoadingDashThisMonthData ? (
               <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-            ) : !typeByDashThisMonthData ? (
-              <div className={cx("no-data")}>데이터가 없습니다.</div>
             ) : (
               <MonthTable columns={dashDayMonthColumns} data={typeByDashThisMonthData} />
             )}
