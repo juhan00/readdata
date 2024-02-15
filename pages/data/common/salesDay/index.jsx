@@ -74,7 +74,7 @@ const SalesDay = () => {
     data: salesDayData,
     isLoading: isLoadingSalesDayData,
     refetch: refetchSalesDayData,
-  } = useQuery(["getSalesDayData", endDate], () => getSalesDayList(companyCode, formatStartDate, formatEndDate), {
+  } = useQuery(["getSalesDayData", startDate, endDate], () => getSalesDayList(companyCode, formatStartDate, formatEndDate), {
     enabled: companyCode !== undefined && formatStartDate !== undefined && formatEndDate !== undefined,
   });
 
