@@ -74,7 +74,7 @@ export const changeDashBrandColumns = (t, yesterday, thisMonthData) => {
           cellStyle: {
             textAlign: "center",
           },
-          Cell: ({ value }) => value.toLocaleString(),
+          Cell: ({ value }) => Number(value).toLocaleString(),
         },
         {
           Header: "점평균매출",
@@ -85,7 +85,7 @@ export const changeDashBrandColumns = (t, yesterday, thisMonthData) => {
           cellStyle: {
             textAlign: "center",
           },
-          Cell: ({ value }) => value.toLocaleString(),
+          Cell: ({ value }) => Number(value).toLocaleString(),
         },
       ],
     },

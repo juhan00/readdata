@@ -64,6 +64,7 @@ const Login = () => {
     if (admin !== null) {
       if (token) {
         const decodedToken = jwt.decode(token);
+
         const superAdmin = decodedToken.user_id === COOKIE_SUPERADMIN_ID ? true : false;
 
         setTokenCookie(decodedToken.user_id, superAdmin, admin, companyCode, token, COOKIE_EXPIRATION_TIME);
@@ -120,7 +121,7 @@ const Login = () => {
     }
     const token = tk;
     const admin = tokenCheckInfo.admin;
-    const companyCode = loginInfo.companyCode;
+    const companyCode = tokenCheckInfo.companyCode;
 
     userLogin(token, admin, companyCode);
   }, [tokenCheckInfo]);

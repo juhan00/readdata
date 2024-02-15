@@ -246,7 +246,7 @@ const Dashboard = () => {
   }, [dashBrandData]);
 
   const typeByDashYesterdayData = useMemo(() => {
-    if (dashYesterdayData) {
+    if (dashYesterdayData && dashYesterdayData.length === 0) {
       return [];
     }
     const high5Data = dashYesterdayData?.filter((item) => item.low5 === 0);
@@ -279,7 +279,7 @@ const Dashboard = () => {
   }, [dashYesterdayData]);
 
   const typeByDashThisMonthData = useMemo(() => {
-    if (dashThisMonthData) {
+    if (dashThisMonthData && dashThisMonthData.length === 0) {
       return [];
     }
 
