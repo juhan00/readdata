@@ -125,6 +125,8 @@ const SalesRegion = () => {
     });
   }, [tableState, searchData]);
 
+  console.log("기본 데이터:",tableState);
+
   const memoizedSalesRegionChartData = useMemo(() => {
     const headersArray = headersData?.map((header) => header.accessor);
     // const checkGubun2 = searchField.gubun2.length !== 0;
@@ -184,6 +186,55 @@ const SalesRegion = () => {
 
     return groupedData || [];
   }, [memoizedData, headersData]);
+
+
+  // 기본 데이터에서 gubun1 값의 종류와 각 값의 개수를 콘솔에 출력
+  const countGubunValues = (data) => {
+    const gubun1Set = new Set();
+    const gubun2Set = new Set();
+    const gubun1Counts = {};
+    const gubun2Counts = {};
+
+    // 각 gubun1 및 gubun2 값의 종류와 개수를 계산
+    data.forEach(item => {
+      gubun1Set.add(item.gubun1);
+      gubun2Set.add(item.gubun2);
+
+      // gubun1 값의 개수 계산
+      if (gubun1Counts[item.gubun1]) {
+        gubun1Counts[item.gubun1]++;
+      } else {
+        gubun1Counts[item.gubun1] = 1;
+      }
+
+      // gubun2 값의 개수 계산
+      if (gubun2Counts[item.gubun2]) {
+        gubun2Counts[item.gubun2]++;
+      } else {
+        gubun2Counts[item.gubun2] = 1;
+      }
+    });
+
+    // gubun1 데이터 구성
+    const gubun1Data = Array.from(gubun1Set).map(value => ({
+      value,
+      count: gubun1Counts[value] || 0
+    }));
+
+    // gubun2 데이터 구성
+    const gubun2Data = Array.from(gubun2Set).map(value => ({
+      value,
+      count: gubun2Counts[value] || 0
+    }));
+    console.log("지역별 가맹점 갯수:",gubun1Data,gubun2Data)
+    return { gubun1Data, gubun2Data };
+  };
+
+  //countGubun1Values 함수를 호출하여 gubun1 값의 종류와 각 값의 개수를 콘솔에 출력
+  const storeCountData = useMemo(() => {
+    return countGubunValues(tableState);
+  }, [tableState]);
+
 
   const handleFieldChange = (field, e) => {
     e.preventDefault();
@@ -424,7 +475,7 @@ const SalesRegion = () => {
               ) : memoizedData.length === 0 ? (
                 <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
-                <BarChart memoizedSalesDayChartData={memoizedSalesRegionChartData} headersData={headersData} dataKey={"name"} />
+                <BarChart memoizedSalesDayChartData={memoizedSalesRegionChartData} headersData={headersData} storeCountData={storeCountData} dataKey={"name"} />
               )}
             </div>
           </div>

@@ -13,9 +13,11 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Dashboard from "../common/dashboard";
 import SalesRegion from "../common/salesRegion";
-import SalesAnalyze from "../common/salesAnalyze";
 import Brand from "../common/brand";
 import SalesChannel from "../common/salesChannel";
+import SalesAnalyze from "../common/salesAnalyze";
+import SalesAnalyzeSelect from "../common/SalesAnalyzeSelect";
+
 
 //styles
 import className from "classnames/bind";
@@ -49,6 +51,7 @@ const Admin = () => {
                 {adminMenu === "sales_region" && <SalesRegion />}
                 {adminMenu === "sales_channel" && <SalesChannel />}
                 {adminMenu === "sales_analyze" && <SalesAnalyze />}
+                {adminMenu === "sales_analyze_select" && <SalesAnalyzeSelect />}
             </DataLayout>
         </div>
     );

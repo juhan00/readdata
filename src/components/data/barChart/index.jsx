@@ -11,11 +11,13 @@ import className from "classnames/bind";
 
 const cx = className.bind(styles);
 
-const BarChart = ({ memoizedSalesDayChartData, headersData = [], dataKey = "sale_date" }) => {
+const BarChart = ({ memoizedSalesDayChartData, headersData = [], storeCountData, dataKey = "sale_date" }) => {
+  console.log("차트에서구분1 2 갯수=",storeCountData);
+  console.log("차트에서구분1 2 갯수=",storeCountData.gubun1Data);
+  console.log("차트에서memoizedSalesDayChartData=",memoizedSalesDayChartData);
   const chartRef = useRef(null);
   const totalWidth = memoizedSalesDayChartData.length <= 7 ? "100%" : memoizedSalesDayChartData.length * 100;
   const colorSet = ["#30BBB4", "#EE0046", "#844528", "#124994", "#FF993B", "#FDDC37"];
-
   const SaveChartImage = async () => {
     if (!chartRef.current) return;
 
@@ -61,9 +63,17 @@ const BarChart = ({ memoizedSalesDayChartData, headersData = [], dataKey = "sale
             return (
               <p className={cx("item")} style={{ color: item.color, fontWeight: "400" }} key={index}>{`${
                 item.name === "total" ? "전체" : item.name
-              } : ${item.value.toLocaleString()}`}</p>
+              } : ${item.value.toLocaleString()}`} </p>
             );
           })}
+
+          {storeCountData.gubun1Data.map((item, index) => {
+            return (
+                <p className={cx("item")} style={{ color: item.color, fontWeight: "400" }} key={index}>
+                  가맹점 개수{item.count.toLocaleString()}</p>
+            );
+          })}
+
         </div>
       );
     }
@@ -72,9 +82,9 @@ const BarChart = ({ memoizedSalesDayChartData, headersData = [], dataKey = "sale
   };
 
   return (
-    <div className={cx("chart")}>
-      <div className={cx("btn-wrap")}>
-        <BtnChartSave onClick={() => SaveChartImage()} />
+      <div className={cx("chart")}>
+        <div className={cx("btn-wrap")}>
+          <BtnChartSave onClick={() => SaveChartImage()} />
       </div>
 
       <CustomLegend className={cx("custom-legend")} />

@@ -8,7 +8,7 @@ import styles from "./searchDateItems.module.scss";
 import className from "classnames/bind";
 const cx = className.bind(styles);
 
-const SearchDateItem = ({ startDate, endDate, handleStartDateChange, handleEndDateChange, isMonth, updateDate }) => {
+const SearchDateItem = ({ startDate, endDate, handleStartDateChange, handleEndDateChange, isMonth, updateDate, labelText }) => {
     const handleEndDateSelect = (date) => {
         if (date.getTime() === endDate.getTime()) {
             updateDate(date);
@@ -17,7 +17,8 @@ const SearchDateItem = ({ startDate, endDate, handleStartDateChange, handleEndDa
 
     return (
         <div className={cx("search-date-items")}>
-            <label>검색기간</label>
+            {/*매출분석 페이지는 '조회기간','대비기간' 라벨 변경*/}
+            {labelText === undefined ? <label>검색기간</label> : (labelText === 2 ? <label>조회기간</label> : <label>대비기간</label>)}
             <div className={cx("date-picker")}>
                 {isMonth ? (
                     <DatePicker

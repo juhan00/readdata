@@ -9,61 +9,42 @@ import {useTranslation} from "next-i18next";
 import {useEffect, useMemo, useState} from "react";
 import {QueryClient, useQuery} from "react-query";
 import {usePagination, useSortBy, useTable} from "react-table";
+import SearchItem from "@/src/components/data/searchItem";
+import DataPopupLayout from "@/layouts/dataPopupLayout";
 
 //styles
 import className from "classnames/bind";
-import styles from "./salesAnalyze.module.scss";
+import styles from "./salesAnalyzeSelect.module.scss";
 
 import PieChartComponent_Analyze from "@/pages/test/chartPie_Analyze";
+import { POPUP_SEARCH } from "@/consts/popup";
+import {useGlobalState} from "@/context/globalStateContext";
+import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";
 
 const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const TabContent1 = () => (
-    <div>
-        {/* Content for Tab 1 */}
-        <h2>Page 1 Content</h2>
-        <p>This is the content for the first tab.</p>
+const SearchModal = ({ combinedData, onClose }) => (
+    <div className="modal-overlay">
+        <div className="modal">
+            {/* Your search results here */}
+            {combinedData.map((item) => (
+                <div key={item.id}>{item.fran_name}</div>
+            ))}
+            <button onClick={onClose}>Close</button>
+        </div>
     </div>
 );
 
-const TabContent2 = () => (
-    <div>
-        {/* Content for Tab 2 */}
-        <h2>Page 2 Content</h2>
-        <p>This is the content for the second tab.</p>
-    </div>
-);
-
-const TabContent3 = () => (
-    <div>
-        {/* Content for Tab 3 */}
-        <h2>Page 3 Content</h2>
-        <p>This is the content for the third tab.</p>
-    </div>
-);
-
-const SalesAnalysis = () => {
-
-    const [selectedTab, setSelectedTab] = useState(1);
-
-    const renderTabContent = () => {
-        switch (selectedTab) {
-            case 1:
-                return <TabContent1 />;
-            case 2:
-                return <TabContent2 />;
-            case 3:
-                return <TabContent3 />;
-            default:
-                return null;
-        }
-    };
-
+const SalesAnalysisSelect = () => {
     const searchFieldData = {
         use_flag: "",
+        chk_fran_name:"",
+        pre_fran_name:"",
     };
+
+    const [isPopupVisible, setPopupVisible] = useState(false);
 
     const today = new Date();
     const oneMonthAgo = new Date(today);
@@ -126,7 +107,6 @@ const SalesAnalysis = () => {
         setCompareEndDate(date)
     };
 
-
     //조회기간 API
     const {
         data: salesDayData, isLoading: isLoadingSalesDayData, refetch: refetchSalesDayData,
@@ -140,9 +120,8 @@ const SalesAnalysis = () => {
         enabled: formatCompareStartDate !== undefined && formatCompareEndDate !== undefined,
     });
 
-    console.log("조회기간=", formatStartDate, " ~ ", formatEndDate, " = ", salesDayData);
-    console.log("대비기간=", formatCompareStartDate, " ~ ", formatCompareEndDate, " = ", compareSalesDayData);
-
+/*    console.log("조회기간=", formatStartDate, " ~ ", formatEndDate, " = ", salesDayData);
+    console.log("대비기간=", formatCompareStartDate, " ~ ", formatCompareEndDate, " = ", compareSalesDayData);*/
 
     const mainHeader = ["매출구분"];
     const subHeader1 = [{header: "POS", accessor: "chk_pos_sales"}, {header: "배달", accessor: "chk_delivery_sales"},];
@@ -151,47 +130,23 @@ const SalesAnalysis = () => {
     const [salesAnalysisColumnsData1, setsalesAnalysisColumnsData1] = useState([]);
     const [salesAnalysisColumnsData2, setsalesAnalysisColumnsData2] = useState([]);
 
-
     useEffect(() => {
         updateColumns();
     }, []);
 
     const updateColumns = () => {
-        const chkData = salesAnalysisColumns1(mainHeader, subHeader1, formatStartDate, formatEndDate);
+        /*const chkData = salesAnalysisColumns1(mainHeader, subHeader1, formatStartDate, formatEndDate);
         setsalesAnalysisColumnsData1(chkData);
 
         const preData = salesAnalysisColumns2(mainHeader, subHeader2, formatCompareStartDate, formatCompareEndDate);
-        setsalesAnalysisColumnsData2(preData);
+        setsalesAnalysisColumnsData2(preData);*/
     };
 
-
-    /*//조회기간
-    const memoizedData = useMemo(() => {
-        return tableState?.filter((row) =>
-            (!searchData.chk_fran_name || row.chk_fran_name?.toString().toLowerCase().includes(searchData.chk_fran_name.toLowerCase()))&&
-            (!searchData.chk_use_flag || row.chk_use_flag?.toString().toLowerCase().includes(searchData.chk_use_flag.toLowerCase())))
-    }, [tableState, searchData]);
-
-    console.log("tableState!!!!",tableState);
-    console.log("searchData!!!!",searchData);
-    console.log("memoizedData!!!!",memoizedData);
-
-    //대비기간
-    const memoizedCompareData = useMemo(() => {
-        return compareTableState?.filter((row) =>
-            (!searchCompareData.pre_fran_name || row.pre_fran_name?.toString().toLowerCase().includes(searchCompareData.pre_fran_name.toLowerCase()))&&
-            (!searchCompareData.pre_use_flag || row.pre_use_flag?.toString().toLowerCase().includes(searchCompareData.pre_use_flag.toLowerCase())));
-    }, [compareTableState, searchCompareData]);
-
-    console.log("compareTableState!!!!",compareTableState);
-    console.log("searchCompareData!!!!",searchCompareData);
-    console.log("memoizedCompareData!!!!",memoizedCompareData);*/
-
-
+/*
     const memoizedCombinedData = useMemo(() => {
         const filterCombinedData = (table, searchData, period) => {
-            return table?.filter((row) => // (!searchData[`${period}_fran_name`] || row[`${period}_fran_name`]?.toString().toLowerCase().includes(searchData[`${period}_fran_name`].toLowerCase())) &&
-                (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase())));
+            return table?.filter((row) =>
+                (!searchData[`${period}_fran_name`] || row[`${period}_fran_name`]?.toString().toLowerCase().includes(searchData[`${period}_fran_name`].toLowerCase())));
         };
         const combinedData = filterCombinedData(tableState, searchData, 'chk');
         const combinedCompareData = filterCombinedData(compareTableState, searchCompareData, 'pre');
@@ -199,161 +154,51 @@ const SalesAnalysis = () => {
         return {combinedData, combinedCompareData};
     }, [tableState, searchData, compareTableState, searchCompareData]);
 
-    const {combinedData, combinedCompareData} = memoizedCombinedData;
+        const {combinedData, combinedCompareData} = memoizedCombinedData;
+*/
+
+    const filterCombinedData = (table, searchData, period) => {
+        const filteredData = table?.filter((row) =>
+            (!searchData[`${period}_fran_name`] ||
+                row[`${period}_fran_name`]?.toString().toLowerCase().includes(searchData[`${period}_fran_name`].toLowerCase()))
+        );
+
+        // Concatenate the filtered data to remove duplicates
+        const concatenatedData = Array.from(new Set(filteredData));
+
+        return concatenatedData;
+    };
+    const combinedData = filterCombinedData(tableState, searchData, 'chk');
+
+    console.log("combinedData=",combinedData);
 
 
-    /*//조회기간
-    useEffect(() => {
-        if (!isLoadingSalesDayData && salesDayData) {
-            const filteredData = salesDayData.filter((row) => row.use_flag === 1);
-            setTableState(filteredData);
-        }
-    }, [salesDayData, isLoadingSalesDayData]);
 
-    //대비기간
-    useEffect(() => {
-        if (!isLoadingCompareSalesDayData && compareSalesDayData) {
-            const filteredCompareData = compareSalesDayData.filter((row) => row.use_flag === 1);
-            setCompareTableState(filteredCompareData);
-        }
-    }, [compareSalesDayData, isLoadingCompareSalesDayData]);*/
+    // 기존 검색기능
+/*    const handleSearchSubmit = (e) => {
+        setSearchData((prevData) => ({
+            ...prevData, ...searchField,
+        }));
+        setSearchCompareData((prevData) => ({
+            ...prevData, ...searchCompareField,
+        }));
+        // gotoPage(0);
+        updateColumns();
+    };*/
 
-    // 조회기간
-    useEffect(() => {
-        if (!isLoadingSalesDayData && salesDayData) {
-            const filteredData = salesDayData.filter((row) => {
-                if (useFlag) {
-                    return true;
-                } else {
-                    return row.use_flag === 1;
-                }
-            });
-            setTableState(filteredData);
-        }
-    }, [salesDayData, isLoadingSalesDayData, useFlag]);
+    const handleSearchSubmit = (e) => {
+        // ... (same as before)
 
-    // 대비기간
-    useEffect(() => {
-        if (!isLoadingCompareSalesDayData && compareSalesDayData) {
-            const filteredCompareData = compareSalesDayData.filter((row) => {
-                if (useFlag) {
-                    return true;
-                } else {
-                    return row.use_flag === 1;
-                }
-            });
-            setCompareTableState(filteredCompareData);
-        }
-    }, [compareSalesDayData, isLoadingCompareSalesDayData, useFlag]);
-
-    /* const getUseTable = (options, columns) => {
-         return useTable({
-             columns: columns || [],
-             ...options,
-             initialState: {pageIndex: 0, pageSize: 10},
-             autoResetPage: false,
-         }, useSortBy, usePagination,);
-     }*/
-
-
-    //처음 진입 시 조회기간,대비기간 동시 출력 및 달력클릭 시 검색기능 구현
-    /*
-        const InquiryTable = getUseTable({
-            data: useMemo(() => combinedData, [combinedData]),
-        }, salesAnalysisColumnsData1);
-
-        const preparationTable = getUseTable({
-            data: useMemo(() => combinedCompareData, [combinedCompareData]),
-        }, salesAnalysisColumnsData2);
-    */
-
-
-    // const {
-    //     getTableProps,
-    //     getTableBodyProps,
-    //     headerGroups,
-    //     prepareRow,
-    //     page,
-    //     state: {pageIndex, pageSize},
-    //     gotoPage,
-    //     previousPage,
-    //     nextPage,
-    //     canPreviousPage,
-    //     canNextPage,
-    //     pageCount,
-    //     pageOptions,
-    // } = useTable(
-    //     {
-    //         columns: salesAnalysisColumnsData1,
-    //         data: useMemo(() => combinedData, [combinedData]),
-    //
-    //         initialState: {pageIndex: 0, pageSize: 10},
-    //         autoResetPage: false,
-    //     },
-    //     useSortBy,
-    //     usePagination
-    // );
-
-    const {
-        getTableProps: table1GetTableProps,
-        getTableBodyProps: table1GetTableBodyProps,
-        headerGroups: table1HeaderGroups,
-        prepareRow: table1PrepareRow,
-        page: table1Page,
-        state: {pageIndex: table1PageIndex, pageSize: table1PageSize},
-        gotoPage: table1GotoPage,
-        previousPage: table1PreviousPage,
-        nextPage: table1NextPage,
-        canPreviousPage: table1CanPreviousPage,
-        canNextPage: table1CanNextPage,
-        pageCount: table1PageCount,
-        pageOptions: table1PageOptions,
-    } = useTable(
-        {
-            columns: salesAnalysisColumnsData1,
-            data: useMemo(() => combinedData, [combinedData]),
-            initialState: {pageIndex: 0, pageSize: 10},
-            autoResetPage: false,
-        },
-        useSortBy,
-        usePagination
-    );
-
-    const {
-        getTableProps: table2GetTableProps,
-        getTableBodyProps: table2GetTableBodyProps,
-        headerGroups: table2HeaderGroups,
-        prepareRow: table2PrepareRow,
-        page: table2Page,
-        state: {pageIndex: table2PageIndex, pageSize: table2PageSize},
-        gotoPage: table2GotoPage,
-        previousPage: table2PreviousPage,
-        nextPage: table2NextPage,
-        canPreviousPage: table2CanPreviousPage,
-        canNextPage: table2CanNextPage,
-        pageCount: table2PageCount,
-        pageOptions: table2PageOptions,
-    } = useTable(
-        {
-            columns: salesAnalysisColumnsData2,
-            data: useMemo(() => combinedCompareData, [combinedCompareData]),
-            initialState: {pageIndex: 0, pageSize: 10},
-            autoResetPage: false,
-        },
-        useSortBy,
-        usePagination
-    );
-
-
-    const handleFieldChange = (field, e) => {
-        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-        if (field === 'use_flag') {
-            setUseFlag(value);
-            console.log("setUseFlag(value)==", setUseFlag)
-        }
+        // Show the pop-up/modal
+        setPopupVisible(true);
     };
 
-    /*const handleFieldChange = (field, e) => {
+    // Close the pop-up/modal
+    const closePopup = () => {
+        setPopupVisible(false);
+    };
+
+    const handleFieldChange = (field, e) => {
 
         e.preventDefault();
         setSearchField((prevData) => ({
@@ -362,90 +207,42 @@ const SalesAnalysis = () => {
         setSearchCompareField((prevData) => ({
             ...prevData, [field]: e.target.value,
         }));
-    };*/
-
-    // 기존 검색기능
-    const handleSearchSubmit = (e) => {
-        setSearchData((prevData) => ({
-            ...prevData, ...searchField,
-        }));
-        setSearchCompareData((prevData) => ({
-            ...prevData, ...searchCompareField,
-        }));
-        // gotoPage(0);
-        refetchSalesDayData();
-        refetchCompareSalesDayData()
-        updateColumns();
     };
 
-    //조회기간, 대비기간 데이터 나열
-    const salesDayDataArray = useMemo(() => combinedData?.map((item) => ({
-        total: Number(item.chk_total),
-        avg: Number(item.chk_avg),
-        pos: Number(item.chk_pos_sales),
-        delivery: Number(item.chk_delivery_sales)
-    })) || [], [combinedData]);
-
-    //조회기간, 대비기간 데이터 나열
-    const compareSalesDayDataArray = useMemo(() => combinedCompareData?.map((item) => ({
-        total: Number(item.pre_total),
-        avg: Number(item.pre_avg),
-        pos: Number(item.pre_pos_sales),
-        delivery: Number(item.pre_delivery_sales)
-    })) || [], [combinedCompareData]);
-
-    //조회기간, 대비기간 데이터 합산 sum_~
-    const sum_chk_total = useMemo(() => salesDayDataArray.reduce((sum, {total}) => sum + total, 0), [salesDayDataArray]);
-    const sum_chk_pos = useMemo(() => salesDayDataArray.reduce((sum, {pos}) => sum + pos, 0), [salesDayDataArray]);
-    const sum_chk_delivery = useMemo(() => salesDayDataArray.reduce((sum, {delivery}) => sum + delivery, 0), [salesDayDataArray]);
-
-    const sum_pre_total = useMemo(() => compareSalesDayDataArray.reduce((sum, {total}) => sum + total, 0), [compareSalesDayDataArray]);
-    const sum_pre_pos = useMemo(() => compareSalesDayDataArray.reduce((sum, {pos}) => sum + pos, 0), [compareSalesDayDataArray]);
-    const sum_pre_delivery = useMemo(() => compareSalesDayDataArray.reduce((sum, {delivery}) => sum + delivery, 0), [compareSalesDayDataArray]);
-
-    //조회기간, 대비기간 avg / row.length 나누는 로직
-    const sum_chk_avg = useMemo(() => {
-        const totalAvg = salesDayDataArray.reduce((sum, {avg}) => sum + avg, 0);
-        const numberOfItems = salesDayDataArray.length;
-        const average = numberOfItems > 0 ? totalAvg / numberOfItems : 0;
-        return Math.round(average);
-    }, [salesDayDataArray]);
-
-    const sum_pre_avg = useMemo(() => {
-        const totalAvg = compareSalesDayDataArray.reduce((sum, {avg}) => sum + avg, 0);
-        const numberOfItems = compareSalesDayDataArray.length;
-        const average = numberOfItems > 0 ? totalAvg / numberOfItems : 0;
-        return Math.round(average);
-    }, [compareSalesDayDataArray]);
-
-
-    const indeCreaseTotal = (sum_chk_total - sum_pre_total).toLocaleString();
-    const indeCreaseAvg = (sum_chk_avg - sum_pre_avg).toLocaleString();
-    const indeCreasePos = (sum_chk_pos - sum_pre_pos).toLocaleString();
-    const indeCreaseDelivery = (sum_chk_delivery - sum_pre_delivery).toLocaleString();
-
-    //파이차트
-    const chartData1 = [{name: "조회", value: sum_chk_total}, {name: "  대비", value: sum_pre_total},];
-    const chartData2 = [{name: "조회", value: sum_chk_pos}, {name: "  대비", value: sum_pre_pos},];
-    const chartData3 = [{name: "조회", value: sum_chk_delivery}, {name: "  대비", value: sum_pre_delivery},];
-
-    //차트 관련 문구 포맷
-    const strippedNumber = indeCreaseTotal.replace(/[^\d-+]/g, '');
-    const difference = parseInt(strippedNumber, 10);
-
-    const titleTotal = difference.toLocaleString().replace(/-/g, ' ');
-
-    const changeDirection = difference === 0 ? '입니다.' : (difference < 0 ? '하락 되었습니다.' : '상승 되었습니다.');
-    const directionStyle = {
-        color: difference === 0 ? 'black' : (difference < 0 ? 'blue' : 'red')
+    const [{ popupState }, setGlobalState] = useGlobalState();
+ /*   const handlePopupOpenClick = () => {
+        setGlobalState({
+            popupState: {
+                isOn: !popupState.isOn,
+                popup: POPUP_SEARCH,
+                title: "가맹점 선택하기",
+            },
+        });
     };
+    console.log("진입페이지에서==",popupState);*/
+
+    const handlePopupOpenClick = () => {
+        const updatedPopupState = {
+            isOn: true,
+            popup: POPUP_SEARCH,
+            title: "가맹점 명을 선택해주세요.",
+            content: <PopupDataDefault salesDayData={salesDayData} />, // Use 'salesDayData' prop here
+        };
+
+        setGlobalState((prevGlobalState) => ({
+            ...prevGlobalState,
+            popupState: { ...prevGlobalState.popupState, ...updatedPopupState },
+        }));
+    };
+
 
 
     return (<>
         <div className={cx("brand")}>
+
             <div className={cx("row")}>
                 <h1 style={{lineHeight: '2', fontWeight: 'bold', textAlign: 'center', fontSize: '30px'}}>
-                    일자별 매출 비교 (전체 가맹점)
+                    일자별 매출 비교 (선택 가맹점)
                 </h1>
                 <div className={cx("box", "flex", "search-wrap")}>
                     <div className={cx("item")}>
@@ -457,11 +254,6 @@ const SalesAnalysis = () => {
                             labelText={2}
                         />
                     </div>
-                    <div className={cx("item")}/>
-
-                    {/*<SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.chk_fran_name} title={"조회 가맹점 명"}
-                                id={"chk_fran_name"} onChange={handleFieldChange}/>*/}
-
                     <div className={cx("item")}>
                         <SearchDateItems
                             startDate={compareStartDate}
@@ -472,43 +264,13 @@ const SalesAnalysis = () => {
                         />
                     </div>
                     <div className={cx("item")}>
-                        {/* <SearchItem searchType={SEARCH_TYPE.INPUT}
-                                    value={searchField.pre_fran_name}
-                                    title={"대비 가맹점 명"}
-                                    id={"pre_fran_name"} onChange={handleFieldChange}/>*/}
+                        <SearchItem searchType={SEARCH_TYPE.INPUT} title={"가맹점 명"}
+                                    onClick={() => handlePopupOpenClick()}/>
                     </div>
-                    <div className={cx("item")}>
-                        {/*<SearchItem
-                            searchType={SEARCH_TYPE.SELECT_FLAG}
-                            value={searchField.chk_use_flag}
-                            title={"사용여부"}
-                            id={"chk_use_flag"}
-                            onChange={handleFieldChange}
-                        />*/}
-
-                        <div className={cx("checkbox-wrap")}>
-                            <div className={cx("checkbox")}>
-                                <input
-                                    type="checkbox"
-                                    value={searchField.use_flag}
-                                    id="agree2"
-                                    onChange={(e) => handleFieldChange('use_flag', e)}
-                                />
-                                <label htmlFor="agree2" style={{marginTop: '0.8rem'}}>
-                                    <span>사용안함 포함</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className={cx("item")}>
-                        <div className={cx("btn-submit")}>
-                            <BtnSearch onClick={handleSearchSubmit}/>
-                        </div>
-                    </div>
+                    <button onClick={() => handlePopupOpenClick()}>🔍</button>
                 </div>
             </div>
-            <div className={cx("row")}>
+            {/*<div className={cx("row")}>
                 <div className={cx("item")}>
                     <h1 style={{lineHeight: '2', fontWeight: 'bold', textAlign: 'center', marginTop: '3rem'}}>
                         <span>대비기간과 비교하여 조회기간의 매출은 </span>
@@ -528,16 +290,16 @@ const SalesAnalysis = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>*/}
 
 
-            <div className={cx("dashboard")} style={{marginTop: '2rem'}}>
+            {/*<div className={cx("dashboard")} style={{marginTop: '2rem'}}>
                 <div className={cx("row", "flex")} style={{alignItems: 'center'}}>
                     <div className={cx("box", "content-wrap")}>
                         <div className={cx("item")}>
-                            {/*<div className={cx("title", "brand")}>
+                            <div className={cx("title", "brand")}>
                             매출 추이
-                        </div>*/}
+                        </div>
                             <div className={cx("table-wrap")} style={{height: '13rem', backgroundColor: '#f2f2f2'}}>
                                 {isLoadingSalesDayData ? (<div className={cx("loading-data")}>데이터를 가져오고
                                     있습니다.</div>) : !combinedCompareData.length ? (
@@ -604,15 +366,15 @@ const SalesAnalysis = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>*/}
 
-            <div className={cx("row", "flex")}>
+            {/*<div className={cx("row", "flex")}>
                 <div className={cx("box", "no-padding-horizontal", "content-wrap")}>
                     <div className={cx("item")}>
                         {isLoadingSalesDayData ? (
                             <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>) : !combinedData.length ? (
                             <div className={cx("no-data")}>데이터가 없습니다.</div>) : (<>
-                            {/*<RenderTable
+                            <RenderTable
                                 tableProps={{
                                     ...InquiryTable
                                 }}
@@ -625,7 +387,7 @@ const SalesAnalysis = () => {
                                     sum_pos: sum_chk_pos,
                                     sum_delivery: sum_chk_delivery,
                                 }}
-                            ></RenderTable>*/}
+                            ></RenderTable>
 
                             <RenderTable
                                 tableProps={{
@@ -662,7 +424,7 @@ const SalesAnalysis = () => {
                         {isLoadingCompareSalesDayData ? (
                             <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>) : !combinedCompareData.length ? (
                             <div className={cx("no-data")}>데이터가 없습니다.</div>) : (<>
-                                {/*<RenderTable
+                            <RenderTable
                             tableProps={{
                                 ...preparationTable
                             }}
@@ -675,42 +437,42 @@ const SalesAnalysis = () => {
                                 sum_pos: sum_pre_pos,
                                 sum_delivery: sum_pre_delivery,
                             }}
-                        ></RenderTable>*/}
+                        ></RenderTable>
 
-                                    <RenderTable
-                                        tableProps={{
-                                            getTableProps: table2GetTableProps,
-                                            getTableBodyProps: table2GetTableBodyProps,
-                                            headerGroups: table2HeaderGroups,
-                                            prepareRow: table2PrepareRow,
-                                            page: table2Page,
-                                            pageIndex: table2PageIndex,
-                                            pageSize: table2PageSize,
-                                            gotoPage: table2GotoPage,
-                                            previousPage: table2PreviousPage,
-                                            nextPage: table2NextPage,
-                                            canPreviousPage: table2CanPreviousPage,
-                                            canNextPage: table2CanNextPage,
-                                            pageCount: table2PageCount,
-                                            pageOptions: table2PageOptions,
-                                        }}
-                                        editMode={false}
-                                        tableState={tableState}
-                                        setTableState={setTableState}
-                                        rowFixHeaderValues={{
-                                            sum_total: sum_chk_total,
-                                            sum_avg: sum_chk_avg,
-                                            sum_pos: sum_chk_pos,
-                                            sum_delivery: sum_chk_delivery,
-                                        }}
-                                    />
+                            <RenderTable
+                                tableProps={{
+                                    getTableProps: table2GetTableProps,
+                                    getTableBodyProps: table2GetTableBodyProps,
+                                    headerGroups: table2HeaderGroups,
+                                    prepareRow: table2PrepareRow,
+                                    page: table2Page,
+                                    pageIndex: table2PageIndex,
+                                    pageSize: table2PageSize,
+                                    gotoPage: table2GotoPage,
+                                    previousPage: table2PreviousPage,
+                                    nextPage: table2NextPage,
+                                    canPreviousPage: table2CanPreviousPage,
+                                    canNextPage: table2CanNextPage,
+                                    pageCount: table2PageCount,
+                                    pageOptions: table2PageOptions,
+                                }}
+                                editMode={false}
+                                tableState={tableState}
+                                setTableState={setTableState}
+                                rowFixHeaderValues={{
+                                    sum_total: sum_chk_total,
+                                    sum_avg: sum_chk_avg,
+                                    sum_pos: sum_chk_pos,
+                                    sum_delivery: sum_chk_delivery,
+                                }}
+                            />
                         </>)}
                     </div>
                 </div>
-            </div>
+            </div>*/}
         </div>
     </>);
 };
 
-export default SalesAnalysis;
+export default SalesAnalysisSelect;
 
