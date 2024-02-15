@@ -14,8 +14,9 @@ import {usePagination, useSortBy, useTable} from "react-table";
 import className from "classnames/bind";
 import styles from "./salesAnalyze.module.scss";
 
-import PieChartComponent_Analyze from "@/pages/test/chartPie_Analyze";
+import chartPieAnalyze from "@/src/components/data/chartPieAnalyze";
 import CheckBox from "@/src/components/data/checkBox";
+import ChartPieAnalyze from "@/src/components/data/chartPieAnalyze";
 
 const cx = className.bind(styles);
 
@@ -528,13 +529,13 @@ const SalesAnalysis = () => {
 
                     <div className={cx("box", "flex")}>
                         <div style={{width: "33%"}}>
-                            <PieChartComponent_Analyze data={chartData1} title="매출합계"/>
+                            <ChartPieAnalyze data={chartData1} title="매출합계"/>
                         </div>
                         <div style={{width: "33%"}}>
-                            <PieChartComponent_Analyze data={chartData2} title="POS"/>
+                            <ChartPieAnalyze data={chartData2} title="POS"/>
                         </div>
                         <div style={{width: "33%"}}>
-                            <PieChartComponent_Analyze data={chartData3} title="배달"/>
+                            <ChartPieAnalyze data={chartData3} title="배달"/>
                         </div>
                     </div>
                 </div>
