@@ -15,6 +15,7 @@ import className from "classnames/bind";
 import styles from "./salesAnalyze.module.scss";
 
 import PieChartComponent_Analyze from "@/pages/test/chartPie_Analyze";
+import CheckBox from "@/src/components/data/checkBox";
 
 const cx = className.bind(styles);
 
@@ -67,10 +68,10 @@ const SalesAnalysis = () => {
 
     const today = new Date();
     const oneMonthAgo = new Date(today);
-    oneMonthAgo.setMonth(today.getMonth() - 2);
+    oneMonthAgo.setMonth(today.getMonth() - 1);
 
     const {t} = useTranslation(["common", "dataAdmin"]);
-
+    const [checkedUseFlag, setCheckedUseFlag] = useState(false);
     //조회기간 테이블
     const [tableState, setTableState] = useState([]);
     //대비기간 테이블
@@ -139,9 +140,6 @@ const SalesAnalysis = () => {
     } = useQuery(["getCompareSalesDayData"], () => getSalesCompareAnalysisList(formatCompareStartDate, formatCompareEndDate), {
         enabled: formatCompareStartDate !== undefined && formatCompareEndDate !== undefined,
     });
-
-    console.log("조회기간=", formatStartDate, " ~ ", formatEndDate, " = ", salesDayData);
-    console.log("대비기간=", formatCompareStartDate, " ~ ", formatCompareEndDate, " = ", compareSalesDayData);
 
 
     const mainHeader = ["매출구분"];
@@ -222,7 +220,7 @@ const SalesAnalysis = () => {
     useEffect(() => {
         if (!isLoadingSalesDayData && salesDayData) {
             const filteredData = salesDayData.filter((row) => {
-                if (useFlag) {
+                if (checkedUseFlag) {
                     return true;
                 } else {
                     return row.use_flag === 1;
@@ -230,13 +228,13 @@ const SalesAnalysis = () => {
             });
             setTableState(filteredData);
         }
-    }, [salesDayData, isLoadingSalesDayData, useFlag]);
+    }, [salesDayData, isLoadingSalesDayData, checkedUseFlag]);
 
     // 대비기간
     useEffect(() => {
         if (!isLoadingCompareSalesDayData && compareSalesDayData) {
             const filteredCompareData = compareSalesDayData.filter((row) => {
-                if (useFlag) {
+                if (checkedUseFlag) {
                     return true;
                 } else {
                     return row.use_flag === 1;
@@ -244,7 +242,7 @@ const SalesAnalysis = () => {
             });
             setCompareTableState(filteredCompareData);
         }
-    }, [compareSalesDayData, isLoadingCompareSalesDayData, useFlag]);
+    }, [compareSalesDayData, isLoadingCompareSalesDayData, checkedUseFlag]);
 
     /* const getUseTable = (options, columns) => {
          return useTable({
@@ -345,12 +343,19 @@ const SalesAnalysis = () => {
     );
 
 
-    const handleFieldChange = (field, e) => {
+   /* const handleFieldChange = (field, e) => {
         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
         if (field === 'use_flag') {
-            setUseFlag(value);
-            console.log("setUseFlag(value)==", setUseFlag)
+            setCheckedUseFlag(value);
+            console.log("setCheckedUseFlag(value)==", setCheckedUseFlag)
         }
+    };*/
+    const handleUseFlagChange = (e) => {
+        setCheckedUseFlag((prev) => !prev);
+        setSearchField((prevData) => ({
+            ...prevData,
+            [e.target.id]: e.target.checked ? "" : "1",
+        }));
     };
 
     /*const handleFieldChange = (field, e) => {
@@ -448,6 +453,8 @@ const SalesAnalysis = () => {
                     일자별 매출 비교 (전체 가맹점)
                 </h1>
                 <div className={cx("box", "flex", "search-wrap")}>
+                <div className={cx("search-item")}>
+                    <div className={cx("item-wrap")}>
                     <div className={cx("item")}>
                         <SearchDateItems
                             startDate={startDate}
@@ -488,7 +495,7 @@ const SalesAnalysis = () => {
 
                         <div className={cx("checkbox-wrap")}>
                             <div className={cx("checkbox")}>
-                                <input
+                                {/*<input
                                     type="checkbox"
                                     value={searchField.use_flag}
                                     id="agree2"
@@ -496,7 +503,8 @@ const SalesAnalysis = () => {
                                 />
                                 <label htmlFor="agree2" style={{marginTop: '0.8rem'}}>
                                     <span>사용안함 포함</span>
-                                </label>
+                                </label>*/}
+                                <CheckBox title={"사용안함 포함"} id={"use_flag"} checked={checkedUseFlag} onChange={handleUseFlagChange} />
                             </div>
                         </div>
                     </div>
@@ -506,6 +514,8 @@ const SalesAnalysis = () => {
                             <BtnSearch onClick={handleSearchSubmit}/>
                         </div>
                     </div>
+                    </div>
+                </div>
                 </div>
             </div>
             <div className={cx("row")}>

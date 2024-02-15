@@ -36,6 +36,7 @@ const RenderTable = ({
                          rowSelect,
                          totalRow = false,
                          addressItem = false,
+                         rowFixHeaderValues = {}
                      }) => {
     const {
         getTableProps,
@@ -216,6 +217,18 @@ const RenderTable = ({
         setSelectRowIndex(index);
     };
 
+    //매출분석페이지 합계 Header
+    const {
+        sum_total = '',
+        sum_avg = '',
+        sum_pos = '',
+        sum_delivery = ''
+    } = rowFixHeaderValues;
+    const SumTotal = sum_total ? Number(sum_total).toLocaleString() : 'ㅡ';
+    const SumAvg = sum_avg ? Number(sum_avg).toLocaleString() : 'ㅡ';
+    const SumPos = sum_pos ? Number(sum_pos).toLocaleString() : 'ㅡ';
+    const SumDelivery = sum_delivery ? Number(sum_delivery).toLocaleString() : 'ㅡ';
+
     return (
         <>
             <div className={cx("table-wrap")} style={tableHeight && { height: `${tableHeight}` }}>
@@ -247,6 +260,15 @@ const RenderTable = ({
                             ))}
                         </tr>
                     ))}
+                    {Object.keys(rowFixHeaderValues).length > 0 && (
+                        <tr>
+                            <th style={{backgroundColor:'#fdeea8'}}>합계</th>
+                            <th style={{backgroundColor:'#fdeea8'}}>{SumTotal}</th>
+                            <th style={{backgroundColor:'#fdeea8'}}>{SumAvg}</th>
+                            <th style={{backgroundColor:'#fdeea8'}}>{SumPos}</th>
+                            <th style={{backgroundColor:'#fdeea8'}}>{SumDelivery}</th>
+                        </tr>
+                    )}
                     </thead>
                     <tbody {...getTableBodyProps()}>
                     {page?.map((row, rowIndex) => {
