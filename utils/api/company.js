@@ -41,7 +41,6 @@ export const updateCompanyList = async (data) => {
 };
 
 export const addCompanyList = async (data) => {
-  console.log("addCompanyList", data);
   const response = await fetch(`/api_default/company/post`, {
     method: "POST",
     headers: {
@@ -65,3 +64,20 @@ export const addCompanyList = async (data) => {
 
   // console.log("추가 완료");
 };
+
+// export const getCompanyPopupList = async () => {
+//   const response = await fetch(`/api_default/company/list?company_code=`, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//   });
+
+//   if (!response.ok) {
+//     throw new Error("Failed to fetch data.");
+//   }
+
+//   const data = await response.json();
+
+//   return data.data;
+// };

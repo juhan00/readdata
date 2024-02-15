@@ -45,24 +45,26 @@ const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData
       refetchStoreMapingData();
       refetchScrapingData();
 
-      setGlobalState({
+      setGlobalState((prevGlobalState) => ({
+        ...prevGlobalState,
         popupState: {
           isOn: true,
           popup: POPUP_DEFAULT,
           content: "업데이트를 완료했습니다.",
         },
-      });
+      }));
     },
     onError: (error) => {
       console.error("Update error:", error);
 
-      setGlobalState({
+      setGlobalState((prevGlobalState) => ({
+        ...prevGlobalState,
         popupState: {
           isOn: true,
           popup: POPUP_DEFAULT,
           content: "업데이트에 실패했습니다.",
         },
-      });
+      }));
     },
   });
 

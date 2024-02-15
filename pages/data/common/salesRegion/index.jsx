@@ -12,6 +12,7 @@ import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useQuery } from "react-query";
+import { useGlobalState } from "@/context/globalStateContext";
 
 //styles
 import className from "classnames/bind";
@@ -33,7 +34,8 @@ const SalesRegion = () => {
   oneWeekAgo.setDate(today.getDate() - 7);
 
   const { t } = useTranslation(["common", "dataAdmin"]);
-  const [companyCode, setCompanyCode] = useState("C0002");
+  const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
+  const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
@@ -44,6 +46,14 @@ const SalesRegion = () => {
   const [selectedGubun, setSelectedGubun] = useState([]);
   const [checkedUseFlag, setCheckedUseFlag] = useState(false);
   const [checkedUseGubun2, setCheckedUseGubun2] = useState(false);
+  const [defaultBrand, setDefaultBrand] = useState({});
+
+  useEffect(() => {
+    setSearchData((prevData) => ({
+      ...prevData,
+      ["brand_name"]: defaultBrand.brand_name,
+    }));
+  }, [defaultBrand]);
 
   const formatStartDate = useMemo(() => {
     return useChangeFormatDate(startDate);
@@ -78,8 +88,8 @@ const SalesRegion = () => {
     data: headersData,
     isLoading: isLoadingHeadersData,
     refetch: refetchHeadersData,
-  } = useQuery("getSalesHeadersData", () => getSalesHeadersList("B0002"), {
-    enabled: true,
+  } = useQuery(["getSalesHeadersData", defaultBrand.brand_code], () => getSalesHeadersList(defaultBrand.brand_code), {
+    enabled: defaultBrand.brand_code !== undefined,
   });
 
   const {
@@ -117,15 +127,13 @@ const SalesRegion = () => {
       }
 
       return (
-        (!searchData.brand_code || row.brand_code?.toString().toLowerCase().includes(searchData.brand_code.toLowerCase())) &&
-        (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase())) &&
-        gubun1Condition &&
-        gubun2Condition
+          (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
+          (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase())) &&
+          gubun1Condition &&
+          gubun2Condition
       );
     });
   }, [tableState, searchData]);
-
-  console.log("기본 데이터:",tableState);
 
   const memoizedSalesRegionChartData = useMemo(() => {
     const headersArray = headersData?.map((header) => header.accessor);
@@ -187,60 +195,15 @@ const SalesRegion = () => {
     return groupedData || [];
   }, [memoizedData, headersData]);
 
-
-  // 기본 데이터에서 gubun1 값의 종류와 각 값의 개수를 콘솔에 출력
-  const countGubunValues = (data) => {
-    const gubun1Set = new Set();
-    const gubun2Set = new Set();
-    const gubun1Counts = {};
-    const gubun2Counts = {};
-
-    // 각 gubun1 및 gubun2 값의 종류와 개수를 계산
-    data.forEach(item => {
-      gubun1Set.add(item.gubun1);
-      gubun2Set.add(item.gubun2);
-
-      // gubun1 값의 개수 계산
-      if (gubun1Counts[item.gubun1]) {
-        gubun1Counts[item.gubun1]++;
-      } else {
-        gubun1Counts[item.gubun1] = 1;
-      }
-
-      // gubun2 값의 개수 계산
-      if (gubun2Counts[item.gubun2]) {
-        gubun2Counts[item.gubun2]++;
-      } else {
-        gubun2Counts[item.gubun2] = 1;
-      }
-    });
-
-    // gubun1 데이터 구성
-    const gubun1Data = Array.from(gubun1Set).map(value => ({
-      value,
-      count: gubun1Counts[value] || 0
-    }));
-
-    // gubun2 데이터 구성
-    const gubun2Data = Array.from(gubun2Set).map(value => ({
-      value,
-      count: gubun2Counts[value] || 0
-    }));
-    console.log("지역별 가맹점 갯수:",gubun1Data,gubun2Data)
-    return { gubun1Data, gubun2Data };
-  };
-
-  //countGubun1Values 함수를 호출하여 gubun1 값의 종류와 각 값의 개수를 콘솔에 출력
-  const storeCountData = useMemo(() => {
-    return countGubunValues(tableState);
-  }, [tableState]);
-
-
   const handleFieldChange = (field, e) => {
     e.preventDefault();
+
+    const fieldName = field === "brand_code" ? "brand_name" : field;
+    const fieldValue = field === "brand_code" ? e.target.options[e.target.selectedIndex].text : e.target.value;
+
     setSearchField((prevData) => ({
       ...prevData,
-      [field]: e.target.value,
+      [fieldName]: fieldValue,
     }));
   };
 
@@ -383,105 +346,103 @@ const SalesRegion = () => {
   };
 
   return (
-    <>
-      <div className={cx("sales-region")}>
-        <div className={cx("row")}>
-          <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("search-item")}>
-              <div className={cx("item-wrap")}>
-                <div className={cx("item")}>
-                  <SearchDateItems
-                    startDate={startDate}
-                    endDate={endDate}
-                    handleStartDateChange={handleStartDateChange}
-                    handleEndDateChange={handleEndDateChange}
-                    updateDate={updateDate}
-                  />
-                </div>
-                <div className={cx("item")}>
-                  <SearchItem
-                    searchType={SEARCH_TYPE.SELECT_BRAND}
-                    value={searchField.brand_code}
-                    title={"브랜드 명"}
-                    id={"brand_code"}
-                    onChange={handleFieldChange}
-                    companyCode=""
-                  />
-                </div>
-                <div className={cx("item")}>
-                  <SearchAddressItem
-                    title={"지역1"}
-                    type={SEARCH_ADDRESS.SIDO}
-                    data={sidoData}
-                    id={"gubun1"}
-                    value={gubun1.code || ""}
-                    onChange={handleGubunChange}
-                  />
-                </div>
-                {checkedUseGubun2 && (
+      <>
+        <div className={cx("sales-region")}>
+          <div className={cx("row")}>
+            <div className={cx("box", "flex", "search-wrap")}>
+              <div className={cx("search-item")}>
+                <div className={cx("item-wrap")}>
                   <div className={cx("item")}>
-                    <SearchAddressItem
-                      title={"지역2"}
-                      type={SEARCH_ADDRESS.SIGOON}
-                      data={sigoonData}
-                      id={"gubun2"}
-                      value={gubun2.code || ""}
-                      onChange={handleGubunChange}
+                    <SearchItem
+                        searchType={SEARCH_TYPE.SELECT_BRAND}
+                        value={searchField.brand_code}
+                        setDefaultValue={setDefaultBrand}
+                        title={"브랜드 명"}
+                        id={"brand_code"}
+                        onChange={handleFieldChange}
+                        companyCode={companyCode}
                     />
                   </div>
-                )}
-                <div className={cx("item")}>
-                  <CheckBox title={"지역2 사용"} id={"use_gubun2"} checked={checkedUseGubun2} onChange={handleUseGubun2Change} />
-                </div>
-                <div className={cx("item")}>
-                  <CheckBox title={"사용안함 포함"} id={"use_flag"} checked={checkedUseFlag} onChange={handleUseFlagChange} />
-                </div>
-              </div>
-
-              <div className={cx("region-item-wrap")}>
-                {selectedGubun?.map((item) => (
-                  <div className={cx("item")} key={item.code}>
-                    {item.name}
-                    <button className={cx("close")} onClick={() => handleGubunItemDel(item.code)}></button>
+                  <div className={cx("item")}>
+                    <SearchDateItems
+                        startDate={startDate}
+                        endDate={endDate}
+                        handleStartDateChange={handleStartDateChange}
+                        handleEndDateChange={handleEndDateChange}
+                        updateDate={updateDate}
+                    />
                   </div>
-                ))}
+
+                  <div className={cx("item")}>
+                    <SearchAddressItem
+                        title={"지역1"}
+                        type={SEARCH_ADDRESS.SIDO}
+                        data={sidoData}
+                        id={"gubun1"}
+                        value={gubun1.code || ""}
+                        onChange={handleGubunChange}
+                    />
+                  </div>
+                  {checkedUseGubun2 && (
+                      <div className={cx("item")}>
+                        <SearchAddressItem
+                            title={"지역2"}
+                            type={SEARCH_ADDRESS.SIGOON}
+                            data={sigoonData}
+                            id={"gubun2"}
+                            value={gubun2.code || ""}
+                            onChange={handleGubunChange}
+                        />
+                      </div>
+                  )}
+                  <div className={cx("item")}>
+                    <CheckBox title={"지역2 사용"} id={"use_gubun2"} checked={checkedUseGubun2} onChange={handleUseGubun2Change} />
+                  </div>
+                  <div className={cx("item")}>
+                    <CheckBox title={"사용안함 포함"} id={"use_flag"} checked={checkedUseFlag} onChange={handleUseFlagChange} />
+                  </div>
+                </div>
+
+                <div className={cx("region-item-wrap")}>
+                  {selectedGubun?.map((item) => (
+                      <div className={cx("item")} key={item.code}>
+                        {item.name}
+                        <button className={cx("close")} onClick={() => handleGubunItemDel(item.code)}></button>
+                      </div>
+                  ))}
+                </div>
+              </div>
+              <div className={cx("btn-submit")}>
+                <BtnSearch onClick={handleSearchSubmit} />
               </div>
             </div>
-            <div className={cx("btn-submit")}>
-              <BtnSearch onClick={handleSearchSubmit} />
-            </div>
           </div>
-        </div>
 
-        <div className={cx("row")}>
-          <div className={cx("box", "pie")}>
-            <div className={cx("item")}>
-              {isLoadingSalesRegionData ? (
-                <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : memoizedData.length === 0 ? (
-                <div className={cx("no-data")}>데이터가 없습니다.</div>
-              ) : (
-                <ChartPie memoizedSalesRegionChartData={memoizedSalesRegionChartData} />
-              )}
+          <div className={cx("row")}>
+            <div className={cx("box", "pie")}>
+              <div className={cx("item")}>
+                {isLoadingSalesRegionData ? (
+                    <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+                ) : (
+                    <ChartPie memoizedSalesRegionChartData={memoizedSalesRegionChartData} />
+                )}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className={cx("row")}>
-          <div className={cx("box", "bar")}>
-            <div className={cx("item")}>
-              {isLoadingSalesRegionData ? (
-                <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : memoizedData.length === 0 ? (
-                <div className={cx("no-data")}>데이터가 없습니다.</div>
-              ) : (
-                <BarChart memoizedSalesDayChartData={memoizedSalesRegionChartData} headersData={headersData} storeCountData={storeCountData} dataKey={"name"} />
-              )}
+          <div className={cx("row")}>
+            <div className={cx("box", "bar")}>
+              <div className={cx("item")}>
+                {isLoadingSalesRegionData ? (
+                    <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+                ) : (
+                    <BarChart memoizedSalesDayChartData={memoizedSalesRegionChartData} headersData={headersData} dataKey={"name"} />
+                )}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </>
   );
 };
 

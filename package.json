@@ -11,11 +11,13 @@
   "dependencies": {
     "@tosspayments/payment-widget-sdk": "^0.10.2",
     "classnames": "^2.3.3",
+    "cookies-next": "^4.1.1",
     "date-fns": "^3.3.0",
     "dotenv": "^16.3.1",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "html2canvas": "^1.4.1",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "nanoid": "^5.0.4",
     "next": "14.0.4",

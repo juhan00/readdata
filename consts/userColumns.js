@@ -55,11 +55,11 @@ export const changeUserColumns = (t) => [
     Header: "회사코드",
     accessor: "company_code",
     headerStyle: {
-      display: "none",
+      // display: "none",
       textAlign: "center",
     },
     cellStyle: {
-      display: "none",
+      // display: "none",
       textAlign: "center",
     },
   },
@@ -72,6 +72,7 @@ export const changeUserColumns = (t) => [
     cellStyle: {
       textAlign: "center",
     },
+    type: TABLE_COLUMN_TYPE.COMPANY,
   },
   {
     Header: "사용권한",

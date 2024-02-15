@@ -39,9 +39,8 @@ const Brand = () => {
     brand_flag: "",
   };
 
-  const [{ popupState }, setGlobalState] = useGlobalState();
-
-  const [companyCode, setCompanyCode] = useState("");
+  const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
+  const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
@@ -67,13 +66,14 @@ const Brand = () => {
     onError: (error) => {
       console.error("Update error:", error);
 
-      setGlobalState({
+      setGlobalState((prevGlobalState) => ({
+        ...prevGlobalState,
         popupState: {
           isOn: true,
           popup: POPUP_DEFAULT,
           content: "업데이트에 실패했습니다.",
         },
-      });
+      }));
     },
   });
 
@@ -84,13 +84,14 @@ const Brand = () => {
     onError: (error) => {
       console.error("Added error:", error);
 
-      setGlobalState({
+      setGlobalState((prevGlobalState) => ({
+        ...prevGlobalState,
         popupState: {
           isOn: true,
           popup: POPUP_DEFAULT,
           content: "추가에 실패했습니다.",
         },
-      });
+      }));
     },
   });
 
@@ -110,24 +111,26 @@ const Brand = () => {
         refetchBrandData();
         gotoPage(0);
 
-        setGlobalState({
+        setGlobalState((prevGlobalState) => ({
+          ...prevGlobalState,
           popupState: {
             isOn: true,
             popup: POPUP_DEFAULT,
             content: "엑셀업로드가 완료되었습니다.",
           },
-        });
+        }));
       },
       onError: (error) => {
         console.error("Update error:", error);
 
-        setGlobalState({
+        setGlobalState((prevGlobalState) => ({
+          ...prevGlobalState,
           popupState: {
             isOn: true,
             popup: POPUP_DEFAULT,
             content: "엑셀업로드가 실패했습니다.",
           },
-        });
+        }));
       },
     }
   );
@@ -229,7 +232,7 @@ const Brand = () => {
                     title={"브랜드 명"}
                     id={"brand_code"}
                     onChange={handleFieldChange}
-                    companyCode=""
+                    companyCode={companyCode}
                   />
                 </div>
                 <div className={cx("item")}>
@@ -261,8 +264,6 @@ const Brand = () => {
             <div className={cx("item")}>
               {isLoadingBrandData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : memoizedData.length === 0 ? (
-                <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <RenderTable
                   tableProps={{

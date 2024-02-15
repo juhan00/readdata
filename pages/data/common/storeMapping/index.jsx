@@ -27,8 +27,8 @@ const StoreMapping = () => {
     scrap_name: "",
   };
 
-  const [{ popupState }, setGlobalState] = useGlobalState();
-  const [companyCode, setCompanyCode] = useState("C0001");
+  const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
+  const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
@@ -148,8 +148,6 @@ const StoreMapping = () => {
             <div className={cx("item")}>
               {isLoadingStoreMapingData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : memoizedData.length === 0 ? (
-                <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <RenderTable
                   tableProps={{

@@ -21,13 +21,14 @@ const BtnExcelUpload = ({ transformExcelCell, excelMutation }) => {
       if (!isExcelFile) {
         console.error("Invalid file format. Please upload an Excel file.");
 
-        setGlobalState({
+        setGlobalState((prevGlobalState) => ({
+          ...prevGlobalState,
           popupState: {
             isOn: true,
             popup: POPUP_DEFAULT,
             content: "엑셀 파일을 업로드해주세요.",
           },
-        });
+        }));
 
         fileInput.value = "";
         return;

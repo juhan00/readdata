@@ -8,19 +8,25 @@ import styles from "./searchItem.module.scss";
 import className from "classnames/bind";
 const cx = className.bind(styles);
 
-const SearchItem = ({ searchType, title, value, id, onClick, onChange, readOnly, companyCode }) => {
+const SearchItem = ({ searchType, title, value, setDefaultValue, id, onClick, onChange, readOnly, companyCode }) => {
   const {
     data: brandData,
     isLoading: isLoadingBrandData,
     refetch: refetchBrandData,
   } = useQuery(["getBrandSelectData", companyCode], () => getBrandList(companyCode), { enabled: companyCode !== undefined });
 
+  useEffect(() => {
+    if (brandData && brandData.length && setDefaultValue) {
+      setDefaultValue({ brand_code: brandData[0].brand_code, brand_name: brandData[0].brand_name });
+    }
+  }, [brandData]);
+
   return (
     <div className={cx("search-item")}>
       <label>{title}</label>
       {searchType === SEARCH_TYPE.SELECT_BRAND && (
         <select id={id} onClick={onClick} onChange={(e) => onChange(id, e)}>
-          <option value="">전체</option>
+          {!setDefaultValue && <option value="">전체</option>}
           {brandData?.map((data) => {
             return (
               <option key={data.brand_code} value={data.brand_code}>

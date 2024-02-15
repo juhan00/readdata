@@ -111,13 +111,14 @@ export default function PopupContactUs() {
   };
 
   const handlePopupOpenSuccess = () => {
-    setGlobalState({
+    setGlobalState((prevGlobalState) => ({
+      ...prevGlobalState,
       popupState: {
         isOn: true,
         popup: POPUP_DEFAULT,
         content: t("popup:contact_us.alert.success"),
       },
-    });
+    }));
   };
 
   const handleClickAgree1 = () => {

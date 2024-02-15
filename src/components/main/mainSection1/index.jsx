@@ -14,13 +14,14 @@ export default function MainSection1() {
   const { t } = useTranslation("common");
 
   const handlePopupOpenClick = () => {
-    setGlobalState({
+    setGlobalState((prevGlobalState) => ({
+      ...prevGlobalState,
       popupState: {
         isOn: !popupState.isOn,
         popup: POPUP_CONTACTUS,
         title: t("popup:default.contact_us_title"),
       },
-    });
+    }));
   };
 
   return (

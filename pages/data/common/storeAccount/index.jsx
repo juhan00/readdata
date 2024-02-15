@@ -28,8 +28,8 @@ const StoreAccount = () => {
     fran_name: "",
   };
 
-  const [{ popupState }, setGlobalState] = useGlobalState();
-  const [companyCode, setCompanyCode] = useState("C0001");
+  const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
+  const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
@@ -55,13 +55,14 @@ const StoreAccount = () => {
     onError: (error) => {
       console.error("Update error:", error);
 
-      setGlobalState({
+      setGlobalState((prevGlobalState) => ({
+        ...prevGlobalState,
         popupState: {
           isOn: true,
           popup: POPUP_DEFAULT,
           content: "업데이트에 실패했습니다.",
         },
-      });
+      }));
     },
   });
 
@@ -119,9 +120,6 @@ const StoreAccount = () => {
     updateMutation.mutate(data);
   };
 
-  useEffect(() => {
-    console.log("tableState", tableState);
-  }, [tableState]);
   return (
     <>
       <div className={cx("brand")}>
@@ -136,7 +134,7 @@ const StoreAccount = () => {
                     title={"브랜드 명"}
                     id={"brand_code"}
                     onChange={handleFieldChange}
-                    companyCode=""
+                    companyCode={companyCode}
                   />
                 </div>
                 <div className={cx("item")}>
@@ -166,8 +164,6 @@ const StoreAccount = () => {
             <div className={cx("item")}>
               {isLoadingStoreData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : memoizedData.length === 0 ? (
-                <div className={cx("no-data")}>데이터가 없습니다.</div>
               ) : (
                 <RenderTable
                   tableProps={{

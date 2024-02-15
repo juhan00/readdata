@@ -26,13 +26,14 @@ export default function Header() {
     });
   };
   const handleLoginClick = () => {
-    setGlobalState({
+    setGlobalState((prevGlobalState) => ({
+      ...prevGlobalState,
       popupState: {
         isOn: !popupState.isOn,
         popup: POPUP_DEFAULT,
         content: t("popup:default.coming_soon"),
       },
-    });
+    }));
   };
 
   const handleMenuClick = () => {
@@ -40,13 +41,14 @@ export default function Header() {
   };
 
   const handlePopupOpenClick = () => {
-    setGlobalState({
+    setGlobalState((prevGlobalState) => ({
+      ...prevGlobalState,
       popupState: {
         isOn: !popupState.isOn,
         popup: POPUP_CONTACTUS,
         title: t("popup:default.contact_us_title"),
       },
-    });
+    }));
   };
 
   return (

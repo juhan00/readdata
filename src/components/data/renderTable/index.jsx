@@ -8,6 +8,7 @@ import AddressItem from "../searchAddressItem/addressItem";
 import { SEARCH_ADDRESS } from "@/consts/common";
 import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
 import { QueryClient, useQuery } from "react-query";
+import PopupSearchCompany from "../popup/popupSearchCompany";
 
 //styles
 import styles from "./renderTable.module.scss";
@@ -35,7 +36,6 @@ const RenderTable = ({
                          rowSelect,
                          totalRow = false,
                          addressItem = false,
-                         rowFixHeaderValues = {}
                      }) => {
     const {
         getTableProps,
@@ -62,6 +62,7 @@ const RenderTable = ({
     const [{ popupState }, setGlobalState] = useGlobalState();
     const [selectRowIndex, setSelectRowIndex] = useState(null);
     const [gubun1, setGubun1] = useState("");
+    const [isCompanyPopupOpen, setIsCompanyPopupOpen] = useState(false);
 
     const {
         data: sidoData,
@@ -124,19 +125,21 @@ const RenderTable = ({
         const checkCurrentTableEqual = isObjectInArray(tableState, columnValues, rowIndex);
 
         if (checkCurrentTableEqual) {
-            setGlobalState({
+            setGlobalState((prevGlobalState) => ({
+                ...prevGlobalState,
                 popupState: {
                     isOn: true,
                     popup: POPUP_DEFAULT,
                     content: "중복된 데이터가 있습니다.",
                 },
-            });
+            }));
             return;
         }
 
         setEditingRow(null);
         handleUpdateData({ ...columnValues });
         setIsEditing(false);
+        setColumnValues({});
     };
 
     const handleEditCancelClick = () => {
@@ -149,13 +152,14 @@ const RenderTable = ({
         const checkCurrentTableEqual = isObjectInArray(tableState, columnValues, 0);
 
         if (checkCurrentTableEqual) {
-            setGlobalState({
+            setGlobalState((prevGlobalState) => ({
+                ...prevGlobalState,
                 popupState: {
                     isOn: true,
                     popup: POPUP_DEFAULT,
                     content: "중복된 데이터가 있습니다.",
                 },
-            });
+            }));
             return;
         }
 
@@ -186,22 +190,31 @@ const RenderTable = ({
         setIsAddressPopupOpen(false);
     };
 
+    const handleClickCompany = () => {
+        setIsCompanyPopupOpen(true);
+    };
+
+    const handleSelectCompany = (selectedCompany) => {
+        setIsCompanyPopupOpen(false);
+
+        const compnayCellId = headerGroups.flatMap((headerGroup) =>
+            headerGroup.headers.filter((column) => column.id === "company_code").map((companyColumn) => companyColumn.id)
+        );
+
+        const compnayCellName = headerGroups.flatMap((headerGroup) =>
+            headerGroup.headers.filter((column) => column.type === TABLE_COLUMN_TYPE.COMPANY).map((companyColumn) => companyColumn.id)
+        );
+
+        setColumnValues((prevColumnValues) => ({
+            ...prevColumnValues,
+            [compnayCellId]: selectedCompany.company_code,
+            [compnayCellName]: selectedCompany.company_name,
+        }));
+    };
+
     const handleClickSelect = (index) => {
         setSelectRowIndex(index);
     };
-
-    //매출분석페이지 합계 Header
-    const {
-        sum_total = '',
-        sum_avg = '',
-        sum_pos = '',
-        sum_delivery = ''
-    } = rowFixHeaderValues;
-    const SumTotal = sum_total ? Number(sum_total).toLocaleString() : 'ㅡ';
-    const SumAvg = sum_avg ? Number(sum_avg).toLocaleString() : 'ㅡ';
-    const SumPos = sum_pos ? Number(sum_pos).toLocaleString() : 'ㅡ';
-    const SumDelivery = sum_delivery ? Number(sum_delivery).toLocaleString() : 'ㅡ';
-
 
     return (
         <>
@@ -234,15 +247,6 @@ const RenderTable = ({
                             ))}
                         </tr>
                     ))}
-                    {Object.keys(rowFixHeaderValues).length > 0 && (
-                        <tr>
-                            <th style={{backgroundColor:'#fdeea8'}}>합계</th>
-                            <th style={{backgroundColor:'#fdeea8'}}>{SumTotal}</th>
-                            <th style={{backgroundColor:'#fdeea8'}}>{SumAvg}</th>
-                            <th style={{backgroundColor:'#fdeea8'}}>{SumPos}</th>
-                            <th style={{backgroundColor:'#fdeea8'}}>{SumDelivery}</th>
-                        </tr>
-                    )}
                     </thead>
                     <tbody {...getTableBodyProps()}>
                     {page?.map((row, rowIndex) => {
@@ -297,6 +301,7 @@ const RenderTable = ({
                                     const isgubun1Column = cell.column.type === TABLE_COLUMN_TYPE.GUBUN1;
                                     const isgubun2Column = cell.column.type === TABLE_COLUMN_TYPE.GUBUN2;
                                     const isNoEditColumn = cell.column.noEdit === true;
+                                    const isCompanyColumn = cell.column.type === TABLE_COLUMN_TYPE.COMPANY;
 
                                     return (
                                         <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
@@ -359,6 +364,20 @@ const RenderTable = ({
                                                         onChange={(e) => handleChange(cell.column.id, e.target.value, e)}
                                                         type={SEARCH_ADDRESS.SIGOON}
                                                     />
+                                                ) : isCompanyColumn ? (
+                                                    <>
+                                                        {isCompanyPopupOpen && (
+                                                            <PopupSearchCompany handleClickReturn={handleSelectCompany} setIsPopup={() => setIsCompanyPopupOpen(false)} />
+                                                        )}
+                                                        <input
+                                                            value={columnValues[cell.column.id] || cell.value || ""}
+                                                            onClick={(e) => handleClickCompany()}
+                                                            readOnly
+                                                            onFocus={(e) => {
+                                                                e.target.blur();
+                                                            }}
+                                                        />
+                                                    </>
                                                 ) : (
                                                     <input
                                                         value={columnValues[cell.column.id] || cell.value || ""}
