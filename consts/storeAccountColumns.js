@@ -5,9 +5,11 @@ export const changeStoreAccountColumns = (t) => [
     Header: "가맹점 코드",
     accessor: "fran_code",
     headerStyle: {
+      display: "none",
       textAlign: "center",
     },
     cellStyle: {
+      display: "none",
       textAlign: "center",
     },
     noEdit: true,

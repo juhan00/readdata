@@ -20,7 +20,8 @@
   }
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="password"] {
   width: 100%;
   min-height: 3.8rem;
   border: 0.1rem solid #ebebeb;

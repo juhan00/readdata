@@ -186,8 +186,9 @@ export const updateStoreMapingList = async (data) => {
   // console.log("업데이트 완료");
 };
 
-export const getScrapingList = async (companyCode) => {
-  const response = await fetch(`/api_default/franchise/scrap?company_code=${companyCode}&joinflag=unjoin`, {
+export const getScrapingList = async (companyCode, checkedJoinFlag) => {
+  const joinFlag = checkedJoinFlag ? "join" : "unjoin";
+  const response = await fetch(`/api_default/franchise/scrap?company_code=${companyCode}&joinflag=${joinFlag}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
