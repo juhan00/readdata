@@ -12,25 +12,25 @@ import { useEffect, useState } from "react";
 const cx = className.bind(styles);
 
 export default function PopupDataDefault({}) {
-  const [{ popupState }, setGlobalState] = useGlobalState();
-  const [isPopup, setIsPopup] = useState(false);
-  const { t } = useTranslation("popup");
+    const [{ popupState }, setGlobalState] = useGlobalState();
+    const [isPopup, setIsPopup] = useState(false);
+    const { t } = useTranslation("popup");
 
-  useEffect(() => {
-    if (popupState.isOn) {
-      setIsPopup(true);
-    } else {
-      setIsPopup(false);
-    }
-  }, [popupState.isOn]);
+    useEffect(() => {
+        if (popupState.isOn) {
+            setIsPopup(true);
+        } else {
+            setIsPopup(false);
+        }
+    }, [popupState.isOn]);
 
-  return (
-    isPopup && (
-      <>
-        <DataPopupLayout title={popupState.title} setIsPopup={setIsPopup} setGlobalState={setGlobalState}>
-          <div className={cx("popup_default_wrap")}>{popupState.popup === POPUP_DEFAULT && popupState.content}</div>
-        </DataPopupLayout>
-      </>
-    )
-  );
+    return (
+        isPopup && (
+            <>
+                <DataPopupLayout title={popupState.title} setIsPopup={setIsPopup} setGlobalState={setGlobalState}>
+                    <div className={cx("popup_default_wrap")}>{popupState.popup === POPUP_DEFAULT && popupState.content}</div>
+                </DataPopupLayout>
+            </>
+        )
+    );
 }

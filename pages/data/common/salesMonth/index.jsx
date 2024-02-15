@@ -93,9 +93,9 @@ const SalesMonth = () => {
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
-      (row) =>
-        (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
-        (!searchData.store || row.store?.toString().toLowerCase().includes(searchData.store.toLowerCase()))
+        (row) =>
+            (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
+            (!searchData.store || row.store?.toString().toLowerCase().includes(searchData.store.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -196,14 +196,14 @@ const SalesMonth = () => {
     pageCount,
     pageOptions,
   } = useTable(
-    {
-      columns: memoizedSalesMonthColumns,
-      data: useMemo(() => memoizedSalesMonthData, [memoizedSalesMonthData]),
-      initialState: { pageIndex: 0, pageSize: 50 },
-      autoResetPage: false,
-    },
-    useSortBy,
-    usePagination
+      {
+        columns: memoizedSalesMonthColumns,
+        data: useMemo(() => memoizedSalesMonthData, [memoizedSalesMonthData]),
+        initialState: { pageIndex: 0, pageSize: 50 },
+        autoResetPage: false,
+      },
+      useSortBy,
+      usePagination
   );
 
   const handleFieldChange = (field, e) => {
@@ -228,89 +228,89 @@ const SalesMonth = () => {
   };
 
   return (
-    <>
-      <div className={cx("sales-month")}>
-        <div className={cx("row")}>
-          <div className={cx("box", "flex", "search-wrap")}>
-            <div className={cx("search-item")}>
-              <div className={cx("item-wrap")}>
-                <div className={cx("item")}>
-                  <SearchItem
-                    searchType={SEARCH_TYPE.SELECT_BRAND}
-                    value={searchField.brand_code}
-                    setDefaultValue={setDefaultBrand}
-                    title={"브랜드 명"}
-                    id={"brand_code"}
-                    onChange={handleFieldChange}
-                    companyCode={companyCode}
-                  />
-                </div>
-                <div className={cx("item")}>
-                  <SearchDateItems
-                    startDate={startDate}
-                    endDate={endDate}
-                    handleStartDateChange={handleStartDateChange}
-                    handleEndDateChange={handleEndDateChange}
-                    isMonth={true}
-                    updateDate={updateDate}
-                  />
-                </div>
-                <div className={cx("item")}>
-                  <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
+      <>
+        <div className={cx("sales-month")}>
+          <div className={cx("row")}>
+            <div className={cx("box", "flex", "search-wrap")}>
+              <div className={cx("search-item")}>
+                <div className={cx("item-wrap")}>
+                  <div className={cx("item")}>
+                    <SearchItem
+                        searchType={SEARCH_TYPE.SELECT_BRAND}
+                        value={searchField.brand_code}
+                        setDefaultValue={setDefaultBrand}
+                        title={"브랜드 명"}
+                        id={"brand_code"}
+                        onChange={handleFieldChange}
+                        companyCode={companyCode}
+                    />
+                  </div>
+                  <div className={cx("item")}>
+                    <SearchDateItems
+                        startDate={startDate}
+                        endDate={endDate}
+                        handleStartDateChange={handleStartDateChange}
+                        handleEndDateChange={handleEndDateChange}
+                        isMonth={true}
+                        updateDate={updateDate}
+                    />
+                  </div>
+                  <div className={cx("item")}>
+                    <SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.uid} title={"가맹점명"} id={"store"} onChange={handleFieldChange} />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className={cx("btn-submit")}>
-              <BtnSearch onClick={handleSearchSubmit} />
-            </div>
-          </div>
-        </div>
-
-        <div className={cx("row")}>
-          <div className={cx("box", "content-wrap")}>
-            <div className={cx("item")}>
-              <div className={cx("content-btn-wrap")}>
-                <BtnExcelDown columns={headerGroups} tableData={rows} prepareRow={prepareRow} />
+              <div className={cx("btn-submit")}>
+                <BtnSearch onClick={handleSearchSubmit} />
               </div>
             </div>
-            <div className={cx("item")}>
-              {isLoadingSalesMonthData ? (
-                <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-              ) : (
-                <RenderTable
-                  tableProps={{
-                    getTableProps,
-                    getTableBodyProps,
-                    headerGroups,
-                    prepareRow,
-                    page,
-                    pageIndex,
-                    pageSize,
-                    gotoPage,
-                    previousPage,
-                    nextPage,
-                    canPreviousPage,
-                    canNextPage,
-                    pageCount,
-                    pageOptions,
-                  }}
-                  editMode={false}
-                  setTableState={setTableState}
-                />
-              )}
-            </div>
           </div>
-        </div>
 
-        <div className={cx("row")}>
-          <div className={cx("box")}>
-            <div className={cx("item")}>
-              <BarChart memoizedSalesDayChartData={memoizedSalesMonthChartData} headersData={headersData} />
+          <div className={cx("row")}>
+            <div className={cx("box", "content-wrap")}>
+              <div className={cx("item")}>
+                <div className={cx("content-btn-wrap")}>
+                  <BtnExcelDown columns={headerGroups} tableData={rows} prepareRow={prepareRow} />
+                </div>
+              </div>
+              <div className={cx("item")}>
+                {isLoadingSalesMonthData ? (
+                    <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+                ) : (
+                    <RenderTable
+                        tableProps={{
+                          getTableProps,
+                          getTableBodyProps,
+                          headerGroups,
+                          prepareRow,
+                          page,
+                          pageIndex,
+                          pageSize,
+                          gotoPage,
+                          previousPage,
+                          nextPage,
+                          canPreviousPage,
+                          canNextPage,
+                          pageCount,
+                          pageOptions,
+                        }}
+                        editMode={false}
+                        setTableState={setTableState}
+                    />
+                )}
+              </div>
+            </div>
+          </div>
+
+          <div className={cx("row")}>
+            <div className={cx("box")}>
+              <div className={cx("item")}>
+                <BarChart memoizedSalesDayChartData={memoizedSalesMonthChartData} headersData={headersData} />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </>
+      </>
   );
 };
 

@@ -20,3 +20,4 @@ export const useChangeFormatDateUTC = (date) => {
   const formattedDate = originalDate.toISOString().split("T")[0];
   return formattedDate;
 };
+

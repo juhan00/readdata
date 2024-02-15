@@ -20,61 +20,61 @@ import styles from "./user.module.scss";
 const cx = className.bind(styles);
 
 const User = () => {
-  const router = useRouter();
-  const { category } = router.query;
-  const [auth, setAuth] = useState(false);
-  const [userMenu, setUserMenu] = useState(category);
-  const [{ userInfo }, setGlobalState] = useGlobalState();
+    const router = useRouter();
+    const { category } = router.query;
+    const [auth, setAuth] = useState(false);
+    const [userMenu, setUserMenu] = useState(category);
+    const [{ userInfo }, setGlobalState] = useGlobalState();
 
-  useEffect(() => {
-    const cookie = getCookie(COOKIE_NAME);
-    if (cookie) {
-      setAuth(true);
-      const cookieObj = JSON.parse(cookie);
-      const userType = cookieObj.user_type;
+    useEffect(() => {
+        const cookie = getCookie(COOKIE_NAME);
+        if (cookie) {
+            setAuth(true);
+            const cookieObj = JSON.parse(cookie);
+            const userType = cookieObj.user_type;
 
-      if (userType === 0) {
-        setGlobalState((prevGlobalState) => ({
-          ...prevGlobalState,
-          userInfo: {
-            id: cookieObj.user_id,
-            companyCode: cookieObj.company_code,
-          },
-        }));
-      } else {
-        router.push("/data/login");
-      }
-    } else {
-      router.push("/data/login");
-    }
-  }, []);
+            if (userType === 0) {
+                setGlobalState((prevGlobalState) => ({
+                    ...prevGlobalState,
+                    userInfo: {
+                        id: cookieObj.user_id,
+                        companyCode: cookieObj.company_code,
+                    },
+                }));
+            } else {
+                router.push("/data/login");
+            }
+        } else {
+            router.push("/data/login");
+        }
+    }, []);
 
-  useEffect(() => {
-    setUserMenu(category);
-  }, [category]);
+    useEffect(() => {
+        setUserMenu(category);
+    }, [category]);
 
-  return (
-    auth && (
-      <div className={cx("user")}>
-        <PopupDataDefault />
-        <DataLayout useType={USE_TYPE.USER} userMenu={{ menu: userMenu }}>
-          {!userMenu && <Dashboard />}
-          {userMenu === "sales_day" && <SalesDay />}
-          {userMenu === "sales_month" && <SalesMonth />}
-          {userMenu === "sales_region" && <SalesRegion />}
-          {userMenu === "sales_analyze" && <SalesAnalyze />}
-        </DataLayout>
-      </div>
-    )
-  );
+    return (
+        auth && (
+            <div className={cx("user")}>
+                <PopupDataDefault />
+                <DataLayout useType={USE_TYPE.USER} userMenu={{ menu: userMenu }}>
+                    {!userMenu && <Dashboard />}
+                    {userMenu === "sales_day" && <SalesDay />}
+                    {userMenu === "sales_month" && <SalesMonth />}
+                    {userMenu === "sales_region" && <SalesRegion />}
+                    {userMenu === "sales_analyze" && <SalesAnalyze />}
+                </DataLayout>
+            </div>
+        )
+    );
 };
 
 export default User;
 
 export const getStaticProps = async ({ locale }) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["common", "dataUser", "popup"])),
-    },
-  };
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ["common", "dataUser", "popup"])),
+        },
+    };
 };

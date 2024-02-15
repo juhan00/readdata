@@ -103,7 +103,7 @@ textarea {
   }
 }
 
-input[type="checkbox"] {
+input[type="checkbox"]:not(#coupon-box) {
   position: absolute;
   width: 1px;
   height: 1px;

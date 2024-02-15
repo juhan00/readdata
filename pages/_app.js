@@ -14,15 +14,15 @@ import CommonLayout from "/layouts/commonLayout";
 const queryClient = new QueryClient();
 
 function App({ Component, pageProps }) {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <GlobalStateProvider>
-        <CommonLayout>
-          <Component {...pageProps} />
-        </CommonLayout>
-      </GlobalStateProvider>
-    </QueryClientProvider>
-  );
+    return (
+        <QueryClientProvider client={queryClient}>
+            <GlobalStateProvider>
+                <CommonLayout>
+                    <Component {...pageProps} />
+                </CommonLayout>
+            </GlobalStateProvider>
+        </QueryClientProvider>
+    );
 }
 
 export default appWithTranslation(App);

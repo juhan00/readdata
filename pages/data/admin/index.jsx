@@ -23,81 +23,83 @@ import { COOKIE_NAME } from "@/consts/common";
 //styles
 import className from "classnames/bind";
 import styles from "./admin.module.scss";
+import SalesAnalyzeSelect from "@/pages/data/common/SalesAnalyzeSelect";
 
 const cx = className.bind(styles);
 
 const Admin = () => {
-  const router = useRouter();
-  const { category } = router.query;
-  const [auth, setAuth] = useState(false);
-  const [useType, setUseType] = useState(USE_TYPE.ADMINSUPER);
-  const [adminMenu, setAdminMenu] = useState(category);
-  const [globalState, setGlobalState] = useGlobalState();
+    const router = useRouter();
+    const { category } = router.query;
+    const [auth, setAuth] = useState(false);
+    const [useType, setUseType] = useState(USE_TYPE.ADMINSUPER);
+    const [adminMenu, setAdminMenu] = useState(category);
+    const [globalState, setGlobalState] = useGlobalState();
 
-  useEffect(() => {
-    const cookie = getCookie(COOKIE_NAME);
-    if (cookie) {
-      const cookieObj = JSON.parse(cookie);
-      const userType = cookieObj.user_type;
-      const superAdmin = cookieObj.super_admin;
+    useEffect(() => {
+        const cookie = getCookie(COOKIE_NAME);
+        if (cookie) {
+            const cookieObj = JSON.parse(cookie);
+            const userType = cookieObj.user_type;
+            const superAdmin = cookieObj.super_admin;
 
-      setGlobalState((prevGlobalState) => ({
-        ...prevGlobalState,
-        userInfo: {
-          id: cookieObj.user_id,
-          companyCode: cookieObj.company_code,
-        },
-      }));
+            setGlobalState((prevGlobalState) => ({
+                ...prevGlobalState,
+                userInfo: {
+                    id: cookieObj.user_id,
+                    companyCode: cookieObj.company_code,
+                },
+            }));
 
-      if (!superAdmin) {
-        if (userType === 1) {
-          setUseType(USE_TYPE.ADMIN);
+            if (!superAdmin) {
+                if (userType === 1) {
+                    setUseType(USE_TYPE.ADMIN);
+                } else {
+                    router.push("/data/login");
+                }
+            } else {
+                setUseType(USE_TYPE.ADMINSUPER);
+            }
+
+            setAuth(true);
         } else {
-          router.push("/data/login");
+            router.push("/data/login");
         }
-      } else {
-        setUseType(USE_TYPE.ADMINSUPER);
-      }
+    }, []);
 
-      setAuth(true);
-    } else {
-      router.push("/data/login");
-    }
-  }, []);
+    useEffect(() => {
+        setAdminMenu(category);
+    }, [category]);
 
-  useEffect(() => {
-    setAdminMenu(category);
-  }, [category]);
-
-  return (
-    auth && (
-      <div className={cx("admin")}>
-        <PopupDataDefault />
-        <DataLayout useType={useType} adminMenu={{ menu: adminMenu }}>
-          {!adminMenu && <Dashboard />}
-          {adminMenu === "company" && <Compnay />}
-          {adminMenu === "user" && <User />}
-          {adminMenu === "brand" && <Brand />}
-          {adminMenu === "store" && <Store />}
-          {adminMenu === "store_account" && <StoreAccount />}
-          {adminMenu === "store_mapping" && <StoreMapping />}
-          {adminMenu === "sales_day" && <SalesDay />}
-          {adminMenu === "sales_month" && <SalesMonth />}
-          {adminMenu === "sales_region" && <SalesRegion />}
-          {adminMenu === "sales_channel" && <SalesChannel />}
-          {adminMenu === "sales_analyze" && <SalesAnalyze />}
-        </DataLayout>
-      </div>
-    )
-  );
+    return (
+        auth && (
+            <div className={cx("admin")}>
+                <PopupDataDefault />
+                <DataLayout useType={useType} adminMenu={{ menu: adminMenu }}>
+                    {!adminMenu && <Dashboard />}
+                    {adminMenu === "company" && <Compnay />}
+                    {adminMenu === "user" && <User />}
+                    {adminMenu === "brand" && <Brand />}
+                    {adminMenu === "store" && <Store />}
+                    {adminMenu === "store_account" && <StoreAccount />}
+                    {adminMenu === "store_mapping" && <StoreMapping />}
+                    {adminMenu === "sales_day" && <SalesDay />}
+                    {adminMenu === "sales_month" && <SalesMonth />}
+                    {adminMenu === "sales_region" && <SalesRegion />}
+                    {adminMenu === "sales_channel" && <SalesChannel />}
+                    {adminMenu === "sales_analyze" && <SalesAnalyze />}
+                    {adminMenu === "sales_analyze_select" && <SalesAnalyzeSelect />}
+                </DataLayout>
+            </div>
+        )
+    );
 };
 
 export default Admin;
 
 export const getStaticProps = async ({ locale }) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale, ["common", "dataAdmin", "popup"])),
-    },
-  };
+    return {
+        props: {
+            ...(await serverSideTranslations(locale, ["common", "dataAdmin", "popup"])),
+        },
+    };
 };
