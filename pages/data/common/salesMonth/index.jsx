@@ -73,7 +73,7 @@ const SalesMonth = () => {
     data: salesMonthData,
     isLoading: isLoadingSalesMonthData,
     refetch: refetchSalesMonthData,
-  } = useQuery(["getSalesMonthData", endDate], () => getSalesMonthList(companyCode, formatStartDate, formatEndDate), {
+  } = useQuery(["getSalesMonthData", startDate, endDate], () => getSalesMonthList(companyCode, formatStartDate, formatEndDate), {
     enabled: companyCode !== undefined && formatStartDate !== undefined && formatEndDate !== undefined,
   });
 
@@ -101,7 +101,7 @@ const SalesMonth = () => {
 
   const memoizedSalesDates = useMemo(() => {
     return useGetMonthArray(startDate, endDate);
-  }, [endDate]);
+  }, [startDate,endDate]);
 
   const memoizedSalesMonthColumns = useMemo(() => {
     return headersData ? changeSalesMonthColumns(t, memoizedSalesDates, headersData) : [];

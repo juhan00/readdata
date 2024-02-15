@@ -1,0 +1,21 @@
+.chart-wrap {
+  .btn-wrap {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 2rem;
+  }
+  .chart {
+    width: 50rem;
+    margin: 0 auto;
+  }
+}
+
+.custom-tooltip {
+  background-color: #fff;
+  border: 0.1rem solid #ececec;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  .label {
+    margin-bottom: 0.6rem;
+  }
+}

@@ -16,7 +16,6 @@ import DataPopupLayout from "@/layouts/dataPopupLayout";
 import className from "classnames/bind";
 import styles from "./salesAnalyzeSelect.module.scss";
 
-import PieChartComponent_Analyze from "@/pages/test/chartPie_Analyze";
 import { POPUP_SEARCH } from "@/consts/popup";
 import {useGlobalState} from "@/context/globalStateContext";
 import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";

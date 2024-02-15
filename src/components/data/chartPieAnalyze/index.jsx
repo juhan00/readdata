@@ -3,7 +3,7 @@ import { PieChart, Pie, Tooltip, Cell, Label, ResponsiveContainer } from "rechar
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#AF19FF", "#FF19AF"];
 
-const PieChartComponent_Analyze = ({ data, title }) => (
+const ChartPieAnalyze = ({ data, title }) => (
     <div style={{ display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center" }}>
         {data.some(entry => entry.value == 0) ? (
             <>
@@ -59,4 +59,4 @@ const renderTooltipContent = (payload) => {
     );
 };
 
-export default PieChartComponent_Analyze;
+export default ChartPieAnalyze;
