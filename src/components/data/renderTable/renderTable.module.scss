@@ -46,7 +46,7 @@
         }
       }
       th + th {
-        border-left: 0.1rem solid $color-white;
+        border-left: 0.1rem solid #d9d9d9;
       }
       .edit-th {
         min-width: 50px;
@@ -113,6 +113,9 @@
             margin-left: 0.5rem;
           }
         }
+      }
+      td + td {
+        border-left: 0.1rem solid #eeeeee;
       }
     }
   }
