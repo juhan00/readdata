@@ -251,11 +251,6 @@ const RenderTable = ({
   const SumPos = sum_pos ? Number(sum_pos).toLocaleString() : "ㅡ";
   const SumDelivery = sum_delivery ? Number(sum_delivery).toLocaleString() : "ㅡ";
 
-  useEffect(() => {
-    console.log("brandData", brandData);
-    console.log("columnValues", columnValues);
-  }, [brandData, columnValues]);
-
   return (
     <>
       <div className={cx("table-wrap")} style={tableHeight && { height: `${tableHeight}` }}>

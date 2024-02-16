@@ -25,20 +25,11 @@ const Compnay = () => {
   const { t } = useTranslation(["common", "columns"]);
   const companyColumns = useMemo(() => changeCompanyColumns(t), []);
 
-  const newRow = companyColumns.reduce((obj, item) => {
-    if (item.accessor === "flag") {
-      obj[item.accessor] = 0;
-    } else {
-      obj[item.accessor] = "";
-    }
-    return obj;
-  }, {});
-
   const searchFieldData = {
     company_name: "",
     flag: "",
   };
-
+  
   const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
   const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
@@ -47,6 +38,18 @@ const Compnay = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
+  const newRow = companyColumns.reduce((obj, item) => {
+    if (item.accessor === "flag") {
+      obj[item.accessor] = 0;
+    } else {
+      obj[item.accessor] = "";
+    }
+    obj["new"] = "new";
+    return obj;
+  }, {});
+
+  
 
   const {
     data: companyData,

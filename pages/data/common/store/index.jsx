@@ -99,7 +99,6 @@ const Store = () => {
       return;
     }
     setBrandFirstCode(brandData[0].brand_code);
-    console.log("brandData[0].brand_code", brandData[0].brand_code);
   }, [brandData]);
 
   const addMutation = useMutation(async (data) => await addStoreList(data), {
@@ -233,10 +232,6 @@ const Store = () => {
       gotoPage(0);
     }
   };
-
-  useEffect(() => {
-    console.log("store tableState", tableState);
-  }, [tableState]);
 
   const transformExcelCell = (excelData) =>
     excelData.map((item) => {

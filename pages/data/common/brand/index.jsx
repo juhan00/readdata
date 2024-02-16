@@ -25,15 +25,6 @@ const Brand = () => {
   const { t } = useTranslation(["common", "columns"]);
   const brandColumns = useMemo(() => changeBrandColumns(t), []);
 
-  const newRow = brandColumns?.reduce((obj, item) => {
-    if (item.accessor === "use_flag") {
-      obj[item.accessor] = 0;
-    } else {
-      obj[item.accessor] = "";
-    }
-    return obj;
-  }, {});
-
   const searchFieldData = {
     brand_code: "",
     brand_flag: "",
@@ -46,6 +37,16 @@ const Brand = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
+  const newRow = brandColumns?.reduce((obj, item) => {
+    if (item.accessor === "use_flag") {
+      obj[item.accessor] = 0;
+    } else {
+      obj[item.accessor] = "";
+    }
+    obj["new"] = "new";
+    return obj;
+  }, {});
 
   const {
     data: brandData,
@@ -139,7 +140,7 @@ const Brand = () => {
     return tableState?.filter(
       (row) =>
         (!searchData.brand_code || row.brand_code?.toString().toLowerCase().includes(searchData.brand_code.toLowerCase())) &&
-        (!searchData.brand_flag || row.brand_flag?.toString().toLowerCase().includes(searchData.brand_flag.toLowerCase()))
+        (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase()))
     );
   }, [tableState, searchData]);
 
@@ -240,7 +241,7 @@ const Brand = () => {
                     searchType={SEARCH_TYPE.SELECT_FLAG}
                     value={searchField.brand_flag}
                     title={"사용여부"}
-                    id={"brand_flag"}
+                    id={"use_flag"}
                     onChange={handleFieldChange}
                   />
                 </div>
