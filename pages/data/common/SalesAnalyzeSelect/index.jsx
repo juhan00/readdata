@@ -1,4 +1,4 @@
-import {SEARCH_TYPE} from "@/consts/common";
+import {SEARCH_TYPE, TABLE_COLUMN_TYPE} from "@/consts/common";
 import {salesAnalysisColumns1, salesAnalysisColumns2} from "@/consts/salesAnalysisColumns";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
@@ -11,6 +11,7 @@ import {QueryClient, useQuery} from "react-query";
 import {usePagination, useSortBy, useTable} from "react-table";
 import SearchItem from "@/src/components/data/searchItem";
 import DataPopupLayout from "@/layouts/dataPopupLayout";
+import PopupSearchFranchise from "@/src/components/data/popup/popupSearchFranchise";
 
 //styles
 import className from "classnames/bind";
@@ -19,6 +20,7 @@ import styles from "./salesAnalyzeSelect.module.scss";
 import { POPUP_SEARCH } from "@/consts/popup";
 import {useGlobalState} from "@/context/globalStateContext";
 import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";
+import PopupSearchCompany from "@/src/components/data/popup/popupSearchCompany";
 
 const cx = className.bind(styles);
 
@@ -234,7 +236,35 @@ const SalesAnalysisSelect = () => {
         }));
     };
 
+    const [columnValues, setColumnValues] = useState();
+    const [isCompanyPopupOpen, setIsCompanyPopupOpen] = useState(false);
+    const handleClickCompany = () => {
+        setIsCompanyPopupOpen(true);
+    };
 
+    const handleSelectCompany = (selectedCompany) => {
+        setIsCompanyPopupOpen(false);
+
+
+        console.log("내가 선택한 가맹 code=",selectedCompany.fran_code)
+        console.log("내가 선택한 가맹점 명=",selectedCompany.fran_name)
+
+        /*
+        const compnayCellId = headerGroups.flatMap((headerGroup) =>
+            headerGroup.headers.filter((column) => column.id === "company_code").map((companyColumn) => companyColumn.id)
+        );
+
+        const compnayCellName = headerGroups.flatMap((headerGroup) =>
+            headerGroup.headers.filter((column) => column.type === TABLE_COLUMN_TYPE.COMPANY).map((companyColumn) => companyColumn.id)
+        );
+        */
+
+        /*setColumnValues((prevColumnValues) => ({
+            ...prevColumnValues,
+            [compnayCellId]: selectedCompany.company_code,
+            [compnayCellName]: selectedCompany.company_name,
+        }));*/
+    };
 
     return (<>
         <div className={cx("brand")}>
@@ -263,8 +293,19 @@ const SalesAnalysisSelect = () => {
                         />
                     </div>
                     <div className={cx("item")}>
-                        <SearchItem searchType={SEARCH_TYPE.INPUT} title={"가맹점 명"}
-                                    onClick={() => handlePopupOpenClick()}/>
+                        {/*<SearchItem searchType={SEARCH_TYPE.INPUT} title={"가맹점 명"}
+                                    onClick={() => handlePopupOpenClick()}/>*/}
+                        {isCompanyPopupOpen && (
+                            <PopupSearchFranchise handleClickReturn={handleSelectCompany} setIsPopup={() => setIsCompanyPopupOpen(false)} />
+                        )}
+                        <input
+                            value={""}
+                            onClick={(e) => handleClickCompany()}
+                            readOnly
+                            onFocus={(e) => {
+                                e.target.blur();
+                            }}
+                        />
                     </div>
                     <button onClick={() => handlePopupOpenClick()}>🔍</button>
                 </div>

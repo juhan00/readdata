@@ -1,0 +1,26 @@
+.search-franchise {
+  padding: 0 4rem 2rem;
+  .search-wrap {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    & > div {
+      flex: 1;
+    }
+    button.submit {
+      font-size: 1.6rem;
+      font-weight: 500;
+      line-height: 1.75;
+      letter-spacing: -0.016rem;
+      width: 7.5rem;
+      height: 3.8rem;
+      border-radius: 0.8rem;
+      background-color: $color-white;
+      border: 0.1rem solid $color-black;
+      margin-left: 1rem;
+    }
+  }
+  .content-wrap {
+    margin-top: 2rem;
+  }
+}

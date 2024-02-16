@@ -22,29 +22,23 @@ const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const TabContent1 = () => (
-    <div>
+const TabContent1 = () => (<div>
         {/* Content for Tab 1 */}
         <h2>Page 1 Content</h2>
         <p>This is the content for the first tab.</p>
-    </div>
-);
+    </div>);
 
-const TabContent2 = () => (
-    <div>
+const TabContent2 = () => (<div>
         {/* Content for Tab 2 */}
         <h2>Page 2 Content</h2>
         <p>This is the content for the second tab.</p>
-    </div>
-);
+    </div>);
 
-const TabContent3 = () => (
-    <div>
+const TabContent3 = () => (<div>
         {/* Content for Tab 3 */}
         <h2>Page 3 Content</h2>
         <p>This is the content for the third tab.</p>
-    </div>
-);
+    </div>);
 
 const SalesAnalysis = () => {
 
@@ -53,11 +47,11 @@ const SalesAnalysis = () => {
     const renderTabContent = () => {
         switch (selectedTab) {
             case 1:
-                return <TabContent1 />;
+                return <TabContent1/>;
             case 2:
-                return <TabContent2 />;
+                return <TabContent2/>;
             case 3:
-                return <TabContent3 />;
+                return <TabContent3/>;
             default:
                 return null;
         }
@@ -189,7 +183,8 @@ const SalesAnalysis = () => {
 
     const memoizedCombinedData = useMemo(() => {
         const filterCombinedData = (table, searchData, period) => {
-            return table?.filter((row) => // (!searchData[`${period}_fran_name`] || row[`${period}_fran_name`]?.toString().toLowerCase().includes(searchData[`${period}_fran_name`].toLowerCase())) &&
+            return table?.filter((row) =>
+                // (!searchData[`${period}_fran_name`] || row[`${period}_fran_name`]?.toString().toLowerCase().includes(searchData[`${period}_fran_name`].toLowerCase())) &&
                 (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase())));
         };
         const combinedData = filterCombinedData(tableState, searchData, 'chk');
@@ -307,16 +302,12 @@ const SalesAnalysis = () => {
         canNextPage: table1CanNextPage,
         pageCount: table1PageCount,
         pageOptions: table1PageOptions,
-    } = useTable(
-        {
-            columns: salesAnalysisColumnsData1,
-            data: useMemo(() => combinedData, [combinedData]),
-            initialState: {pageIndex: 0, pageSize: 10},
-            autoResetPage: false,
-        },
-        useSortBy,
-        usePagination
-    );
+    } = useTable({
+        columns: salesAnalysisColumnsData1,
+        data: useMemo(() => combinedData, [combinedData]),
+        initialState: {pageIndex: 0, pageSize: 10},
+        autoResetPage: false,
+    }, useSortBy, usePagination);
 
     const {
         getTableProps: table2GetTableProps,
@@ -332,30 +323,25 @@ const SalesAnalysis = () => {
         canNextPage: table2CanNextPage,
         pageCount: table2PageCount,
         pageOptions: table2PageOptions,
-    } = useTable(
-        {
-            columns: salesAnalysisColumnsData2,
-            data: useMemo(() => combinedCompareData, [combinedCompareData]),
-            initialState: {pageIndex: 0, pageSize: 10},
-            autoResetPage: false,
-        },
-        useSortBy,
-        usePagination
-    );
+    } = useTable({
+        columns: salesAnalysisColumnsData2,
+        data: useMemo(() => combinedCompareData, [combinedCompareData]),
+        initialState: {pageIndex: 0, pageSize: 10},
+        autoResetPage: false,
+    }, useSortBy, usePagination);
 
 
-   /* const handleFieldChange = (field, e) => {
-        const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-        if (field === 'use_flag') {
-            setCheckedUseFlag(value);
-            console.log("setCheckedUseFlag(value)==", setCheckedUseFlag)
-        }
-    };*/
+    /* const handleFieldChange = (field, e) => {
+         const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+         if (field === 'use_flag') {
+             setCheckedUseFlag(value);
+             console.log("setCheckedUseFlag(value)==", setCheckedUseFlag)
+         }
+     };*/
     const handleUseFlagChange = (e) => {
         setCheckedUseFlag((prev) => !prev);
         setSearchField((prevData) => ({
-            ...prevData,
-            [e.target.id]: e.target.checked ? "" : "1",
+            ...prevData, [e.target.id]: e.target.checked ? "" : "1",
         }));
     };
 
@@ -454,39 +440,39 @@ const SalesAnalysis = () => {
                     일자별 매출 비교 (전체 가맹점)
                 </h1>
                 <div className={cx("box", "flex", "search-wrap")}>
-                <div className={cx("search-item")}>
-                    <div className={cx("item-wrap")}>
-                    <div className={cx("item")}>
-                        <SearchDateItems
-                            startDate={startDate}
-                            endDate={endDate}
-                            handleStartDateChange={handleStartDateChange}
-                            handleEndDateChange={handleEndDateChange}
-                            labelText={2}
-                        />
-                    </div>
-                    <div className={cx("item")}/>
+                    <div className={cx("search-item")}>
+                        <div className={cx("item-wrap")}>
+                            <div className={cx("item")}>
+                                <SearchDateItems
+                                    startDate={startDate}
+                                    endDate={endDate}
+                                    handleStartDateChange={handleStartDateChange}
+                                    handleEndDateChange={handleEndDateChange}
+                                    labelText={2}
+                                />
+                            </div>
+                            <div className={cx("item")}/>
 
-                    {/*<SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.chk_fran_name} title={"조회 가맹점 명"}
+                            {/*<SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.chk_fran_name} title={"조회 가맹점 명"}
                                 id={"chk_fran_name"} onChange={handleFieldChange}/>*/}
 
-                    <div className={cx("item")}>
-                        <SearchDateItems
-                            startDate={compareStartDate}
-                            endDate={compareEndDate}
-                            handleStartDateChange={handleCompareStartDateChange}
-                            handleEndDateChange={handleCompareEndDateChange}
-                            labelText={3}
-                        />
-                    </div>
-                    <div className={cx("item")}>
-                        {/* <SearchItem searchType={SEARCH_TYPE.INPUT}
+                            <div className={cx("item")}>
+                                <SearchDateItems
+                                    startDate={compareStartDate}
+                                    endDate={compareEndDate}
+                                    handleStartDateChange={handleCompareStartDateChange}
+                                    handleEndDateChange={handleCompareEndDateChange}
+                                    labelText={3}
+                                />
+                            </div>
+                            <div className={cx("item")}>
+                                {/* <SearchItem searchType={SEARCH_TYPE.INPUT}
                                     value={searchField.pre_fran_name}
                                     title={"대비 가맹점 명"}
                                     id={"pre_fran_name"} onChange={handleFieldChange}/>*/}
-                    </div>
-                    <div className={cx("item")}>
-                        {/*<SearchItem
+                            </div>
+                            <div className={cx("item")}>
+                                {/*<SearchItem
                             searchType={SEARCH_TYPE.SELECT_FLAG}
                             value={searchField.chk_use_flag}
                             title={"사용여부"}
@@ -494,9 +480,9 @@ const SalesAnalysis = () => {
                             onChange={handleFieldChange}
                         />*/}
 
-                        <div className={cx("checkbox-wrap")}>
-                            <div className={cx("checkbox")}>
-                                {/*<input
+                                <div className={cx("checkbox-wrap")}>
+                                    <div className={cx("checkbox")}>
+                                        {/*<input
                                     type="checkbox"
                                     value={searchField.use_flag}
                                     id="agree2"
@@ -505,18 +491,19 @@ const SalesAnalysis = () => {
                                 <label htmlFor="agree2" style={{marginTop: '0.8rem'}}>
                                     <span>사용안함 포함</span>
                                 </label>*/}
-                                <CheckBox title={"사용안함 포함"} id={"use_flag"} checked={checkedUseFlag} onChange={handleUseFlagChange} />
+                                        <CheckBox title={"사용안함 포함"} id={"use_flag"} checked={checkedUseFlag}
+                                                  onChange={handleUseFlagChange}/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className={cx("item")}>
+                                <div className={cx("btn-submit")}>
+                                    <BtnSearch onClick={handleSearchSubmit}/>
+                                </div>
                             </div>
                         </div>
                     </div>
-
-                    <div className={cx("item")}>
-                        <div className={cx("btn-submit")}>
-                            <BtnSearch onClick={handleSearchSubmit}/>
-                        </div>
-                    </div>
-                    </div>
-                </div>
                 </div>
             </div>
             <div className={cx("row")}>
@@ -673,7 +660,7 @@ const SalesAnalysis = () => {
                         {isLoadingCompareSalesDayData ? (
                             <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>) : !combinedCompareData.length ? (
                             <div className={cx("no-data")}>데이터가 없습니다.</div>) : (<>
-                                {/*<RenderTable
+                            {/*<RenderTable
                             tableProps={{
                                 ...preparationTable
                             }}
@@ -688,33 +675,33 @@ const SalesAnalysis = () => {
                             }}
                         ></RenderTable>*/}
 
-                                    <RenderTable
-                                        tableProps={{
-                                            getTableProps: table2GetTableProps,
-                                            getTableBodyProps: table2GetTableBodyProps,
-                                            headerGroups: table2HeaderGroups,
-                                            prepareRow: table2PrepareRow,
-                                            page: table2Page,
-                                            pageIndex: table2PageIndex,
-                                            pageSize: table2PageSize,
-                                            gotoPage: table2GotoPage,
-                                            previousPage: table2PreviousPage,
-                                            nextPage: table2NextPage,
-                                            canPreviousPage: table2CanPreviousPage,
-                                            canNextPage: table2CanNextPage,
-                                            pageCount: table2PageCount,
-                                            pageOptions: table2PageOptions,
-                                        }}
-                                        editMode={false}
-                                        tableState={tableState}
-                                        setTableState={setTableState}
-                                        rowFixHeaderValues={{
-                                            sum_total: sum_chk_total,
-                                            sum_avg: sum_chk_avg,
-                                            sum_pos: sum_chk_pos,
-                                            sum_delivery: sum_chk_delivery,
-                                        }}
-                                    />
+                            <RenderTable
+                                tableProps={{
+                                    getTableProps: table2GetTableProps,
+                                    getTableBodyProps: table2GetTableBodyProps,
+                                    headerGroups: table2HeaderGroups,
+                                    prepareRow: table2PrepareRow,
+                                    page: table2Page,
+                                    pageIndex: table2PageIndex,
+                                    pageSize: table2PageSize,
+                                    gotoPage: table2GotoPage,
+                                    previousPage: table2PreviousPage,
+                                    nextPage: table2NextPage,
+                                    canPreviousPage: table2CanPreviousPage,
+                                    canNextPage: table2CanNextPage,
+                                    pageCount: table2PageCount,
+                                    pageOptions: table2PageOptions,
+                                }}
+                                editMode={false}
+                                tableState={tableState}
+                                setTableState={setTableState}
+                                rowFixHeaderValues={{
+                                    sum_total: sum_pre_total,
+                                    sum_avg: sum_pre_avg,
+                                    sum_pos: sum_pre_pos,
+                                    sum_delivery: sum_pre_delivery,
+                                }}
+                            />
                         </>)}
                     </div>
                 </div>
