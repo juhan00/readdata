@@ -40,7 +40,6 @@ const PopupSearchFranchise = ({ handleClickReturn, setIsPopup }) => {
         refetch: refetchFranchiseData,
     } = useQuery("getFranchisePopupData", () => getStoreList(companyCode), { enabled: companyCode !== undefined });
 
-    console.log("franchiseData==",franchiseData);
 
     useEffect(() => {
         if (!isLoadingFranchiseData && franchiseData) {

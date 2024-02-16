@@ -20,6 +20,7 @@ import styles from "./SalesAnalyzeSelect.module.scss";
 import { POPUP_SEARCH } from "@/consts/popup";
 import { useGlobalState } from "@/context/globalStateContext";
 import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";
+import CheckBox from "@/src/components/data/checkBox";
 
 const cx = className.bind(styles);
 
@@ -27,16 +28,13 @@ const queryClient = new QueryClient();
 
 const SalesAnalysisSelect = () => {
     const searchFieldData = {
-        use_flag: "",
         chk_fran_name: "",
         pre_fran_name: "",
     };
 
-    const [isPopupVisible, setPopupVisible] = useState(false);
-
     const today = new Date();
     const oneMonthAgo = new Date(today);
-    oneMonthAgo.setMonth(today.getMonth() - 2);
+    oneMonthAgo.setMonth(today.getMonth() - 1);
 
     const { t } = useTranslation(["common", "dataAdmin"]);
 
@@ -95,105 +93,7 @@ const SalesAnalysisSelect = () => {
         setCompareEndDate(date);
     };
 
-    //조회기간 API
-    const {
-        data: salesDayData,
-        isLoading: isLoadingSalesDayData,
-        refetch: refetchSalesDayData,
-    } = useQuery(["getSalesDayData"], () => getSalesAnalysisList(formatStartDate, formatEndDate), {
-        enabled: formatStartDate !== undefined && formatEndDate !== undefined,
-    });
-    //대비기간 API
-    const {
-        data: compareSalesDayData,
-        isLoading: isLoadingCompareSalesDayData,
-        refetch: refetchCompareSalesDayData,
-    } = useQuery(["getCompareSalesDayData"], () => getSalesCompareAnalysisList(formatCompareStartDate, formatCompareEndDate), {
-        enabled: formatCompareStartDate !== undefined && formatCompareEndDate !== undefined,
-    });
-
-    /*    console.log("조회기간=", formatStartDate, " ~ ", formatEndDate, " = ", salesDayData);
-      console.log("대비기간=", formatCompareStartDate, " ~ ", formatCompareEndDate, " = ", compareSalesDayData);*/
-
-    const mainHeader = ["매출구분"];
-    const subHeader1 = [
-        { header: "POS", accessor: "chk_pos_sales" },
-        { header: "배달", accessor: "chk_delivery_sales" },
-    ];
-    const subHeader2 = [
-        { header: "POS", accessor: "pre_pos_sales" },
-        { header: "배달", accessor: "pre_delivery_sales" },
-    ];
-
-    const [salesAnalysisColumnsData1, setsalesAnalysisColumnsData1] = useState([]);
-    const [salesAnalysisColumnsData2, setsalesAnalysisColumnsData2] = useState([]);
-
-    useEffect(() => {
-        updateColumns();
-    }, []);
-
-    const updateColumns = () => {
-        /*const chkData = salesAnalysisColumns1(mainHeader, subHeader1, formatStartDate, formatEndDate);
-            setsalesAnalysisColumnsData1(chkData);
-
-            const preData = salesAnalysisColumns2(mainHeader, subHeader2, formatCompareStartDate, formatCompareEndDate);
-            setsalesAnalysisColumnsData2(preData);*/
-    };
-
-    /*
-      const memoizedCombinedData = useMemo(() => {
-          const filterCombinedData = (table, searchData, period) => {
-              return table?.filter((row) =>
-                  (!searchData[`${period}_fran_name`] || row[`${period}_fran_name`]?.toString().toLowerCase().includes(searchData[`${period}_fran_name`].toLowerCase())));
-          };
-          const combinedData = filterCombinedData(tableState, searchData, 'chk');
-          const combinedCompareData = filterCombinedData(compareTableState, searchCompareData, 'pre');
-
-          return {combinedData, combinedCompareData};
-      }, [tableState, searchData, compareTableState, searchCompareData]);
-
-          const {combinedData, combinedCompareData} = memoizedCombinedData;
-  */
-
-    const filterCombinedData = (table, searchData, period) => {
-        const filteredData = table?.filter(
-            (row) =>
-                !searchData[`${period}_fran_name`] ||
-                row[`${period}_fran_name`]?.toString().toLowerCase().includes(searchData[`${period}_fran_name`].toLowerCase())
-        );
-
-        // Concatenate the filtered data to remove duplicates
-        const concatenatedData = Array.from(new Set(filteredData));
-
-        return concatenatedData;
-    };
-    const combinedData = filterCombinedData(tableState, searchData, "chk");
-
-    console.log("combinedData=", combinedData);
-
-    // 기존 검색기능
-    /*    const handleSearchSubmit = (e) => {
-          setSearchData((prevData) => ({
-              ...prevData, ...searchField,
-          }));
-          setSearchCompareData((prevData) => ({
-              ...prevData, ...searchCompareField,
-          }));
-          // gotoPage(0);
-          updateColumns();
-      };*/
-
-    const handleSearchSubmit = (e) => {
-        // ... (same as before)
-
-        // Show the pop-up/modal
-        setPopupVisible(true);
-    };
-
-    // Close the pop-up/modal
-    const closePopup = () => {
-        setPopupVisible(false);
-    };
+/*
 
     const handleFieldChange = (field, e) => {
         e.preventDefault();
@@ -207,62 +107,202 @@ const SalesAnalysisSelect = () => {
         }));
     };
 
-    const [{ popupState }, setGlobalState] = useGlobalState();
-    /*   const handlePopupOpenClick = () => {
-          setGlobalState({
-              popupState: {
-                  isOn: !popupState.isOn,
-                  popup: POPUP_SEARCH,
-                  title: "가맹점 선택하기",
-              },
-          });
-      };
-      console.log("진입페이지에서==",popupState);*/
+*/
 
-    const handlePopupOpenClick = () => {
-        const updatedPopupState = {
-            isOn: true,
-            popup: POPUP_SEARCH,
-            title: "가맹점 명을 선택해주세요.",
-            content: <PopupDataDefault salesDayData={salesDayData} />, // Use 'salesDayData' prop here
-        };
 
-        setGlobalState((prevGlobalState) => ({
-            ...prevGlobalState,
-            popupState: { ...prevGlobalState.popupState, ...updatedPopupState },
-        }));
-    };
 
-    const [columnValues, setColumnValues] = useState();
     const [isCompanyPopupOpen, setIsCompanyPopupOpen] = useState(false);
+    const [selectedStore, setSelectedStore] = useState(null);
+    const [checkedUseFlag, setCheckedUseFlag] = useState(false);
+    const [filterChkData, setFilterChkData] = useState(null);
+    const [filterPreData, setFilterPreData] = useState(null);
+
     const handleClickCompany = () => {
         setIsCompanyPopupOpen(true);
     };
 
     const handleSelectCompany = (selectedCompany) => {
         setIsCompanyPopupOpen(false);
-
-
-        console.log("내가 선택한 가맹 code=",selectedCompany.fran_code)
-        console.log("내가 선택한 가맹점 명=",selectedCompany.fran_name)
-
-        /*
-        const compnayCellId = headerGroups.flatMap((headerGroup) =>
-            headerGroup.headers.filter((column) => column.id === "company_code").map((companyColumn) => companyColumn.id)
-        );
-
-        const compnayCellName = headerGroups.flatMap((headerGroup) =>
-            headerGroup.headers.filter((column) => column.type === TABLE_COLUMN_TYPE.COMPANY).map((companyColumn) => companyColumn.id)
-        );
-        */
-
-        /*setColumnValues((prevColumnValues) => ({
-            ...prevColumnValues,
-            [compnayCellId]: selectedCompany.company_code,
-            [compnayCellName]: selectedCompany.company_name,
-        }));*/
+        setSelectedStore(selectedCompany.fran_name);
     };
 
+    const {
+        data: salesDayData,
+        isLoading: isLoadingSalesDayData,
+        refetch: refetchSalesDayData,
+    } = useQuery(
+        ["getSalesDayData", formatStartDate, formatEndDate],
+        () => getSalesAnalysisList(formatStartDate, formatEndDate),
+        {
+            enabled: formatStartDate !== undefined && formatEndDate !== undefined,
+        }
+    );
+
+    const {
+        data: compareSalesDayData,
+        isLoading: isLoadingCompareSalesDayData,
+        refetch: refetchCompareSalesDayData,
+    } = useQuery(
+        ["getCompareSalesDayData", formatCompareStartDate, formatCompareEndDate],
+        () => getSalesCompareAnalysisList(formatCompareStartDate, formatCompareEndDate),
+        {
+            enabled: formatCompareStartDate !== undefined && formatCompareEndDate !== undefined,
+        }
+    );
+
+
+    useEffect(() => {
+        console.log("선택한 가맹점 명3 =", selectedStore);
+
+        if (!isLoadingSalesDayData && !isLoadingCompareSalesDayData && salesDayData && compareSalesDayData) {
+            const chkData = salesDayData?.filter((row) => {
+                const chkFranName = row.chk_fran_name?.toString().toLowerCase();
+                const selectedStoreName = selectedStore?.toLowerCase();
+
+                return !selectedStoreName || (chkFranName && chkFranName === selectedStoreName);
+            });
+
+            const preData = compareSalesDayData?.filter((row) => {
+                const preFranName = row.pre_fran_name?.toString().toLowerCase();
+                const selectedStoreName = selectedStore?.toLowerCase();
+
+                return !selectedStoreName || (preFranName && preFranName === selectedStoreName);
+            });
+
+            setFilterChkData(chkData);
+            setFilterPreData(preData);
+
+            console.log("FilterChkData =", chkData);
+            console.log("FilterPreData =", preData);
+
+            updateColumns();
+        }
+    }, [selectedStore, isLoadingSalesDayData, isLoadingCompareSalesDayData, salesDayData, compareSalesDayData]);
+
+
+
+    const updateColumns = () => {
+        const chkData = salesAnalysisColumns1(mainHeader, subHeader1, formatStartDate, formatEndDate);
+        setsalesAnalysisColumnsData1(chkData);
+
+        const preData = salesAnalysisColumns2(mainHeader, subHeader2, formatCompareStartDate, formatCompareEndDate);
+        setsalesAnalysisColumnsData2(preData);
+    };
+
+/*
+
+    useEffect(() => {
+        if (!isLoadingSalesDayData && salesDayData && compareSalesDayData) {
+            const chkData = salesDayData?.filter((row) => {
+                const chkFranName = row.chk_fran_name?.toString().toLowerCase();
+                const selectedStoreName = selectedStore?.toLowerCase();
+
+                return !selectedStoreName || (chkFranName && chkFranName === selectedStoreName);
+            });
+
+            const preData = compareSalesDayData?.filter((row) => {
+                const preFranName = row.pre_fran_name?.toString().toLowerCase();
+                const selectedStoreName = selectedStore?.toLowerCase();
+
+                return !selectedStoreName || (preFranName && preFranName === selectedStoreName);
+            });
+
+            setFilterChkData(chkData);
+            setFilterPreData(preData);
+
+            console.log("FilterChkData =", chkData);
+            console.log("FilterPreData =", preData);
+
+            updateColumns();
+        }
+    }, [selectedStore, isLoadingSalesDayData, salesDayData, compareSalesDayData]);
+*/
+
+
+
+
+    const mainHeader = ["매출구분"];
+    const subHeader1 = [{header: "POS", accessor: "chk_pos_sales"}, {header: "배달", accessor: "chk_delivery_sales"},];
+    const subHeader2 = [{header: "POS", accessor: "pre_pos_sales"}, {header: "배달", accessor: "pre_delivery_sales"},];
+
+    const [salesAnalysisColumnsData1, setsalesAnalysisColumnsData1] = useState([]);
+    const [salesAnalysisColumnsData2, setsalesAnalysisColumnsData2] = useState([]);
+
+    const {
+        getTableProps: table1GetTableProps,
+        getTableBodyProps: table1GetTableBodyProps,
+        headerGroups: table1HeaderGroups,
+        prepareRow: table1PrepareRow,
+        page: table1Page,
+        state: {pageIndex: table1PageIndex, pageSize: table1PageSize},
+        gotoPage: table1GotoPage,
+        previousPage: table1PreviousPage,
+        nextPage: table1NextPage,
+        canPreviousPage: table1CanPreviousPage,
+        canNextPage: table1CanNextPage,
+        pageCount: table1PageCount,
+        pageOptions: table1PageOptions,
+    } = useTable({
+        columns: salesAnalysisColumnsData1,
+        data: useMemo(() => filterChkData, [filterChkData]),
+        initialState: {pageIndex: 0, pageSize: 10},
+        autoResetPage: false,
+    }, useSortBy, usePagination);
+
+    const {
+        getTableProps: table2GetTableProps,
+        getTableBodyProps: table2GetTableBodyProps,
+        headerGroups: table2HeaderGroups,
+        prepareRow: table2PrepareRow,
+        page: table2Page,
+        state: {pageIndex: table2PageIndex, pageSize: table2PageSize},
+        gotoPage: table2GotoPage,
+        previousPage: table2PreviousPage,
+        nextPage: table2NextPage,
+        canPreviousPage: table2CanPreviousPage,
+        canNextPage: table2CanNextPage,
+        pageCount: table2PageCount,
+        pageOptions: table2PageOptions,
+    } = useTable({
+        columns: salesAnalysisColumnsData2,
+        data: useMemo(() => filterPreData, [filterPreData]),
+        initialState: {pageIndex: 0, pageSize: 10},
+        autoResetPage: false,
+    }, useSortBy, usePagination);
+
+    const handleUseFlagChange = (e) => {
+        setCheckedUseFlag((prev) => !prev);
+        setSearchField((prevData) => ({
+            ...prevData, [e.target.id]: e.target.checked ? "" : "1",
+        }));
+    };
+
+    /*useEffect(() => {
+        if (!isLoadingSalesDayData && salesDayData) {
+            const filteredData = salesDayData.filter((row) => {
+                if (checkedUseFlag) {
+                    return true;
+                } else {
+                    return row.use_flag === 1;
+                }
+            });
+            setTableState(filteredData);
+        }
+    }, [salesDayData, isLoadingSalesDayData, checkedUseFlag]);
+
+    // 대비기간
+    useEffect(() => {
+        if (!isLoadingCompareSalesDayData && compareSalesDayData) {
+            const filteredCompareData = compareSalesDayData.filter((row) => {
+                if (checkedUseFlag) {
+                    return true;
+                } else {
+                    return row.use_flag === 1;
+                }
+            });
+            setCompareTableState(filteredCompareData);
+        }
+    }, [compareSalesDayData, isLoadingCompareSalesDayData, checkedUseFlag]);*/
 
     return (
         <>
@@ -288,23 +328,26 @@ const SalesAnalysisSelect = () => {
                                 labelText={3}
                             />
                         </div>
+                        <CheckBox title={"사용안함 포함"} id={"use_flag"} checked={checkedUseFlag}
+                                  onChange={handleUseFlagChange}/>
                         <div className={cx("item")}>
                             {/*<SearchItem searchType={SEARCH_TYPE.INPUT} title={"가맹점 명"}
                                     onClick={() => handlePopupOpenClick()}/>*/}
                             {isCompanyPopupOpen && (
-                                <PopupSearchFranchise handleClickReturn={handleSelectCompany}
-                                                      setIsPopup={() => setIsCompanyPopupOpen(false)}/>
+                                <PopupSearchFranchise handleClickReturn={handleSelectCompany} setIsPopup={() => setIsCompanyPopupOpen(false)} />
                             )}
+
                             <input
-                                value={""}
-                                onClick={(e) => handleClickCompany()}
+                                value={(selectedStore ) || ""}
+                                onClick={handleClickCompany}
                                 readOnly
                                 onFocus={(e) => {
                                     e.target.blur();
                                 }}
                             />
                         </div>
-                        <button onClick={() => handlePopupOpenClick()}>🔍</button>
+
+                        {/*<button onClick={() => handlePopupOpenClick()}>🔍</button>*/}
                     </div>
                 </div>
                 {/*<div className={cx("row")}>
@@ -404,9 +447,42 @@ const SalesAnalysisSelect = () => {
                 </div>
             </div>*/}
 
-                {/*<div className={cx("row", "flex")}>
+                <div className={cx("row", "flex")}>
                 <div className={cx("box", "no-padding-horizontal", "content-wrap")}>
                     <div className={cx("item")}>
+                        {selectedStore && selectedStore.length ? (
+                            <>
+                                <RenderTable
+                                    tableProps={{
+                                        getTableProps: table1GetTableProps,
+                                        getTableBodyProps: table1GetTableBodyProps,
+                                        headerGroups: table1HeaderGroups,
+                                        prepareRow: table1PrepareRow,
+                                        page: table1Page,
+                                        pageIndex: table1PageIndex,
+                                        pageSize: table1PageSize,
+                                        gotoPage: table1GotoPage,
+                                        previousPage: table1PreviousPage,
+                                        nextPage: table1NextPage,
+                                        canPreviousPage: table1CanPreviousPage,
+                                        canNextPage: table1CanNextPage,
+                                        pageCount: table1PageCount,
+                                        pageOptions: table1PageOptions,
+                                    }}
+                                    editMode={false}
+                                    tableState={tableState}
+                                    setTableState={setTableState}
+                                    rowFixHeaderValues={{
+                                        // ... your rowFixHeaderValues
+                                    }}
+                                />
+                            </>
+                        ) : (
+                            <div className={cx("no-data")}>
+                                {selectedStore ? '데이터가 없습니다.' : '가맹점을 먼저 검색하세요.'}
+                            </div>
+                        )}
+{/*
                         {isLoadingSalesDayData ? (
                             <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>) : !combinedData.length ? (
                             <div className={cx("no-data")}>데이터가 없습니다.</div>) : (<>
@@ -452,60 +528,49 @@ const SalesAnalysisSelect = () => {
                                     sum_delivery: sum_chk_delivery,
                                 }}
                             />
-                        </>)}
+                        </>)}*/}
                     </div>
                 </div>
                 <div className={cx("box", "no-padding-horizontal", "content-wrap")}>
                     <div className={cx("item")}>
-                        {isLoadingCompareSalesDayData ? (
-                            <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>) : !combinedCompareData.length ? (
-                            <div className={cx("no-data")}>데이터가 없습니다.</div>) : (<>
-                            <RenderTable
-                            tableProps={{
-                                ...preparationTable
-                            }}
-                            editMode={false}
-                            compareTableState={compareTableState}
-                            setCompareTableState={setCompareTableState}
-                            rowFixHeaderValues={{
-                                sum_total: sum_pre_total,
-                                sum_avg: sum_pre_avg,
-                                sum_pos: sum_pre_pos,
-                                sum_delivery: sum_pre_delivery,
-                            }}
-                        ></RenderTable>
-
-                            <RenderTable
-                                tableProps={{
-                                    getTableProps: table2GetTableProps,
-                                    getTableBodyProps: table2GetTableBodyProps,
-                                    headerGroups: table2HeaderGroups,
-                                    prepareRow: table2PrepareRow,
-                                    page: table2Page,
-                                    pageIndex: table2PageIndex,
-                                    pageSize: table2PageSize,
-                                    gotoPage: table2GotoPage,
-                                    previousPage: table2PreviousPage,
-                                    nextPage: table2NextPage,
-                                    canPreviousPage: table2CanPreviousPage,
-                                    canNextPage: table2CanNextPage,
-                                    pageCount: table2PageCount,
-                                    pageOptions: table2PageOptions,
-                                }}
-                                editMode={false}
-                                tableState={tableState}
-                                setTableState={setTableState}
-                                rowFixHeaderValues={{
-                                    sum_total: sum_chk_total,
-                                    sum_avg: sum_chk_avg,
-                                    sum_pos: sum_chk_pos,
-                                    sum_delivery: sum_chk_delivery,
-                                }}
-                            />
-                        </>)}
+                        {selectedStore && selectedStore.length ? (
+                            <>
+                                <RenderTable
+                                    tableProps={{
+                                        getTableProps: table2GetTableProps,
+                                        getTableBodyProps: table2GetTableBodyProps,
+                                        headerGroups: table2HeaderGroups,
+                                        prepareRow: table2PrepareRow,
+                                        page: table2Page,
+                                        pageIndex: table2PageIndex,
+                                        pageSize: table2PageSize,
+                                        gotoPage: table2GotoPage,
+                                        previousPage: table2PreviousPage,
+                                        nextPage: table2NextPage,
+                                        canPreviousPage: table2CanPreviousPage,
+                                        canNextPage: table2CanNextPage,
+                                        pageCount: table2PageCount,
+                                        pageOptions: table2PageOptions,
+                                    }}
+                                    editMode={false}
+                                    tableState={tableState}
+                                    setTableState={setTableState}
+                                    rowFixHeaderValues={{
+                                        //sum_total: sum_pre_total,
+                                        //sum_avg: sum_pre_avg,
+                                        //sum_pos: sum_pre_pos,
+                                        //sum_delivery: sum_pre_delivery,
+                                    }}
+                                />
+                            </>
+                        ) : (
+                            <div className={cx("no-data")}>
+                                {selectedStore ? '데이터가 없습니다.' : '가맹점을 먼저 검색하세요.'}
+                            </div>
+                        )}
                     </div>
                 </div>
-            </div>*/}
+            </div>
             </div>
         </>
     );

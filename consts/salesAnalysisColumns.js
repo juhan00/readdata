@@ -4,7 +4,7 @@ export const salesAnalysisColumns1 = (dates, headers1, startDate, endDate) => {
     const dateColumns = [{
         //조회기간
         Header: `조회기간 (${startDate} ~ ${endDate})`, columns: [
-            /*{
+            {
                 Header: "매출일자", rowspan: 3, columns: [{
                     Header: "", accessor: "chk_sale_date", headerStyle: {
                         display: "none", textAlign: "center",
@@ -13,7 +13,7 @@ export const salesAnalysisColumns1 = (dates, headers1, startDate, endDate) => {
                     }, //Cell: ({ value }) => value.toLocaleString(),
                 },
                 ],
-            },*/
+            },
             {
             Header: "가맹점명", rowspan: 2, columns: [{
                 Header: "", accessor: "chk_fran_name", headerStyle: {
@@ -73,7 +73,7 @@ export const salesAnalysisColumns2 = (dates, headers1, startDate, endDate) => {
     const dateColumns = [{
         //조회기간
         Header: `대비기간 (${startDate} ~ ${endDate})`, columns: [
-            /*{
+            {
                 Header: "매출일자", rowspan: 3, columns: [{
                     Header: "", accessor: "pre_sale_date", headerStyle: {
                         display: "none", textAlign: "center",
@@ -82,7 +82,7 @@ export const salesAnalysisColumns2 = (dates, headers1, startDate, endDate) => {
                     }, //Cell: ({ value }) => value.toLocaleString(),
                 },
                 ],
-            },*/
+            },
             {
             Header: "가맹점명", rowspan: 2, columns: [{
                 Header: "", accessor: "pre_fran_name", headerStyle: {
