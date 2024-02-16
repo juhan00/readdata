@@ -13,6 +13,7 @@ import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
+import { getBrandList } from "@/utils/api/brand";
 
 //styles
 import className from "classnames/bind";
@@ -25,15 +26,6 @@ const Store = () => {
   const { t } = useTranslation(["common", "columns"]);
   const storeColumns = useMemo(() => changeStoreColumns(t), []);
 
-  const newRow = storeColumns.reduce((obj, item) => {
-    if (item.accessor === "use_flag") {
-      obj[item.accessor] = 0;
-    } else {
-      obj[item.accessor] = "";
-    }
-    return obj;
-  }, {});
-
   const searchFieldData = {
     brand_code: "",
     fran_name: "",
@@ -42,17 +34,41 @@ const Store = () => {
 
   const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
   const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
+  const [brandFirstCode, setBrandFirstCode] = useState("");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
+  const newRow = storeColumns.reduce((obj, item) => {
+    if (item.accessor === "use_flag") {
+      obj[item.accessor] = 0;
+    } else {
+      obj[item.accessor] = "";
+    }
+    if (item.accessor === "brand_code") {
+      obj[item.accessor] = brandFirstCode;
+    } else {
+      obj[item.accessor] = "";
+    }
+    obj["new"] = "new";
+    return obj;
+  }, {});
+
   const {
     data: storeData,
     isLoading: isLoadingStoreData,
     refetch: refetchStoreData,
   } = useQuery("getStoreData", () => getStoreList(companyCode), { enabled: companyCode !== undefined });
+
+  const {
+    data: brandData,
+    isLoading: isLoadingBrandData,
+    refetch: refetchBrandData,
+  } = useQuery(["getStoreBrandData", companyCode], () => getBrandList(companyCode), {
+    enabled: companyCode !== undefined,
+  });
 
   useEffect(() => {
     if (!isLoadingStoreData && storeData) {
@@ -77,6 +93,14 @@ const Store = () => {
       }));
     },
   });
+
+  useEffect(() => {
+    if (!brandData) {
+      return;
+    }
+    setBrandFirstCode(brandData[0].brand_code);
+    console.log("brandData[0].brand_code", brandData[0].brand_code);
+  }, [brandData]);
 
   const addMutation = useMutation(async (data) => await addStoreList(data), {
     onSuccess: () => {
@@ -139,9 +163,10 @@ const Store = () => {
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.brand_code || row.brand_code?.toString().toLowerCase().includes(searchData.brand_code.toLowerCase())) &&
-        (!searchData.fran_name || row.fran_name?.toString().toLowerCase().includes(searchData.fran_name.toLowerCase())) &&
-        (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase()))
+        ((!searchData.brand_code || row.brand_code?.toString().toLowerCase().includes(searchData.brand_code.toLowerCase())) &&
+          (!searchData.fran_name || row.fran_name?.toString().toLowerCase().includes(searchData.fran_name.toLowerCase())) &&
+          (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase()))) ||
+        row.new?.toString().toLowerCase().includes("new")
     );
   }, [tableState, searchData]);
 
@@ -208,6 +233,10 @@ const Store = () => {
       gotoPage(0);
     }
   };
+
+  useEffect(() => {
+    console.log("store tableState", tableState);
+  }, [tableState]);
 
   const transformExcelCell = (excelData) =>
     excelData.map((item) => {
@@ -305,6 +334,7 @@ const Store = () => {
                   transformExcelCell={transformExcelCell}
                   newRow={newRow}
                   addressItem={true}
+                  brandItem={true}
                 />
               )}
             </div>

@@ -9,6 +9,7 @@ import { SEARCH_ADDRESS } from "@/consts/common";
 import { getSidoDataList, getSigoonDataList } from "@/utils/api/address";
 import { QueryClient, useQuery } from "react-query";
 import PopupSearchCompany from "../popup/popupSearchCompany";
+import { getBrandList } from "@/utils/api/brand";
 
 //styles
 import styles from "./renderTable.module.scss";
@@ -36,6 +37,7 @@ const RenderTable = ({
   rowSelect,
   totalRow = false,
   addressItem = false,
+  brandItem = false,
   rowFixHeaderValues = {},
 }) => {
   const {
@@ -60,16 +62,17 @@ const RenderTable = ({
   const [isAddressPopupOpen, setIsAddressPopupOpen] = useState(false);
   const [columnValues, setColumnValues] = useState(newRow);
   const [booleanOption, setBooleanOption] = useState([0, 1]);
-  const [{ popupState }, setGlobalState] = useGlobalState();
   const [selectRowIndex, setSelectRowIndex] = useState(null);
   const [gubun1, setGubun1] = useState({});
   const [isCompanyPopupOpen, setIsCompanyPopupOpen] = useState(false);
+  const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
+  const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
 
   const {
     data: sidoData,
     isLoading: isLoadingSidoDataData,
     refetch: refetchSidoData,
-  } = useQuery("getSidoData", () => getSidoDataList(), {
+  } = useQuery("getTableSidoData", () => getSidoDataList(), {
     enabled: addressItem,
   });
 
@@ -77,8 +80,16 @@ const RenderTable = ({
     data: sigoonData,
     isLoading: isLoadingSigoonDataData,
     refetch: refetchSigoonData,
-  } = useQuery(["getSigoonData", gubun1.code], () => getSigoonDataList(gubun1.name), {
+  } = useQuery(["getTableSigoonData", gubun1.code], () => getSigoonDataList(gubun1.name), {
     enabled: gubun1.code !== undefined && gubun1.code !== "" && addressItem,
+  });
+
+  const {
+    data: brandData,
+    isLoading: isLoadingBrandData,
+    refetch: refetchBrandData,
+  } = useQuery(["getTableBrandSelectData", companyCode], () => getBrandList(companyCode), {
+    enabled: brandItem && companyCode !== undefined,
   });
 
   const pages = useMemo(() => {
@@ -213,6 +224,22 @@ const RenderTable = ({
     }));
   };
 
+  const handleSelectBrand = (e) => {
+    const brandCellId = headerGroups.flatMap((headerGroup) =>
+      headerGroup.headers.filter((column) => column.id === "brand_code").map((brandColumn) => brandColumn.id)
+    );
+
+    const brandCellName = headerGroups.flatMap((headerGroup) =>
+      headerGroup.headers.filter((column) => column.type === TABLE_COLUMN_TYPE.BRAND).map((brandColumn) => brandColumn.id)
+    );
+
+    setColumnValues((prevColumnValues) => ({
+      ...prevColumnValues,
+      [brandCellId]: e.target.value,
+      [brandCellName]: e.target.options[e.target.selectedIndex].text,
+    }));
+  };
+
   const handleClickSelect = (index) => {
     setSelectRowIndex(index);
   };
@@ -223,6 +250,11 @@ const RenderTable = ({
   const SumAvg = sum_avg ? Number(sum_avg).toLocaleString() : "ㅡ";
   const SumPos = sum_pos ? Number(sum_pos).toLocaleString() : "ㅡ";
   const SumDelivery = sum_delivery ? Number(sum_delivery).toLocaleString() : "ㅡ";
+
+  useEffect(() => {
+    console.log("brandData", brandData);
+    console.log("columnValues", columnValues);
+  }, [brandData, columnValues]);
 
   return (
     <>
@@ -319,6 +351,7 @@ const RenderTable = ({
                     const isgubun2Column = cell.column.type === TABLE_COLUMN_TYPE.GUBUN2;
                     const isNoEditColumn = cell.column.noEdit === true;
                     const isCompanyColumn = cell.column.type === TABLE_COLUMN_TYPE.COMPANY;
+                    const isBrandColumn = cell.column.type === TABLE_COLUMN_TYPE.BRAND;
 
                     return (
                       <td {...cell.getCellProps()} style={cell.column.cellStyle} key={cell.column.id}>
@@ -395,6 +428,21 @@ const RenderTable = ({
                                 }}
                               />
                             </>
+                          ) : isBrandColumn ? (
+                            <select
+                              id={"brand_code"}
+                              defaultValue={columnValues["brand_code"]}
+                              onChange={(e) => handleSelectBrand(e)}
+                              disabled={isAdded ? false : true}
+                            >
+                              {brandData?.map((data) => {
+                                return (
+                                  <option key={data.brand_code} value={data.brand_code}>
+                                    {data.brand_name}
+                                  </option>
+                                );
+                              })}
+                            </select>
                           ) : (
                             <input
                               value={columnValues[cell.column.id] || cell.value || ""}
