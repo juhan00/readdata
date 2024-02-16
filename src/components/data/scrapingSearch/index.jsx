@@ -7,6 +7,7 @@ import { QueryClient, useMutation, useQuery } from "react-query";
 import { useGlobalState } from "@/context/globalStateContext";
 import { POPUP_DEFAULT } from "@/consts/popup";
 import { getScrapingList, updateStoreMapingList } from "@/utils/api/store";
+import CheckBox from "../checkBox";
 
 //styles
 import className from "classnames/bind";
@@ -23,12 +24,15 @@ const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData
   const [franName, setFranName] = useState("");
   const [filterScrapFranName, setFilterScrapFranName] = useState("");
   const [scrapFranName, setScrapFranName] = useState("");
+  const [checkedJoinFlag, setCheckedJoinFlag] = useState(false);
 
   const {
     data: scrapingData,
     isLoading: isLoadingScrapingData,
     refetch: refetchScrapingData,
-  } = useQuery("getScrapingData", () => getScrapingList(companyCode), { enabled: companyCode !== undefined });
+  } = useQuery(["getScrapingData", checkedJoinFlag], () => getScrapingList(companyCode, checkedJoinFlag), {
+    enabled: companyCode !== undefined && checkedJoinFlag !== undefined,
+  });
 
   useEffect(() => {
     setFranName(selectFranName);
@@ -110,6 +114,10 @@ const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData
     updateMutation.mutate(data);
   };
 
+  const handleJoinFlagChange = (e) => {
+    setCheckedJoinFlag((prev) => !prev);
+  };
+
   return (
     <div className={cx("scraping-search")}>
       <div className={cx("item")}>
@@ -124,6 +132,11 @@ const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData
           <label>가맹점 명</label>
           <input value={scrapFranName} onChange={(e) => setScrapFranName(e.target.value)} />
           <button onClick={() => setFilterScrapFranName(scrapFranName)}>검색</button>
+        </div>
+      </div>
+      <div className={cx("item")}>
+        <div className={cx("join-flag-wrap")}>
+          <CheckBox title={"맵핑 데이터 포함"} id={"join_flag"} checked={checkedJoinFlag} onChange={handleJoinFlagChange} />
         </div>
       </div>
       <div className={cx("item")}>

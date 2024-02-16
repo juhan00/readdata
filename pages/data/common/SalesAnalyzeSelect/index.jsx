@@ -1,48 +1,35 @@
-import {SEARCH_TYPE, TABLE_COLUMN_TYPE} from "@/consts/common";
-import {salesAnalysisColumns1, salesAnalysisColumns2} from "@/consts/salesAnalysisColumns";
+import { SEARCH_TYPE } from "@/consts/common";
+import { salesAnalysisColumns1, salesAnalysisColumns2 } from "@/consts/salesAnalysisColumns";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchDateItems from "@/src/components/data/searchDateItems";
-import {getSalesAnalysisList, getSalesCompareAnalysisList} from "@/utils/api/salesAnalysis";
-import {useChangeFormatDate} from "@/utils/useChangeFormatDate";
-import {useTranslation} from "next-i18next";
-import {useEffect, useMemo, useState} from "react";
-import {QueryClient, useQuery} from "react-query";
-import {usePagination, useSortBy, useTable} from "react-table";
+import { getSalesAnalysisList, getSalesCompareAnalysisList } from "@/utils/api/salesAnalysis";
+import { useChangeFormatDate } from "@/utils/useChangeFormatDate";
+import { useTranslation } from "next-i18next";
+import { useEffect, useMemo, useState } from "react";
+import { QueryClient, useQuery } from "react-query";
+import { usePagination, useSortBy, useTable } from "react-table";
 import SearchItem from "@/src/components/data/searchItem";
 import DataPopupLayout from "@/layouts/dataPopupLayout";
 import PopupSearchFranchise from "@/src/components/data/popup/popupSearchFranchise";
 
 //styles
 import className from "classnames/bind";
-import styles from "./salesAnalyzeSelect.module.scss";
+import styles from "./SalesAnalyzeSelect.module.scss";
 
 import { POPUP_SEARCH } from "@/consts/popup";
-import {useGlobalState} from "@/context/globalStateContext";
+import { useGlobalState } from "@/context/globalStateContext";
 import PopupDataDefault from "@/src/components/data/popup/popupDataDefault";
-import PopupSearchCompany from "@/src/components/data/popup/popupSearchCompany";
 
 const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const SearchModal = ({ combinedData, onClose }) => (
-    <div className="modal-overlay">
-        <div className="modal">
-            {/* Your search results here */}
-            {combinedData.map((item) => (
-                <div key={item.id}>{item.fran_name}</div>
-            ))}
-            <button onClick={onClose}>Close</button>
-        </div>
-    </div>
-);
-
 const SalesAnalysisSelect = () => {
     const searchFieldData = {
         use_flag: "",
-        chk_fran_name:"",
-        pre_fran_name:"",
+        chk_fran_name: "",
+        pre_fran_name: "",
     };
 
     const [isPopupVisible, setPopupVisible] = useState(false);
@@ -51,7 +38,7 @@ const SalesAnalysisSelect = () => {
     const oneMonthAgo = new Date(today);
     oneMonthAgo.setMonth(today.getMonth() - 2);
 
-    const {t} = useTranslation(["common", "dataAdmin"]);
+    const { t } = useTranslation(["common", "dataAdmin"]);
 
     //조회기간 테이블
     const [tableState, setTableState] = useState([]);
@@ -102,31 +89,41 @@ const SalesAnalysisSelect = () => {
 
     //대비기간 날짜 변경시
     const handleCompareStartDateChange = (date) => {
-        setCompareStartDate(date)
+        setCompareStartDate(date);
     };
     const handleCompareEndDateChange = (date) => {
-        setCompareEndDate(date)
+        setCompareEndDate(date);
     };
 
     //조회기간 API
     const {
-        data: salesDayData, isLoading: isLoadingSalesDayData, refetch: refetchSalesDayData,
+        data: salesDayData,
+        isLoading: isLoadingSalesDayData,
+        refetch: refetchSalesDayData,
     } = useQuery(["getSalesDayData"], () => getSalesAnalysisList(formatStartDate, formatEndDate), {
         enabled: formatStartDate !== undefined && formatEndDate !== undefined,
     });
     //대비기간 API
     const {
-        data: compareSalesDayData, isLoading: isLoadingCompareSalesDayData, refetch: refetchCompareSalesDayData,
+        data: compareSalesDayData,
+        isLoading: isLoadingCompareSalesDayData,
+        refetch: refetchCompareSalesDayData,
     } = useQuery(["getCompareSalesDayData"], () => getSalesCompareAnalysisList(formatCompareStartDate, formatCompareEndDate), {
         enabled: formatCompareStartDate !== undefined && formatCompareEndDate !== undefined,
     });
 
-/*    console.log("조회기간=", formatStartDate, " ~ ", formatEndDate, " = ", salesDayData);
-    console.log("대비기간=", formatCompareStartDate, " ~ ", formatCompareEndDate, " = ", compareSalesDayData);*/
+    /*    console.log("조회기간=", formatStartDate, " ~ ", formatEndDate, " = ", salesDayData);
+      console.log("대비기간=", formatCompareStartDate, " ~ ", formatCompareEndDate, " = ", compareSalesDayData);*/
 
     const mainHeader = ["매출구분"];
-    const subHeader1 = [{header: "POS", accessor: "chk_pos_sales"}, {header: "배달", accessor: "chk_delivery_sales"},];
-    const subHeader2 = [{header: "POS", accessor: "pre_pos_sales"}, {header: "배달", accessor: "pre_delivery_sales"},];
+    const subHeader1 = [
+        { header: "POS", accessor: "chk_pos_sales" },
+        { header: "배달", accessor: "chk_delivery_sales" },
+    ];
+    const subHeader2 = [
+        { header: "POS", accessor: "pre_pos_sales" },
+        { header: "배달", accessor: "pre_delivery_sales" },
+    ];
 
     const [salesAnalysisColumnsData1, setsalesAnalysisColumnsData1] = useState([]);
     const [salesAnalysisColumnsData2, setsalesAnalysisColumnsData2] = useState([]);
@@ -137,31 +134,32 @@ const SalesAnalysisSelect = () => {
 
     const updateColumns = () => {
         /*const chkData = salesAnalysisColumns1(mainHeader, subHeader1, formatStartDate, formatEndDate);
-        setsalesAnalysisColumnsData1(chkData);
+            setsalesAnalysisColumnsData1(chkData);
 
-        const preData = salesAnalysisColumns2(mainHeader, subHeader2, formatCompareStartDate, formatCompareEndDate);
-        setsalesAnalysisColumnsData2(preData);*/
+            const preData = salesAnalysisColumns2(mainHeader, subHeader2, formatCompareStartDate, formatCompareEndDate);
+            setsalesAnalysisColumnsData2(preData);*/
     };
 
-/*
-    const memoizedCombinedData = useMemo(() => {
-        const filterCombinedData = (table, searchData, period) => {
-            return table?.filter((row) =>
-                (!searchData[`${period}_fran_name`] || row[`${period}_fran_name`]?.toString().toLowerCase().includes(searchData[`${period}_fran_name`].toLowerCase())));
-        };
-        const combinedData = filterCombinedData(tableState, searchData, 'chk');
-        const combinedCompareData = filterCombinedData(compareTableState, searchCompareData, 'pre');
+    /*
+      const memoizedCombinedData = useMemo(() => {
+          const filterCombinedData = (table, searchData, period) => {
+              return table?.filter((row) =>
+                  (!searchData[`${period}_fran_name`] || row[`${period}_fran_name`]?.toString().toLowerCase().includes(searchData[`${period}_fran_name`].toLowerCase())));
+          };
+          const combinedData = filterCombinedData(tableState, searchData, 'chk');
+          const combinedCompareData = filterCombinedData(compareTableState, searchCompareData, 'pre');
 
-        return {combinedData, combinedCompareData};
-    }, [tableState, searchData, compareTableState, searchCompareData]);
+          return {combinedData, combinedCompareData};
+      }, [tableState, searchData, compareTableState, searchCompareData]);
 
-        const {combinedData, combinedCompareData} = memoizedCombinedData;
-*/
+          const {combinedData, combinedCompareData} = memoizedCombinedData;
+  */
 
     const filterCombinedData = (table, searchData, period) => {
-        const filteredData = table?.filter((row) =>
-            (!searchData[`${period}_fran_name`] ||
-                row[`${period}_fran_name`]?.toString().toLowerCase().includes(searchData[`${period}_fran_name`].toLowerCase()))
+        const filteredData = table?.filter(
+            (row) =>
+                !searchData[`${period}_fran_name`] ||
+                row[`${period}_fran_name`]?.toString().toLowerCase().includes(searchData[`${period}_fran_name`].toLowerCase())
         );
 
         // Concatenate the filtered data to remove duplicates
@@ -169,23 +167,21 @@ const SalesAnalysisSelect = () => {
 
         return concatenatedData;
     };
-    const combinedData = filterCombinedData(tableState, searchData, 'chk');
+    const combinedData = filterCombinedData(tableState, searchData, "chk");
 
-    console.log("combinedData=",combinedData);
-
-
+    console.log("combinedData=", combinedData);
 
     // 기존 검색기능
-/*    const handleSearchSubmit = (e) => {
-        setSearchData((prevData) => ({
-            ...prevData, ...searchField,
-        }));
-        setSearchCompareData((prevData) => ({
-            ...prevData, ...searchCompareField,
-        }));
-        // gotoPage(0);
-        updateColumns();
-    };*/
+    /*    const handleSearchSubmit = (e) => {
+          setSearchData((prevData) => ({
+              ...prevData, ...searchField,
+          }));
+          setSearchCompareData((prevData) => ({
+              ...prevData, ...searchCompareField,
+          }));
+          // gotoPage(0);
+          updateColumns();
+      };*/
 
     const handleSearchSubmit = (e) => {
         // ... (same as before)
@@ -200,27 +196,28 @@ const SalesAnalysisSelect = () => {
     };
 
     const handleFieldChange = (field, e) => {
-
         e.preventDefault();
         setSearchField((prevData) => ({
-            ...prevData, [field]: e.target.value,
+            ...prevData,
+            [field]: e.target.value,
         }));
         setSearchCompareField((prevData) => ({
-            ...prevData, [field]: e.target.value,
+            ...prevData,
+            [field]: e.target.value,
         }));
     };
 
     const [{ popupState }, setGlobalState] = useGlobalState();
- /*   const handlePopupOpenClick = () => {
-        setGlobalState({
-            popupState: {
-                isOn: !popupState.isOn,
-                popup: POPUP_SEARCH,
-                title: "가맹점 선택하기",
-            },
-        });
-    };
-    console.log("진입페이지에서==",popupState);*/
+    /*   const handlePopupOpenClick = () => {
+          setGlobalState({
+              popupState: {
+                  isOn: !popupState.isOn,
+                  popup: POPUP_SEARCH,
+                  title: "가맹점 선택하기",
+              },
+          });
+      };
+      console.log("진입페이지에서==",popupState);*/
 
     const handlePopupOpenClick = () => {
         const updatedPopupState = {
@@ -266,51 +263,51 @@ const SalesAnalysisSelect = () => {
         }));*/
     };
 
-    return (<>
-        <div className={cx("brand")}>
 
-            <div className={cx("row")}>
-                <h1 style={{lineHeight: '2', fontWeight: 'bold', textAlign: 'center', fontSize: '30px'}}>
-                    일자별 매출 비교 (선택 가맹점)
-                </h1>
-                <div className={cx("box", "flex", "search-wrap")}>
-                    <div className={cx("item")}>
-                        <SearchDateItems
-                            startDate={startDate}
-                            endDate={endDate}
-                            handleStartDateChange={handleStartDateChange}
-                            handleEndDateChange={handleEndDateChange}
-                            labelText={2}
-                        />
-                    </div>
-                    <div className={cx("item")}>
-                        <SearchDateItems
-                            startDate={compareStartDate}
-                            endDate={compareEndDate}
-                            handleStartDateChange={handleCompareStartDateChange}
-                            handleEndDateChange={handleCompareEndDateChange}
-                            labelText={3}
-                        />
-                    </div>
-                    <div className={cx("item")}>
-                        {/*<SearchItem searchType={SEARCH_TYPE.INPUT} title={"가맹점 명"}
+    return (
+        <>
+            <div className={cx("brand")}>
+                <div className={cx("row")}>
+                    <h1 style={{ lineHeight: "2", fontWeight: "bold", textAlign: "center", fontSize: "30px" }}>일자별 매출 비교 (선택 가맹점)</h1>
+                    <div className={cx("box", "flex", "search-wrap")}>
+                        <div className={cx("item")}>
+                            <SearchDateItems
+                                startDate={startDate}
+                                endDate={endDate}
+                                handleStartDateChange={handleStartDateChange}
+                                handleEndDateChange={handleEndDateChange}
+                                labelText={2}
+                            />
+                        </div>
+                        <div className={cx("item")}>
+                            <SearchDateItems
+                                startDate={compareStartDate}
+                                endDate={compareEndDate}
+                                handleStartDateChange={handleCompareStartDateChange}
+                                handleEndDateChange={handleCompareEndDateChange}
+                                labelText={3}
+                            />
+                        </div>
+                        <div className={cx("item")}>
+                            {/*<SearchItem searchType={SEARCH_TYPE.INPUT} title={"가맹점 명"}
                                     onClick={() => handlePopupOpenClick()}/>*/}
-                        {isCompanyPopupOpen && (
-                            <PopupSearchFranchise handleClickReturn={handleSelectCompany} setIsPopup={() => setIsCompanyPopupOpen(false)} />
-                        )}
-                        <input
-                            value={""}
-                            onClick={(e) => handleClickCompany()}
-                            readOnly
-                            onFocus={(e) => {
-                                e.target.blur();
-                            }}
-                        />
+                            {isCompanyPopupOpen && (
+                                <PopupSearchFranchise handleClickReturn={handleSelectCompany}
+                                                      setIsPopup={() => setIsCompanyPopupOpen(false)}/>
+                            )}
+                            <input
+                                value={""}
+                                onClick={(e) => handleClickCompany()}
+                                readOnly
+                                onFocus={(e) => {
+                                    e.target.blur();
+                                }}
+                            />
+                        </div>
+                        <button onClick={() => handlePopupOpenClick()}>🔍</button>
                     </div>
-                    <button onClick={() => handlePopupOpenClick()}>🔍</button>
                 </div>
-            </div>
-            {/*<div className={cx("row")}>
+                {/*<div className={cx("row")}>
                 <div className={cx("item")}>
                     <h1 style={{lineHeight: '2', fontWeight: 'bold', textAlign: 'center', marginTop: '3rem'}}>
                         <span>대비기간과 비교하여 조회기간의 매출은 </span>
@@ -332,8 +329,7 @@ const SalesAnalysisSelect = () => {
                 </div>
             </div>*/}
 
-
-            {/*<div className={cx("dashboard")} style={{marginTop: '2rem'}}>
+                {/*<div className={cx("dashboard")} style={{marginTop: '2rem'}}>
                 <div className={cx("row", "flex")} style={{alignItems: 'center'}}>
                     <div className={cx("box", "content-wrap")}>
                         <div className={cx("item")}>
@@ -408,7 +404,7 @@ const SalesAnalysisSelect = () => {
                 </div>
             </div>*/}
 
-            {/*<div className={cx("row", "flex")}>
+                {/*<div className={cx("row", "flex")}>
                 <div className={cx("box", "no-padding-horizontal", "content-wrap")}>
                     <div className={cx("item")}>
                         {isLoadingSalesDayData ? (
@@ -510,9 +506,9 @@ const SalesAnalysisSelect = () => {
                     </div>
                 </div>
             </div>*/}
-        </div>
-    </>);
+            </div>
+        </>
+    );
 };
 
 export default SalesAnalysisSelect;
-

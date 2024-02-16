@@ -137,7 +137,7 @@ const Login = () => {
             </div>
             <div className={cx("input-wrap")}>
               <input type="text" className={cx("id")} placeholder={"ID"} value={id} onChange={(e) => handleIdChange(e)} />
-              <input type="text" className={cx("pw")} placeholder={"PASSWORD"} value={pw} onChange={(e) => handlePwChange(e)} />
+              <input type="password" className={cx("pw")} placeholder={"PASSWORD"} value={pw} onChange={(e) => handlePwChange(e)} />
             </div>
             <button className={cx("btn-submit")} onClick={handleSubmitClick}>
               로그인

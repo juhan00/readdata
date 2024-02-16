@@ -104,7 +104,7 @@ const SalesRegion = () => {
     data: sigoonData,
     isLoading: isLoadingSigoonDataData,
     refetch: refetchSigoonData,
-  } = useQuery(["getSigoonData", gubun1.code], () => getSigoonDataList(gubun1.code), {
+  } = useQuery(["getSigoonData", gubun1.code], () => getSigoonDataList(gubun1.name), {
     enabled: gubun1.code !== undefined && gubun1.code.length !== 0,
   });
 
@@ -127,10 +127,10 @@ const SalesRegion = () => {
       }
 
       return (
-          (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
-          (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase())) &&
-          gubun1Condition &&
-          gubun2Condition
+        (!searchData.brand_name || row.brand_name?.toString().toLowerCase().includes(searchData.brand_name.toLowerCase())) &&
+        (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase())) &&
+        gubun1Condition &&
+        gubun2Condition
       );
     });
   }, [tableState, searchData]);
@@ -346,103 +346,103 @@ const SalesRegion = () => {
   };
 
   return (
-      <>
-        <div className={cx("sales-region")}>
-          <div className={cx("row")}>
-            <div className={cx("box", "flex", "search-wrap")}>
-              <div className={cx("search-item")}>
-                <div className={cx("item-wrap")}>
-                  <div className={cx("item")}>
-                    <SearchItem
-                        searchType={SEARCH_TYPE.SELECT_BRAND}
-                        value={searchField.brand_code}
-                        setDefaultValue={setDefaultBrand}
-                        title={"브랜드 명"}
-                        id={"brand_code"}
-                        onChange={handleFieldChange}
-                        companyCode={companyCode}
-                    />
-                  </div>
-                  <div className={cx("item")}>
-                    <SearchDateItems
-                        startDate={startDate}
-                        endDate={endDate}
-                        handleStartDateChange={handleStartDateChange}
-                        handleEndDateChange={handleEndDateChange}
-                        updateDate={updateDate}
-                    />
-                  </div>
+    <>
+      <div className={cx("sales-region")}>
+        <div className={cx("row")}>
+          <div className={cx("box", "flex", "search-wrap")}>
+            <div className={cx("search-item")}>
+              <div className={cx("item-wrap")}>
+                <div className={cx("item")}>
+                  <SearchItem
+                    searchType={SEARCH_TYPE.SELECT_BRAND}
+                    value={searchField.brand_code}
+                    setDefaultValue={setDefaultBrand}
+                    title={"브랜드 명"}
+                    id={"brand_code"}
+                    onChange={handleFieldChange}
+                    companyCode={companyCode}
+                  />
+                </div>
+                <div className={cx("item")}>
+                  <SearchDateItems
+                    startDate={startDate}
+                    endDate={endDate}
+                    handleStartDateChange={handleStartDateChange}
+                    handleEndDateChange={handleEndDateChange}
+                    updateDate={updateDate}
+                  />
+                </div>
 
+                <div className={cx("item")}>
+                  <SearchAddressItem
+                    title={"지역1"}
+                    type={SEARCH_ADDRESS.SIDO}
+                    data={sidoData}
+                    id={"gubun1"}
+                    value={gubun1.code || ""}
+                    onChange={handleGubunChange}
+                  />
+                </div>
+                {checkedUseGubun2 && (
                   <div className={cx("item")}>
                     <SearchAddressItem
-                        title={"지역1"}
-                        type={SEARCH_ADDRESS.SIDO}
-                        data={sidoData}
-                        id={"gubun1"}
-                        value={gubun1.code || ""}
-                        onChange={handleGubunChange}
+                      title={"지역2"}
+                      type={SEARCH_ADDRESS.SIGOON}
+                      data={sigoonData}
+                      id={"gubun2"}
+                      value={gubun2.code || ""}
+                      onChange={handleGubunChange}
                     />
                   </div>
-                  {checkedUseGubun2 && (
-                      <div className={cx("item")}>
-                        <SearchAddressItem
-                            title={"지역2"}
-                            type={SEARCH_ADDRESS.SIGOON}
-                            data={sigoonData}
-                            id={"gubun2"}
-                            value={gubun2.code || ""}
-                            onChange={handleGubunChange}
-                        />
-                      </div>
-                  )}
-                  <div className={cx("item")}>
-                    <CheckBox title={"지역2 사용"} id={"use_gubun2"} checked={checkedUseGubun2} onChange={handleUseGubun2Change} />
-                  </div>
-                  <div className={cx("item")}>
-                    <CheckBox title={"사용안함 포함"} id={"use_flag"} checked={checkedUseFlag} onChange={handleUseFlagChange} />
-                  </div>
+                )}
+                <div className={cx("item")}>
+                  <CheckBox title={"지역2 사용"} id={"use_gubun2"} checked={checkedUseGubun2} onChange={handleUseGubun2Change} />
                 </div>
-
-                <div className={cx("region-item-wrap")}>
-                  {selectedGubun?.map((item) => (
-                      <div className={cx("item")} key={item.code}>
-                        {item.name}
-                        <button className={cx("close")} onClick={() => handleGubunItemDel(item.code)}></button>
-                      </div>
-                  ))}
+                <div className={cx("item")}>
+                  <CheckBox title={"사용안함 포함"} id={"use_flag"} checked={checkedUseFlag} onChange={handleUseFlagChange} />
                 </div>
               </div>
-              <div className={cx("btn-submit")}>
-                <BtnSearch onClick={handleSearchSubmit} />
+
+              <div className={cx("region-item-wrap")}>
+                {selectedGubun?.map((item) => (
+                  <div className={cx("item")} key={item.code}>
+                    {item.name}
+                    <button className={cx("close")} onClick={() => handleGubunItemDel(item.code)}></button>
+                  </div>
+                ))}
               </div>
             </div>
-          </div>
-
-          <div className={cx("row")}>
-            <div className={cx("box", "pie")}>
-              <div className={cx("item")}>
-                {isLoadingSalesRegionData ? (
-                    <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-                ) : (
-                    <ChartPie memoizedSalesRegionChartData={memoizedSalesRegionChartData} />
-                )}
-              </div>
-            </div>
-          </div>
-
-          <div className={cx("row")}>
-            <div className={cx("box", "bar")}>
-              <div className={cx("item")}>
-                {isLoadingSalesRegionData ? (
-                    <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
-                ) : (
-                    <BarChart memoizedSalesDayChartData={memoizedSalesRegionChartData} headersData={headersData} dataKey={"name"} />
-                )}
-              </div>
+            <div className={cx("btn-submit")}>
+              <BtnSearch onClick={handleSearchSubmit} />
             </div>
           </div>
         </div>
-      </>
+
+        <div className={cx("row")}>
+          <div className={cx("box", "pie")}>
+            <div className={cx("item")}>
+              {isLoadingSalesRegionData ? (
+                <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+              ) : (
+                <ChartPie memoizedSalesRegionChartData={memoizedSalesRegionChartData} />
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className={cx("row")}>
+          <div className={cx("box", "bar")}>
+            <div className={cx("item")}>
+              {isLoadingSalesRegionData ? (
+                <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
+              ) : (
+                <BarChart memoizedSalesDayChartData={memoizedSalesRegionChartData} headersData={headersData} dataKey={"name"} />
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
