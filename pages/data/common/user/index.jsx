@@ -25,15 +25,6 @@ const User = () => {
   const { t } = useTranslation(["common", "columns"]);
   const userColumns = useMemo(() => changeUserColumns(t), []);
 
-  const newRow = userColumns.reduce((obj, item) => {
-    if (item.accessor === "authority" || item.accessor === "use_flag") {
-      obj[item.accessor] = 0;
-    } else {
-      obj[item.accessor] = "";
-    }
-    return obj;
-  }, {});
-
   const searchFieldData = {
     uid: "",
     uname: "",
@@ -47,6 +38,16 @@ const User = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+
+  const newRow = userColumns.reduce((obj, item) => {
+    if (item.accessor === "authority" || item.accessor === "use_flag") {
+      obj[item.accessor] = 0;
+    } else {
+      obj[item.accessor] = "";
+    }
+    obj["new"] = "new";
+    return obj;
+  }, {});
 
   const {
     data: userData,

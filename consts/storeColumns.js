@@ -23,6 +23,7 @@ export const changeStoreColumns = (t) => [
     cellStyle: {
       textAlign: "center",
     },
+    type: TABLE_COLUMN_TYPE.BRAND,
   },
   {
     Header: "가맹점 코드",
