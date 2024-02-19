@@ -94,7 +94,7 @@ const PopupSearchFranchise = ({ handleClickReturn, setIsPopup }) => {
     };
 
     return (
-        <DataPopupLayout title={"회사명 선택"} setIsPopup={setIsPopup}>
+        <DataPopupLayout title={"가맹점 선택"} setIsPopup={setIsPopup}>
             <div className={cx("search-franchise")}>
                 <div className={cx("search-wrap")}>
                     <SearchItem

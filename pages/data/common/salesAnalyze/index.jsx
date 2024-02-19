@@ -14,7 +14,6 @@ import {usePagination, useSortBy, useTable} from "react-table";
 import className from "classnames/bind";
 import styles from "./salesAnalyze.module.scss";
 
-import chartPieAnalyze from "@/src/components/data/chartPieAnalyze";
 import CheckBox from "@/src/components/data/checkBox";
 import ChartPieAnalyze from "@/src/components/data/chartPieAnalyze";
 
@@ -23,22 +22,22 @@ const cx = className.bind(styles);
 const queryClient = new QueryClient();
 
 const TabContent1 = () => (<div>
-        {/* Content for Tab 1 */}
-        <h2>Page 1 Content</h2>
-        <p>This is the content for the first tab.</p>
-    </div>);
+    {/* Content for Tab 1 */}
+    <h2>Page 1 Content</h2>
+    <p>This is the content for the first tab.</p>
+</div>);
 
 const TabContent2 = () => (<div>
-        {/* Content for Tab 2 */}
-        <h2>Page 2 Content</h2>
-        <p>This is the content for the second tab.</p>
-    </div>);
+    {/* Content for Tab 2 */}
+    <h2>Page 2 Content</h2>
+    <p>This is the content for the second tab.</p>
+</div>);
 
 const TabContent3 = () => (<div>
-        {/* Content for Tab 3 */}
-        <h2>Page 3 Content</h2>
-        <p>This is the content for the third tab.</p>
-    </div>);
+    {/* Content for Tab 3 */}
+    <h2>Page 3 Content</h2>
+    <p>This is the content for the third tab.</p>
+</div>);
 
 const SalesAnalysis = () => {
 
@@ -136,6 +135,64 @@ const SalesAnalysis = () => {
         enabled: formatCompareStartDate !== undefined && formatCompareEndDate !== undefined,
     });
 
+    const memoizedCombinedData = useMemo(() => {
+        const filterCombinedData = (table, searchData, period) => {
+            return table?.filter((row) =>
+                (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase())));
+        };
+        const combinedData = filterCombinedData(tableState, searchData, 'chk');
+        const combinedCompareData = filterCombinedData(compareTableState, searchCompareData, 'pre');
+
+        return {combinedData, combinedCompareData};
+    }, [tableState, searchData, compareTableState, searchCompareData]);
+
+    const {combinedData, combinedCompareData} = memoizedCombinedData;
+
+    console.log("조회기간 데이터=",salesDayData);
+    console.log("대비기간 데이터=",compareSalesDayData);
+
+    // 로우 합침 (한달치 검색시 한달 매출액 더하기)
+    useEffect(() => {
+        if (!isLoadingSalesDayData && salesDayData) {
+            const aggregatedData1 = {};
+
+            salesDayData.forEach((row) => {
+                const franCode1 = row.chk_fran_code;
+
+                if (!aggregatedData1[franCode1]) {
+                    aggregatedData1[franCode1] = { ...row };
+                } else {
+                    aggregatedData1[franCode1].chk_total += row.chk_total || 0;
+                    aggregatedData1[franCode1].chk_avg += row.chk_avg || 0;
+                    aggregatedData1[franCode1].chk_delivery_sales += row.chk_delivery_sales || 0;
+                    aggregatedData1[franCode1].chk_pos_sales += row.chk_pos_sales || 0;
+                }
+            });
+            const aggregatedArray1 = Object.values(aggregatedData1);
+
+            setTableState(aggregatedArray1);
+        }
+
+        if (!isLoadingCompareSalesDayData && compareSalesDayData) {
+            const aggregatedData2 = {};
+
+            compareSalesDayData.forEach((row) => {
+                const franCode2 = row.pre_fran_code;
+
+                if (!aggregatedData2[franCode2]) {
+                    aggregatedData2[franCode2] = { ...row };
+                } else {
+                    aggregatedData2[franCode2].pre_total += row.pre_total || 0;
+                    aggregatedData2[franCode2].pre_avg += row.pre_avg || 0;
+                    aggregatedData2[franCode2].pre_delivery_sales += row.pre_delivery_sales || 0;
+                    aggregatedData2[franCode2].pre_pos_sales += row.pre_pos_sales || 0;
+                }
+            });
+            const aggregatedArray2 = Object.values(aggregatedData2);
+
+            setCompareTableState(aggregatedArray2);
+        }
+    }, [salesDayData, isLoadingSalesDayData, compareSalesDayData, isLoadingCompareSalesDayData]);
 
     const mainHeader = ["매출구분"];
     const subHeader1 = [{header: "POS", accessor: "chk_pos_sales"}, {header: "배달", accessor: "chk_delivery_sales"},];
@@ -158,61 +215,7 @@ const SalesAnalysis = () => {
     };
 
 
-    /*//조회기간
-    const memoizedData = useMemo(() => {
-        return tableState?.filter((row) =>
-            (!searchData.chk_fran_name || row.chk_fran_name?.toString().toLowerCase().includes(searchData.chk_fran_name.toLowerCase()))&&
-            (!searchData.chk_use_flag || row.chk_use_flag?.toString().toLowerCase().includes(searchData.chk_use_flag.toLowerCase())))
-    }, [tableState, searchData]);
-
-    console.log("tableState!!!!",tableState);
-    console.log("searchData!!!!",searchData);
-    console.log("memoizedData!!!!",memoizedData);
-
-    //대비기간
-    const memoizedCompareData = useMemo(() => {
-        return compareTableState?.filter((row) =>
-            (!searchCompareData.pre_fran_name || row.pre_fran_name?.toString().toLowerCase().includes(searchCompareData.pre_fran_name.toLowerCase()))&&
-            (!searchCompareData.pre_use_flag || row.pre_use_flag?.toString().toLowerCase().includes(searchCompareData.pre_use_flag.toLowerCase())));
-    }, [compareTableState, searchCompareData]);
-
-    console.log("compareTableState!!!!",compareTableState);
-    console.log("searchCompareData!!!!",searchCompareData);
-    console.log("memoizedCompareData!!!!",memoizedCompareData);*/
-
-
-    const memoizedCombinedData = useMemo(() => {
-        const filterCombinedData = (table, searchData, period) => {
-            return table?.filter((row) =>
-                // (!searchData[`${period}_fran_name`] || row[`${period}_fran_name`]?.toString().toLowerCase().includes(searchData[`${period}_fran_name`].toLowerCase())) &&
-                (!searchData.use_flag || row.use_flag?.toString().toLowerCase().includes(searchData.use_flag.toLowerCase())));
-        };
-        const combinedData = filterCombinedData(tableState, searchData, 'chk');
-        const combinedCompareData = filterCombinedData(compareTableState, searchCompareData, 'pre');
-
-        return {combinedData, combinedCompareData};
-    }, [tableState, searchData, compareTableState, searchCompareData]);
-
-    const {combinedData, combinedCompareData} = memoizedCombinedData;
-
-
-    /*//조회기간
-    useEffect(() => {
-        if (!isLoadingSalesDayData && salesDayData) {
-            const filteredData = salesDayData.filter((row) => row.use_flag === 1);
-            setTableState(filteredData);
-        }
-    }, [salesDayData, isLoadingSalesDayData]);
-
-    //대비기간
-    useEffect(() => {
-        if (!isLoadingCompareSalesDayData && compareSalesDayData) {
-            const filteredCompareData = compareSalesDayData.filter((row) => row.use_flag === 1);
-            setCompareTableState(filteredCompareData);
-        }
-    }, [compareSalesDayData, isLoadingCompareSalesDayData]);*/
-
-    // 조회기간
+   /* // 조회기간
     useEffect(() => {
         if (!isLoadingSalesDayData && salesDayData) {
             const filteredData = salesDayData.filter((row) => {
@@ -238,55 +241,8 @@ const SalesAnalysis = () => {
             });
             setCompareTableState(filteredCompareData);
         }
-    }, [compareSalesDayData, isLoadingCompareSalesDayData, checkedUseFlag]);
+    }, [compareSalesDayData, isLoadingCompareSalesDayData, checkedUseFlag]);*/
 
-    /* const getUseTable = (options, columns) => {
-         return useTable({
-             columns: columns || [],
-             ...options,
-             initialState: {pageIndex: 0, pageSize: 10},
-             autoResetPage: false,
-         }, useSortBy, usePagination,);
-     }*/
-
-
-    //처음 진입 시 조회기간,대비기간 동시 출력 및 달력클릭 시 검색기능 구현
-    /*
-        const InquiryTable = getUseTable({
-            data: useMemo(() => combinedData, [combinedData]),
-        }, salesAnalysisColumnsData1);
-
-        const preparationTable = getUseTable({
-            data: useMemo(() => combinedCompareData, [combinedCompareData]),
-        }, salesAnalysisColumnsData2);
-    */
-
-
-    // const {
-    //     getTableProps,
-    //     getTableBodyProps,
-    //     headerGroups,
-    //     prepareRow,
-    //     page,
-    //     state: {pageIndex, pageSize},
-    //     gotoPage,
-    //     previousPage,
-    //     nextPage,
-    //     canPreviousPage,
-    //     canNextPage,
-    //     pageCount,
-    //     pageOptions,
-    // } = useTable(
-    //     {
-    //         columns: salesAnalysisColumnsData1,
-    //         data: useMemo(() => combinedData, [combinedData]),
-    //
-    //         initialState: {pageIndex: 0, pageSize: 10},
-    //         autoResetPage: false,
-    //     },
-    //     useSortBy,
-    //     usePagination
-    // );
 
     const {
         getTableProps: table1GetTableProps,
@@ -367,6 +323,8 @@ const SalesAnalysis = () => {
         // gotoPage(0);
         refetchSalesDayData();
         refetchCompareSalesDayData()
+        table1GotoPage(0);
+        table2GotoPage(0);
         updateColumns();
     };
 
@@ -434,7 +392,7 @@ const SalesAnalysis = () => {
 
 
     return (<>
-        <div className={cx("brand")}>
+        <div className={cx("analyze")}>
             <div className={cx("row")}>
                 <h1 style={{lineHeight: '2', fontWeight: 'bold', textAlign: 'center', fontSize: '30px'}}>
                     일자별 매출 비교 (전체 가맹점)
@@ -451,11 +409,6 @@ const SalesAnalysis = () => {
                                     labelText={2}
                                 />
                             </div>
-                            <div className={cx("item")}/>
-
-                            {/*<SearchItem searchType={SEARCH_TYPE.INPUT} value={searchField.chk_fran_name} title={"조회 가맹점 명"}
-                                id={"chk_fran_name"} onChange={handleFieldChange}/>*/}
-
                             <div className={cx("item")}>
                                 <SearchDateItems
                                     startDate={compareStartDate}
@@ -466,33 +419,9 @@ const SalesAnalysis = () => {
                                 />
                             </div>
                             <div className={cx("item")}>
-                                {/* <SearchItem searchType={SEARCH_TYPE.INPUT}
-                                    value={searchField.pre_fran_name}
-                                    title={"대비 가맹점 명"}
-                                    id={"pre_fran_name"} onChange={handleFieldChange}/>*/}
-                            </div>
-                            <div className={cx("item")}>
-                                {/*<SearchItem
-                            searchType={SEARCH_TYPE.SELECT_FLAG}
-                            value={searchField.chk_use_flag}
-                            title={"사용여부"}
-                            id={"chk_use_flag"}
-                            onChange={handleFieldChange}
-                        />*/}
-
                                 <div className={cx("checkbox-wrap")}>
                                     <div className={cx("checkbox")}>
-                                        {/*<input
-                                    type="checkbox"
-                                    value={searchField.use_flag}
-                                    id="agree2"
-                                    onChange={(e) => handleFieldChange('use_flag', e)}
-                                />
-                                <label htmlFor="agree2" style={{marginTop: '0.8rem'}}>
-                                    <span>사용안함 포함</span>
-                                </label>*/}
-                                        <CheckBox title={"사용안함 포함"} id={"use_flag"} checked={checkedUseFlag}
-                                                  onChange={handleUseFlagChange}/>
+                                        <CheckBox title={"사용안함 포함"} id={"use_flag"} checked={checkedUseFlag} onChange={handleUseFlagChange}/>
                                     </div>
                                 </div>
                             </div>
@@ -538,8 +467,9 @@ const SalesAnalysis = () => {
                         </div>*/}
                             <div className={cx("table-wrap")} style={{height: '13rem', backgroundColor: '#f2f2f2'}}>
                                 {isLoadingSalesDayData ? (<div className={cx("loading-data")}>데이터를 가져오고
-                                    있습니다.</div>) : !combinedCompareData.length ? (
-                                    <div className={cx("no-data")}>데이터가 없습니다.</div>) : (<table>
+                                    있습니다.</div>) : !combinedData.length ? (
+                                    <div className={cx("no-data")}>데이터가 없습니다.</div>) : (
+                                    <table>
                                     <thead>
                                     <tr>
 
@@ -607,24 +537,9 @@ const SalesAnalysis = () => {
             <div className={cx("row", "flex")}>
                 <div className={cx("box", "no-padding-horizontal", "content-wrap")}>
                     <div className={cx("item")}>
-                        {isLoadingSalesDayData ? (
+                        {isLoadingCompareSalesDayData ? (
                             <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>) : !combinedData.length ? (
                             <div className={cx("no-data")}>데이터가 없습니다.</div>) : (<>
-                            {/*<RenderTable
-                                tableProps={{
-                                    ...InquiryTable
-                                }}
-                                editMode={false}
-                                tableState={tableState}
-                                setTableState={setTableState}
-                                rowFixHeaderValues={{
-                                    sum_total: sum_chk_total,
-                                    sum_avg: sum_chk_avg,
-                                    sum_pos: sum_chk_pos,
-                                    sum_delivery: sum_chk_delivery,
-                                }}
-                            ></RenderTable>*/}
-
                             <RenderTable
                                 tableProps={{
                                     getTableProps: table1GetTableProps,
@@ -660,21 +575,6 @@ const SalesAnalysis = () => {
                         {isLoadingCompareSalesDayData ? (
                             <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>) : !combinedCompareData.length ? (
                             <div className={cx("no-data")}>데이터가 없습니다.</div>) : (<>
-                            {/*<RenderTable
-                            tableProps={{
-                                ...preparationTable
-                            }}
-                            editMode={false}
-                            compareTableState={compareTableState}
-                            setCompareTableState={setCompareTableState}
-                            rowFixHeaderValues={{
-                                sum_total: sum_pre_total,
-                                sum_avg: sum_pre_avg,
-                                sum_pos: sum_pre_pos,
-                                sum_delivery: sum_pre_delivery,
-                            }}
-                        ></RenderTable>*/}
-
                             <RenderTable
                                 tableProps={{
                                     getTableProps: table2GetTableProps,
@@ -693,8 +593,8 @@ const SalesAnalysis = () => {
                                     pageOptions: table2PageOptions,
                                 }}
                                 editMode={false}
-                                tableState={tableState}
-                                setTableState={setTableState}
+                                compareTableState={compareTableState}
+                                setCompareTableState={setCompareTableState}
                                 rowFixHeaderValues={{
                                     sum_total: sum_pre_total,
                                     sum_avg: sum_pre_avg,
