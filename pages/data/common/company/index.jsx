@@ -29,7 +29,7 @@ const Compnay = () => {
     company_name: "",
     flag: "",
   };
-  
+
   const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
   const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
   const [tableState, setTableState] = useState([]);
@@ -48,8 +48,6 @@ const Compnay = () => {
     obj["new"] = "new";
     return obj;
   }, {});
-
-  
 
   const {
     data: companyData,
@@ -142,8 +140,9 @@ const Compnay = () => {
   const memoizedData = useMemo(() => {
     return tableState?.filter(
       (row) =>
-        (!searchData.company_name || row.company_name?.toString().toLowerCase().includes(searchData.company_name.toLowerCase())) &&
-        (!searchData.flag || row.flag?.toString().toLowerCase().includes(searchData.flag.toLowerCase()))
+        ((!searchData.company_name || row.company_name?.toString().toLowerCase().includes(searchData.company_name.toLowerCase())) &&
+          (!searchData.flag || row.flag?.toString().toLowerCase().includes(searchData.flag.toLowerCase()))) ||
+        row.new?.toString().toLowerCase().includes("new")
     );
   }, [tableState, searchData]);
 
