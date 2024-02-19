@@ -3,7 +3,8 @@
   "main_header": {
     "menu1": "회사소개",
     "menu2": "문의하기",
-    "menu3": "로그인"
+    "menu3": "로그인",
+    "phone": "070-4141-7216"
   },
   "main_section1": {
     "sub_title": "가맹점 매출 통합 조회",
