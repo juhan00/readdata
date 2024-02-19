@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@tosspayments/payment-widget-sdk": "^0.10.2",
     "classnames": "^2.3.3",
     "cookies-next": "^4.1.1",
     "date-fns": "^3.3.0",
