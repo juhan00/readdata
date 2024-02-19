@@ -21,6 +21,39 @@
         width: 100%;
       }
     }
+    .contactus-wrap {
+      display: flex;
+      flex: 1;
+      justify-content: center;
+      .contactus {
+        display: flex;
+        align-items: center;
+        border: 0.1rem solid #e7e7e7;
+        border-radius: 10rem;
+        padding: 1rem 2rem 1rem 1rem;
+        button {
+          font-size: 1.6rem;
+          line-height: 2rem;
+          letter-spacing: -0.032rem;
+          font-weight: 700;
+          color: #fff;
+          padding: 1rem 2rem;
+          background-color: #f7763f;
+          border-radius: 10rem;
+          cursor: pointer;
+        }
+        .call {
+          font-size: 2rem;
+          line-height: 2rem;
+          letter-spacing: -0.04rem;
+          font-weight: 400;
+          color: #333;
+          background: url("/assets/images/ico_header_call.png") no-repeat 0% -2px / contain;
+          padding-left: 2.4rem;
+          margin-left: 2rem;
+        }
+      }
+    }
     .nav-wrap {
       margin-left: auto;
 
@@ -49,6 +82,26 @@
       .logo {
         width: 18.7rem;
       }
+      .contactus-wrap {
+        .contactus {
+          padding: 1rem 1.4rem 1rem 1.4rem;
+          button {
+            font-size: 1.5rem;
+            line-height: 1.2rem;
+            letter-spacing: -0.032rem;
+            padding: 1rem 1.4rem;
+          }
+          .call {
+            font-size: 1.6rem;
+            line-height: 1.8rem;
+            letter-spacing: -0.04rem;
+            background: url("/assets/images/ico_header_call.png") no-repeat 0% -1.2px / contain;
+            padding-left: 2.2rem;
+            margin-left: 1.2rem;
+            white-space: nowrap;
+          }
+        }
+      }
       .nav-wrap {
         nav {
           & > a {
@@ -69,6 +122,9 @@
     .header-wrap {
       .logo {
         width: 13.5rem;
+      }
+      .contactus-wrap {
+        display: none;
       }
       .nav-wrap {
         .menu {

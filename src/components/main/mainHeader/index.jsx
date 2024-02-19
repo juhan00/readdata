@@ -57,18 +57,19 @@ export default function Header() {
         <div className={cx("logo")} onClick={() => handleScrollToTop()}>
           <img src="/assets/images/logo.png" alt="leaddata logo" />
         </div>
+        <div className={cx("contactus-wrap")}>
+          <div className={cx("contactus")}>
+            <button onClick={() => handlePopupOpenClick()}>{t("common:main_header.menu2")}</button>
+            <div className={cx("call")}> {t("common:main_header.phone")}</div>
+          </div>
+        </div>
         <div className={cx("nav-wrap", isMenu && "active")}>
           <div className={cx("menu")} onClick={() => handleMenuClick()}></div>
           <nav>
             <Link href="https://leadplanet.kr/" target="_blank">
               {t("common:main_header.menu1")}
             </Link>
-            <Link href="" onClick={() => handlePopupOpenClick()}>
-              {t("common:main_header.menu2")}
-            </Link>
-            <Link href="" onClick={() => handleLoginClick()}>
-              {t("common:main_header.menu3")}
-            </Link>
+            <Link href="/data/login">{t("common:main_header.menu3")}</Link>
           </nav>
         </div>
       </div>
