@@ -139,3 +139,30 @@ export const changeStoreColumns = (t) => [
     Cell: ({ value }) => useChangeFormatDateUTC(value),
   },
 ];
+
+
+
+export const searchStoreColumns = (t) => [
+  {
+    Header: "가맹점 코드",
+    accessor: "fran_code",
+    headerStyle: {
+      display: "none",
+      textAlign: "center",
+    },
+    cellStyle: {
+      display: "none",
+      textAlign: "center",
+    },
+  },
+  {
+    Header: "가맹점 명",
+    accessor: "fran_name",
+    headerStyle: {
+      textAlign: "center",
+    },
+    cellStyle: {
+      textAlign: "center",
+    },
+  },
+];

@@ -246,7 +246,7 @@ const RenderTable = ({
 
   //매출분석페이지 합계 Header
   const { sum_total = "", sum_avg = "", sum_pos = "", sum_delivery = "" } = rowFixHeaderValues;
-  const SumTotal = sum_total ? Number(sum_total).toLocaleString() : "ㅡ";
+  const SumTotal = sum_total ? sum_total.toLocaleString() : "ㅡ";
   const SumAvg = sum_avg ? Number(sum_avg).toLocaleString() : "ㅡ";
   const SumPos = sum_pos ? Number(sum_pos).toLocaleString() : "ㅡ";
   const SumDelivery = sum_delivery ? Number(sum_delivery).toLocaleString() : "ㅡ";
