@@ -140,7 +140,6 @@ const SalesAnalysisSelect = () => {
 
 
     useEffect(() => {
-        console.log("선택한 가맹점 명=", selectedStore);
         if (!isLoadingSalesDayData && !isLoadingCompareSalesDayData && salesDayData && compareSalesDayData) {
             const chkData = salesDayData?.filter((row) => {
                 const chkFranName = row.chk_fran_name?.toString().toLowerCase();
@@ -158,9 +157,6 @@ const SalesAnalysisSelect = () => {
 
             setFilterChkData(chkData);
             setFilterPreData(preData);
-
-            console.log("FilterChkData =", chkData);
-            console.log("FilterPreData =", preData);
 
             updateColumns();
             table1GotoPage(0);

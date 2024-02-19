@@ -148,9 +148,6 @@ const SalesAnalysis = () => {
 
     const {combinedData, combinedCompareData} = memoizedCombinedData;
 
-    console.log("조회기간 데이터=",salesDayData);
-    console.log("대비기간 데이터=",compareSalesDayData);
-
     // 로우 합침 (한달치 검색시 한달 매출액 더하기)
     useEffect(() => {
         if (!isLoadingSalesDayData && salesDayData) {
