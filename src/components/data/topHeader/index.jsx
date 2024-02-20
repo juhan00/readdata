@@ -25,7 +25,7 @@ const TopHeader = ({ useType }) => {
       <div className={cx("use-type", useType === USE_TYPE.USER ? "user" : "admin")}>{useType === USE_TYPE.USER ? "사용자" : "관리자"}</div>
       <div className={cx("right")}>
         <div className={cx("name")}>
-          <strong>{userInfo.id}</strong>
+          <strong>{userInfo.name}</strong>
           {t("data.name_text")}
         </div>
         <button className={cx("help")}>{t("data.help")}</button>
