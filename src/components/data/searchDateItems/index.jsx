@@ -29,7 +29,6 @@ const SearchDateItem = ({ startDate, endDate, handleStartDateChange, handleEndDa
                         dateFormat="yyyy-MM"
                         placeholderText=""
                         showMonthYearPicker
-                        maxDate={new Date(new Date().setDate(new Date().getDate() - 1))}
                         maxDate={endDate}
                     />
                 ) : (
