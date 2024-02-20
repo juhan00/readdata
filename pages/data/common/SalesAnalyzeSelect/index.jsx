@@ -33,6 +33,9 @@ const SalesAnalysisSelect = () => {
         use_flag: "", chk_fran_name: "", pre_fran_name: "",
     };
 
+    const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
+    const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
+
     const today = new Date();
     const oneMonthAgo = new Date(today);
     oneMonthAgo.setMonth(today.getMonth() - 1);
@@ -128,13 +131,13 @@ const SalesAnalysisSelect = () => {
 
     const {
         data: salesDayData, isLoading: isLoadingSalesDayData, refetch: refetchSalesDayData,
-    } = useQuery(["getSalesDayData", formatStartDate, formatEndDate], () => getSalesAnalysisList(formatStartDate, formatEndDate), {
+    } = useQuery(["getSalesDayData", formatStartDate, formatEndDate], () => getSalesAnalysisList(companyCode, formatStartDate, formatEndDate), {
         enabled: formatStartDate !== undefined && formatEndDate !== undefined,
     });
 
     const {
         data: compareSalesDayData, isLoading: isLoadingCompareSalesDayData, refetch: refetchCompareSalesDayData,
-    } = useQuery(["getCompareSalesDayData", formatCompareStartDate, formatCompareEndDate], () => getSalesCompareAnalysisList(formatCompareStartDate, formatCompareEndDate), {
+    } = useQuery(["getCompareSalesDayData", formatCompareStartDate, formatCompareEndDate], () => getSalesCompareAnalysisList(companyCode, formatCompareStartDate, formatCompareEndDate), {
         enabled: formatCompareStartDate !== undefined && formatCompareEndDate !== undefined,
     });
 
@@ -545,7 +548,7 @@ const SalesAnalysisSelect = () => {
                                 setTableState={setTableState}
                                 rowFixHeaderValues={{
                                     sum_total: selectedStore,
-                                    sum_avg: sum_chk_pos,
+                                    sum_avg: sum_chk_total,
                                     sum_pos: sum_chk_pos,
                                     sum_delivery: sum_chk_delivery,
                                 }}
@@ -580,7 +583,7 @@ const SalesAnalysisSelect = () => {
                                 setTableState={setTableState}
                                 rowFixHeaderValues={{
                                     sum_total: selectedStore,
-                                    sum_avg: sum_pre_pos,
+                                    sum_avg: sum_chk_total,
                                     sum_pos: sum_pre_pos,
                                     sum_delivery: sum_pre_delivery,
                                 }}

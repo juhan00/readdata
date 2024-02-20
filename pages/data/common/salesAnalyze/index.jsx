@@ -16,6 +16,7 @@ import styles from "./salesAnalyze.module.scss";
 
 import CheckBox from "@/src/components/data/checkBox";
 import ChartPieAnalyze from "@/src/components/data/chartPieAnalyze";
+import {useGlobalState} from "@/context/globalStateContext";
 
 const cx = className.bind(styles);
 
@@ -56,14 +57,12 @@ const SalesAnalysis = () => {
         }
     };
 
+    const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
+    const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
+
     const searchFieldData = {
         use_flag: "",
     };
-
-    const today = new Date();
-    const oneMonthAgo = new Date(today);
-    oneMonthAgo.setMonth(today.getMonth() - 1);
-
     const {t} = useTranslation(["common", "dataAdmin"]);
     const [checkedUseFlag, setCheckedUseFlag] = useState(false);
     //조회기간 테이블
@@ -81,12 +80,23 @@ const SalesAnalysis = () => {
     //사용안함 여부
     const [useFlag, setUseFlag] = useState(false);
 
+    //진입 시 날짜 포맷
+    const today = new Date();
+    const oneMonthAgo = new Date(today);
+
+    //-1달, -1일
+    oneMonthAgo.setMonth(today.getMonth() - 1);
+    oneMonthAgo.setDate(oneMonthAgo.getDate() - 1);
+
+    const oneDayAgo = new Date(today);
+    oneDayAgo.setDate(today.getDate() - 1);
+
     //조회기간-달력
     const [startDate, setStartDate] = useState(oneMonthAgo);
-    const [endDate, setEndDate] = useState(today);
+    const [endDate, setEndDate] = useState(oneDayAgo);
     //대비기간-달력
     const [compareStartDate, setCompareStartDate] = useState(oneMonthAgo);
-    const [compareEndDate, setCompareEndDate] = useState(today);
+    const [compareEndDate, setCompareEndDate] = useState(oneDayAgo);
 
     //조회기간 시간
     const formatStartDate = useMemo(() => {
@@ -125,13 +135,13 @@ const SalesAnalysis = () => {
     //조회기간 API
     const {
         data: salesDayData, isLoading: isLoadingSalesDayData, refetch: refetchSalesDayData,
-    } = useQuery(["getSalesDayData"], () => getSalesAnalysisList(formatStartDate, formatEndDate), {
+    } = useQuery(["getSalesDayData"], () => getSalesAnalysisList(companyCode,formatStartDate, formatEndDate), {
         enabled: formatStartDate !== undefined && formatEndDate !== undefined,
     });
     //대비기간 API
     const {
         data: compareSalesDayData, isLoading: isLoadingCompareSalesDayData, refetch: refetchCompareSalesDayData,
-    } = useQuery(["getCompareSalesDayData"], () => getSalesCompareAnalysisList(formatCompareStartDate, formatCompareEndDate), {
+    } = useQuery(["getCompareSalesDayData"], () => getSalesCompareAnalysisList(companyCode, formatCompareStartDate, formatCompareEndDate), {
         enabled: formatCompareStartDate !== undefined && formatCompareEndDate !== undefined,
     });
 
@@ -388,7 +398,9 @@ const SalesAnalysis = () => {
     };
 
 
-    return (<>
+    return (
+        <>
+
         <div className={cx("analyze")}>
             <div className={cx("row")}>
                 <h1 style={{lineHeight: '2', fontWeight: 'bold', textAlign: 'center', fontSize: '30px'}}>
@@ -604,6 +616,7 @@ const SalesAnalysis = () => {
                 </div>
             </div>
         </div>
+
     </>);
 };
 
