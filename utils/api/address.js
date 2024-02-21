@@ -17,7 +17,7 @@ export const getSidoDataList = async () => {
 };
 
 export const getSigoonDataList = async (addressItem1) => {
-  console.log("addressItem1", addressItem1);
+ 
   const response = await fetch(`${process.env.NEXT_PUBLIC_ADDRESSITEM_SIGUN_URL}${addressItem1}`, {
     method: "GET",
     headers: {

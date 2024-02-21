@@ -41,20 +41,17 @@ const Store = () => {
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  const newRow = storeColumns.reduce((obj, item) => {
-    if (item.accessor === "use_flag") {
-      obj[item.accessor] = 0;
-    } else {
-      obj[item.accessor] = "";
-    }
-    if (item.accessor === "brand_code") {
-      obj[item.accessor] = brandFirstCode;
-    } else {
-      obj[item.accessor] = "";
-    }
-    obj["new"] = "new";
-    return obj;
-  }, {});
+  const newRow = useMemo(() => {
+    return {
+      ...storeColumns.reduce((obj, item) => {
+        obj[item.accessor] = "";
+        return obj;
+      }, {}),
+      "use_flag": 0,
+      "brand_code": brandFirstCode,
+      "new": "new"
+    };
+  }, [brandFirstCode]);
 
   const {
     data: storeData,
