@@ -16,6 +16,7 @@ export const getStoreList = async (companyCode) => {
 };
 
 export const updateStoreList = async (data) => {
+
   const response = await fetch(`/api_default/store/mng/post`, {
     method: "POST",
     headers: {
@@ -31,7 +32,7 @@ export const updateStoreList = async (data) => {
       addr: data.addr,
       gubun1: data.gubun1,
       gubun1_h: data.gubun1_h,
-      qubun2: data.qubun2,
+      gubun2: data.gubun2,
       gubun2_h: data.gubun2_h,
       use_flag: data.use_flag,
       joinFlag: "unjoin",
@@ -46,6 +47,7 @@ export const updateStoreList = async (data) => {
 };
 
 export const addStoreList = async (data) => {
+
   const response = await fetch(`/api_default/store/mng/post`, {
     method: "POST",
     headers: {
@@ -61,7 +63,7 @@ export const addStoreList = async (data) => {
       addr: data.addr,
       gubun1: data.gubun1,
       gubun1_h: data.gubun1_h,
-      qubun2: data.qubun2,
+      gubun2: data.gubun2,
       gubun2_h: data.gubun2_h,
       use_flag: data.use_flag,
       joinFlag: "join",

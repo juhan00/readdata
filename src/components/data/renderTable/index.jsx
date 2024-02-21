@@ -68,6 +68,10 @@ const RenderTable = ({
   const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
   const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
 
+  useEffect(() => {
+    setColumnValues(newRow);
+  },[newRow])
+
   const {
     data: sidoData,
     isLoading: isLoadingSidoDataData,
