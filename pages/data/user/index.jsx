@@ -9,6 +9,7 @@ import SalesMonth from "../common/salesMonth";
 import Dashboard from "../common/dashboard";
 import SalesRegion from "../common/salesRegion";
 import SalesAnalyze from "../common/salesAnalyze";
+import SalesAnalyzeSelect from "../common/SalesAnalyzeSelect";
 import { getCookie, setCookie, deleteCookie } from "cookies-next";
 import { useGlobalState } from "@/context/globalStateContext";
 import { COOKIE_NAME } from "@/consts/common";
@@ -63,6 +64,7 @@ const User = () => {
           {userMenu === "sales_month" && <SalesMonth />}
           {userMenu === "sales_region" && <SalesRegion />}
           {userMenu === "sales_analyze" && <SalesAnalyze />}
+          {userMenu === "sales_analyze_select" && <SalesAnalyzeSelect />}
         </DataLayout>
       </div>
     )

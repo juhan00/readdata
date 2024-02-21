@@ -32,12 +32,14 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
                     {useType === USE_TYPE.USER && (
                         <ul className={cx("user")}>
                             <li>
-                                <button className={cx("sales-day", userMenu.menu === "sales_day" && "active")} onClick={() => handleClickUserMenu("sales_day")}>
+                                <button className={cx("sales-day", userMenu.menu === "sales_day" && "active")}
+                                        onClick={() => handleClickUserMenu("sales_day")}>
                                     {t("data.nav_menu.sales_day")}
                                 </button>
                             </li>
                             <li>
-                                <button className={cx("sales-month", userMenu.menu === "sales_month" && "active")} onClick={() => handleClickUserMenu("sales_month")}>
+                                <button className={cx("sales-month", userMenu.menu === "sales_month" && "active")}
+                                        onClick={() => handleClickUserMenu("sales_month")}>
                                     {t("data.nav_menu.sales_month")}
                                 </button>
                             </li>
@@ -57,13 +59,22 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
                                     {t("data.nav_menu.sales_analyze")}
                                 </button>
                             </li>
+                            <li>
+                                <button
+                                    className={cx("sales-analyze-select", userMenu.menu === "sales_analyze_select" && "active")}
+                                    onClick={() => handleClickUserMenu("sales_analyze_select")}
+                                >
+                                    {t("data.nav_menu.sales_analyze_select")}
+                                </button>
+                            </li>
                         </ul>
                     )}
 
                     {useType === USE_TYPE.ADMIN && (
                         <ul className={cx("admin")}>
                             <li>
-                                <button className={cx("brand", adminMenu.menu === "brand" && "active")} onClick={() => handleClickAdminMenu("brand")}>
+                                <button className={cx("brand", adminMenu.menu === "brand" && "active")}
+                                        onClick={() => handleClickAdminMenu("brand")}>
                                     {t("data.nav_menu.brand")}
                                 </button>
                             </li>

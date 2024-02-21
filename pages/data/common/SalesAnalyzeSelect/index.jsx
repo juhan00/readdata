@@ -28,7 +28,7 @@ const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const SalesAnalysisSelect = () => {
+const SalesAnalyzeSelect = () => {
     const searchFieldData = {
         use_flag: "", chk_fran_name: "", pre_fran_name: "",
     };
@@ -598,4 +598,4 @@ const SalesAnalysisSelect = () => {
     </>);
 };
 
-export default SalesAnalysisSelect;
+export default SalesAnalyzeSelect;
