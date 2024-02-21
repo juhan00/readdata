@@ -17,6 +17,8 @@ import styles from "./salesAnalyze.module.scss";
 import CheckBox from "@/src/components/data/checkBox";
 import ChartPieAnalyze from "@/src/components/data/chartPieAnalyze";
 import {useGlobalState} from "@/context/globalStateContext";
+import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
+import BtnExcelDown_Analyze from "@/src/components/data/button/btnExcelDown_Analyze";
 
 const cx = className.bind(styles);
 
@@ -257,6 +259,7 @@ const SalesAnalysis = () => {
         headerGroups: table1HeaderGroups,
         prepareRow: table1PrepareRow,
         page: table1Page,
+        rows:table1Row,
         state: {pageIndex: table1PageIndex, pageSize: table1PageSize},
         gotoPage: table1GotoPage,
         previousPage: table1PreviousPage,
@@ -278,6 +281,7 @@ const SalesAnalysis = () => {
         headerGroups: table2HeaderGroups,
         prepareRow: table2PrepareRow,
         page: table2Page,
+        rows:table2Row,
         state: {pageIndex: table2PageIndex, pageSize: table2PageSize},
         gotoPage: table2GotoPage,
         previousPage: table2PreviousPage,
@@ -327,7 +331,6 @@ const SalesAnalysis = () => {
         setSearchCompareData((prevData) => ({
             ...prevData, ...searchCompareField,
         }));
-        // gotoPage(0);
         refetchSalesDayData();
         refetchCompareSalesDayData()
         table1GotoPage(0);
@@ -546,6 +549,11 @@ const SalesAnalysis = () => {
             <div className={cx("row", "flex")}>
                 <div className={cx("box", "no-padding-horizontal", "content-wrap")}>
                     <div className={cx("item")}>
+                        <div className={cx("content-btn-wrap")}>
+                            <BtnExcelDown_Analyze columns={table1HeaderGroups} tableData={table1Row} prepareRow={table1PrepareRow} periodType="조회"/>
+                        </div>
+                    </div>
+                    <div className={cx("item")}>
                         {isLoadingCompareSalesDayData ? (
                             <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>) : !combinedData.length ? (
                             <div className={cx("no-data")}>데이터가 없습니다.</div>) : (<>
@@ -556,6 +564,7 @@ const SalesAnalysis = () => {
                                     headerGroups: table1HeaderGroups,
                                     prepareRow: table1PrepareRow,
                                     page: table1Page,
+                                    row:table1Row,
                                     pageIndex: table1PageIndex,
                                     pageSize: table1PageSize,
                                     gotoPage: table1GotoPage,
@@ -580,6 +589,11 @@ const SalesAnalysis = () => {
                     </div>
                 </div>
                 <div className={cx("box", "no-padding-horizontal", "content-wrap")}>
+                    <div className={cx("item")}>
+                        <div className={cx("content-btn-wrap")}>
+                            <BtnExcelDown_Analyze columns={table2HeaderGroups} tableData={table2Row} prepareRow={table2PrepareRow} periodType="대비"/>
+                        </div>
+                    </div>
                     <div className={cx("item")}>
                         {isLoadingCompareSalesDayData ? (
                             <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>) : !combinedCompareData.length ? (
@@ -617,7 +631,7 @@ const SalesAnalysis = () => {
             </div>
         </div>
 
-    </>);
+        </>);
 };
 
 export default SalesAnalysis;

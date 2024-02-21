@@ -130,8 +130,8 @@ const PopupSearchFranchise = ({ handleClickReturn, setIsPopup }) => {
                         tableState={tableState}
                         handleClickReturn={handleClickReturn}
                         returnBtnName={"선택"}
-                        // rowSelect={true}
-                        tableHeight={"28rem"}
+                        rowSelect={true}
+                        tableHeight={"40rem"}
                     />
                 </div>
             </div>
