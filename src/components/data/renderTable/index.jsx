@@ -33,11 +33,13 @@ const RenderTable = ({
   addressFieldName,
   returnBtnName,
   tableHeight,
-  useDoubleClick,
+  useDoubleClick = false,
+  useRowClick = false,
   rowSelect,
   totalRow = false,
   addressItem = false,
   brandItem = false,
+  mouseOver = false,
   rowFixHeaderValues = {},
 }) => {
   const {
@@ -67,10 +69,13 @@ const RenderTable = ({
   const [isCompanyPopupOpen, setIsCompanyPopupOpen] = useState(false);
   const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
   const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
+  const [mouseoverIndex, setMouseoverIndex] = useState(null);
 
-  useEffect(() => {
-    setColumnValues(newRow);
-  },[newRow])
+  useEffect(() => {   
+    if(isAdded){
+      setColumnValues(newRow);
+    } 
+  },[isAdded])
 
   const {
     data: sidoData,
@@ -155,11 +160,11 @@ const RenderTable = ({
     setEditingRow(null);
     handleUpdateData({ ...columnValues });
     setIsEditing(false);
-    setColumnValues({});
+    setColumnValues(newRow);
   };
 
   const handleEditCancelClick = () => {
-    setColumnValues({});
+    setColumnValues(newRow);
     setEditingRow(null);
     setIsEditing(false);
   };
@@ -186,7 +191,7 @@ const RenderTable = ({
 
   const handleAddCancelClick = () => {
     setTableState((prevTableState) => prevTableState.slice(1));
-    setColumnValues({});
+    setColumnValues(newRow);
     setIsAdded(false);
   };
 
@@ -248,6 +253,14 @@ const RenderTable = ({
     setSelectRowIndex(index);
   };
 
+  const handleMouseOver = (index) => {
+    setMouseoverIndex(index);
+  };
+
+  const handleMouseOut = () => {
+    setMouseoverIndex(null);
+  };
+
   //매출분석페이지 합계 Header
   const { sum_total = "", sum_avg = "", sum_pos = "", sum_delivery = "" } = rowFixHeaderValues;
   const SumTotal = sum_total ? sum_total.toLocaleString() : "ㅡ";
@@ -305,11 +318,15 @@ const RenderTable = ({
               return (
                 <tr
                   {...row.getRowProps()}
-                  onDoubleClick={() => (useDoubleClick ? handleClickReturn && handleClickReturn(row.original[returnColumnName]) : "")}
+                  onDoubleClick={() => (useDoubleClick ? handleClickReturn && handleClickReturn(row.original) : "")}
+                  onClick={() => (useRowClick ? handleClickReturn && handleClickReturn(row.original) : "")}
                   className={cx(
                     rowSelect && selectRowIndex === row.index ? "active" : "",
-                    totalRow === true && page.length === rowIndex + 1 ? "total" : ""
+                    totalRow === true && page.length === rowIndex + 1 ? "total" : "",
+                    mouseOver && mouseoverIndex === row.index ? "mouseover" : ""
                   )}
+                  onMouseOver={() => {handleMouseOver(rowIndex)}}
+                  onMouseOut={() => {handleMouseOut()}}
                 >
                   {editMode && (
                     <td>
