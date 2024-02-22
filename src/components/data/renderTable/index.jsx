@@ -268,6 +268,7 @@ const RenderTable = ({
   const SumPos = sum_pos ? Number(sum_pos).toLocaleString() : "ㅡ";
   const SumDelivery = sum_delivery ? Number(sum_delivery).toLocaleString() : "ㅡ";
 
+
   return (
     <>
       <div className={cx("table-wrap")} style={tableHeight && { height: `${tableHeight}` }}>
@@ -374,14 +375,14 @@ const RenderTable = ({
                         {isEditingRow ? (
                           isNumberColumn || isNoEditColumn ? (
                             <input
-                              value={columnValues[cell.column.id] || cell.value || ""}
+                              value={columnValues[cell.column.id] || ""}
                               readOnly
                               onFocus={(e) => {
                                 e.target.blur();
                               }}
                             />
                           ) : isAuthorityColumn ? (
-                            <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
+                            <select value={columnValues[cell.column.id] || ""} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
                               {booleanOption.map((option) => (
                                 <option key={option} value={option}>
                                   {option === 0 ? "사용자" : "관리자"}
@@ -389,7 +390,7 @@ const RenderTable = ({
                               ))}
                             </select>
                           ) : isUseflagColumn ? (
-                            <select value={columnValues[cell.column.id]} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
+                            <select value={columnValues[cell.column.id] || ""} onChange={(e) => handleChange(cell.column.id, Number(e.target.value))}>
                               {booleanOption.map((option) => (
                                 <option key={option} value={option}>
                                   {option === 0 ? "사용안함" : "사용"}
@@ -401,12 +402,12 @@ const RenderTable = ({
                               {isAddressPopupOpen && (
                                 <PopupSearchAddress
                                   onSelectAddress={handleSelectAddress}
-                                  orgAddress={columnValues[cell.column.id] || cell.value || ""}
+                                  orgAddress={columnValues[cell.column.id] || ""}
                                   onClose={() => setIsAddressPopupOpen(false)}
                                 />
                               )}
                               <input
-                                value={columnValues[cell.column.id] || cell.value || ""}
+                                value={columnValues[cell.column.id] || ""}
                                 onClick={(e) => handleClickAddress(cell.column.id, e.target.value)}
                                 readOnly
                                 onFocus={(e) => {
@@ -418,7 +419,7 @@ const RenderTable = ({
                             <AddressItem
                               data={sidoData}
                               id={"gubun1"}
-                              value={columnValues[cell.column.id]}
+                              value={columnValues[cell.column.id] || ""}
                               onChange={(e) => handleChange(cell.column.id, e.target.value, e)}
                               type={SEARCH_ADDRESS.SIDO}
                             />
@@ -426,7 +427,7 @@ const RenderTable = ({
                             <AddressItem
                               data={sigoonData}
                               id={"gubun2"}
-                              value={columnValues[cell.column.id]}
+                              value={columnValues[cell.column.id] || ""}
                               onChange={(e) => handleChange(cell.column.id, e.target.value, e)}
                               type={SEARCH_ADDRESS.SIGOON}
                             />
@@ -436,7 +437,7 @@ const RenderTable = ({
                                 <PopupSearchCompany handleClickReturn={handleSelectCompany} setIsPopup={() => setIsCompanyPopupOpen(false)} />
                               )}
                               <input
-                                value={columnValues[cell.column.id] || cell.value || ""}
+                                value={columnValues[cell.column.id] || ""}
                                 onClick={(e) => handleClickCompany()}
                                 readOnly
                                 onFocus={(e) => {
@@ -461,7 +462,7 @@ const RenderTable = ({
                             </select>
                           ) : (
                             <input
-                              value={columnValues[cell.column.id] || cell.value || ""}
+                              value={columnValues[cell.column.id] || ""}
                               onChange={(e) => handleChange(cell.column.id, e.target.value)}
                             />
                           )
