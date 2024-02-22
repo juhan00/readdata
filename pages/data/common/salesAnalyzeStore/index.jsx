@@ -102,6 +102,10 @@ const SalesAnalyzeStore = () =>{
 
     const [isCompanyPopupOpen, setIsCompanyPopupOpen] = useState(false);
     const [selectedStore, setSelectedStore] = useState(null);
+
+    const [isCompanyPopupOpen2, setIsCompanyPopupOpen2] = useState(false);
+    const [selectedStore2, setSelectedStore2] = useState(null);
+
     const [checkedUseFlag, setCheckedUseFlag] = useState(false);
     const [filterChkData, setFilterChkData] = useState(null);
     const [filterPreData, setFilterPreData] = useState(null);
@@ -113,6 +117,15 @@ const SalesAnalyzeStore = () =>{
     const handleSelectCompany = (selectedCompany) => {
         setIsCompanyPopupOpen(false);
         setSelectedStore(selectedCompany.fran_name);
+    };
+
+    const handleClickCompany2 = () => {
+        setIsCompanyPopupOpen2(true);
+    };
+
+    const handleSelectCompany2 = (selectedCompany2) => {
+        setIsCompanyPopupOpen2(false);
+        setSelectedStore2(selectedCompany2.fran_name);
     };
 
     const {
@@ -127,8 +140,6 @@ const SalesAnalyzeStore = () =>{
         enabled: formatStartDate !== undefined && formatEndDate !== undefined,
     });
 
-    console.log("1",salesDayData);
-    console.log("2",compareSalesDayData);
 
     const handleUseFlagChange = (e) => {
         setCheckedUseFlag((prev) => !prev);
@@ -136,6 +147,94 @@ const SalesAnalyzeStore = () =>{
             ...prevData, [e.target.id]: e.target.checked ? "" : "1",
         }));
     };
+
+    useEffect(() => {
+        if (!isLoadingSalesDayData && !isLoadingCompareSalesDayData && salesDayData && compareSalesDayData) {
+            const chkData = salesDayData?.filter((row) => {
+                const chkFranName = row.chk_fran_name?.toString().toLowerCase();
+                const selectedStoreName = selectedStore?.toLowerCase();
+
+                return !selectedStoreName || (chkFranName && chkFranName === selectedStoreName);
+            });
+
+            const preData = compareSalesDayData?.filter((row) => {
+                const preFranName = row.pre_fran_name?.toString().toLowerCase();
+                const selectedStoreName2 = selectedStore2?.toLowerCase();
+
+                return !selectedStoreName2 || (preFranName && preFranName === selectedStoreName2);
+            });
+
+            setFilterChkData(chkData);
+            setFilterPreData(preData);
+
+            updateColumns();
+            table1GotoPage(0);
+            table2GotoPage(0);
+        }
+    }, [selectedStore, selectedStore2,isLoadingSalesDayData, isLoadingCompareSalesDayData, salesDayData, compareSalesDayData]);
+
+    console.log("선택된 조회 가맹점명!!",selectedStore);
+    console.log("선택된 대비 가맹점명@@",selectedStore2);
+    console.log("조회가맹점데이터!!",filterChkData);
+    console.log("대비가맹점데이터@@",filterPreData);
+
+    const mainHeader = ["매출구분"];
+    const subHeader1 = [{header: "POS", accessor: "chk_pos_sales"}, {header: "배달", accessor: "chk_delivery_sales"},];
+    const subHeader2 = [{header: "POS", accessor: "pre_pos_sales"}, {header: "배달", accessor: "pre_delivery_sales"},];
+
+    const [salesAnalysisColumnsData1, setsalesAnalysisColumnsData1] = useState([]);
+    const [salesAnalysisColumnsData2, setsalesAnalysisColumnsData2] = useState([]);
+
+    const updateColumns = () => {
+        const chkData = salesAnalysisColumns3(mainHeader, subHeader1, formatStartDate, formatEndDate);
+        setsalesAnalysisColumnsData1(chkData);
+
+        const preData = salesAnalysisColumns4(mainHeader, subHeader2, formatStartDate, formatEndDate);
+        setsalesAnalysisColumnsData2(preData);
+    };
+
+
+    const {
+        getTableProps: table1GetTableProps,
+        getTableBodyProps: table1GetTableBodyProps,
+        headerGroups: table1HeaderGroups,
+        prepareRow: table1PrepareRow,
+        page: table1Page,
+        state: {pageIndex: table1PageIndex, pageSize: table1PageSize},
+        gotoPage: table1GotoPage,
+        previousPage: table1PreviousPage,
+        nextPage: table1NextPage,
+        canPreviousPage: table1CanPreviousPage,
+        canNextPage: table1CanNextPage,
+        pageCount: table1PageCount,
+        pageOptions: table1PageOptions,
+    } = useTable({
+        columns: salesAnalysisColumnsData1,
+        data: useMemo(() => filterChkData, [filterChkData]),
+        initialState: {pageIndex: 0, pageSize: 10},
+        autoResetPage: false,
+    }, useSortBy, usePagination);
+
+    const {
+        getTableProps: table2GetTableProps,
+        getTableBodyProps: table2GetTableBodyProps,
+        headerGroups: table2HeaderGroups,
+        prepareRow: table2PrepareRow,
+        page: table2Page,
+        state: {pageIndex: table2PageIndex, pageSize: table2PageSize},
+        gotoPage: table2GotoPage,
+        previousPage: table2PreviousPage,
+        nextPage: table2NextPage,
+        canPreviousPage: table2CanPreviousPage,
+        canNextPage: table2CanNextPage,
+        pageCount: table2PageCount,
+        pageOptions: table2PageOptions,
+    } = useTable({
+        columns: salesAnalysisColumnsData2,
+        data: useMemo(() => filterPreData, [filterPreData]),
+        initialState: {pageIndex: 0, pageSize: 10},
+        autoResetPage: false,
+    }, useSortBy, usePagination);
 
     return (<>
         <div className={cx("analyze-store")}>
@@ -162,8 +261,6 @@ const SalesAnalyzeStore = () =>{
                                     labelText={3}
                                 />
                             </div>*/}
-
-
                             <div className={cx("item")}>
                                 <label className={cx("")} style={{
                                     fontSize: "1.6rem",
@@ -172,7 +269,6 @@ const SalesAnalyzeStore = () =>{
                                     marginLeft: "1.5rem",
                                 }}>조회 가맹점</label>
                             </div>
-
 
                             <div className={cx("item")}>
                                 {isCompanyPopupOpen && (<PopupSearchFranchise handleClickReturn={handleSelectCompany}
@@ -204,11 +300,9 @@ const SalesAnalyzeStore = () =>{
                                     marginLeft: "1.5rem",
                                 }}>비교 가맹점</label>
                             </div>
-
-
                             <div className={cx("item")}>
-                                {isCompanyPopupOpen && (<PopupSearchFranchise handleClickReturn={handleSelectCompany}
-                                                                              setIsPopup={() => setIsCompanyPopupOpen(false)}/>)}
+                                {isCompanyPopupOpen2 && (<PopupSearchFranchise handleClickReturn={handleSelectCompany2}
+                                                                              setIsPopup={() => setIsCompanyPopupOpen2(false)}/>)}
                                 <input
                                     style={{
                                         width: '15rem',
@@ -218,8 +312,8 @@ const SalesAnalyzeStore = () =>{
                                         fontWeight: "bolder",
                                         marginLeft: "-1.2rem"
                                     }}
-                                    value={(selectedStore) || ""}
-                                    onClick={handleClickCompany}
+                                    value={(selectedStore2) || ""}
+                                    onClick={handleClickCompany2}
                                     readOnly
                                     onFocus={(e) => {
                                         e.target.blur();
@@ -345,7 +439,7 @@ const SalesAnalyzeStore = () =>{
                 </div>
             </div>*/}
 
-            {/*<div className={cx("row", "flex")}>
+            <div className={cx("row", "flex")}>
                 <div className={cx("box", "no-padding-horizontal", "content-wrap")}>
                     <div className={cx("item")}>
                         {selectedStore && filterChkData.length ? (<>
@@ -370,10 +464,10 @@ const SalesAnalyzeStore = () =>{
                                 tableState={tableState}
                                 setTableState={setTableState}
                                 rowFixHeaderValues={{
-                                    sum_total: selectedStore,
-                                    sum_avg: sum_chk_total,
-                                    sum_pos: sum_chk_pos,
-                                    sum_delivery: sum_chk_delivery,
+                                    //sum_total: selectedStore,
+                                    //sum_avg: sum_chk_total,
+                                    //sum_pos: sum_chk_pos,
+                                    //sum_delivery: sum_chk_delivery,
                                 }}
                             />
                         </>) : (<div className={cx("no-data")}>
@@ -383,7 +477,7 @@ const SalesAnalyzeStore = () =>{
                 </div>
                 <div className={cx("box", "no-padding-horizontal", "content-wrap")}>
                     <div className={cx("item")}>
-                        {selectedStore && filterPreData.length ? (<>
+                        {selectedStore2 && filterPreData.length ? (<>
                             <RenderTable
                                 tableProps={{
                                     getTableProps: table2GetTableProps,
@@ -402,21 +496,21 @@ const SalesAnalyzeStore = () =>{
                                     pageOptions: table2PageOptions,
                                 }}
                                 editMode={false}
-                                tableState={tableState}
-                                setTableState={setTableState}
+                                tableState={compareTableState}
+                                setTableState={setCompareTableState}
                                 rowFixHeaderValues={{
-                                    sum_total: selectedStore,
-                                    sum_avg: sum_chk_total,
-                                    sum_pos: sum_pre_pos,
-                                    sum_delivery: sum_pre_delivery,
+                                    //sum_total: selectedStore,
+                                    //sum_avg: sum_chk_total,
+                                    //sum_pos: sum_pre_pos,
+                                    //sum_delivery: sum_pre_delivery,
                                 }}
                             />
                         </>) : (<div className={cx("no-data")}>
-                            {selectedStore ? '데이터가 없습니다.' : '가맹점을 선택해주세요'}
+                            {selectedStore2 ? '데이터가 없습니다.' : '가맹점을 선택해주세요'}
                         </div>)}
                     </div>
                 </div>
-            </div>*/}
+            </div>
         </div>
     </>);
 
