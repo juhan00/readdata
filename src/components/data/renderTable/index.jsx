@@ -325,7 +325,7 @@ const RenderTable = ({
                     totalRow === true && page.length === rowIndex + 1 ? "total" : "",
                     mouseOver && mouseoverIndex === row.index ? "mouseover" : ""
                   )}
-                  onMouseOver={() => {handleMouseOver(rowIndex)}}
+                  onMouseOver={() => {handleMouseOver(row.index)}}
                   onMouseOut={() => {handleMouseOut()}}
                 >
                   {editMode && (
