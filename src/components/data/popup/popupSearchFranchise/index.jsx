@@ -93,6 +93,19 @@ const PopupSearchFranchise = ({ handleClickReturn, setIsPopup }) => {
         gotoPage(0);
     };
 
+    const handleKeyPress = (event) => {
+        if (event.key === 'Enter') {
+            handleSearchSubmit();
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('keypress', handleKeyPress);
+        return () => {
+            document.removeEventListener('keypress', handleKeyPress);
+        };
+    }, [handleSearchSubmit]);
+
     return (
         <DataPopupLayout title={"가맹점 선택"} setIsPopup={setIsPopup}>
             <div className={cx("search-franchise")}>
@@ -126,12 +139,11 @@ const PopupSearchFranchise = ({ handleClickReturn, setIsPopup }) => {
                             pageCount,
                             pageOptions,
                         }}
-                        editMode={true}
                         tableState={tableState}
                         handleClickReturn={handleClickReturn}
-                        returnBtnName={"선택"}
-                        rowSelect={true}
-                        tableHeight={"40rem"}
+                        tableHeight={"34.8rem"}
+                        useRowClick={true}
+                        mouseOver={true}
                     />
                 </div>
             </div>
