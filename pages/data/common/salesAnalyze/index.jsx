@@ -477,7 +477,7 @@ const SalesAnalysis = () => {
                             {/*<div className={cx("title", "brand")}>
                             매출 추이
                         </div>*/}
-                            <div className={cx("table-wrap")} style={{height: '13rem', backgroundColor: '#f2f2f2'}}>
+                            <div className={cx("table-wrap")} style={{height: '12.5rem', backgroundColor: '#f2f2f2'}}>
                                 {isLoadingSalesDayData ? (<div className={cx("loading-data")}>데이터를 가져오고
                                     있습니다.</div>) : !combinedData.length ? (
                                     <div className={cx("no-data")}>데이터가 없습니다.</div>) : (

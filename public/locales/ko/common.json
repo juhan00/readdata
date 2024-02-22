@@ -96,7 +96,8 @@
       "sales_region": "지역매출관리",
       "sales_channel": "채널매출",
       "sales_analyze": "매출분석(전체)",
-      "sales_analyze_select": "매출분석(선택)"
+      "sales_analyze_select": "매출분석(선택)",
+      "sales_analyze_store": "가맹 매출비교"
     }
   },
   "search": "검색"

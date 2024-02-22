@@ -79,7 +79,8 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
                                 </button>
                             </li>
                             <li>
-                                <button className={cx("store", adminMenu.menu === "store" && "active")} onClick={() => handleClickAdminMenu("store")}>
+                                <button className={cx("store", adminMenu.menu === "store" && "active")}
+                                        onClick={() => handleClickAdminMenu("store")}>
                                     {t("data.nav_menu.store")}
                                 </button>
                             </li>
@@ -100,7 +101,8 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
                                 </button>
                             </li>
                             <li>
-                                <button className={cx("sales-day", adminMenu.menu === "sales_day" && "active")} onClick={() => handleClickAdminMenu("sales_day")}>
+                                <button className={cx("sales-day", adminMenu.menu === "sales_day" && "active")}
+                                        onClick={() => handleClickAdminMenu("sales_day")}>
                                     {t("data.nav_menu.sales_day")}
                                 </button>
                             </li>
@@ -144,6 +146,14 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
                                     {t("data.nav_menu.sales_analyze_select")}
                                 </button>
                             </li>
+                            <li>
+                                <button
+                                    className={cx("sales-analyze-store", adminMenu.menu === "sales_analyze_store" && "active")}
+                                    onClick={() => handleClickAdminMenu("sales_analyze_store")}
+                                >
+                                    {t("data.nav_menu.sales_analyze_store")}
+                                </button>
+                            </li>
                         </ul>
                     )}
 
@@ -152,7 +162,7 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
                             <li>
                                 <button className={cx("company", adminMenu.menu === "company" && "active")}
                                         onClick={() => handleClickAdminMenu("company")}>
-                                {t("data.nav_menu.company")}
+                                    {t("data.nav_menu.company")}
                                 </button>
                             </li>
                             <li>
@@ -233,6 +243,14 @@ const LeftNavigation = ({ useType, userMenu, adminMenu }) => {
                                     onClick={() => handleClickAdminMenu("sales_analyze_select")}
                                 >
                                     {t("data.nav_menu.sales_analyze_select")}
+                                </button>
+                            </li>
+                            <li>
+                                <button
+                                    className={cx("sales-analyze-store", adminMenu.menu === "sales_analyze_store" && "active")}
+                                    onClick={() => handleClickAdminMenu("sales_analyze_store")}
+                                >
+                                    {t("data.nav_menu.sales_analyze_store")}
                                 </button>
                             </li>
                         </ul>
