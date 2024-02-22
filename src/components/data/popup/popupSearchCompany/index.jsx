@@ -125,7 +125,7 @@ const PopupSearchCompany = ({ handleClickReturn, setIsPopup }) => {
             }}
             tableState={tableState}
             handleClickReturn={handleClickReturn}
-            tableHeight={"28rem"}
+            tableHeight={"40rem"}
             useRowClick={true}
             mouseOver={true}
           />

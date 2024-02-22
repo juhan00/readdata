@@ -16,6 +16,9 @@ import styles from "./salesAnalyze.module.scss";
 
 import CheckBox from "@/src/components/data/checkBox";
 import ChartPieAnalyze from "@/src/components/data/chartPieAnalyze";
+import {useGlobalState} from "@/context/globalStateContext";
+import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
+import BtnExcelDown_Analyze from "@/src/components/data/button/btnExcelDown_Analyze";
 
 const cx = className.bind(styles);
 
@@ -56,14 +59,12 @@ const SalesAnalysis = () => {
         }
     };
 
+    const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
+    const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
+
     const searchFieldData = {
         use_flag: "",
     };
-
-    const today = new Date();
-    const oneMonthAgo = new Date(today);
-    oneMonthAgo.setMonth(today.getMonth() - 1);
-
     const {t} = useTranslation(["common", "dataAdmin"]);
     const [checkedUseFlag, setCheckedUseFlag] = useState(false);
     //조회기간 테이블
@@ -81,12 +82,23 @@ const SalesAnalysis = () => {
     //사용안함 여부
     const [useFlag, setUseFlag] = useState(false);
 
+    //진입 시 날짜 포맷
+    const today = new Date();
+    const oneMonthAgo = new Date(today);
+
+    //-1달, -1일
+    oneMonthAgo.setMonth(today.getMonth() - 1);
+    oneMonthAgo.setDate(oneMonthAgo.getDate() - 1);
+
+    const oneDayAgo = new Date(today);
+    oneDayAgo.setDate(today.getDate() - 1);
+
     //조회기간-달력
     const [startDate, setStartDate] = useState(oneMonthAgo);
-    const [endDate, setEndDate] = useState(today);
+    const [endDate, setEndDate] = useState(oneDayAgo);
     //대비기간-달력
     const [compareStartDate, setCompareStartDate] = useState(oneMonthAgo);
-    const [compareEndDate, setCompareEndDate] = useState(today);
+    const [compareEndDate, setCompareEndDate] = useState(oneDayAgo);
 
     //조회기간 시간
     const formatStartDate = useMemo(() => {
@@ -125,13 +137,13 @@ const SalesAnalysis = () => {
     //조회기간 API
     const {
         data: salesDayData, isLoading: isLoadingSalesDayData, refetch: refetchSalesDayData,
-    } = useQuery(["getSalesDayData"], () => getSalesAnalysisList(formatStartDate, formatEndDate), {
+    } = useQuery(["getSalesDayData"], () => getSalesAnalysisList(companyCode,formatStartDate, formatEndDate), {
         enabled: formatStartDate !== undefined && formatEndDate !== undefined,
     });
     //대비기간 API
     const {
         data: compareSalesDayData, isLoading: isLoadingCompareSalesDayData, refetch: refetchCompareSalesDayData,
-    } = useQuery(["getCompareSalesDayData"], () => getSalesCompareAnalysisList(formatCompareStartDate, formatCompareEndDate), {
+    } = useQuery(["getCompareSalesDayData"], () => getSalesCompareAnalysisList(companyCode, formatCompareStartDate, formatCompareEndDate), {
         enabled: formatCompareStartDate !== undefined && formatCompareEndDate !== undefined,
     });
 
@@ -247,6 +259,7 @@ const SalesAnalysis = () => {
         headerGroups: table1HeaderGroups,
         prepareRow: table1PrepareRow,
         page: table1Page,
+        rows:table1Row,
         state: {pageIndex: table1PageIndex, pageSize: table1PageSize},
         gotoPage: table1GotoPage,
         previousPage: table1PreviousPage,
@@ -268,6 +281,7 @@ const SalesAnalysis = () => {
         headerGroups: table2HeaderGroups,
         prepareRow: table2PrepareRow,
         page: table2Page,
+        rows:table2Row,
         state: {pageIndex: table2PageIndex, pageSize: table2PageSize},
         gotoPage: table2GotoPage,
         previousPage: table2PreviousPage,
@@ -317,7 +331,6 @@ const SalesAnalysis = () => {
         setSearchCompareData((prevData) => ({
             ...prevData, ...searchCompareField,
         }));
-        // gotoPage(0);
         refetchSalesDayData();
         refetchCompareSalesDayData()
         table1GotoPage(0);
@@ -388,7 +401,9 @@ const SalesAnalysis = () => {
     };
 
 
-    return (<>
+    return (
+        <>
+
         <div className={cx("analyze")}>
             <div className={cx("row")}>
                 <h1 style={{lineHeight: '2', fontWeight: 'bold', textAlign: 'center', fontSize: '30px'}}>
@@ -534,6 +549,11 @@ const SalesAnalysis = () => {
             <div className={cx("row", "flex")}>
                 <div className={cx("box", "no-padding-horizontal", "content-wrap")}>
                     <div className={cx("item")}>
+                        <div className={cx("content-btn-wrap")}>
+                            <BtnExcelDown_Analyze columns={table1HeaderGroups} tableData={table1Row} prepareRow={table1PrepareRow} periodType="조회"/>
+                        </div>
+                    </div>
+                    <div className={cx("item")}>
                         {isLoadingCompareSalesDayData ? (
                             <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>) : !combinedData.length ? (
                             <div className={cx("no-data")}>데이터가 없습니다.</div>) : (<>
@@ -544,6 +564,7 @@ const SalesAnalysis = () => {
                                     headerGroups: table1HeaderGroups,
                                     prepareRow: table1PrepareRow,
                                     page: table1Page,
+                                    row:table1Row,
                                     pageIndex: table1PageIndex,
                                     pageSize: table1PageSize,
                                     gotoPage: table1GotoPage,
@@ -568,6 +589,11 @@ const SalesAnalysis = () => {
                     </div>
                 </div>
                 <div className={cx("box", "no-padding-horizontal", "content-wrap")}>
+                    <div className={cx("item")}>
+                        <div className={cx("content-btn-wrap")}>
+                            <BtnExcelDown_Analyze columns={table2HeaderGroups} tableData={table2Row} prepareRow={table2PrepareRow} periodType="대비"/>
+                        </div>
+                    </div>
                     <div className={cx("item")}>
                         {isLoadingCompareSalesDayData ? (
                             <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>) : !combinedCompareData.length ? (
@@ -604,7 +630,8 @@ const SalesAnalysis = () => {
                 </div>
             </div>
         </div>
-    </>);
+
+        </>);
 };
 
 export default SalesAnalysis;

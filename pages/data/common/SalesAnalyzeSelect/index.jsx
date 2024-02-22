@@ -28,14 +28,24 @@ const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const SalesAnalysisSelect = () => {
+const SalesAnalyzeSelect = () => {
     const searchFieldData = {
         use_flag: "", chk_fran_name: "", pre_fran_name: "",
     };
 
+    const [{popupState, userInfo}, setGlobalState] = useGlobalState();
+    const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
+
+    //진입 시 날짜 포맷
     const today = new Date();
     const oneMonthAgo = new Date(today);
+
+    //-1달 하고 -1일
     oneMonthAgo.setMonth(today.getMonth() - 1);
+    oneMonthAgo.setDate(oneMonthAgo.getDate() - 1);
+
+    const oneDayAgo = new Date(today);
+    oneDayAgo.setDate(today.getDate() - 1);
 
     const {t} = useTranslation(["common", "dataAdmin"]);
 
@@ -56,10 +66,10 @@ const SalesAnalysisSelect = () => {
 
     //조회기간-달력
     const [startDate, setStartDate] = useState(oneMonthAgo);
-    const [endDate, setEndDate] = useState(today);
+    const [endDate, setEndDate] = useState(oneDayAgo);
     //대비기간-달력
     const [compareStartDate, setCompareStartDate] = useState(oneMonthAgo);
-    const [compareEndDate, setCompareEndDate] = useState(today);
+    const [compareEndDate, setCompareEndDate] = useState(oneDayAgo);
 
     //조회기간 시간
     const formatStartDate = useMemo(() => {
@@ -128,13 +138,13 @@ const SalesAnalysisSelect = () => {
 
     const {
         data: salesDayData, isLoading: isLoadingSalesDayData, refetch: refetchSalesDayData,
-    } = useQuery(["getSalesDayData", formatStartDate, formatEndDate], () => getSalesAnalysisList(formatStartDate, formatEndDate), {
+    } = useQuery(["getSalesDayData", formatStartDate, formatEndDate], () => getSalesAnalysisList(companyCode, formatStartDate, formatEndDate), {
         enabled: formatStartDate !== undefined && formatEndDate !== undefined,
     });
 
     const {
         data: compareSalesDayData, isLoading: isLoadingCompareSalesDayData, refetch: refetchCompareSalesDayData,
-    } = useQuery(["getCompareSalesDayData", formatCompareStartDate, formatCompareEndDate], () => getSalesCompareAnalysisList(formatCompareStartDate, formatCompareEndDate), {
+    } = useQuery(["getCompareSalesDayData", formatCompareStartDate, formatCompareEndDate], () => getSalesCompareAnalysisList(companyCode, formatCompareStartDate, formatCompareEndDate), {
         enabled: formatCompareStartDate !== undefined && formatCompareEndDate !== undefined,
     });
 
@@ -164,9 +174,9 @@ const SalesAnalysisSelect = () => {
         }
     }, [selectedStore, isLoadingSalesDayData, isLoadingCompareSalesDayData, salesDayData, compareSalesDayData]);
 
-/*
-    console.log(filterPreData)
-    console.log(filterChkData)*/
+    /*
+        console.log(filterPreData)
+        console.log(filterChkData)*/
 
     /*  useEffect(() => {
             if (!isLoadingSalesDayData && salesDayData && compareSalesDayData) {
@@ -402,7 +412,13 @@ const SalesAnalysisSelect = () => {
                                 {isCompanyPopupOpen && (<PopupSearchFranchise handleClickReturn={handleSelectCompany}
                                                                               setIsPopup={() => setIsCompanyPopupOpen(false)}/>)}
                                 <input
-                                    style={{width:'15rem', height:'3.8rem', backgroundColor:'#fddc37' ,fontSize:'1.5rem', fontWeight:"bolder"}}
+                                    style={{
+                                        width: '15rem',
+                                        height: '3.8rem',
+                                        backgroundColor: '#fddc37',
+                                        fontSize: '1.5rem',
+                                        fontWeight: "bolder"
+                                    }}
                                     value={(selectedStore) || ""}
                                     onClick={handleClickCompany}
                                     readOnly
@@ -424,10 +440,10 @@ const SalesAnalysisSelect = () => {
                     <h1 style={{lineHeight: '2', fontWeight: 'bold', textAlign: 'center', marginTop: '3rem'}}>
                         {selectedStore ? (
                             <>
-                        <span>대비기간과 비교하여 조회기간의 매출은 </span>
-                        <span style={directionStyle}>{titleTotal}원 {changeDirection}</span>
+                                <span>대비기간과 비교하여 조회기간의 매출은 </span>
+                                <span style={directionStyle}>{titleTotal}원 {changeDirection}</span>
                             </>
-                        ) : null }
+                        ) : null}
                     </h1>
                     <div className={cx("box", "flex")}>
                         {selectedStore ? (
@@ -442,7 +458,8 @@ const SalesAnalysisSelect = () => {
                                     <ChartPieAnalyze data={chartData3} title="배달"/>
                                 </div>
                             </>
-                        ) : <h2 className={cx("no-data")} style={{fontSize:"2.5rem", marginTop: '8rem', marginBottom:"8rem"}}>가맹점을 선택해주세요</h2>}
+                        ) : <h2 className={cx("no-data")}
+                                style={{fontSize: "2.5rem", marginTop: '8rem', marginBottom: "8rem"}}>가맹점을 선택해주세요</h2>}
                     </div>
                 </div>
             </div>
@@ -450,73 +467,74 @@ const SalesAnalysisSelect = () => {
             <div className={cx("dashboard")} style={{marginTop: '2rem'}}>
                 <div className={cx("row", "flex")} style={{alignItems: 'center'}}>
                     <div className={cx("box", "content-wrap")}>
-                            <div className={cx("table-wrap")} style={{height: '13rem', backgroundColor: '#f2f2f2'}}>
-                                {selectedStore && filterChkData.length ? (
+                        <div className={cx("table-wrap")} style={{height: '13rem', backgroundColor: '#f2f2f2'}}>
+                            {selectedStore && filterChkData.length ? (
+                                <>
                                     <table>
-                                    <thead>
-                                    <tr>
+                                        <thead>
+                                        <tr>
+                                            <th style={{lineHeight: '1.2'}} colSpan={5}>증감</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{lineHeight: '1.2'}} rowSpan={3}>합계</th>
+                                            <th style={{lineHeight: '1.2'}} rowSpan={2}>매출합계</th>
+                                            <th style={{lineHeight: '1.2'}} rowSpan={2}>평균매출</th>
+                                            <th style={{lineHeight: '1.2'}} colSpan={2}>매출구분</th>
+                                        </tr>
+                                        <tr>
+                                            <th style={{lineHeight: '1.2'}}>POS</th>
+                                            <th style={{lineHeight: '1.2'}}>배달</th>
+                                        </tr>
+                                        <tr>
+                                            <td style={{
+                                                backgroundColor: 'rgb(253, 238, 168)',
+                                                lineHeight: '2',
+                                                fontWeight: 'bold',
+                                                textAlign: 'center',
+                                                color: indeCreaseTotal === '0' ? 'black' : (indeCreaseTotal.includes('-') ? 'blue' : 'red')
+                                            }}>
+                                                {indeCreaseTotal !== '0' ? (indeCreaseTotal.includes('-') ? indeCreaseTotal : `+${indeCreaseTotal}`) : indeCreaseTotal}
+                                            </td>
+                                            <td style={{
+                                                backgroundColor: 'rgb(253, 238, 168)',
+                                                lineHeight: '2',
+                                                fontWeight: 'bold',
+                                                textAlign: 'center',
+                                                color: indeCreaseAvg === '0' ? 'black' : (indeCreaseAvg.includes('-') ? 'blue' : 'red')
+                                            }}>
+                                                {indeCreaseAvg !== '0' ? (indeCreaseAvg.includes('-') ? indeCreaseAvg : `+${indeCreaseAvg}`) : indeCreaseAvg}
+                                            </td>
+                                            <td style={{
+                                                backgroundColor: 'rgb(253, 238, 168)',
+                                                lineHeight: '2',
+                                                fontWeight: 'bold',
+                                                textAlign: 'center',
+                                                color: indeCreasePos === '0' ? 'black' : (indeCreasePos.includes('-') ? 'blue' : 'red')
+                                            }}>
+                                                {indeCreasePos !== '0' ? (indeCreasePos.includes('-') ? indeCreasePos : `+${indeCreasePos}`) : indeCreasePos}
+                                            </td>
+                                            <td style={{
+                                                backgroundColor: 'rgb(253, 238, 168)',
+                                                lineHeight: '2',
+                                                fontWeight: 'bold',
+                                                textAlign: 'center',
+                                                color: indeCreaseDelivery === '0' ? 'black' : (indeCreaseDelivery.includes('-') ? 'blue' : 'red')
+                                            }}>
+                                                {indeCreaseDelivery !== '0' ? (indeCreaseDelivery.includes('-') ? indeCreaseDelivery : `+${indeCreaseDelivery}`) : indeCreaseDelivery}
+                                            </td>
+                                        </tr>
+                                        </thead>
 
-                                        <th style={{lineHeight: '1.2'}} colSpan={5}>증감</th>
-                                    </tr>
-                                    <tr>
-                                        <th style={{lineHeight: '1.2'}} rowSpan={3}>합계</th>
-                                        <th style={{lineHeight: '1.2'}} rowSpan={2}>매출합계</th>
-                                        <th style={{lineHeight: '1.2'}} rowSpan={2}>평균매출</th>
-                                        <th style={{lineHeight: '1.2'}} colSpan={2}>매출구분</th>
-                                    </tr>
-                                    <tr>
-                                        <th style={{lineHeight: '1.2'}}>POS</th>
-                                        <th style={{lineHeight: '1.2'}}>배달</th>
-                                    </tr>
-                                    <tr>
-                                        <td style={{
-                                            backgroundColor: 'rgb(253, 238, 168)',
-                                            lineHeight: '2',
-                                            fontWeight: 'bold',
-                                            textAlign: 'center',
-                                            color: indeCreaseTotal === '0' ? 'black' : (indeCreaseTotal.includes('-') ? 'blue' : 'red')
-                                        }}>
-                                            {indeCreaseTotal !== '0' ? (indeCreaseTotal.includes('-') ? indeCreaseTotal : `+${indeCreaseTotal}`) : indeCreaseTotal}
-                                        </td>
-                                        <td style={{
-                                            backgroundColor: 'rgb(253, 238, 168)',
-                                            lineHeight: '2',
-                                            fontWeight: 'bold',
-                                            textAlign: 'center',
-                                            color: indeCreaseAvg === '0' ? 'black' : (indeCreaseAvg.includes('-') ? 'blue' : 'red')
-                                        }}>
-                                            {indeCreaseAvg !== '0' ? (indeCreaseAvg.includes('-') ? indeCreaseAvg : `+${indeCreaseAvg}`) : indeCreaseAvg}
-                                        </td>
-                                        <td style={{
-                                            backgroundColor: 'rgb(253, 238, 168)',
-                                            lineHeight: '2',
-                                            fontWeight: 'bold',
-                                            textAlign: 'center',
-                                            color: indeCreasePos === '0' ? 'black' : (indeCreasePos.includes('-') ? 'blue' : 'red')
-                                        }}>
-                                            {indeCreasePos !== '0' ? (indeCreasePos.includes('-') ? indeCreasePos : `+${indeCreasePos}`) : indeCreasePos}
-                                        </td>
-                                        <td style={{
-                                            backgroundColor: 'rgb(253, 238, 168)',
-                                            lineHeight: '2',
-                                            fontWeight: 'bold',
-                                            textAlign: 'center',
-                                            color: indeCreaseDelivery === '0' ? 'black' : (indeCreaseDelivery.includes('-') ? 'blue' : 'red')
-                                        }}>
-                                            {indeCreaseDelivery !== '0' ? (indeCreaseDelivery.includes('-') ? indeCreaseDelivery : `+${indeCreaseDelivery}`) : indeCreaseDelivery}
-                                        </td>
-                                    </tr>
-                                    </thead>
-
-                                    <tbody>
-                                    </tbody>
-                                </table>
-                                ) : (<div className={cx("no-data")}>
-                                    {selectedStore ? '데이터가 없습니다.' : '가맹점을 선택해주세요'}
-                                </div>)}
-                            </div>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </>
+                            ) : (<div className={cx("no-data")}>
+                                {selectedStore ? '데이터가 없습니다.' : '가맹점을 선택해주세요'}
+                            </div>)}
                         </div>
                     </div>
+                </div>
             </div>
 
             <div className={cx("row", "flex")}>
@@ -545,7 +563,7 @@ const SalesAnalysisSelect = () => {
                                 setTableState={setTableState}
                                 rowFixHeaderValues={{
                                     sum_total: selectedStore,
-                                    sum_avg: sum_chk_pos,
+                                    sum_avg: sum_chk_total,
                                     sum_pos: sum_chk_pos,
                                     sum_delivery: sum_chk_delivery,
                                 }}
@@ -580,7 +598,7 @@ const SalesAnalysisSelect = () => {
                                 setTableState={setTableState}
                                 rowFixHeaderValues={{
                                     sum_total: selectedStore,
-                                    sum_avg: sum_pre_pos,
+                                    sum_avg: sum_chk_total,
                                     sum_pos: sum_pre_pos,
                                     sum_delivery: sum_pre_delivery,
                                 }}
@@ -595,4 +613,4 @@ const SalesAnalysisSelect = () => {
     </>);
 };
 
-export default SalesAnalysisSelect;
+export default SalesAnalyzeSelect;

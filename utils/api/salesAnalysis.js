@@ -1,5 +1,5 @@
-export const getSalesAnalysisList = async (startDate, endDate) => {
-    const response = await fetch(`/api_default/profile/chk/all?company_code=C0001&from_date=${startDate}&to_date=${endDate}`, {
+export const getSalesAnalysisList = async (companyCode, startDate, endDate) => {
+    const response = await fetch(`/api_default/profile/chk/all?company_code=${companyCode}&from_date=${startDate}&to_date=${endDate}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -16,8 +16,8 @@ export const getSalesAnalysisList = async (startDate, endDate) => {
 
 };
 
-export const getSalesCompareAnalysisList = async (startDate, endDate) => {
-    const response = await fetch(`/api_default/profile/pre/all?company_code=C0001&from_date=${startDate}&to_date=${endDate}`, {
+export const getSalesCompareAnalysisList = async (companyCode, startDate, endDate) => {
+    const response = await fetch(`/api_default/profile/pre/all?company_code=${companyCode}&from_date=${startDate}&to_date=${endDate}`, {
         method: "GET",
         headers: {
             "Content-Type": "application/json",

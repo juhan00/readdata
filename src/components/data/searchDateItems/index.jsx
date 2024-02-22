@@ -9,11 +9,11 @@ import className from "classnames/bind";
 const cx = className.bind(styles);
 
 const SearchDateItem = ({ startDate, endDate, handleStartDateChange, handleEndDateChange, isMonth, updateDate, labelText }) => {
-    const handleEndDateSelect = (date) => {
+   /* const handleEndDateSelect = (date) => {
         if (date.getTime() === endDate.getTime()) {
             updateDate(date);
         }
-    };
+    };*/
 
     return (
         <div className={cx("search-date-items")}>
@@ -29,6 +29,7 @@ const SearchDateItem = ({ startDate, endDate, handleStartDateChange, handleEndDa
                         dateFormat="yyyy-MM"
                         placeholderText=""
                         showMonthYearPicker
+                        maxDate={endDate}
                     />
                 ) : (
                     <DatePicker
@@ -40,6 +41,7 @@ const SearchDateItem = ({ startDate, endDate, handleStartDateChange, handleEndDa
                         locale={ko}
                         dateFormat="yyyy-MM-dd"
                         placeholderText=""
+                        maxDate={endDate}
                     />
                 )}
             </div>
@@ -49,17 +51,19 @@ const SearchDateItem = ({ startDate, endDate, handleStartDateChange, handleEndDa
                     <DatePicker
                         selected={endDate}
                         onChange={handleEndDateChange}
-                        onSelect={handleEndDateSelect}
+                        /*onSelect={handleEndDateSelect}*/
                         locale={ko}
                         dateFormat="yyyy-MM"
                         placeholderText=""
                         showMonthYearPicker
+                        minDate={startDate}
+                        maxDate={new Date(new Date().setDate(new Date().getDate() - 1))}
                     />
                 ) : (
                     <DatePicker
                         selected={endDate}
                         onChange={handleEndDateChange}
-                        onSelect={handleEndDateSelect}
+                        /*onSelect={handleEndDateSelect}*/
                         // selectsEnd
                         // startDate={startDate}
                         // endDate={endDate}
@@ -67,6 +71,8 @@ const SearchDateItem = ({ startDate, endDate, handleStartDateChange, handleEndDa
                         locale={ko}
                         dateFormat="yyyy-MM-dd"
                         placeholderText=""
+                        minDate={startDate}
+                        maxDate={new Date(new Date().setDate(new Date().getDate() - 1))}
                     />
                 )}
             </div>
