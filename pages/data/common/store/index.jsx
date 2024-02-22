@@ -92,7 +92,7 @@ const Store = () => {
   });
 
   useEffect(() => {
-    if (!brandData) {
+    if (!brandData || brandData.length === 0) {
       return;
     }
     setBrandFirstCode(brandData[0].brand_code);
@@ -240,6 +240,10 @@ const Store = () => {
       });
       return transformedItem;
     });
+
+useEffect(() => {
+ console.log("brandData", brandData);
+},[brandData])
 
   return (
     <>
