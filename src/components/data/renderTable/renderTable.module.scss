@@ -58,6 +58,12 @@
           background-color: #fffae3;
         }
       }
+      tr.mouseover {
+        td {
+          font-weight:bold;
+          cursor: pointer;
+        }
+      }
       tr.total {
         td {
           font-weight: 700;

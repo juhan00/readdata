@@ -123,12 +123,11 @@ const PopupSearchCompany = ({ handleClickReturn, setIsPopup }) => {
               pageCount,
               pageOptions,
             }}
-            editMode={true}
             tableState={tableState}
             handleClickReturn={handleClickReturn}
-            returnBtnName={"선택"}
-            // rowSelect={true}
             tableHeight={"28rem"}
+            useRowClick={true}
+            mouseOver={true}
           />
         </div>
       </div>
