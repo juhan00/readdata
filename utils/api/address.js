@@ -1,7 +1,7 @@
 require("dotenv").config();
 
 export const getSidoDataList = async () => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_ADDRESSITEM_SIDO_TEST_URL}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_ADDRESSITEM_SIDO_URL}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -18,7 +18,7 @@ export const getSidoDataList = async () => {
 
 export const getSigoonDataList = async (addressItem1) => {
  
-  const response = await fetch(`${process.env.NEXT_PUBLIC_ADDRESSITEM_SIGUN_TEST_URL}${addressItem1}`, {
+  const response = await fetch(`${process.env.NEXT_PUBLIC_ADDRESSITEM_SIGUN_URL}${addressItem1}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
