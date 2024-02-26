@@ -14,7 +14,7 @@ import className from "classnames/bind";
 import styles from "./scrapingSearch.module.scss";
 const cx = className.bind(styles);
 
-const ScrapingSearch = ({ selectFranName, selectFranCode, refetchStoreMapingData }) => {
+const ScrapingSearch = ({ selectBrandCode, selectFranName, selectFranCode, refetchStoreMapingData }) => {
   const { t } = useTranslation(["common", "columns"]);
   const scrapingColumns = useMemo(() => changeScrapingColumns(t), []);
 

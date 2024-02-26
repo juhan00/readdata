@@ -1,6 +1,16 @@
 .brand {
   .row {
     @include data-content-row;
+
+    &.flex {
+      .box:nth-of-type(1) {
+        width: 70%;
+      }
+      .box:nth-of-type(2) {
+        width: 30%;
+        min-width: 40rem;
+      }
+    }
   }
 
   .search-wrap {

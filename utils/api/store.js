@@ -16,7 +16,6 @@ export const getStoreList = async (companyCode) => {
 };
 
 export const updateStoreList = async (data) => {
-
   const response = await fetch(`/api_default/store/mng/post`, {
     method: "POST",
     headers: {
@@ -47,7 +46,6 @@ export const updateStoreList = async (data) => {
 };
 
 export const addStoreList = async (data) => {
-
   const response = await fetch(`/api_default/store/mng/post`, {
     method: "POST",
     headers: {
@@ -95,6 +93,8 @@ export const getStoreAccountList = async (companyCode) => {
 };
 
 export const updateStoreAccountList = async (data) => {
+  console.log("updateStoreAccountList", data);
+  return;
   const response = await fetch(`/api_default/store/acc/post`, {
     method: "POST",
     headers: {
@@ -139,7 +139,7 @@ export const updateStoreAccountList = async (data) => {
       etc5_sid: data.etc5_sid,
       etc5_site: data.etc5_name,
       brand_name: data.brand_name,
-      use_flag: data.use_flag,
+      brand_code: data.brand_code,
       joinFlag: "unjoin",
     }),
   });
@@ -191,6 +191,40 @@ export const updateStoreMapingList = async (data) => {
 export const getScrapingList = async (companyCode, checkedJoinFlag) => {
   const joinFlag = checkedJoinFlag ? "join" : "unjoin";
   const response = await fetch(`/api_default/franchise/scrap?company_code=${companyCode}&joinflag=${joinFlag}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch data.");
+  }
+
+  const data = await response.json();
+
+  return data.data;
+};
+
+export const getStoreAccountPosName = async () => {
+  const response = await fetch(`/api_default/chanel/list?gubun=P`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to fetch data.");
+  }
+
+  const data = await response.json();
+
+  return data.data;
+};
+
+export const getStoreAccountEtcName = async () => {
+  const response = await fetch(`/api_default/chanel/list?gubun=D`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

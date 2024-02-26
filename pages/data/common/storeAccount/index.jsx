@@ -6,12 +6,12 @@ import BtnExcelDown from "@/src/components/data/button/btnExcelDown";
 import BtnSearch from "@/src/components/data/button/btnSearch";
 import RenderTable from "@/src/components/data/renderTable";
 import SearchItem from "@/src/components/data/searchItem";
-import { getStoreAccountList, updateStoreAccountList } from "@/utils/api/store";
+import { getStoreAccountList } from "@/utils/api/store";
 import { useTranslation } from "next-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
-
+import StoreAccountAdd from "@/src/components/data/storeAccountAdd";
 //styles
 import className from "classnames/bind";
 import styles from "./storeAccount.module.scss";
@@ -35,6 +35,7 @@ const StoreAccount = () => {
   const [searchField, setSearchField] = useState(searchFieldData);
   const [isAdded, setIsAdded] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [selectStoreState, setSelectStoreState] = useState({});
 
   const {
     data: storeData,
@@ -47,24 +48,6 @@ const StoreAccount = () => {
       setTableState(storeData);
     }
   }, [storeData, isLoadingStoreData]);
-
-  const updateMutation = useMutation(async (data) => await updateStoreAccountList(data), {
-    onSuccess: () => {
-      refetchStoreData();
-    },
-    onError: (error) => {
-      console.error("Update error:", error);
-
-      setGlobalState((prevGlobalState) => ({
-        ...prevGlobalState,
-        popupState: {
-          isOn: true,
-          popup: POPUP_DEFAULT,
-          content: "업데이트에 실패했습니다.",
-        },
-      }));
-    },
-  });
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
@@ -116,13 +99,13 @@ const StoreAccount = () => {
     gotoPage(0);
   };
 
-  const handleUpdateData = (data) => {
-    updateMutation.mutate(data);
+  const handleClickReturn = (state) => {
+    setSelectStoreState({ ...state });
   };
 
   useEffect(() => {
     console.log("memoizedData", memoizedData);
-  },[memoizedData])
+  }, [memoizedData]);
 
   return (
     <>
@@ -158,7 +141,7 @@ const StoreAccount = () => {
           </div>
         </div>
 
-        <div className={cx("row")}>
+        <div className={cx("row", "flex")}>
           <div className={cx("box", "content-wrap")}>
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
@@ -187,16 +170,17 @@ const StoreAccount = () => {
                     pageOptions,
                   }}
                   editMode={true}
-                  isAdded={isAdded}
-                  setIsAdded={setIsAdded}
-                  isEditing={isEditing}
-                  setIsEditing={setIsEditing}
-                  handleUpdateData={handleUpdateData}
                   tableState={tableState}
                   setTableState={setTableState}
+                  handleClickReturn={handleClickReturn}
+                  returnBtnName={"선택"}
+                  rowSelect={true}
                 />
               )}
             </div>
+          </div>
+          <div className={cx("box", "content-wrap")}>
+            <StoreAccountAdd selectStoreState={selectStoreState} />
           </div>
         </div>
       </div>

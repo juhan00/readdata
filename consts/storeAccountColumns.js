@@ -2,6 +2,19 @@ import { TABLE_COLUMN_TYPE } from "./common";
 
 export const changeStoreAccountColumns = (t) => [
   {
+    Header: "브랜드 코드",
+    accessor: "brand_code",
+    headerStyle: {
+      display: "none",
+      textAlign: "center",
+    },
+    cellStyle: {
+      display: "none",
+      textAlign: "center",
+    },
+    noEdit: true,
+  },
+  {
     Header: "브랜드 명",
     accessor: "brand_name",
     headerStyle: {
@@ -110,6 +123,16 @@ export const changeStoreAccountColumns = (t) => [
   {
     Header: "STORE ID (배민)",
     accessor: "bae_sid",
+    headerStyle: {
+      textAlign: "center",
+    },
+    cellStyle: {
+      textAlign: "center",
+    },
+  },
+  {
+    Header: "STORE ID (배민1)",
+    accessor: "bae1_sid",
     headerStyle: {
       textAlign: "center",
     },
