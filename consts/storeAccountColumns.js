@@ -2,6 +2,17 @@ import { TABLE_COLUMN_TYPE } from "./common";
 
 export const changeStoreAccountColumns = (t) => [
   {
+    Header: "브랜드 명",
+    accessor: "brand_name",
+    headerStyle: {
+      textAlign: "center",
+    },
+    cellStyle: {
+      textAlign: "center",
+    },
+    noEdit: true,
+  },
+  {
     Header: "가맹점 코드",
     accessor: "fran_code",
     headerStyle: {
@@ -37,7 +48,7 @@ export const changeStoreAccountColumns = (t) => [
     noEdit: true,
   },
   {
-    Header: "포스 이름",
+    Header: "POS구분",
     accessor: "pos_name",
     headerStyle: {
       textAlign: "center",
@@ -47,7 +58,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "포스 아이디",
+    Header: "ID (POS)",
     accessor: "pos_id",
     headerStyle: {
       textAlign: "center",
@@ -57,7 +68,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "포스 패스워드",
+    Header: "PW (POS)",
     accessor: "pos_pw",
     headerStyle: {
       textAlign: "center",
@@ -67,7 +78,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "포스 스토어ID",
+    Header: "STORE ID (POS)",
     accessor: "pos_sid",
     headerStyle: {
       textAlign: "center",
@@ -77,7 +88,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배민 아이디",
+    Header: "ID (배민)",
     accessor: "bae_id",
     headerStyle: {
       textAlign: "center",
@@ -87,7 +98,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배민 패스워드",
+    Header: "PW (배민)",
     accessor: "bae_pw",
     headerStyle: {
       textAlign: "center",
@@ -97,7 +108,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배민 스토어ID",
+    Header: "STORE ID (배민)",
     accessor: "bae_sid",
     headerStyle: {
       textAlign: "center",
@@ -107,17 +118,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배민1 스토어ID",
-    accessor: "bae1_sid",
-    headerStyle: {
-      textAlign: "center",
-    },
-    cellStyle: {
-      textAlign: "center",
-    },
-  },
-  {
-    Header: "요기요 아이디",
+    Header: "ID (요기요)",
     accessor: "yogi_id",
     headerStyle: {
       textAlign: "center",
@@ -127,7 +128,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "요기요 패스워드",
+    Header: "PW (요기요)",
     accessor: "yogi_pw",
     headerStyle: {
       textAlign: "center",
@@ -137,7 +138,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "요기요 스토어ID",
+    Header: "STORE ID (요기요)",
     accessor: "yogi_sid",
     headerStyle: {
       textAlign: "center",
@@ -147,7 +148,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "쿠팡이츠 아이디",
+    Header: "ID (쿠팡이츠)",
     accessor: "cupang_id",
     headerStyle: {
       textAlign: "center",
@@ -157,7 +158,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "쿠팡이츠 패스워드",
+    Header: "PW (쿠팡이츠)",
     accessor: "cupang_pw",
     headerStyle: {
       textAlign: "center",
@@ -167,7 +168,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "쿠팡이츠 스토어ID",
+    Header: "STORE ID (쿠팡이츠)",
     accessor: "cupang_sid",
     headerStyle: {
       textAlign: "center",
@@ -177,37 +178,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달1 아이디",
-    accessor: "etc1_id",
-    headerStyle: {
-      textAlign: "center",
-    },
-    cellStyle: {
-      textAlign: "center",
-    },
-  },
-  {
-    Header: "배달1 패스워드",
-    accessor: "etc1_pw",
-    headerStyle: {
-      textAlign: "center",
-    },
-    cellStyle: {
-      textAlign: "center",
-    },
-  },
-  {
-    Header: "배달1 스토어ID",
-    accessor: "etc1_sid",
-    headerStyle: {
-      textAlign: "center",
-    },
-    cellStyle: {
-      textAlign: "center",
-    },
-  },
-  {
-    Header: "배달1 이름",
+    Header: "배달앱1 구분",
     accessor: "etc1_name",
     headerStyle: {
       textAlign: "center",
@@ -217,8 +188,8 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달2 아이디",
-    accessor: "etc2_id",
+    Header: "ID (배달앱1)",
+    accessor: "etc1_id",
     headerStyle: {
       textAlign: "center",
     },
@@ -227,8 +198,8 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달2 패스워드",
-    accessor: "etc2_pw",
+    Header: "PW (배달앱1)",
+    accessor: "etc1_pw",
     headerStyle: {
       textAlign: "center",
     },
@@ -237,8 +208,8 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달2 스토어ID",
-    accessor: "etc2_sid",
+    Header: "STORE ID (배달앱1)",
+    accessor: "etc1_sid",
     headerStyle: {
       textAlign: "center",
     },
@@ -247,7 +218,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달2 이름",
+    Header: "배달앱2 구분",
     accessor: "etc2_name",
     headerStyle: {
       textAlign: "center",
@@ -257,8 +228,8 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달3 아이디",
-    accessor: "etc3_id",
+    Header: "ID (배달앱2)",
+    accessor: "etc2_id",
     headerStyle: {
       textAlign: "center",
     },
@@ -267,8 +238,8 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달3 패스워드",
-    accessor: "etc3_pw",
+    Header: "PW (배달앱2)",
+    accessor: "etc2_pw",
     headerStyle: {
       textAlign: "center",
     },
@@ -277,8 +248,8 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달3 스토어ID",
-    accessor: "etc3_sid",
+    Header: "STORE ID (배달앱2)",
+    accessor: "etc2_sid",
     headerStyle: {
       textAlign: "center",
     },
@@ -287,7 +258,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달3 이름",
+    Header: "배달앱3 구분",
     accessor: "etc3_name",
     headerStyle: {
       textAlign: "center",
@@ -297,8 +268,8 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달4 아이디",
-    accessor: "etc4_id",
+    Header: "ID (배달앱3)",
+    accessor: "etc3_id",
     headerStyle: {
       textAlign: "center",
     },
@@ -307,8 +278,8 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달4 패스워드",
-    accessor: "etc4_pw",
+    Header: "PW (배달앱3)",
+    accessor: "etc3_pw",
     headerStyle: {
       textAlign: "center",
     },
@@ -317,8 +288,8 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달4 스토어ID",
-    accessor: "etc4_sid",
+    Header: "STORE ID (배달앱3)",
+    accessor: "etc3_sid",
     headerStyle: {
       textAlign: "center",
     },
@@ -327,7 +298,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달4 이름",
+    Header: "배달앱4 구분",
     accessor: "etc4_name",
     headerStyle: {
       textAlign: "center",
@@ -337,8 +308,8 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달5 아이디",
-    accessor: "etc5_id",
+    Header: "ID (배달앱4)",
+    accessor: "etc4_id",
     headerStyle: {
       textAlign: "center",
     },
@@ -347,8 +318,8 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달5 패스워드",
-    accessor: "etc5_pw",
+    Header: "PW (배달앱4)",
+    accessor: "etc4_pw",
     headerStyle: {
       textAlign: "center",
     },
@@ -357,8 +328,8 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달5 스토어ID",
-    accessor: "etc5_sid",
+    Header: "STORE ID (배달앱4)",
+    accessor: "etc4_sid",
     headerStyle: {
       textAlign: "center",
     },
@@ -367,7 +338,7 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "배달5 이름",
+    Header: "배달앱5 구분",
     accessor: "etc5_name",
     headerStyle: {
       textAlign: "center",
@@ -377,14 +348,33 @@ export const changeStoreAccountColumns = (t) => [
     },
   },
   {
-    Header: "브랜드 명",
-    accessor: "brand_name",
+    Header: "ID (배달앱5)",
+    accessor: "etc5_id",
     headerStyle: {
       textAlign: "center",
     },
     cellStyle: {
       textAlign: "center",
     },
-    noEdit: true,
+  },
+  {
+    Header: "PW (배달앱5)",
+    accessor: "etc5_pw",
+    headerStyle: {
+      textAlign: "center",
+    },
+    cellStyle: {
+      textAlign: "center",
+    },
+  },
+  {
+    Header: "STORE ID (배달앱5)",
+    accessor: "etc5_sid",
+    headerStyle: {
+      textAlign: "center",
+    },
+    cellStyle: {
+      textAlign: "center",
+    },
   },
 ];

@@ -120,6 +120,10 @@ const StoreAccount = () => {
     updateMutation.mutate(data);
   };
 
+  useEffect(() => {
+    console.log("memoizedData", memoizedData);
+  },[memoizedData])
+
   return (
     <>
       <div className={cx("brand")}>
