@@ -4,11 +4,11 @@
 
     &.flex {
       .box:nth-of-type(1) {
-        width: 70%;
+        width: 65%;
       }
       .box:nth-of-type(2) {
-        width: 30%;
-        min-width: 40rem;
+        width: 45%;
+        padding: 2rem 1rem 2rem 3rem;
       }
     }
   }
@@ -87,6 +87,13 @@
           z-index: 2;
         }
       }
+    }
+  }
+  .right {
+    .store-account-add {
+      overflow-y: scroll;
+      max-height: 60rem;
+      padding-right: 3rem;
     }
   }
 }

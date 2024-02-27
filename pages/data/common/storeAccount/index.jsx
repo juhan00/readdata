@@ -230,8 +230,10 @@ const StoreAccount = () => {
               )}
             </div>
           </div>
-          <div className={cx("box", "content-wrap")}>
-            <StoreAccountAdd selectStoreState={selectStoreState} />
+          <div className={cx("box", "right")}>
+            <div className={cx("store-account-add")}>
+              <StoreAccountAdd selectStoreState={selectStoreState} />
+            </div>
           </div>
         </div>
       </div>
