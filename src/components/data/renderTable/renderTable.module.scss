@@ -45,8 +45,8 @@
           }
         }
       }
-      th + th {
-        border-left: 0.1rem solid #d9d9d9;
+      th:not(:last-of-type) {
+        border-right: 0.1rem solid #eeeeee;
       }
       .edit-th {
         min-width: 50px;
@@ -60,7 +60,7 @@
       }
       tr.mouseover {
         td {
-          font-weight:bold;
+          font-weight: bold;
           cursor: pointer;
           background-color: #fffae3;
         }
@@ -121,8 +121,8 @@
           }
         }
       }
-      td + td {
-        border-left: 0.1rem solid #eeeeee;
+      td:not(:last-of-type) {
+        border-right: 0.1rem solid #eeeeee;
       }
     }
   }

@@ -18,11 +18,9 @@ export const changeStoreAccountColumns = (t) => [
     Header: "브랜드 명",
     accessor: "brand_name",
     headerStyle: {
-      position: "sticky",
       textAlign: "center",
     },
     cellStyle: {
-      position: "sticky",
       textAlign: "center",
     },
     noEdit: true,
@@ -44,13 +42,9 @@ export const changeStoreAccountColumns = (t) => [
     Header: "가맹점 명",
     accessor: "fran_name",
     headerStyle: {
-      width: 100,
-      position: "sticky",
       textAlign: "center",
     },
     cellStyle: {
-      width: 100,
-      position: "sticky",
       textAlign: "center",
     },
     noEdit: true,
@@ -59,11 +53,9 @@ export const changeStoreAccountColumns = (t) => [
     Header: "사업자등록번호",
     accessor: "bizno",
     headerStyle: {
-      position: "sticky",
       textAlign: "center",
     },
     cellStyle: {
-      position: "sticky",
       textAlign: "center",
     },
     noEdit: true,
