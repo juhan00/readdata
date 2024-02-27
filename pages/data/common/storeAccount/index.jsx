@@ -12,6 +12,9 @@ import { useEffect, useMemo, useState } from "react";
 import { QueryClient, useMutation, useQuery } from "react-query";
 import { usePagination, useSortBy, useTable } from "react-table";
 import StoreAccountAdd from "@/src/components/data/storeAccountAdd";
+import BtnExcelUpload from "@/src/components/data/button/btnExcelUpload";
+import { updateStoreAccountList } from "@/utils/api/store";
+
 //styles
 import className from "classnames/bind";
 import styles from "./storeAccount.module.scss";
@@ -38,16 +41,16 @@ const StoreAccount = () => {
   const [selectStoreState, setSelectStoreState] = useState({});
 
   const {
-    data: storeData,
-    isLoading: isLoadingStoreData,
-    refetch: refetchStoreData,
+    data: storeAccountData,
+    isLoading: isLoadingStoreAccountData,
+    refetch: refetchStoreAccountData,
   } = useQuery("getStoreAccountData", () => getStoreAccountList(companyCode), { enabled: companyCode !== undefined });
 
   useEffect(() => {
-    if (!isLoadingStoreData && storeData) {
-      setTableState(storeData);
+    if (!isLoadingStoreAccountData && storeAccountData) {
+      setTableState(storeAccountData);
     }
-  }, [storeData, isLoadingStoreData]);
+  }, [storeAccountData, isLoadingStoreAccountData]);
 
   const memoizedData = useMemo(() => {
     return tableState?.filter(
@@ -103,9 +106,56 @@ const StoreAccount = () => {
     setSelectStoreState({ ...state });
   };
 
-  useEffect(() => {
-    console.log("memoizedData", memoizedData);
-  }, [memoizedData]);
+  const excelMutation = useMutation(
+    async (excelData) => {
+      for (const data of excelData) {
+        try {
+          await updateStoreAccountList(data);
+        } catch (error) {
+          console.error("Update error:", error);
+          throw error;
+        }
+      }
+    },
+    {
+      onSuccess: () => {
+        refetchStoreAccountData();
+        gotoPage(0);
+
+        setGlobalState((prevGlobalState) => ({
+          ...prevGlobalState,
+          popupState: {
+            isOn: true,
+            popup: POPUP_DEFAULT,
+            content: "엑셀업로드가 완료되었습니다.",
+          },
+        }));
+      },
+      onError: (error) => {
+        console.error("Update error:", error);
+
+        setGlobalState((prevGlobalState) => ({
+          ...prevGlobalState,
+          popupState: {
+            isOn: true,
+            popup: POPUP_DEFAULT,
+            content: "엑셀업로드가 실패했습니다.",
+          },
+        }));
+      },
+    }
+  );
+
+  const transformExcelCell = (excelData) =>
+    excelData.map((item) => {
+      const transformedItem = {};
+      storeAccountColumns.forEach((column) => {
+        if (item.hasOwnProperty(column.Header)) {
+          transformedItem[column.accessor] = item[column.Header] === undefined ? "" : item[column.Header];
+        }
+      });
+      return transformedItem;
+    });
 
   return (
     <>
@@ -146,10 +196,11 @@ const StoreAccount = () => {
             <div className={cx("item")}>
               <div className={cx("content-btn-wrap")}>
                 <BtnExcelDown columns={headerGroups} tableData={rows} prepareRow={prepareRow} />
+                <BtnExcelUpload transformExcelCell={transformExcelCell} excelMutation={excelMutation} />
               </div>
             </div>
             <div className={cx("item")}>
-              {isLoadingStoreData ? (
+              {isLoadingStoreAccountData ? (
                 <div className={cx("loading-data")}>데이터를 가져오고 있습니다.</div>
               ) : (
                 <RenderTable

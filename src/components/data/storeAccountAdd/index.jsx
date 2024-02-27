@@ -17,9 +17,19 @@ const StoreAccountAdd = ({ selectStoreState }) => {
   const [fieldData, setFieldData] = useState({});
 
   useEffect(() => {
-    setFieldData(() => ({
-      ...selectStoreState,
-    }));
+    setFieldData((prevFieldData) => {
+      const updatedFieldData = { ...prevFieldData };
+
+      Object.keys(selectStoreState).forEach((key) => {
+        if (selectStoreState[key] === null || selectStoreState[key] === undefined) {
+          updatedFieldData[key] = "";
+        } else {
+          updatedFieldData[key] = selectStoreState[key];
+        }
+      });
+
+      return updatedFieldData;
+    });
   }, [selectStoreState]);
 
   const {
@@ -77,12 +87,6 @@ const StoreAccountAdd = ({ selectStoreState }) => {
       updateMutation.mutate();
     }
   };
-
-  useEffect(() => {
-    console.log("fieldData", fieldData);
-    console.log("storeAccountPosName", storeAccountPosName);
-    console.log("storeAccountEtcName", storeAccountEtcName);
-  }, [fieldData, storeAccountPosName, storeAccountEtcName]);
 
   return (
     <div className={cx("store-account-add")}>
