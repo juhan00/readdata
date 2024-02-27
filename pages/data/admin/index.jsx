@@ -19,11 +19,12 @@ import SalesChannel from "../common/salesChannel";
 import { getCookie, setCookie, deleteCookie } from "cookies-next";
 import { useGlobalState } from "@/context/globalStateContext";
 import { COOKIE_NAME } from "@/consts/common";
+import SalesAnalyzeSelect from "@/pages/data/common/SalesAnalyzeSelect";
+import SalesAnalyzeStore from "@/pages/data/common/SalesAnalyzeStore";
 
 //styles
 import className from "classnames/bind";
 import styles from "./admin.module.scss";
-import SalesAnalyzeSelect from "@/pages/data/common/SalesAnalyzeSelect";
 
 const cx = className.bind(styles);
 
@@ -88,6 +89,7 @@ const Admin = () => {
           {adminMenu === "sales_channel" && <SalesChannel />}
           {adminMenu === "sales_analyze" && <SalesAnalyze />}
           {adminMenu === "sales_analyze_select" && <SalesAnalyzeSelect />}
+          {adminMenu === "sales_analyze_store" && <SalesAnalyzeStore />}
         </DataLayout>
       </div>
     )

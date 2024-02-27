@@ -15,7 +15,7 @@ import CheckBox from "@/src/components/data/checkBox";
 
 //styles
 import className from "classnames/bind";
-import styles from "./SalesAnalyzeSelect.module.scss";
+import styles from "./SalesAnalyzeStore.module.scss";
 
 
 
@@ -23,7 +23,8 @@ const cx = className.bind(styles);
 
 const queryClient = new QueryClient();
 
-const SalesAnalyzeSelect = () => {
+const SalesAnalyzeStore = () =>{
+
     const searchFieldData = {
         use_flag: "", chk_fran_name: "", pre_fran_name: "",
     };
@@ -99,25 +100,12 @@ const SalesAnalyzeSelect = () => {
         setCompareEndDate(date);
     };
 
-    /*
-
-        const handleFieldChange = (field, e) => {
-            e.preventDefault();
-            setSearchField((prevData) => ({
-                ...prevData,
-                [field]: e.target.value,
-            }));
-            setSearchCompareField((prevData) => ({
-                ...prevData,
-                [field]: e.target.value,
-            }));
-        };
-
-    */
-
-
     const [isCompanyPopupOpen, setIsCompanyPopupOpen] = useState(false);
     const [selectedStore, setSelectedStore] = useState(null);
+
+    const [isCompanyPopupOpen2, setIsCompanyPopupOpen2] = useState(false);
+    const [selectedStore2, setSelectedStore2] = useState(null);
+
     const [checkedUseFlag, setCheckedUseFlag] = useState(false);
     const [filterChkData, setFilterChkData] = useState(null);
     const [filterPreData, setFilterPreData] = useState(null);
@@ -131,6 +119,15 @@ const SalesAnalyzeSelect = () => {
         setSelectedStore(selectedCompany.fran_name);
     };
 
+    const handleClickCompany2 = () => {
+        setIsCompanyPopupOpen2(true);
+    };
+
+    const handleSelectCompany2 = (selectedCompany2) => {
+        setIsCompanyPopupOpen2(false);
+        setSelectedStore2(selectedCompany2.fran_name);
+    };
+
     const {
         data: salesDayData, isLoading: isLoadingSalesDayData, refetch: refetchSalesDayData,
     } = useQuery(["getSalesDayData", formatStartDate, formatEndDate], () => getSalesAnalysisList(companyCode, formatStartDate, formatEndDate), {
@@ -139,10 +136,17 @@ const SalesAnalyzeSelect = () => {
 
     const {
         data: compareSalesDayData, isLoading: isLoadingCompareSalesDayData, refetch: refetchCompareSalesDayData,
-    } = useQuery(["getCompareSalesDayData", formatCompareStartDate, formatCompareEndDate], () => getSalesCompareAnalysisList(companyCode, formatCompareStartDate, formatCompareEndDate), {
-        enabled: formatCompareStartDate !== undefined && formatCompareEndDate !== undefined,
+    } = useQuery(["getCompareSalesDayData", formatStartDate, formatEndDate], () => getSalesCompareAnalysisList(companyCode, formatStartDate, formatEndDate), {
+        enabled: formatStartDate !== undefined && formatEndDate !== undefined,
     });
 
+
+    const handleUseFlagChange = (e) => {
+        setCheckedUseFlag((prev) => !prev);
+        setSearchField((prevData) => ({
+            ...prevData, [e.target.id]: e.target.checked ? "" : "1",
+        }));
+    };
 
     useEffect(() => {
         if (!isLoadingSalesDayData && !isLoadingCompareSalesDayData && salesDayData && compareSalesDayData) {
@@ -155,9 +159,9 @@ const SalesAnalyzeSelect = () => {
 
             const preData = compareSalesDayData?.filter((row) => {
                 const preFranName = row.pre_fran_name?.toString().toLowerCase();
-                const selectedStoreName = selectedStore?.toLowerCase();
+                const selectedStoreName2 = selectedStore2?.toLowerCase();
 
-                return !selectedStoreName || (preFranName && preFranName === selectedStoreName);
+                return !selectedStoreName2 || (preFranName && preFranName === selectedStoreName2);
             });
 
             setFilterChkData(chkData);
@@ -167,38 +171,12 @@ const SalesAnalyzeSelect = () => {
             table1GotoPage(0);
             table2GotoPage(0);
         }
-    }, [selectedStore, isLoadingSalesDayData, isLoadingCompareSalesDayData, salesDayData, compareSalesDayData]);
+    }, [selectedStore, selectedStore2,isLoadingSalesDayData, isLoadingCompareSalesDayData, salesDayData, compareSalesDayData]);
 
-    /*
-        console.log(filterPreData)
-        console.log(filterChkData)*/
-
-    /*  useEffect(() => {
-            if (!isLoadingSalesDayData && salesDayData && compareSalesDayData) {
-                const chkData = salesDayData?.filter((row) => {
-                    const chkFranName = row.chk_fran_name?.toString().toLowerCase();
-                    const selectedStoreName = selectedStore?.toLowerCase();
-
-                    return !selectedStoreName || (chkFranName && chkFranName === selectedStoreName);
-                });
-
-                const preData = compareSalesDayData?.filter((row) => {
-                    const preFranName = row.pre_fran_name?.toString().toLowerCase();
-                    const selectedStoreName = selectedStore?.toLowerCase();
-
-                    return !selectedStoreName || (preFranName && preFranName === selectedStoreName);
-                });
-
-                setFilterChkData(chkData);
-                setFilterPreData(preData);
-
-                console.log("FilterChkData =", chkData);
-                console.log("FilterPreData =", preData);
-
-                updateColumns();
-            }
-        }, [selectedStore, isLoadingSalesDayData, salesDayData, compareSalesDayData]);
-    */
+    console.log("선택된 조회 가맹점명!!",selectedStore);
+    console.log("선택된 대비 가맹점명@@",selectedStore2);
+    console.log("조회가맹점데이터!!",filterChkData);
+    console.log("대비가맹점데이터@@",filterPreData);
 
     const mainHeader = ["매출구분"];
     const subHeader1 = [{header: "POS", accessor: "chk_pos_sales"}, {header: "배달", accessor: "chk_delivery_sales"},];
@@ -211,7 +189,7 @@ const SalesAnalyzeSelect = () => {
         const chkData = salesAnalysisColumns3(mainHeader, subHeader1, formatStartDate, formatEndDate);
         setsalesAnalysisColumnsData1(chkData);
 
-        const preData = salesAnalysisColumns4(mainHeader, subHeader2, formatCompareStartDate, formatCompareEndDate);
+        const preData = salesAnalysisColumns4(mainHeader, subHeader2, formatStartDate, formatEndDate);
         setsalesAnalysisColumnsData2(preData);
     };
 
@@ -258,122 +236,11 @@ const SalesAnalyzeSelect = () => {
         autoResetPage: false,
     }, useSortBy, usePagination);
 
-    const handleUseFlagChange = (e) => {
-        setCheckedUseFlag((prev) => !prev);
-        setSearchField((prevData) => ({
-            ...prevData, [e.target.id]: e.target.checked ? "" : "1",
-        }));
-    };
-
-    useEffect(() => {
-        if (!isLoadingSalesDayData && salesDayData) {
-            const filteredData = salesDayData.filter((row) => {
-                if (checkedUseFlag) {
-                    return true;
-                } else {
-                    return row.use_flag === 1;
-                }
-            });
-            setTableState(filteredData);
-        }
-    }, [salesDayData, isLoadingSalesDayData, checkedUseFlag]);
-
-    // 대비기간
-    useEffect(() => {
-        if (!isLoadingCompareSalesDayData && compareSalesDayData) {
-            const filteredCompareData = compareSalesDayData.filter((row) => {
-                if (checkedUseFlag) {
-                    return true;
-                } else {
-                    return row.use_flag === 1;
-                }
-            });
-            setCompareTableState(filteredCompareData);
-        }
-    }, [compareSalesDayData, isLoadingCompareSalesDayData, checkedUseFlag]);
-
-
-    //조회기간, 대비기간 데이터 나열
-    const salesDayDataArray = useMemo(() => filterChkData?.map((item) => ({
-        total: Number(item.chk_total),
-        avg: Number(item.chk_avg),
-        pos: Number(item.chk_pos_sales),
-        delivery: Number(item.chk_delivery_sales)
-    })) || [], [filterChkData]);
-
-    //조회기간, 대비기간 데이터 나열
-    const compareSalesDayDataArray = useMemo(() => filterPreData?.map((item) => ({
-        total: Number(item.pre_total),
-        avg: Number(item.pre_avg),
-        pos: Number(item.pre_pos_sales),
-        delivery: Number(item.pre_delivery_sales)
-    })) || [], [filterPreData]);
-
-    //조회기간, 대비기간 데이터 합산 sum_~
-    const sum_chk_total = useMemo(() => salesDayDataArray.reduce((sum, {total}) => sum + total, 0), [salesDayDataArray]);
-    const sum_chk_pos = useMemo(() => salesDayDataArray.reduce((sum, {pos}) => sum + pos, 0), [salesDayDataArray]);
-    const sum_chk_delivery = useMemo(() => salesDayDataArray.reduce((sum, {delivery}) => sum + delivery, 0), [salesDayDataArray]);
-
-    const sum_pre_total = useMemo(() => compareSalesDayDataArray.reduce((sum, {total}) => sum + total, 0), [compareSalesDayDataArray]);
-    const sum_pre_pos = useMemo(() => compareSalesDayDataArray.reduce((sum, {pos}) => sum + pos, 0), [compareSalesDayDataArray]);
-    const sum_pre_delivery = useMemo(() => compareSalesDayDataArray.reduce((sum, {delivery}) => sum + delivery, 0), [compareSalesDayDataArray]);
-
-    //조회기간, 대비기간 avg / row.length 나누는 로직
-    /*const sum_chk_avg = useMemo(() => {
-        const totalAvg = salesDayDataArray.reduce((sum, {avg}) => sum + avg, 0);
-        const numberOfItems = salesDayDataArray.length;
-        const average = numberOfItems > 0 ? totalAvg / numberOfItems : 0;
-        console.log("@@@@@@@@123",average);
-        return Math.round(average);
-    }, [salesDayDataArray]);*/
-
-    const sum_chk_avg = useMemo(() => {
-        const numberOfItems = salesDayDataArray.length;
-        const average = numberOfItems > 0 ? sum_chk_total / numberOfItems : 0;
-        return Math.round(average);
-    }, [salesDayDataArray]);
-
-
-    /*const sum_pre_avg = useMemo(() => {
-        const totalAvg = compareSalesDayDataArray.reduce((sum, {avg}) => sum + avg, 0);
-        const numberOfItems = compareSalesDayDataArray.length;
-        const average = numberOfItems > 0 ? totalAvg / numberOfItems : 0;
-        return Math.round(average);
-    }, [compareSalesDayDataArray]);*/
-
-    const sum_pre_avg = useMemo(() => {
-        const numberOfItems = compareSalesDayDataArray.length;
-        const average = numberOfItems > 0 ? sum_pre_total / numberOfItems : 0;
-        return Math.round(average);
-    }, [compareSalesDayDataArray]);
-
-    const indeCreaseTotal = (sum_chk_total - sum_pre_total).toLocaleString();
-    const indeCreaseAvg = (sum_chk_avg - sum_pre_avg).toLocaleString();
-    const indeCreasePos = (sum_chk_pos - sum_pre_pos).toLocaleString();
-    const indeCreaseDelivery = (sum_chk_delivery - sum_pre_delivery).toLocaleString();
-
-    //파이차트
-    const chartData1 = [{name: "조회", value: sum_chk_total}, {name: "  대비", value: sum_pre_total},];
-    const chartData2 = [{name: "조회", value: sum_chk_pos}, {name: "  대비", value: sum_pre_pos},];
-    const chartData3 = [{name: "조회", value: sum_chk_delivery}, {name: "  대비", value: sum_pre_delivery},];
-
-    //차트 관련 문구 포맷
-    const strippedNumber = indeCreaseTotal.replace(/[^\d-+]/g, '');
-    const difference = parseInt(strippedNumber, 10);
-
-    const titleTotal = difference.toLocaleString().replace(/-/g, ' ');
-
-    const changeDirection = difference === 0 ? '입니다.' : (difference < 0 ? '하락 되었습니다.' : '상승 되었습니다.');
-    const directionStyle = {
-        color: difference === 0 ? 'black' : (difference < 0 ? 'blue' : 'red')
-    };
-
-
     return (<>
-        <div className={cx("analyze-select")}>
+        <div className={cx("analyze-store")}>
             <div className={cx("row")}>
                 <h1 style={{lineHeight: "2", fontWeight: "bold", textAlign: "center", fontSize: "30px"}}>
-                    일자별 매출 비교 (선택 가맹점)</h1>
+                    가맹점 매출비교</h1>
                 <div className={cx("box", "flex", "search-wrap")}>
                     <div className={cx("search-item")}>
                         <div className={cx("item-wrap")}>
@@ -383,10 +250,9 @@ const SalesAnalyzeSelect = () => {
                                     endDate={endDate}
                                     handleStartDateChange={handleStartDateChange}
                                     handleEndDateChange={handleEndDateChange}
-                                    labelText={2}
                                 />
                             </div>
-                            <div className={cx("item")}>
+                            {/*<div className={cx("item")}>
                                 <SearchDateItems
                                     startDate={compareStartDate}
                                     endDate={compareEndDate}
@@ -394,15 +260,16 @@ const SalesAnalyzeSelect = () => {
                                     handleEndDateChange={handleCompareEndDateChange}
                                     labelText={3}
                                 />
-                            </div>
+                            </div>*/}
                             <div className={cx("item")}>
-                                <div className={cx("checkbox-wrap")}>
-                                    <div className={cx("checkbox")}>
-                                        <CheckBox title={"사용안함 포함"} id={"use_flag"} checked={checkedUseFlag}
-                                                  onChange={handleUseFlagChange}/>
-                                    </div>
-                                </div>
+                                <label className={cx("")} style={{
+                                    fontSize: "1.6rem",
+                                    fontWeight: "700",
+                                    lineHeight: "1.5rem",
+                                    marginLeft: "1.5rem",
+                                }}>조회 가맹점</label>
                             </div>
+
                             <div className={cx("item")}>
                                 {isCompanyPopupOpen && (<PopupSearchFranchise handleClickReturn={handleSelectCompany}
                                                                               setIsPopup={() => setIsCompanyPopupOpen(false)}/>)}
@@ -412,7 +279,8 @@ const SalesAnalyzeSelect = () => {
                                         height: '3.8rem',
                                         backgroundColor: '#fddc37',
                                         fontSize: '1.5rem',
-                                        fontWeight: "bolder"
+                                        fontWeight: "bolder",
+                                        marginLeft: "-1.2rem"
                                     }}
                                     value={(selectedStore) || ""}
                                     onClick={handleClickCompany}
@@ -424,12 +292,51 @@ const SalesAnalyzeSelect = () => {
                                 />
                             </div>
 
+                            <div className={cx("item")}>
+                                <label className={cx("")} style={{
+                                    fontSize: "1.6rem",
+                                    fontWeight: "700",
+                                    lineHeight: "1.5rem",
+                                    marginLeft: "1.5rem",
+                                }}>비교 가맹점</label>
+                            </div>
+                            <div className={cx("item")}>
+                                {isCompanyPopupOpen2 && (<PopupSearchFranchise handleClickReturn={handleSelectCompany2}
+                                                                              setIsPopup={() => setIsCompanyPopupOpen2(false)}/>)}
+                                <input
+                                    style={{
+                                        width: '15rem',
+                                        height: '3.8rem',
+                                        backgroundColor: '#fddc37',
+                                        fontSize: '1.5rem',
+                                        fontWeight: "bolder",
+                                        marginLeft: "-1.2rem"
+                                    }}
+                                    value={(selectedStore2) || ""}
+                                    onClick={handleClickCompany2}
+                                    readOnly
+                                    onFocus={(e) => {
+                                        e.target.blur();
+                                    }}
+                                    placeholder="  가맹점 검색하기 🔍"
+                                />
+                            </div>
+                            <div className={cx("item")}>
+                            </div>
+                            <div className={cx("item")}>
+                                <div className={cx("checkbox-wrap")}>
+                                    <div className={cx("checkbox")}>
+                                        <CheckBox title={"사용안함 포함"} id={"use_flag"} checked={checkedUseFlag}
+                                                  onChange={handleUseFlagChange}/>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className={cx("row")}>
+            {/*<div className={cx("row")}>
 
                 <div className={cx("item")}>
                     <h1 style={{lineHeight: '2', fontWeight: 'bold', textAlign: 'center', marginTop: '3rem'}}>
@@ -457,9 +364,9 @@ const SalesAnalyzeSelect = () => {
                                 style={{fontSize: "2.5rem", marginTop: '8rem', marginBottom: "8rem"}}>가맹점을 선택해주세요</h2>}
                     </div>
                 </div>
-            </div>
+            </div>*/}
 
-            <div className={cx("dashboard")} style={{marginTop: '2rem'}}>
+            {/*<div className={cx("dashboard")} style={{marginTop: '2rem'}}>
                 <div className={cx("row", "flex")} style={{alignItems: 'center'}}>
                     <div className={cx("box", "content-wrap")}>
                         <div className={cx("table-wrap")} style={{height: '13rem', backgroundColor: '#f2f2f2'}}>
@@ -530,7 +437,7 @@ const SalesAnalyzeSelect = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>*/}
 
             <div className={cx("row", "flex")}>
                 <div className={cx("box", "no-padding-horizontal", "content-wrap")}>
@@ -557,10 +464,10 @@ const SalesAnalyzeSelect = () => {
                                 tableState={tableState}
                                 setTableState={setTableState}
                                 rowFixHeaderValues={{
-                                    sum_total: selectedStore,
-                                    sum_avg: sum_chk_total,
-                                    sum_pos: sum_chk_pos,
-                                    sum_delivery: sum_chk_delivery,
+                                    //sum_total: selectedStore,
+                                    //sum_avg: sum_chk_total,
+                                    //sum_pos: sum_chk_pos,
+                                    //sum_delivery: sum_chk_delivery,
                                 }}
                             />
                         </>) : (<div className={cx("no-data")}>
@@ -570,7 +477,7 @@ const SalesAnalyzeSelect = () => {
                 </div>
                 <div className={cx("box", "no-padding-horizontal", "content-wrap")}>
                     <div className={cx("item")}>
-                        {selectedStore && filterPreData.length ? (<>
+                        {selectedStore2 && filterPreData.length ? (<>
                             <RenderTable
                                 tableProps={{
                                     getTableProps: table2GetTableProps,
@@ -589,23 +496,24 @@ const SalesAnalyzeSelect = () => {
                                     pageOptions: table2PageOptions,
                                 }}
                                 editMode={false}
-                                tableState={tableState}
-                                setTableState={setTableState}
+                                tableState={compareTableState}
+                                setTableState={setCompareTableState}
                                 rowFixHeaderValues={{
-                                    sum_total: selectedStore,
-                                    sum_avg: sum_chk_total,
-                                    sum_pos: sum_pre_pos,
-                                    sum_delivery: sum_pre_delivery,
+                                    //sum_total: selectedStore,
+                                    //sum_avg: sum_chk_total,
+                                    //sum_pos: sum_pre_pos,
+                                    //sum_delivery: sum_pre_delivery,
                                 }}
                             />
                         </>) : (<div className={cx("no-data")}>
-                            {selectedStore ? '데이터가 없습니다.' : '가맹점을 선택해주세요'}
+                            {selectedStore2 ? '데이터가 없습니다.' : '가맹점을 선택해주세요'}
                         </div>)}
                     </div>
                 </div>
             </div>
         </div>
     </>);
-};
 
-export default SalesAnalyzeSelect;
+}
+
+export default SalesAnalyzeStore;
