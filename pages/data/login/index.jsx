@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 import { QueryClient, useMutation, useQuery } from "react-query";
-import { getLoginInfo, getTokenCheck } from "@/utils/api/login";
+import { getLoginInfo, getKeyCheck, getTokenCheck } from "@/utils/api/login";
 import { setTokenCookie } from "@/utils/useTokenCookie";
 import { getCookie, setCookie, deleteCookie } from "cookies-next";
 import { COOKIE_EXPIRATION_TIME } from "@/consts/common";
@@ -20,7 +20,7 @@ const cx = className.bind(styles);
 
 const Login = () => {
   const router = useRouter();
-  const { tk } = router.query;
+  const { key } = router.query;
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [{ popupState }, setGlobalState] = useGlobalState();
@@ -36,7 +36,7 @@ const Login = () => {
     data: tokenCheckInfo,
     isLoading: isLoadingTokenCheckInfo,
     refetch: refetchTokenCheckInfo,
-  } = useQuery("getTokenCheckInfo", () => getTokenCheck(tk), { enabled: false });
+  } = useQuery("getTokenCheckInfo", () => getTokenCheck(key), { enabled: false });
 
   const handleIdChange = (e) => {
     setId(e.target.value);
@@ -109,16 +109,16 @@ const Login = () => {
   }, [loginInfo, isFetchingLoginInfo]);
 
   useEffect(() => {
-    if (tk) {
+    if (key) {
       refetchTokenCheckInfo();
     }
-  }, [tk]);
+  }, [key]);
 
   useEffect(() => {
     if (!tokenCheckInfo) {
       return;
     }
-    const token = tk;
+    const token = tokenCheckInfo.tk;
     const admin = tokenCheckInfo.admin;
     const companyCode = tokenCheckInfo.companyCode;
 
