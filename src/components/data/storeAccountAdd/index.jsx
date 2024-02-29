@@ -11,7 +11,7 @@ import styles from "./storeAccountAdd.module.scss";
 import { useState, useEffect } from "react";
 const cx = className.bind(styles);
 
-const StoreAccountAdd = ({ selectStoreState }) => {
+const StoreAccountAdd = ({ selectStoreState, refetchStoreAccountData }) => {
   const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
   const [franName, setFranName] = useState("");
   const [fieldData, setFieldData] = useState({});
@@ -50,7 +50,16 @@ const StoreAccountAdd = ({ selectStoreState }) => {
 
   const updateMutation = useMutation(async () => await updateStoreAccountList(fieldData), {
     onSuccess: () => {
-      refetchStoreData();
+      refetchStoreAccountData();
+
+      setGlobalState((prevGlobalState) => ({
+        ...prevGlobalState,
+        popupState: {
+          isOn: true,
+          popup: POPUP_DEFAULT,
+          content: "업데이트를 완료했습니다.",
+        },
+      }));
     },
     onError: (error) => {
       console.error("Update error:", error);

@@ -232,7 +232,7 @@ const StoreAccount = () => {
           </div>
           <div className={cx("box", "right")}>
             <div className={cx("store-account-add")}>
-              <StoreAccountAdd selectStoreState={selectStoreState} />
+              <StoreAccountAdd selectStoreState={selectStoreState} refetchStoreAccountData={refetchStoreAccountData} />
             </div>
           </div>
         </div>

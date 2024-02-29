@@ -28,7 +28,7 @@ const StoreMapping = () => {
   };
 
   const [{ popupState, userInfo }, setGlobalState] = useGlobalState();
-  const [companyCode, setCompanyCode] = useState(userInfo.companyCode);
+  const [companyCode, setCompanyCode] = useState(userInfo.companyCode || "");
   const [tableState, setTableState] = useState([]);
   const [searchData, setSearchData] = useState(searchFieldData);
   const [searchField, setSearchField] = useState(searchFieldData);
@@ -177,7 +177,7 @@ const StoreMapping = () => {
             </div>
           </div>
           <div className={cx("box", "content-wrap")}>
-            <ScrapingSearch selectFranName={selectFranName} selectFranCode={selectFranCode} refetchStoreMapingData={refetchStoreMapingData} />
+            <ScrapingSearch currentCompanyCode={companyCode} selectFranName={selectFranName} selectFranCode={selectFranCode} refetchStoreMapingData={refetchStoreMapingData} />
           </div>
         </div>
       </div>
